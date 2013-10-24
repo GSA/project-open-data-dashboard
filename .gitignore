@@ -6,6 +6,7 @@
 
 application/config/config.php
 
-application/config/database.sample.php
-
 .htaccess
+
+application/config/database.php
+
