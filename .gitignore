@@ -3,3 +3,9 @@
 */logs/!index.html
 */cache/*
 */cache/!index.html
+
+application/config/config.php
+
+application/config/database.sample.php
+
+.htaccess
