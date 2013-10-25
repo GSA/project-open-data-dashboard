@@ -9,7 +9,7 @@
         <div class="col-lg-4">
           <h2>Agencies</h2>
 
-
+			<?php if(!empty($cfo_offices)) : ?>
 			<h3>CFO Act Agencies</h3>
 			<table>
 				<?php foreach ($cfo_offices as $office):?>
@@ -18,7 +18,9 @@
 				</tr>
 				<?php endforeach;?>
 			</table>
+			<?php endif; ?>
 			
+			<?php if(!empty($cfo_offices)) : ?>
 			<h3>Other Offices Reporting to the White House</h3>
 			<table>
 				<?php foreach ($executive_offices as $office):?>
@@ -27,7 +29,9 @@
 				</tr>
 				<?php endforeach;?>
 			</table>
+			<?php endif; ?>			
 			
+			<?php if(!empty($cfo_offices)) : ?>
 			<h3>Other Independent Offices</h3>
 			<table>
 				<?php foreach ($independent_offices as $office):?>
@@ -35,7 +39,8 @@
 					<td><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></td>
 				</tr>
 				<?php endforeach;?>
-			</table>						
+			</table>	
+			<?php endif; ?>								
 
         </div>
       </div>

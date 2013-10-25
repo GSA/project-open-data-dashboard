@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2013 at 03:33 PM
+-- Generation Time: Oct 25, 2013 at 04:38 PM
 -- Server version: 5.5.28
 -- PHP Version: 5.3.26
 
@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS `offices` (
   `parent_office_id` int(10) DEFAULT NULL,
   `no_parent` varchar(256) NOT NULL,
   `reporting_authority_type` varchar(256) NOT NULL,
-  `cfo_act_agency` varchar(256) DEFAULT NULL
+  `cfo_act_agency` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

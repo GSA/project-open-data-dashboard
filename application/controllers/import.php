@@ -2,6 +2,29 @@
 
 class Import extends CI_Controller {
 
+	public $environment = null;
+
+	function __construct()
+	{
+		parent::__construct();
+		
+		$this->load->helper('api');		
+		
+		// Determine the environment we're run from for debugging/output 
+		if (php_sapi_name() == 'cli') {   
+			if (isset($_SERVER['TERM'])) {   
+				$this->environment = 'terminal';  
+			} else {   
+				$this->environment = 'cron';
+			}   
+		} else { 
+			$this->environment = 'server';
+		}
+	   	
+				
+	}
+
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -24,21 +47,6 @@ class Import extends CI_Controller {
 		if(!$this->config->item('import_active')) {
 			redirect('docs');				
 		}	
-		
-		// Determine the environment we're run from for debugging/output 
-		if (php_sapi_name() == 'cli') {   
-			if (isset($_SERVER['TERM'])) {   
-				$this->environment = 'terminal';  
-			} else {   
-				$this->environment = 'cron';
-			}   
-		} else { 
-			$this->environment = 'server';
-		}		
-		
-
-
-		$this->load->helper('api');
 
 		$master_list_url = 'http://www.usa.gov/api/USAGovAPI/contacts.json/contacts/tree?include_descendants=true';
 
@@ -79,36 +87,12 @@ class Import extends CI_Controller {
 		foreach ($parent_list as $type => $parents) {
 		
 			foreach ($parents as $id => $office) {
-						
-				$office_model = $this->office_model();			
-				$office_model['id'] = $office['Id'];    
-			
-				$office_model['name'] = $office['Name'];    
-			
-				if(strpos($office_model['name'], '(') !== false && strpos($office_model['name'], ')') !== false) {
-					$abbreviation = get_between($office_model['name'], '(', ')');
-					$office_model['name'] = str_replace('(' . $abbreviation . ')', '', $office_model['name']);
-					$office_model['name'] = trim($office_model['name']);
-				} else {
-					$abbreviation = null;
+				
+				if ($type == 'executive') {
+					$parent_id = 49743; // white house
 				}
 				
-				if(strpos($office_model['name'], 'U.S. Department') !== false) {
-					$office_model['name'] = str_replace('U.S. Department', 'Department', $office_model['name']);
-					$office_model['name'] = trim($office_model['name']);
-				}
-				
-				
-				
-				// see if this is a cfo act agency
-				$office_model['cfo_act_agency'] = ($this->cfo_act_check($office_model['name'])) ? 'true' : 'false';
-				
-				$url = (!empty($office['Web_Url'][0]['Url'])) ? $office['Web_Url'][0]['Url'] : null;
-			              
-				$office_model['abbreviation'] = $abbreviation;            
-				$office_model['url'] = $url;                                         
-				$office_model['no_parent'] = 'true';                
-				$office_model['reporting_authority_type'] =	$type;		
+				$office_model = $this->prepare_office_data($office, $type, $parent_id = null, $no_parent = 'true');				
 			
 				if ($this->environment == 'terminal') {
 					echo 'Adding ' . $office_model['name'] . PHP_EOL;
@@ -154,6 +138,108 @@ class Import extends CI_Controller {
 		return $parent_list;		
 
 	}	
+	
+	
+	public function children() {
+		
+		$this->db->select('id, reporting_authority_type');		
+		$this->db->where('no_parent', 'true');	
+		$query = $this->db->get('offices');
+        
+		if ($query->num_rows() > 0) {
+		   $parent_offices = $query->result();
+		
+			foreach ($parent_offices as $office) {
+				
+				// 49743 = White House. We should already have all subagencies of the white house in as no_parent = true;
+				if($office->id == 49743) {
+					continue;
+				}				
+				
+				$child_api_url = 'http://www.usa.gov/api/USAGovAPI/contacts.json/contact/' . $office->id . '/tree/descendant';
+
+				if ($this->environment == 'terminal') {
+					echo 'Loading ' . $child_api_url . PHP_EOL;
+				}		
+				
+				$parent = curl_from_json($child_api_url);				
+				
+				if(!empty($parent['Contact'][0])) {
+
+					$children = $parent['Contact'];
+					$this->process_descendants($children, $office->reporting_authority_type, $office->id);
+
+
+				}				
+				
+				
+				
+			}
+		
+		}		
+		
+	}	
+	
+	function process_descendants($children, $type, $parent_id = null) {
+		
+		foreach ($children as $child) {
+			
+			$no_parent = (empty($parent_id)) ? 'true' : 'false';
+			$office_model = $this->prepare_office_data($child, $type, $parent_id, $no_parent);				
+			
+			if ($this->environment == 'terminal') {
+				echo 'Adding ' . $office_model['name'] . PHP_EOL;
+			}			
+
+			$this->db->insert('offices', $office_model);
+			
+			if(!empty($child['Contact'][0])) {
+				$grand_children = $child['Contact'];
+				$this->process_descendants($grand_children, $type, $office_model['id']);
+			}
+			
+															
+		}		
+	}
+	
+	function prepare_office_data($office, $type, $parent_id, $no_parent='false') {
+		
+			$office_model = $this->office_model();			
+			$office_model['id'] = $office['Id'];    
+		
+			$office_model['name'] = $office['Name'];    
+		
+			if(strpos($office_model['name'], '(') !== false && strpos($office_model['name'], ')') !== false) {
+				$abbreviation = get_between($office_model['name'], '(', ')');
+				$office_model['name'] = str_replace('(' . $abbreviation . ')', '', $office_model['name']);
+				$office_model['name'] = trim($office_model['name']);
+			} else {
+				$abbreviation = null;
+			}
+			
+			if(strpos($office_model['name'], 'U.S. Department') !== false) {
+				$office_model['name'] = str_replace('U.S. Department', 'Department', $office_model['name']);
+				$office_model['name'] = trim($office_model['name']);
+			}
+			
+						
+			// see if this is a cfo act agency
+			$office_model['cfo_act_agency'] = ($this->cfo_act_check($office_model['name'])) ? 'true' : 'false';
+			
+			$url = (!empty($office['Web_Url'][0]['Url'])) ? $office['Web_Url'][0]['Url'] : null;
+		              
+			//if(!empty($url)) {
+			//	$url = substr($url, 0, strpos($url, '.gov') + 4);
+			//}
+		
+			$office_model['abbreviation'] = $abbreviation;            
+			$office_model['url'] = $url;                                         
+			$office_model['parent_office_id'] = $parent_id;                
+			$office_model['no_parent'] = $no_parent;                
+			$office_model['reporting_authority_type'] =	$type;		
+		
+			return $office_model;
+	}
 	
 	
 	function office_model() {

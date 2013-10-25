@@ -15,6 +15,22 @@ function curl_from_json($url) {
 }
 
 
+function curl_header($url) {
+	$info = array();
+	
+	$curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_FILETIME, true);
+    curl_setopt($curl, CURLOPT_NOBODY, true);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $info['header'] = curl_exec($curl);
+    $info['info'] = curl_getinfo($curl);
+    curl_close($curl);
+
+	return $info;
+}
+
+
 function get_between($input, $start, $end)
 {
   $substr = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
