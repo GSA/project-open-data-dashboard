@@ -23,9 +23,11 @@
 
 
 		<?php if(!empty($office_campaign)): ?>
-		<h3>Data.gov Status</h3>
 		
-		<table>
+		<div class="panel panel-default">
+		<div class="panel-heading">Data.gov Status</div>
+		
+		<table class="table table-striped table-hover">
 		<tr>
 			<th>Contact Name</th>
 			<td><?php echo $office_campaign->contact_name ?></td>
@@ -112,7 +114,7 @@
 		</tr>	
 
 		</table>		
-
+		</div>
 
 
 
@@ -122,23 +124,57 @@
 
 		
 		
-		<?php if(!empty($child_offices)): ?>
-		
-		<h3>Sub-agencies</h3>
-		
+		<?php if(!empty($child_offices)) : ?>
+		<div class="panel panel-default">
+		<div class="panel-heading">Sub Agencies</div>
+		<table class="table table-striped table-hover">
+			<tr>
+				<th>Agency</th>
+				<th>Status</th>
+				<th>Content-Type</th>					
+			</tr>
 			<?php foreach ($child_offices as $office):?>
-		
-
-	        <div class="col-lg-4">
-		
-	          <h5><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name ?></a></h5>
-
-				<div><a href="<?php echo $office->url ?>"><?php echo $office->url ?></a></div>
-				<div><?php echo $office->notes ?></div>				
-		
-	        </div>
-
+			
+			<?php 
+			
+				if(!empty($office->datajson_status)) {
+					$office->datajson_status = json_decode($office->datajson_status);
+				}				
+			
+				$http_code = (!empty($office->datajson_status->http_code)) ? $office->datajson_status->http_code : 0;
+			
+				switch ($http_code) {
+				    case 404:
+				        $status_color = 'danger';
+				        break;
+				    case 200:
+				        $status_color = 'success';
+				        break;
+				    case 0:
+				        $status_color = '';
+				        break;					
+				    default:
+						$status_color = 'warning';
+				}	
+				
+				$content_type = (!empty($office->datajson_status->content_type)) ? $office->datajson_status->content_type : null;
+				
+				if (strpos($content_type, 'application/json') !== false) {
+					$mime_color = 'success';
+				} else {
+					$mime_color = 'danger';
+				}
+							
+			?>				
+			
+			<tr class="<?php echo $status_color ?>">
+				<td><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></td>
+				<td><?php if (!empty($office->datajson_status->http_code)): ?><a class="text-<?php echo $status_color ?>" href="<?php echo $office->datajson_status->url;?>"><?php echo $office->datajson_status->http_code ?></a><?php endif; ?></td>
+				<td><?php if (!empty($office->datajson_status->content_type)): ?><span class="text-<?php echo $mime_color ?>"><?php echo $office->datajson_status->content_type?></span><?php endif; ?></td>					
+			</tr>
 			<?php endforeach;?>
+		</table>
+		</div>
 		<?php endif; ?>
 
 

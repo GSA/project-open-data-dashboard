@@ -101,12 +101,14 @@ class Offices extends CI_Controller {
 			 $status = $status['info'];	//content_type and http_code
 			 $view_data['office_campaign']->expected_datajson_status = $status; 
 		
-			$this->db->select('*');		
-			$this->db->where('parent_office_id', $view_data['office']->id);		
-			$this->db->order_by("name", "asc"); 						
-				
-			$query = $this->db->get('offices');		
-		
+			
+			$this->db->select('*');	
+			$this->db->from('offices');			
+			$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
+			$this->db->where('offices.parent_office_id', $view_data['office']->id);				
+			$this->db->order_by("offices.name", "asc"); 			
+			$query = $this->db->get();			
+																	
 			if ($query->num_rows() > 0) {
 			   $view_data['child_offices'] = $query->result();				
 			}
