@@ -22,15 +22,17 @@ class Offices extends CI_Controller {
 		
 		$view_data = array();
 	
-		$this->db->select('*');		
-		$this->db->where('cfo_act_agency', 'true');	
-		$this->db->where('no_parent', 'true');			
-		$this->db->order_by("name", "asc"); 		
-		$query = $this->db->get('offices');
+		$this->db->select('*');	
+		$this->db->from('offices');			
+		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id');	
+		$this->db->where('offices.cfo_act_agency', 'true');	
+		$this->db->where('offices.no_parent', 'true');			
+		$this->db->order_by("offices.name", "asc"); 			
+		$query = $this->db->get();
         
-		if ($query->num_rows() > 0) {
-		   $view_data['cfo_offices'] = $query->result();
-		   $query->free_result();
+		if ($query->num_rows() > 0) {		
+			$view_data['cfo_offices'] = $query->result();
+			$query->free_result();
 		}
 		
 		$this->db->select('*');		
