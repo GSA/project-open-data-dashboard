@@ -97,11 +97,17 @@ class Offices extends CI_Controller {
 			 $view_data['office_campaign']->expected_datajson_url = $url . '/data.json';
 			
 			
-			 $status = curl_header($view_data['office_campaign']->expected_datajson_url);	
-			 $status = $status['info'];	//content_type and http_code
+			$status = $this->uri_header($view_data['office_campaign']->expected_datajson_url);
+						
+			// cache this status in the db
+			$update = $this->campaign->datagov_model();
+			$update['office_id'] = $view_data['office']->id;					
+			$update['datajson_status'] = json_encode($status);
+			$this->campaign->update_status($update);
+						
 			 $view_data['office_campaign']->expected_datajson_status = $status; 
 		
-			
+			// Get sub offices
 			$this->db->select('*');	
 			$this->db->from('offices');			
 			$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
@@ -117,6 +123,27 @@ class Offices extends CI_Controller {
 		
 		$this->load->view('office_detail', $view_data);		
 			
+	}
+	
+	public function uri_header($url, $redirect_count = 0) {
+		
+		$status = curl_header($url);	
+		$status = $status['info'];	//content_type and http_code
+		
+		if($status['redirect_count'] == 0 && !(empty($redirect_count))) $status['redirect_count'] = 1;		
+		$status['redirect_count'] = $status['redirect_count'] + $redirect_count;
+
+		if(!empty($status['redirect_url'])) {
+			if($status['redirect_count'] == 0 && $redirect_count == 0) $status['redirect_count'] = 1;
+			
+			$status = $this->uri_header($status['redirect_url'], $status['redirect_count']);
+		}		
+		
+		if(!empty($status)) {
+			return $status;
+		} else {
+			return false; 
+		}
 	}
 }
 

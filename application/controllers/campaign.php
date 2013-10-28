@@ -77,34 +77,8 @@ class Campaign extends CI_Controller {
 				// Instead of hacking together an upsert or preloading existing status data, 
 				// let's just be really inefficient and do a lookup for each record
 				
-				$this->db->select('datajson_status');		
-				$this->db->where('office_id', $update['office_id']);						
-				$query = $this->db->get('datagov_campaign');				
-				
-				if ($query->num_rows() > 0) {
-					// update
-					
-					if ($this->environment == 'terminal') {
-						echo 'Updating ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL;
-					}					
-					
-					$this->db->where('office_id', $update['office_id']);						
-					$this->db->update('datagov_campaign', $update);					
-					
-					
-				} else {
-					// insert
-					
-					if ($this->environment == 'terminal') {
-						echo 'Adding ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL;
-					}					
-					
-					$this->db->insert('datagov_campaign', $update);					
-					
-				}
-				
-				
-				
+				$this->campaign->update_status($update);
+								
 				
 				
 			}

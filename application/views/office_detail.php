@@ -41,34 +41,45 @@
 		<tr>
 			<th>Expected Data.json URL</th>
 			<td>
-				<a href="<?php echo $office_campaign->expected_datajson_url ?>"><?php echo $office_campaign->expected_datajson_url ?></a>
+				<a href="<?php echo $office_campaign->expected_datajson_status['url'] ?>"><?php echo $office_campaign->expected_datajson_status['url'] ?></a>
 
 				<?php 
-					switch ($office_campaign->expected_datajson_status['http_code']) {
+					$http_code = (!empty($office_campaign->expected_datajson_status['http_code'])) ? $office_campaign->expected_datajson_status['http_code'] : 0;
+			
+					switch ($http_code) {
 					    case 404:
-					        $status_color = 'red';
+					        $status_color = 'danger';
 					        break;
 					    case 200:
-					        $status_color = 'green';
+					        $status_color = 'success';
 					        break;
+					    case 0:
+					        $status_color = '';
+					        break;					
 					    default:
-							$status_color = 'orange';
+							$status_color = 'warning';
 					}	
 					
 					if (strpos($office_campaign->expected_datajson_status['content_type'], 'application/json') !== false) {
-						$mime_color = 'green';
+						$mime_color = 'success';
 					} else {
-						$mime_color = 'red';
+						$mime_color = 'danger';
 					}
 								
 				?>
-				<span style="color:<?php echo $status_color;?>">
+				<span class="text-<?php echo $status_color;?>">
 					<?php echo $office_campaign->expected_datajson_status['http_code']?>
 				</span>			
 			
-				<span style="color:<?php echo $mime_color;?>">
+				<span class="text-<?php echo $mime_color;?>">
 					<?php echo $office_campaign->expected_datajson_status['content_type']?>
 				</span>
+				
+				<?php if(!empty($office_campaign->expected_datajson_status['redirect_count'])): ?>
+				<span class="text-warning">
+					<?php echo $office_campaign->expected_datajson_status['redirect_count'] . ' redirects'; ?>
+				</span>				
+				<?php endif; ?>
 			
 				
 			</td>

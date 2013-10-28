@@ -30,6 +30,26 @@ function curl_header($url) {
 	return $info;
 }
 
+/**
+ * This mashes together two arrays with the same keys
+ * It fills in any empty values, but gives precedence to the $primary array
+ */
+
+function array_mash($primary, $secondary) {
+	$primary = (array)$primary;
+	$secondary = (array)$secondary;
+	$out = array();
+	foreach($primary as $name => $value) {
+		if ( array_key_exists($name, $secondary) && !empty($secondary[$name]) && empty($value)) {
+			$out[$name] = $secondary[$name];
+		}
+		else {
+			$out[$name] = $value;
+		}
+	}
+	return $out;
+}
+
 
 function get_between($input, $start, $end)
 {
