@@ -26,18 +26,25 @@
 						$office->datajson_status = json_decode($office->datajson_status);
 					}				
 				
-					switch ($office->datajson_status->http_code) {
+					$http_code = (!empty($office->datajson_status->http_code)) ? $office->datajson_status->http_code : 0;
+				
+					switch ($http_code) {
 					    case 404:
 					        $status_color = 'danger';
 					        break;
 					    case 200:
 					        $status_color = 'success';
 					        break;
+					    case 0:
+					        $status_color = '';
+					        break;					
 					    default:
 							$status_color = 'warning';
 					}	
 					
-					if (strpos($office->datajson_status->content_type, 'application/json') !== false) {
+					$content_type = (!empty($office->datajson_status->content_type)) ? $office->datajson_status->content_type : null;
+					
+					if (strpos($content_type, 'application/json') !== false) {
 						$mime_color = 'success';
 					} else {
 						$mime_color = 'danger';
@@ -47,8 +54,8 @@
 				
 				<tr class="<?php echo $status_color ?>">
 					<td><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></td>
-					<td><a class="text-<?php echo $status_color ?>" href="<?php echo $office->datajson_status->url;?>"><?php echo $office->datajson_status->http_code ?></a></td>
-					<td><span class="text-<?php echo $mime_color ?>"><?php echo $office->datajson_status->content_type?></span></td>					
+					<td><?php if (!empty($office->datajson_status->http_code)): ?><a class="text-<?php echo $status_color ?>" href="<?php echo $office->datajson_status->url;?>"><?php echo $office->datajson_status->http_code ?></a><?php endif; ?></td>
+					<td><?php if (!empty($office->datajson_status->content_type)): ?><span class="text-<?php echo $mime_color ?>"><?php echo $office->datajson_status->content_type?></span><?php endif; ?></td>					
 				</tr>
 				<?php endforeach;?>
 			</table>
