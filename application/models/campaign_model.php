@@ -70,7 +70,7 @@ class campaign_model extends CI_Model {
 		
 		$this->load->helper('jsonschema');					
 
-		$schema = json_decode(file_get_contents(realpath('./schema/schema/catalog.json')));		
+		$schema = json_decode(file_get_contents(realpath('./schema/catalog.json')));		
 		$data = json_decode(file_get_contents($uri));
 		
 		if(!empty($data)) {
