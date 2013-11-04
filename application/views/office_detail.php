@@ -25,7 +25,7 @@
 		<?php if(!empty($office_campaign)): ?>
 		
 		<div class="panel panel-default">
-		<div class="panel-heading">Data.gov Status</div>
+		<div class="panel-heading">Data.gov Status <a type="button" class="btn btn-success btn-xs pull-right" href="?refresh=true">Refresh</a></div>
 		
 		<table class="table table-striped table-hover">
 		<tr>
@@ -41,10 +41,11 @@
 		<tr>
 			<th>Expected Data.json URL</th>
 			<td>
-				<a href="<?php echo $office_campaign->expected_datajson_status['url'] ?>"><?php echo $office_campaign->expected_datajson_status['url'] ?></a>
+				<a href="<?php echo $office_campaign->expected_datajson_status->url ?>"><?php echo $office_campaign->expected_datajson_status->url ?></a>
 
 				<?php 
-					$http_code = (!empty($office_campaign->expected_datajson_status['http_code'])) ? $office_campaign->expected_datajson_status['http_code'] : 0;
+				
+					$http_code = (!empty($office_campaign->expected_datajson_status->http_code)) ? $office_campaign->expected_datajson_status->http_code : 0;
 			
 					switch ($http_code) {
 					    case 404:
@@ -60,7 +61,7 @@
 							$status_color = 'warning';
 					}	
 					
-					if (strpos($office_campaign->expected_datajson_status['content_type'], 'application/json') !== false) {
+					if (strpos($office_campaign->expected_datajson_status->content_type, 'application/json') !== false) {
 						$mime_color = 'success';
 					} else {
 						$mime_color = 'danger';
@@ -68,16 +69,16 @@
 								
 				?>
 				<span class="text-<?php echo $status_color;?>">
-					<?php echo $office_campaign->expected_datajson_status['http_code']?>
+					<?php echo $office_campaign->expected_datajson_status->http_code?>
 				</span>			
 			
 				<span class="text-<?php echo $mime_color;?>">
-					<?php echo $office_campaign->expected_datajson_status['content_type']?>
+					<?php echo $office_campaign->expected_datajson_status->content_type?>
 				</span>
 				
-				<?php if(!empty($office_campaign->expected_datajson_status['redirect_count'])): ?>
+				<?php if(!empty($office_campaign->expected_datajson_status->redirect_count)): ?>
 				<span class="text-warning">
-					<?php echo $office_campaign->expected_datajson_status['redirect_count'] . ' redirects'; ?>
+					<?php echo $office_campaign->expected_datajson_status->redirect_count . ' redirects'; ?>
 				</span>				
 				<?php endif; ?>
 			

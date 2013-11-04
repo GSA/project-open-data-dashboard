@@ -89,35 +89,45 @@ class Offices extends CI_Controller {
 				$view_data['office_campaign'] = (object) $this->campaign->datagov_model();
 			}
 		
-			 $url = $view_data['office']->url;
-			 $url = substr($url, 0, strpos($url, '.gov') + 4);
-			 
-
-			 $view_data['office_campaign']->expected_datajson_url = $url . '/data.json';
-
-			
-			$status = $this->uri_header($view_data['office_campaign']->expected_datajson_url);
 		
-			if($status['http_code'] == 200) {
-				$validation = $this->campaign->validate_datajson($status['url']);
-								
-				if(!empty($validation)) {
-					$status['valid_json'] = true;
-					$status['valid_schema'] = $validation->valid;
-					$status['schema_errors'] = $validation->errors;										
-				} else {
-					// data.json was not valid json
-					$status['valid_json'] = false;
+		
+		
+			if(empty($view_data['office_campaign']->datajson_status) || $this->input->get('refresh', TRUE) == 'true') {
+				
+				 $url = $view_data['office']->url;
+				 $url = substr($url, 0, strpos($url, '.gov') + 4);
+
+
+				 $view_data['office_campaign']->expected_datajson_url = $url . '/data.json';
+
+
+				$status = $this->uri_header($view_data['office_campaign']->expected_datajson_url);
+
+				if($status['http_code'] == 200) {
+					$validation = $this->campaign->validate_datajson($status['url']);
+
+					if(!empty($validation)) {
+						$status['valid_json'] = true;
+						$status['valid_schema'] = $validation->valid;
+						$status['schema_errors'] = $validation->errors;										
+					} else {
+						// data.json was not valid json
+						$status['valid_json'] = false;
+					}
 				}
+
+				// cache this status in the db
+				$update = $this->campaign->datagov_model();
+				$update['office_id'] = $view_data['office']->id;					
+				$update['datajson_status'] = json_encode($status);
+				$this->campaign->update_status($update);
+
+				 $view_data['office_campaign']->expected_datajson_status =  (object) $status;				
+				
+			} else {
+				$view_data['office_campaign']->expected_datajson_url = $view_data['office_campaign']->datajson_status['url'];
+				$view_data['office_campaign']->expected_datajson_status = (object) json_decode($view_data['office_campaign']->datajson_status);
 			}
-										
-			// cache this status in the db
-			$update = $this->campaign->datagov_model();
-			$update['office_id'] = $view_data['office']->id;					
-			$update['datajson_status'] = json_encode($status);
-			$this->campaign->update_status($update);
-						
-			 $view_data['office_campaign']->expected_datajson_status = $status; 
 		
 			// Get sub offices
 			$this->db->select('*');	
