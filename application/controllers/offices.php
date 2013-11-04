@@ -71,7 +71,7 @@ class Offices extends CI_Controller {
 		
 		$this->load->helper('api');		
 		$this->load->model('campaign_model', 'campaign');			
-		
+				
 		$this->db->select('*');		
 		$this->db->where('id', $id);			
 		$query = $this->db->get('offices');			
@@ -92,13 +92,25 @@ class Offices extends CI_Controller {
 			 $url = $view_data['office']->url;
 			 $url = substr($url, 0, strpos($url, '.gov') + 4);
 			 
-			 
-			
+
 			 $view_data['office_campaign']->expected_datajson_url = $url . '/data.json';
-			
+
 			
 			$status = $this->uri_header($view_data['office_campaign']->expected_datajson_url);
-						
+		
+			if($status['http_code'] == 200) {
+				$validation = $this->campaign->validate_datajson($status['url']);
+								
+				if(!empty($validation)) {
+					$status['valid_json'] = true;
+					$status['valid_schema'] = $validation->valid;
+					$status['schema_errors'] = $validation->errors;										
+				} else {
+					// data.json was not valid json
+					$status['valid_json'] = false;
+				}
+			}
+										
 			// cache this status in the db
 			$update = $this->campaign->datagov_model();
 			$update['office_id'] = $view_data['office']->id;					
@@ -128,7 +140,7 @@ class Offices extends CI_Controller {
 	public function uri_header($url, $redirect_count = 0) {
 		
 		$status = curl_header($url);	
-		$status = $status['info'];	//content_type and http_code
+		$status = $status['info'];	//content_type and http_code		
 		
 		if($status['redirect_count'] == 0 && !(empty($redirect_count))) $status['redirect_count'] = 1;		
 		$status['redirect_count'] = $status['redirect_count'] + $redirect_count;

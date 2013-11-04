@@ -66,6 +66,20 @@ class campaign_model extends CI_Model {
 		return $datagov_model;
 	}
 	
+	public function validate_datajson($uri) {
+		
+		$this->load->helper('jsonschema');					
+
+		$schema = json_decode(file_get_contents(realpath('./schema/schema/catalog.json')));		
+		$data = json_decode(file_get_contents($uri));
+		
+		if(!empty($data)) {
+			return Jsv4::validate($data, $schema);
+		} else {
+			return false;
+		}
+		
+	}
 	
 	
 	public function update_status($update) {		
