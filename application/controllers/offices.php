@@ -35,25 +35,30 @@ class Offices extends CI_Controller {
 			$query->free_result();
 		}
 		
-		$this->db->select('*');		
-		$this->db->where('cfo_act_agency', 'false');			
-		$this->db->where('reporting_authority_type', 'executive');	
-		$this->db->where('no_parent', 'true');				
-		$this->db->order_by("name", "asc"); 		
-		$query = $this->db->get('offices');
+		$this->db->select('*');	
+		$this->db->from('offices');			
+		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
+		$this->db->where('offices.cfo_act_agency', 'false');			
+		$this->db->where('offices.reporting_authority_type', 'executive');	
+		$this->db->where('offices.no_parent', 'true');			
+		$this->db->order_by("offices.name", "asc");		
+		$query = $this->db->get();
         
 		if ($query->num_rows() > 0) {
 		   $view_data['executive_offices'] = $query->result();
 		   $query->free_result();
 		}	
 		
-		$this->db->select('*');		
-		$this->db->where('cfo_act_agency', 'false');			
-		$this->db->where('reporting_authority_type', 'independent');	
-		$this->db->where('no_parent', 'true');	
-		$this->db->where('id !=', 49743);	// exclude the white house			
-		$this->db->order_by("name", "asc"); 						
-		$query = $this->db->get('offices');
+		
+		$this->db->select('*');	
+		$this->db->from('offices');			
+		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
+		$this->db->where('offices.cfo_act_agency', 'false');			
+		$this->db->where('offices.reporting_authority_type', 'independent');	
+		$this->db->where('offices.no_parent', 'true');			
+		$this->db->order_by("offices.name", "asc");		
+		$query = $this->db->get();		
+		
         
 		// if successful return ocdid
 		if ($query->num_rows() > 0) {
