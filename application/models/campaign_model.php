@@ -80,7 +80,7 @@ class campaign_model extends CI_Model {
 		}
 		
 	}
-	
+
 	
 	public function update_status($update) {		
 		
@@ -115,6 +115,106 @@ class campaign_model extends CI_Model {
 		}		
 		
 	}
+	
+	
+	
+	
+	public function datajson_schema() {
+		
+		$schema = json_decode(file_get_contents(realpath('./schema/catalog.json')));
+
+		if (!empty($schema->items->{'$ref'})) {
+			
+			$schema = json_decode(file_get_contents(realpath('./schema/' . $schema->items->{'$ref'})));
+
+		}		
+		return $schema;
+		
+	}
+	
+	
+	public function schema_to_model($schema) {
+		
+		$model = new stdClass();
+		
+		foreach ($schema as $key => $value) {
+			
+			if(!empty($value->items) && $value->type == 'array') {
+				 $model->$key = array();								
+			} else {
+				$model->$key = null;				
+			}
+			
+		}
+		
+		return $model;
+		
+	}
+	
+	public function get_datagov_json($orgs) {
+		
+		$orgs = rawurlencode($orgs);
+		$query = "-harvest_source_id:[''%20TO%20*]%20AND%20-type:harvest%20AND%20organization:(" . $orgs . ")&rows=40";
+		$uri = 'http://catalog.data.gov/api/3/action/package_search?q=' . $query;
+		$datagov_json = curl_from_json($uri, false);
+		
+		$results = $datagov_json->result->results;
+		
+		return $results;
+		
+	}
+	
+	public function datajson_crosswalk($raw_data, $datajson_model) {
+	
+		$distributions = array();
+		foreach($raw_data->resources as $resource) {
+			$distribution = new stdClass();
+			
+			$distribution->accessURL 	= $resource->url;
+			$distribution->format		= $resource->format;
+			
+			$distributions[] = $distribution;			
+		}
+	
+		if(!empty($raw_data->tags)) {
+			$tags = array();
+			foreach ($raw_data->tags as $tag) {
+				$tags[] = $tag->name;				
+			}
+		} else {
+			$tags = null;
+		}
+	
+		$datajson_model->accessLevel 						= null;
+		$datajson_model->accessLevelComment 				= null;
+		$datajson_model->accrualPeriodicity 				= null;
+		$datajson_model->bureauCode 						= null;
+		$datajson_model->contactPoint 						= $raw_data->maintainer;
+		$datajson_model->dataDictionary 					= null;
+		$datajson_model->dataQuality 						= null;
+		$datajson_model->description 						= $raw_data->notes;
+		$datajson_model->distribution 						= $distributions;
+		$datajson_model->identifier 						= $raw_data->id;
+		$datajson_model->issued 							= null;
+		$datajson_model->keyword 							= $tags;
+		$datajson_model->landingPage 						= null;
+		$datajson_model->language 							= null;
+		$datajson_model->license 							= null;
+		$datajson_model->mbox 								= $raw_data->maintainer_email;
+		$datajson_model->modified 							= $raw_data->metadata_modified;
+		$datajson_model->PrimaryITInvestmentUII 			= null;
+		$datajson_model->programCode 						= null;
+		$datajson_model->publisher 							= $raw_data->organization->name;
+		$datajson_model->references 						= null;
+		$datajson_model->spatial 							= null;
+		$datajson_model->systemOfRecords 					= null;
+		$datajson_model->temporal 							= null;
+		$datajson_model->theme 								= null;
+		$datajson_model->title 								= $raw_data->title;
+		$datajson_model->webService							= null;
+	
+		return $datajson_model;
+	}	
 	
 	
 

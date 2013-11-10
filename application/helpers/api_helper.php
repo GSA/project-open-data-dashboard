@@ -1,6 +1,6 @@
 <?php
 
-function curl_from_json($url) {
+function curl_from_json($url, $array=false) {
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -10,7 +10,7 @@ function curl_from_json($url) {
 	curl_close($ch);
 
 
-	return json_decode($data, true);	
+	return json_decode($data, $array);	
 
 }
 

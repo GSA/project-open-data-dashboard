@@ -44,6 +44,29 @@ class Campaign extends CI_Controller {
 	
 	}
 	
+	public function convert() {
+		$this->load->model('campaign_model', 'campaign');			
+				
+		$orgs = $this->input->get('orgs', TRUE);
+
+		$raw_data = $this->campaign->get_datagov_json($orgs);
+		
+		$json_schema = $this->campaign->datajson_schema();
+		$datajson_model = $this->campaign->schema_to_model($json_schema->properties);						
+		
+		
+		$convert = array();
+		foreach ($raw_data as $ckan_data) {
+			$model = clone $datajson_model;						
+			$convert[] = $this->campaign->datajson_crosswalk($ckan_data, $model);
+		}
+				
+	    header('Content-type: application/json');
+	    print json_encode($convert);		
+		exit;
+		
+		
+	}
 
 
 	public function status() {
