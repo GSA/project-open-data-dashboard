@@ -151,16 +151,18 @@ class campaign_model extends CI_Model {
 		
 	}
 	
-	public function get_datagov_json($orgs) {
+	public function get_datagov_json($orgs, $rows = 100, $offset = 0, $raw = false) {
 		
 		$orgs = rawurlencode($orgs);
-		$query = "-harvest_source_id:[''%20TO%20*]%20AND%20-type:harvest%20AND%20organization:(" . $orgs . ")&rows=40";
+		$query = "-harvest_source_id:[''%20TO%20*]%20AND%20-type:harvest%20AND%20organization:(" . $orgs . ")&rows=" . $rows . '&start=' . $offset;
 		$uri = 'http://catalog.data.gov/api/3/action/package_search?q=' . $query;
 		$datagov_json = curl_from_json($uri, false);
 		
-		$results = $datagov_json->result->results;
-		
-		return $results;
+		if($raw) {
+			return $datagov_json;
+		} else {
+			$datagov_json->result->results;
+		}
 		
 	}
 	
@@ -215,6 +217,44 @@ class campaign_model extends CI_Model {
 	
 		return $datajson_model;
 	}	
+	
+	public function csv_crosswalk($raw_data) {
+
+		$organization_name = ($raw_data->organization->name) ? $raw_data->organization->name : '';
+
+		if(!empty($raw_data->tags)) {
+			$tags = '';
+			foreach ($raw_data->tags as $tag) {
+				$tags .= $tag->name . ',';				
+			}			
+			trim($tags, ',');
+		} else {
+			$tags = '';
+		}
+		
+		if(!empty($raw_data->license_url)) unset($raw_data->license_url);
+
+
+		$output = array();
+		foreach ($raw_data as $key => $value) {
+			
+			if(is_object($value) == true || is_array($value) == true) {
+				unset($raw_data->$key);
+			}
+
+		}
+		
+		$raw_data->organization_name = $organization_name;
+		$raw_data->tags = $tags;
+		$raw_data->catalog_url = 'http://catalog.data.gov/dataset/' . $raw_data->id; 
+		
+		$raw_data->author       = (!empty($raw_data->author)) ? $raw_data->author : '' ;
+		$raw_data->author_email = (!empty($raw_data->author_email)) ? $raw_data->author_email : '';
+		
+
+		return $raw_data;
+		
+	}
 	
 	
 

@@ -65,8 +65,79 @@ class Campaign extends CI_Controller {
 	    print json_encode($convert);		
 		exit;
 		
+	}
+
+
+	public function csv() {
+		$this->load->model('campaign_model', 'campaign');			
+				
+		$orgs = $this->input->get('orgs', TRUE);
+
+		$row_total = 100;
+		$row_count = 0;
+		
+		$row_pagesize = 100;
+		$raw_data = array();
+		
+		while($row_count < $row_total) {
+			$result 	= $this->campaign->get_datagov_json($orgs, $row_pagesize, $row_count, true);
+			$row_total = $result->result->count;
+			$row_count = $row_count + $row_pagesize; 
+			
+			$raw_data = array_merge($raw_data, $result->result->results);
+		}
+
+		
+	   //$json_schema = $this->campaign->datajson_schema();
+	   //$datajson_model = $this->campaign->schema_to_model($json_schema->properties);						
+				
+		// Create a stream opening it with read / write mode
+		$stream = fopen('data://text/plain,' . "", 'w+');				
+			
+		$csv_rows = array();	
+		foreach ($raw_data as $ckan_data) {
+			$csv_rows[] = (array) $this->campaign->csv_crosswalk($ckan_data);		    
+		}
+		
+	    //header('Content-type: application/json');
+	    //print json_encode($csv_rows);		
+		//exit;		
+		
+		
+		$headings = array_keys($csv_rows[0]);		
+		
+		// Open the output stream
+		$fh = fopen('php://output', 'w');
+		
+		// Start output buffering (to capture stream contents)
+		ob_start();
+		fputcsv($fh, $headings);
+		
+		// Loop over the * to export
+		if (! empty($csv_rows)) {
+			foreach ($csv_rows as $row) {
+				fputcsv($fh, $row);
+			}
+		}
+		
+		// Get the contents of the output buffer
+		$string = ob_get_clean();
+		$filename = 'csv_' . date('Ymd') .'_' . date('His');
+		// Output CSV-specific headers
+
+		header("Pragma: public");
+		header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Cache-Control: private",false);
+		header('Content-type: text/csv');		
+		header("Content-Disposition: attachment; filename=\"$filename.csv\";" );
+		header("Content-Transfer-Encoding: binary");
+
+		exit($string);		
+
 		
 	}
+
 
 
 	public function status() {
