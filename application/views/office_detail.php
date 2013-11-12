@@ -37,7 +37,7 @@
 		
 		
 		
-		<?php if(!empty($office_campaign->datajson_status->expected_datajson_url)): ?>
+		<?php if(!empty($office->url)): ?>
 		
 		<div class="panel panel-default">
 		<div class="panel-heading">data.json <a type="button" class="btn btn-success btn-xs pull-right" href="?refresh=true">Refresh</a></div>
