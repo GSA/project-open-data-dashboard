@@ -81,10 +81,16 @@ class Campaign extends CI_Controller {
 		
 		while($row_count < $row_total) {
 			$result 	= $this->campaign->get_datagov_json($orgs, $row_pagesize, $row_count, true);
-			$row_total = $result->result->count;
-			$row_count = $row_count + $row_pagesize; 
 			
-			$raw_data = array_merge($raw_data, $result->result->results);
+			if(!empty($result)) {
+				$row_total = $result->result->count;
+				$row_count = $row_count + $row_pagesize; 
+
+				$raw_data = array_merge($raw_data, $result->result->results);				
+			} else {
+				break;
+			}
+			
 		}
 
 		
@@ -153,12 +159,42 @@ class Campaign extends CI_Controller {
 		   	$offices = $query->result();
 		
 			foreach ($offices as $office) {
+				
+	
 				$url = $office->url;
-				$url = substr($url, 0, strpos($url, '.gov') + 4);
+				
+				if(strpos($url, '.org') == true) {
+					$tld = '.org';
+				} elseif (strpos($url, '.edu') == true) {
+					$tld = '.edu';					
+				} elseif (strpos($url, '.net') == true) {
+					$tld = '.net';					
+				} elseif (strpos($url, '.us') == true) {
+					$tld = '.us';					
+				} elseif (strpos($url, '.gov') == true) {
+					$tld = '.gov';					
+				}
+				
+				$url = substr($url, 0, strpos($url, $tld) + 4);
 				$expected_datajson_url = $url . '/data.json';
 
-				$status = curl_header($expected_datajson_url);	
-				$status = $status['info'];	//content_type and http_code	
+				$status = $this->campaign->uri_header($expected_datajson_url);
+				$status['expected_datajson_url'] = $expected_datajson_url;				
+				
+				if($status['http_code'] == 200) {
+					$validation = $this->campaign->validate_datajson($status['url']);
+
+					if(!empty($validation)) {
+						$status['valid_json'] = true;
+						$status['valid_schema'] = $validation->valid;
+						$status['schema_errors'] = $validation->errors;	
+					} else {
+						// data.json was not valid json
+						$status['valid_json'] = false;
+					}
+					
+				}				
+				
 				
 				$update = $this->campaign->datagov_model();
 				$update['datajson_status'] = json_encode($status);

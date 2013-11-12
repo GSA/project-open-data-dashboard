@@ -66,6 +66,29 @@ class campaign_model extends CI_Model {
 		return $datagov_model;
 	}
 	
+	
+	public function uri_header($url, $redirect_count = 0) {
+		
+		$status = curl_header($url);	
+		$status = $status['info'];	//content_type and http_code		
+		
+		if($status['redirect_count'] == 0 && !(empty($redirect_count))) $status['redirect_count'] = 1;		
+		$status['redirect_count'] = $status['redirect_count'] + $redirect_count;
+
+		if(!empty($status['redirect_url'])) {
+			if($status['redirect_count'] == 0 && $redirect_count == 0) $status['redirect_count'] = 1;
+			
+			$status = $this->uri_header($status['redirect_url'], $status['redirect_count']);
+		}		
+		
+		if(!empty($status)) {
+			return $status;
+		} else {
+			return false; 
+		}
+	}
+		
+	
 	public function validate_datajson($uri) {
 		
 		$this->load->helper('jsonschema');					
@@ -157,6 +180,8 @@ class campaign_model extends CI_Model {
 		$query = "-harvest_source_id:[''%20TO%20*]%20AND%20-type:harvest%20AND%20organization:(" . $orgs . ")&rows=" . $rows . '&start=' . $offset;
 		$uri = 'http://catalog.data.gov/api/3/action/package_search?q=' . $query;
 		$datagov_json = curl_from_json($uri, false);
+		
+		if(empty($datagov_json)) return false;
 		
 		if($raw) {
 			return $datagov_json;

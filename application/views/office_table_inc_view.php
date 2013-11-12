@@ -61,7 +61,7 @@ function status_table($title, $rows) {
 			<td><?php if (!empty($office->datajson_status->http_code)): ?><a class="text-<?php echo $http_status_color ?>" href="<?php echo $office->datajson_status->url;?>"><?php echo $office->datajson_status->http_code ?></a><?php endif; ?></td>
 			<td><?php if (!empty($office->datajson_status->content_type)): ?><span class="text-<?php echo $mime_color ?>"><?php echo $office->datajson_status->content_type?></span><?php endif; ?></td>					
 			<td><?php if (isset($office->datajson_status->valid_json)): ?><span class="text-<?php echo ($office->datajson_status->valid_json == true) ? 'success' : 'danger'?>"><?php echo ($office->datajson_status->valid_json == true) ? 'Valid' : 'Invalid'?></span><?php endif; ?></td>					
-			<td><?php if (isset($office->datajson_status->valid_schema)): ?><span class="text-<?php echo ($office->datajson_status->valid_json == true) ? 'success' : 'danger'?>"><?php echo ($office->datajson_status->valid_json == true) ? 'Valid' : 'Invalid' ?></span><?php endif; ?></td>					
+			<td><?php if (isset($office->datajson_status->valid_schema)): ?><span class="text-<?php echo ($office->datajson_status->valid_schema == true) ? 'success' : 'danger'?>"><?php echo ($office->datajson_status->valid_schema == true) ? 'Valid' : 'Invalid' ?></span><?php endif; ?></td>					
 		</tr>
 		<?php endforeach;?>
 	</table>
