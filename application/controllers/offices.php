@@ -109,7 +109,9 @@ class Offices extends CI_Controller {
 					} elseif (strpos($url, '.net') == true) {
 						$tld = '.net';					
 					} elseif (strpos($url, '.com') == true) {
-						$tld = '.com';					
+						$tld = '.com';	
+					} elseif (strpos($url, '.mil') == true) {
+						$tld = '.mil';										
 					} elseif (strpos($url, '.gov') == true) {
 						$tld = '.gov';					
 					}					
