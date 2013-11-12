@@ -40,6 +40,8 @@
 
 $route['default_controller'] = "docs";
 $route['404_override'] = '';
+$route['datagov/(:any)'] = "campaign/$1";
+
 
 
 /* End of file routes.php */
