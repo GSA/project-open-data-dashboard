@@ -180,13 +180,13 @@ class campaign_model extends CI_Model {
 		$query = "-harvest_source_id:[''%20TO%20*]%20AND%20-type:harvest%20AND%20organization:(" . $orgs . ")&rows=" . $rows . '&start=' . $offset;
 		$uri = 'http://catalog.data.gov/api/3/action/package_search?q=' . $query;
 		$datagov_json = curl_from_json($uri, false);
-		
+						
 		if(empty($datagov_json)) return false;
-		
-		if($raw) {
+				
+		if($raw == true) {			
 			return $datagov_json;
-		} else {
-			$datagov_json->result->results;
+		} else {			
+			return $datagov_json->result->results;
 		}
 		
 	}
