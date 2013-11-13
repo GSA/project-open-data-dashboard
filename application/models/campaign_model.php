@@ -238,7 +238,7 @@ class campaign_model extends CI_Model {
 		        }	        		        
 		        
 		        if ($extra->key == 'theme') {
-		            $datajson_model->theme = $extra->value;
+		            $datajson_model->theme[0] = $extra->value;
 		        }		        
 		        
 		        if ($extra->key == 'access-level') {
@@ -246,7 +246,10 @@ class campaign_model extends CI_Model {
 		        }
 		        
 		        if ($extra->key == 'license' OR $extra->key == 'licence') {
-		            $datajson_model->license = $extra->value;
+		            if(!empty(trim($extra->value))) {
+		                $datajson_model->license = $extra->value;
+		            }
+		            
 		        }		        		        
 		        
 		        
