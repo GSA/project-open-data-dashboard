@@ -211,23 +211,71 @@ class campaign_model extends CI_Model {
 		} else {
 			$tags = null;
 		}
+		
+		if(!empty($raw_data->extras)) {
+		    
+		    foreach($raw_data->extras as $extra) {
+		        
+		        if ($extra->key == 'tags') {
+		            $extra_tags = $extra->value;
+		            $datajson_model->keyword = (!empty($extra_tags)) ? array_map('trim',explode(",",$extra_tags)) : null;
+		        }
+		        
+		        if ($extra->key == 'data-dictiionary' OR $extra->key == 'data-dictionary') {
+		            $datajson_model->dataDictionary = $extra->value;
+		        }
+
+		        if ($extra->key == 'person') {
+		            $datajson_model->contactPoint = $extra->value;
+		        }
+		        
+		        if ($extra->key == 'contact-email') {
+		            $datajson_model->mbox = $extra->value;
+		        }	
+		        
+		        if ($extra->key == 'frequency-of-update') {
+		            $datajson_model->accrualPeriodicity = $extra->value;
+		        }	        		        
+		        
+		        if ($extra->key == 'theme') {
+		            $datajson_model->theme = $extra->value;
+		        }		        
+		        
+		        if ($extra->key == 'access-level') {
+		            $datajson_model->accessLevel = $extra->value;
+		        }
+		        
+		        if ($extra->key == 'license') {
+		            $datajson_model->accessLevel = $extra->value;
+		        }		        		        
+		        
+		        
+		        
+		    }
+		    
+		    
+        }	
+        
 	
-		$datajson_model->accessLevel                        = null;
+		
+		
+	
+//		$datajson_model->accessLevel                        = $datajson_model->accessLevel;
 		$datajson_model->accessLevelComment                 = null;
-		$datajson_model->accrualPeriodicity                 = null;
+//		$datajson_model->accrualPeriodicity                 = $datajson_model->accrualPeriodicity;
 		$datajson_model->bureauCode                         = null;
-		$datajson_model->contactPoint                       = $raw_data->maintainer;
-		$datajson_model->dataDictionary                     = null;
+		$datajson_model->contactPoint                       = (!empty($datajson_model->contactPoint)) ? $datajson_model->contactPoint : $raw_data->maintainer;
+//		$datajson_model->dataDictionary                     = $datajson_model->dataDictionary;
 		$datajson_model->dataQuality                        = null;
 		$datajson_model->description                        = $raw_data->notes;
 		$datajson_model->distribution                       = $distributions;
 		$datajson_model->identifier                         = $raw_data->id;
 		$datajson_model->issued                             = null;
-		$datajson_model->keyword                            = $tags;
+		$datajson_model->keyword                            = (!empty($datajson_model->keyword)) ? $datajson_model->keyword : $tags;
 		$datajson_model->landingPage                        = null;
 		$datajson_model->language                           = null;
-		$datajson_model->license                            = null;
-		$datajson_model->mbox                               = $raw_data->maintainer_email;
+//		$datajson_model->license                            = $datajson_model->license;
+		$datajson_model->mbox                               = (!($datajson_model->mbox)) ? $datajson_model->mbox : $raw_data->maintainer_email;
 		$datajson_model->modified                           = $raw_data->metadata_modified;
 		$datajson_model->PrimaryITInvestmentUII             = null;
 		$datajson_model->programCode                        = null;
@@ -236,7 +284,7 @@ class campaign_model extends CI_Model {
 		$datajson_model->spatial                            = null;
 		$datajson_model->systemOfRecords                    = null;
 		$datajson_model->temporal                           = null;
-		$datajson_model->theme                              = null;
+//		$datajson_model->theme                              = $datajson_model->theme;
 		$datajson_model->title                              = $raw_data->title;
 		$datajson_model->webService                         = null;
 	
