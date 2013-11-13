@@ -246,8 +246,10 @@ class campaign_model extends CI_Model {
 		        }
 		        
 		        if ($extra->key == 'license' OR $extra->key == 'licence') {
-		            if(!empty(trim($extra->value))) {
-		                $datajson_model->license = $extra->value;
+		            $license = trim($extra->value);
+		            
+		            if(!empty($license)) {
+		                $datajson_model->license = $license;
 		            }
 		            
 		        }		        		        
