@@ -101,9 +101,12 @@ class Campaign extends CI_Controller {
 			
 		}
 
+        // if we didn't get any data, bail
+		if(empty($raw_data)) {
+		    show_404($orgs, false);
+		    exit;
+		}
 		
-	   //$json_schema = $this->campaign->datajson_schema();
-	   //$datajson_model = $this->campaign->schema_to_model($json_schema->properties);						
 				
 		// Create a stream opening it with read / write mode
 		$stream = fopen('data://text/plain,' . "", 'w+');				
