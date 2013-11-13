@@ -246,7 +246,7 @@ class campaign_model extends CI_Model {
 		        }
 		        
 		        if ($extra->key == 'license') {
-		            $datajson_model->accessLevel = $extra->value;
+		            $datajson_model->license = $extra->value;
 		        }		        		        
 		        
 		        
