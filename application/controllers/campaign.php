@@ -49,8 +49,27 @@ class Campaign extends CI_Controller {
 				
 		$orgs = $this->input->get('orgs', TRUE);
 
-		$raw_data = $this->campaign->get_datagov_json($orgs);
+
+		$row_total = 100;
+		$row_count = 0;
 		
+		$row_pagesize = 100;
+		$raw_data = array();        	        
+		        
+		while($row_count < $row_total) {
+			$result 	= $this->campaign->get_datagov_json($orgs, $row_pagesize, $row_count, true);
+			
+			if(!empty($result)) {
+				$row_total = $result->result->count;
+				$row_count = $row_count + $row_pagesize; 
+
+				$raw_data = array_merge($raw_data, $result->result->results);				
+			} else {
+				break;
+			}
+			
+		}		        
+		        		
 		if(!empty($raw_data)) {
 		
 			$json_schema = $this->campaign->datajson_schema();
