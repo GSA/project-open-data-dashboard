@@ -237,6 +237,10 @@ class campaign_model extends CI_Model {
 		            $datajson_model->accrualPeriodicity = $extra->value;
 		        }	        		        
 		        
+		        if ($extra->key == 'issued') {
+		            $datajson_model->issued = date(DATE_ISO8601, strtotime($extra->value));
+		        }		        
+		        
 		        if ($extra->key == 'theme') {
 		            $datajson_model->theme[0] = $extra->value;
 		        }		        
@@ -275,13 +279,13 @@ class campaign_model extends CI_Model {
 		$datajson_model->description                        = $raw_data->notes;
 		$datajson_model->distribution                       = $distributions;
 		$datajson_model->identifier                         = $raw_data->id;
-		$datajson_model->issued                             = null;
+//		$datajson_model->issued                             = $datajson_model->issued;
 		$datajson_model->keyword                            = (!empty($datajson_model->keyword)) ? $datajson_model->keyword : $tags;
 		$datajson_model->landingPage                        = null;
 		$datajson_model->language                           = null;
 //		$datajson_model->license                            = $datajson_model->license;
 		$datajson_model->mbox                               = (!($datajson_model->mbox)) ? $datajson_model->mbox : $raw_data->maintainer_email;
-		$datajson_model->modified                           = $raw_data->metadata_modified;
+		$datajson_model->modified                           = date(DATE_ISO8601, strtotime($raw_data->metadata_modified));
 		$datajson_model->PrimaryITInvestmentUII             = null;
 		$datajson_model->programCode                        = null;
 		$datajson_model->publisher                          = $raw_data->organization->name;
