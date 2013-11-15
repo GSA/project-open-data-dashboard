@@ -186,6 +186,7 @@
 		
 		
 
+		<?php if(!empty($office_campaign->datapage_status)): ?>
 
     	<div class="panel panel-default">
     	<div class="panel-heading">/data page <a type="button" class="btn btn-success btn-xs pull-right" href="?refresh=true">Refresh</a></div>
@@ -275,6 +276,8 @@
 
         </table>
         </div>
+        <?php endif; ?>	
+                
         <?php endif; ?>	
 
 
