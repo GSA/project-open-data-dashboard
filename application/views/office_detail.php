@@ -118,7 +118,9 @@
 				<span class="text-warning">
 					<?php echo $office_campaign->expected_datajson_status->redirect_count . ' redirects'; ?>
 				</span>				
-				<span style="color:#ccc"> (stops tracking after 6)</span>
+            		<?php if($office_campaign->datapage_status->redirect_count > 5): ?>			
+            		    <span style="color:#ccc"> (stops tracking after 6)</span>
+            		<?php endif; ?>
 				<?php endif; ?>			
 			</td>
 		</tr>		
@@ -151,7 +153,7 @@
 			<span class="text-<?php echo ($office_campaign->datajson_status->valid_json == true) ? 'success' : 'danger'?>">
 			<?php		
 				if($valid_json == true) echo 'Valid';
-				if($valid_json === false || ($office_campaign->expected_datajson_status->http_code == 200 && $valid_json != true)) echo 'Invalid';			
+				if($valid_json === false || ($office_campaign->expected_datajson_status->http_code == 200 && $valid_json != true)) echo 'Invalid <span><a href="http://jsonlint.com/">Check a JSON Validator</a></span>';			
 			?>
 			</td>
 		</tr>		
@@ -249,8 +251,10 @@
         		<?php if(!empty($office_campaign->datapage_status->redirect_count)): ?>
         		<span class="text-warning">
         			<?php echo $office_campaign->datapage_status->redirect_count . ' redirects'; ?>
-        		</span>				
-        		<span style="color:#ccc"> (stops tracking after 6)</span>
+        		</span>	
+            		<?php if($office_campaign->datapage_status->redirect_count > 5): ?>			
+            		    <span style="color:#ccc"> (stops tracking after 6)</span>
+            		<?php endif; ?>			        		
         		<?php endif; ?>			
         	</td>
         </tr>		
