@@ -97,13 +97,20 @@ class campaign_model extends CI_Model {
 		$this->load->helper('jsonschema');					
 
 		$schema = json_decode(file_get_contents(realpath('./schema/catalog.json')));		
-		$data = json_decode(file_get_contents($uri));
-		
-		if(!empty($data)) {
-			return Jsv4::validate($data, $schema);
+
+		if($data = @file_get_contents($uri)) {
+    		$data = json_decode($data);
+
+    		if(empty($data)) {
+    			return Jsv4::validate($data, $schema);
+    		} else {
+    			return false;
+    		}		    
 		} else {
-			return false;
+		    return false;
 		}
+		
+
 		
 	}
 
