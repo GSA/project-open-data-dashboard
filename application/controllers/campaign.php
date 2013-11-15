@@ -152,7 +152,9 @@ class Campaign extends CI_Controller {
 						
 		$csv_rows = array();	
 		foreach ($raw_data as $ckan_data) {
-		    
+		    		    
+            $special_extras = $this->special_extras($ckan_data);
+
 			$model      = clone $datajson_model;								    		    
 		    $csv_row    = $this->campaign->datajson_crosswalk($ckan_data, $model);
     		foreach ($csv_row as $key => $value) {
@@ -168,14 +170,17 @@ class Campaign extends CI_Controller {
 
     		}	
     		
-    		$csv_row->catalog_url = 'http://catalog.data.gov/dataset/' . $csv_row->identifier; 
-
+    		$csv_row->catalog_url       = 'http://catalog.data.gov/dataset/' . $csv_row->identifier; 
+            $csv_row->formats           = $special_extras->formats;
+            $csv_row->groups            = $special_extras->groups;
+            $csv_row->group_categories  = $special_extras->group_categories;            
+            
 			$csv_rows[] = (array) $csv_row;		    
 		}
 		
-	    //header('Content-type: application/json');
-	    //print json_encode($csv_rows);		
-		//exit;		
+	   //header('Content-type: application/json');
+	   //print json_encode($csv_rows);		
+	   //exit;		
 		
 		
 		$headings = array_keys($csv_rows[0]);		
@@ -195,7 +200,7 @@ class Campaign extends CI_Controller {
 		fputcsv($fh, $headings);
 		
 		// Loop over the * to export
-		if (! empty($csv_rows)) {
+		if (!empty($csv_rows)) {
 			foreach ($csv_rows as $row) {
 				fputcsv($fh, $row);
 			}
@@ -225,6 +230,74 @@ class Campaign extends CI_Controller {
 		
 	}
 
+
+    private function special_extras($ckan_data) {
+        
+        $special_extras = new stdClass();
+        
+	    // communities
+	    $groups = array();		        
+	    if(!empty($ckan_data->groups)) {
+	        foreach ($ckan_data->groups as $group) {
+	            if(!empty($group->title)) {
+	                $groups[] = $group->title;
+	                $groups_id[] = $group->id;
+	            }		            
+	        }		        
+	    }
+	    $special_extras->groups = (!empty($groups)) ? implode(',', $groups) : null;		    
+
+	    // community categories
+	    $group_categories = array();		        
+	    if(!empty($groups_id)) {
+	        foreach ($groups_id as $group_id) {
+	            $group_category_id = '__category_tag_' . $group_id;
+	            
+	            if(!empty($ckan_data->extras)) {
+	                foreach($ckan_data->extras as $extra) {
+
+	                    if ($extra->key == $group_category_id) {
+	                        $categories = json_decode($extra->value);
+	                        if(is_array($categories)) {
+	                            foreach($categories as $category_name) {
+	                                $group_categories[$category_name] = true;
+	                            }
+	                        }
+	                        
+	                    }
+	                }
+	                
+	            }		            
+	        }		        
+	    }
+	    if(!empty($group_categories)) {
+	        $group_categories = array_keys($group_categories);
+	        $special_extras->group_categories = implode(',', $group_categories);
+	    } else {
+	        $special_extras->group_categories = null;	        
+	    }	    
+
+
+	    // formats
+        $formats = array();		        		    
+	    if(!empty($ckan_data->resources)) {
+	        foreach ($ckan_data->resources as $resource) {
+	            if(!empty($resource->format)) {		            
+	                $formats[] = (string) $resource->format;
+                }
+	        }		        
+	    }
+	    $special_extras->formats = (!empty($formats)) ? implode(',', $formats) : null;        
+        
+        
+        return $special_extras;
+    }
+    
+    
+    
+    
+    
+    
 
 
 	public function status() {
