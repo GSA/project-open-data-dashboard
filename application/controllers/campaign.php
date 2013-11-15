@@ -354,7 +354,7 @@ class Campaign extends CI_Controller {
 				
 				$this->campaign->update_status($update);
 								
-        		if(!empty($id)) {
+        		if(!empty($id) && $this->environment != 'terminal') {			
         		    $this->load->helper('url');
                     redirect('/offices/detail/' . $id, 'location');
                 }
