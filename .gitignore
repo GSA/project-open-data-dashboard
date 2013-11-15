@@ -3,7 +3,7 @@
 */logs/!index.html
 */cache/*
 */cache/!index.html
-
+csv/*
 application/config/config.php
 
 .htaccess
