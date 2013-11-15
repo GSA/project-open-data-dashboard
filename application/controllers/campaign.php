@@ -300,13 +300,18 @@ class Campaign extends CI_Controller {
     
 
 
-	public function status() {
+	public function status($id = null) {
 		
 		
 		$this->load->model('campaign_model', 'campaign');			
 		
 		
-		$this->db->select('url, id');		
+		$this->db->select('url, id');
+		
+		if(!empty($id)) {
+    		$this->db->where('id', $id);					    
+		}
+				
 		$query = $this->db->get('offices');
 		
 		if ($query->num_rows() > 0) {
@@ -349,7 +354,10 @@ class Campaign extends CI_Controller {
 				
 				$this->campaign->update_status($update);
 								
-				
+        		if(!empty($id)) {
+        		    $this->load->helper('url');
+                    redirect('/offices/detail/' . $id, 'location');
+                }
 				
 			}
 		

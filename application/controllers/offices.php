@@ -97,56 +97,7 @@ class Offices extends CI_Controller {
 		
 		
 		
-			if(empty($view_data['office_campaign']->datajson_status) || $this->input->get('refresh', TRUE) == 'true') {
-				
-				 $url = $view_data['office']->url;
-				
-				if(!empty($url)) {
-					if(strpos($url, '.org') == true) {
-						$tld = '.org';
-					} elseif (strpos($url, '.edu') == true) {
-						$tld = '.edu';					
-					} elseif (strpos($url, '.net') == true) {
-						$tld = '.net';					
-					} elseif (strpos($url, '.com') == true) {
-						$tld = '.com';	
-					} elseif (strpos($url, '.mil') == true) {
-						$tld = '.mil';										
-					} elseif (strpos($url, '.gov') == true) {
-						$tld = '.gov';					
-					}					
-					
-					$url = substr($url, 0, strpos($url, $tld) + 4);				
-					$view_data['office_campaign']->expected_datajson_url = $url . '/data.json';				
-						
-					$status = $this->campaign->uri_header($view_data['office_campaign']->expected_datajson_url);
-					$status['expected_datajson_url'] = $view_data['office_campaign']->expected_datajson_url;					
-					
-					if($status['http_code'] == 200) {
-						$validation = $this->campaign->validate_datajson($status['url']);
-
-						if(!empty($validation)) {
-							$status['valid_json'] = true;
-							$status['valid_schema'] = $validation->valid;
-							$status['schema_errors'] = $validation->errors;	
-						} else {
-							// data.json was not valid json
-							$status['valid_json'] = false;
-						}
-
-					}					
-				}
-
-				// cache this status in the db
-				$update = $this->campaign->datagov_model();
-				$update['office_id'] = $view_data['office']->id;					
-				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null;
-				$this->campaign->update_status($update);
-				
-				
-				if(!empty($status)) $view_data['office_campaign']->expected_datajson_status =  (object) $status;				
-				
-			} else {
+			if(!empty($view_data['office_campaign']->datajson_status)) {
 				$view_data['office_campaign']->expected_datajson_url = $view_data['office_campaign']->datajson_status['url'];
 				$view_data['office_campaign']->expected_datajson_status = (object) json_decode($view_data['office_campaign']->datajson_status);
 			}
