@@ -95,15 +95,27 @@ class Campaign extends CI_Controller {
 	}
 
 
-	public function csv() {
+	public function csv($orgs = null) {
 		$this->load->model('campaign_model', 'campaign');			
-				
-		$orgs = $this->input->get('orgs', TRUE);
+		
+		if($orgs == 'all') {
+		    $orgs = '*';
+		}
+		
+		if(empty($orgs)) {
+		    $orgs = $this->input->get('orgs', TRUE);		    
+		}		
+
+        // if we didn't get any requests, bail
+        if(empty($orgs)) {
+    		show_404($orgs, false);
+    		exit;
+        }
 
 		$row_total = 100;
 		$row_count = 0;
 		
-		$row_pagesize = 100;
+		$row_pagesize = 500;
 		$raw_data = array();
 		
 		while($row_count < $row_total) {
@@ -112,6 +124,10 @@ class Campaign extends CI_Controller {
 			if(!empty($result)) {
 				$row_total = $result->result->count;
 				$row_count = $row_count + $row_pagesize; 
+
+                if ($this->environment == 'terminal') {
+                    echo 'Exporting ' . $row_count . ' of ' . $row_total .  PHP_EOL;					
+                }
 
 				$raw_data = array_merge($raw_data, $result->result->results);				
 			} else {
@@ -130,9 +146,31 @@ class Campaign extends CI_Controller {
 		// Create a stream opening it with read / write mode
 		$stream = fopen('data://text/plain,' . "", 'w+');				
 			
+		// use data.json model
+		$json_schema = $this->campaign->datajson_schema();
+		$datajson_model = $this->campaign->schema_to_model($json_schema->properties);			
+						
 		$csv_rows = array();	
 		foreach ($raw_data as $ckan_data) {
-			$csv_rows[] = (array) $this->campaign->csv_crosswalk($ckan_data);		    
+		    
+			$model      = clone $datajson_model;								    		    
+		    $csv_row    = $this->campaign->datajson_crosswalk($ckan_data, $model);
+    		foreach ($csv_row as $key => $value) {
+
+    			if(empty($value) OR is_object($value) == true OR (is_array($value) == true && !empty($value[0]) && is_object($value[0]) == true)) {
+    			    $csv_row->$key = null;
+    			}
+    			    			        			
+    			if(is_array($value) == true && !empty($value[0]) && is_object($value[0]) == false) {
+    			    $csv_row->$key = implode(',', $value);
+    			} 
+    			
+
+    		}	
+    		
+    		$csv_row->catalog_url = 'http://catalog.data.gov/dataset/' . $csv_row->identifier; 
+
+			$csv_rows[] = (array) $csv_row;		    
 		}
 		
 	    //header('Content-type: application/json');
@@ -143,7 +181,14 @@ class Campaign extends CI_Controller {
 		$headings = array_keys($csv_rows[0]);		
 		
 		// Open the output stream
-		$fh = fopen('php://output', 'w');
+        if ($this->environment == 'terminal') {
+            $filepath = realpath('./csv/output.csv');
+            $fh = fopen($filepath, 'w');
+            echo 'Attempting to save csv to ' . $filepath .  PHP_EOL;					            
+        } else {
+            $fh = fopen('php://output', 'w');
+        }		
+		
 		
 		// Start output buffering (to capture stream contents)
 		ob_start();
@@ -156,20 +201,26 @@ class Campaign extends CI_Controller {
 			}
 		}
 		
-		// Get the contents of the output buffer
-		$string = ob_get_clean();
-		$filename = 'csv_' . date('Ymd') .'_' . date('His');
-		// Output CSV-specific headers
+        if ($this->environment !== 'terminal') {
+    		// Get the contents of the output buffer
+    		$string = ob_get_clean();
+    		$filename = 'csv_' . date('Ymd') .'_' . date('His');
+    		// Output CSV-specific headers
 
-		header("Pragma: public");
-		header("Expires: 0");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Cache-Control: private",false);
-		header('Content-type: text/csv');		
-		header("Content-Disposition: attachment; filename=\"$filename.csv\";" );
-		header("Content-Transfer-Encoding: binary");
+    		header("Pragma: public");
+    		header("Expires: 0");
+    		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    		header("Cache-Control: private",false);
+    		header('Content-type: text/csv');		
+    		header("Content-Disposition: attachment; filename=\"$filename.csv\";" );
+    		header("Content-Transfer-Encoding: binary");
 
-		exit($string);		
+    		exit($string);        
+        } else {
+            echo 'Done' . PHP_EOL;					            
+            exit;
+        }
+		
 
 		
 	}
@@ -190,54 +241,38 @@ class Campaign extends CI_Controller {
 		
 			foreach ($offices as $office) {
 				
+				
 	
-				$url = $office->url;
-				
-				if(strpos($url, '.org') == true) {
-					$tld = '.org';
-				} elseif (strpos($url, '.edu') == true) {
-					$tld = '.edu';					
-				} elseif (strpos($url, '.net') == true) {
-					$tld = '.net';					
-				} elseif (strpos($url, '.com') == true) {
-					$tld = '.com';
-				} elseif (strpos($url, '.mil') == true) {
-					$tld = '.mil';												
-				} elseif (strpos($url, '.gov') == true) {
-					$tld = '.gov';					
-				}
-				
-				$url = substr($url, 0, strpos($url, $tld) + 4);
+				$url =  parse_url($office->url);
+				$url = $url['scheme'] . '://' . $url['host'];
+			
 				$expected_datajson_url = $url . '/data.json';
 
-				$status = $this->campaign->uri_header($expected_datajson_url);
-				$status['expected_datajson_url'] = $expected_datajson_url;				
-				
-				if($status['http_code'] == 200) {
-					$validation = $this->campaign->validate_datajson($status['url']);
+				if ($this->environment == 'terminal') {
+					echo 'Attempting to request ' . $expected_datajson_url . PHP_EOL;
+				}
 
-					if(!empty($validation)) {
-						$status['valid_json'] = true;
-						$status['valid_schema'] = $validation->valid;
-						$status['schema_errors'] = $validation->errors;	
-					} else {
-						// data.json was not valid json
-						$status['valid_json'] = false;
-					}
-					
+                $status = $this->uri_status($expected_datajson_url, true);
+				
+				$page_status_url = $url . '/data';
+				
+				if ($this->environment == 'terminal') {
+					echo 'Attempting to request ' . $page_status_url . PHP_EOL;
 				}				
-				
-				
+
+                $page_status = $this->uri_status($page_status_url, false);                
+								
 				$update = $this->campaign->datagov_model();
-				$update['datajson_status'] = json_encode($status);
+				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null;
+				$update['datapage_status'] = (!empty($page_status)) ? json_encode($page_status) : null;
 				$update['office_id'] = $office->id;
 				
 				if ($this->environment == 'terminal') {
-					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL;
+					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
 				}				
 				
 				// Instead of hacking together an upsert or preloading existing status data, 
-				// let's just be really inefficient and do a lookup for each record
+				// let's just be really inefficient and do a lookup for each record			
 				
 				$this->campaign->update_status($update);
 								
@@ -249,6 +284,32 @@ class Campaign extends CI_Controller {
 		
 		}		
         
+	}
+	
+	private function uri_status($uri, $schema_validate = true) {
+	    
+		$status = $this->campaign->uri_header($uri);
+		$status['expected_url'] = $uri;				
+		
+		if($status['http_code'] == 200) {
+		    
+		    if($schema_validate) {
+    			$validation = $this->campaign->validate_datajson($status['url']);
+
+    			if(!empty($validation)) {
+    				$status['valid_json'] = true;
+    				$status['valid_schema'] = $validation->valid;
+    				$status['schema_errors'] = $validation->errors;	
+    			} else {
+    				// data.json was not valid json
+    				$status['valid_json'] = false;
+    			}		        
+		    }
+
+			
+		}	
+		
+		return $status;	    
 	}
 	
 

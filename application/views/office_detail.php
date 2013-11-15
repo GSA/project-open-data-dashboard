@@ -32,6 +32,10 @@
 			if(!empty($office_campaign->datajson_status)) {
 				$office_campaign->datajson_status = json_decode($office_campaign->datajson_status);			
 			}
+			
+			if(!empty($office_campaign->datapage_status)) {
+				$office_campaign->datapage_status = json_decode($office_campaign->datapage_status);			
+			}			
 		?>
 		
 		
@@ -47,8 +51,9 @@
 		<tr>
 			<th>Expected Data.json URL</th>
 			<td>
-				<?php if(!empty($office_campaign->datajson_status->expected_datajson_url)): ?>
-					<a href="<?php echo $office_campaign->datajson_status->expected_datajson_url ?>"><?php echo $office_campaign->datajson_status->expected_datajson_url ?></a>
+				<?php if(!empty($office_campaign->datajson_status->expected_url)): ?>
+					<a href="<?php echo $office_campaign->datajson_status->expected_url ?>"><?php echo $office_campaign->datajson_status->expected_url ?></a>
+			        <span style="color:#ccc"> (From <a style="color:#ccc; text-decoration:underline" href="http://www.usa.gov/About/developer-resources/federal-agency-directory/">USA.gov Directory</a>)</span>			
 				<?php endif; ?>
 				
 				<?php 
@@ -113,6 +118,7 @@
 				<span class="text-warning">
 					<?php echo $office_campaign->expected_datajson_status->redirect_count . ' redirects'; ?>
 				</span>				
+				<span style="color:#ccc"> (stops tracking after 6)</span>
 				<?php endif; ?>			
 			</td>
 		</tr>		
@@ -177,7 +183,111 @@
 		
 		</table>
 		</div>
-		<?php endif; ?>
+		
+		
+
+
+    	<div class="panel panel-default">
+    	<div class="panel-heading">/data page <a type="button" class="btn btn-success btn-xs pull-right" href="?refresh=true">Refresh</a></div>
+
+    	<table class="table table-striped table-hover">		
+
+    	<tr>
+    		<th>Expected /data URL</th>
+    		<td>
+    			<?php if(!empty($office_campaign->datapage_status->expected_url)): ?>
+    				<a href="<?php echo $office_campaign->datapage_status->expected_url ?>"><?php echo $office_campaign->datapage_status->expected_url ?></a>
+    		        <span style="color:#ccc"> (From <a style="color:#ccc; text-decoration:underline" href="http://www.usa.gov/About/developer-resources/federal-agency-directory/">USA.gov Directory</a>)</span>			
+    			<?php endif; ?>
+
+    			<?php 
+
+    				$http_code = (!empty($office_campaign->datapage_status->http_code)) ? $office_campaign->datapage_status->http_code : 0;
+
+    				switch ($http_code) {
+    				    case 404:
+    				        $status_color = 'danger';
+    				        break;
+    				    case 200:
+    				        $status_color = 'success';
+    				        break;
+    				    case 0:
+    				        $status_color = '';
+    				        break;					
+    				    default:
+    						$status_color = 'warning';
+    				}	
+
+    				if(!empty($office_campaign->datapage_status->content_type)) {
+    					if (strpos($office_campaign->datapage_status->content_type, 'application/json') !== false) {
+    						$mime_color = 'success';
+    					} else {
+    						$mime_color = 'danger';
+    					}						
+    				} else {
+    						$mime_color = 'danger';
+    				}
+
+    			?>
+
+    		</td>
+    	</tr>
+
+
+
+        <tr>
+        	<th>Resolved /data URL</th>
+        	<td>
+        		<a href="<?php echo $office_campaign->datapage_status->url ?>"><?php echo $office_campaign->datapage_status->url ?></a>
+        	</td>
+        </tr>	
+
+        <tr>
+        	<th>Redirects</th>
+        	<td>
+        		<?php if(!empty($office_campaign->datapage_status->redirect_count)): ?>
+        		<span class="text-warning">
+        			<?php echo $office_campaign->datapage_status->redirect_count . ' redirects'; ?>
+        		</span>				
+        		<span style="color:#ccc"> (stops tracking after 6)</span>
+        		<?php endif; ?>			
+        	</td>
+        </tr>		
+
+
+        <tr class="<?php echo $status_color;?>">
+        	<th>HTTP Status</th>
+        	<td>
+        		<span class="text-<?php echo $status_color;?>">
+        			<?php echo $office_campaign->datapage_status->http_code?>
+        		</span>			
+        	</td>
+        </tr>				
+
+        <tr class="<?php echo $mime_color;?>">
+        	<th>Content Type</th>
+        	<td>
+        		<span class="text-<?php echo $mime_color;?>">
+        			<?php echo $office_campaign->datapage_status->content_type?>
+        		</span>			
+        	</td>
+        </tr>		
+
+        </table>
+        </div>
+        <?php endif; ?>	
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
 		
 		<div class="panel panel-default">
 		<div class="panel-heading">Project Open Data</div>

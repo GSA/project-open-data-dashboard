@@ -19,6 +19,7 @@ function curl_header($url) {
 	$info = array();
 	
 	$curl = curl_init();
+    curl_setopt($curl, CURLOPT_TIMEOUT, 5);    	
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_FILETIME, true);
     curl_setopt($curl, CURLOPT_NOBODY, true);

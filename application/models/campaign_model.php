@@ -55,7 +55,9 @@ class campaign_model extends CI_Model {
 			'contact_email' => null,            
 			'datajson_url' => null,   
 			'datajson_status' => null,   			          
-			'datajson_notes' => null,           
+			'datajson_notes' => null,  
+			'datapage_url' => null,  
+			'datapage_status' => null,  						         
 			'feedback_mechanism' => null,       
 			'catalog_view' => null,             
 			'community_plan' => null,           
@@ -78,6 +80,7 @@ class campaign_model extends CI_Model {
 		if(!empty($status['redirect_url'])) {
 			if($status['redirect_count'] == 0 && $redirect_count == 0) $status['redirect_count'] = 1;
 			
+			if ($status['redirect_count'] > 5) return $status;
 			$status = $this->uri_header($status['redirect_url'], $status['redirect_count']);
 		}		
 		
@@ -115,7 +118,7 @@ class campaign_model extends CI_Model {
 			// update
 			
 			if ($this->environment == 'terminal') {
-				echo 'Updating ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL;
+				echo 'Updating ' . $update['office_id'] . PHP_EOL . PHP_EOL;
 			}	
 			
 			$current_data = $query->row_array();				
@@ -130,7 +133,7 @@ class campaign_model extends CI_Model {
 			// insert
 			
 			if ($this->environment == 'terminal') {
-				echo 'Adding ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL;
+				echo 'Adding ' . $update['office_id'] . PHP_EOL . PHP_EOL;
 			}					
 			
 			$this->db->insert('datagov_campaign', $update);					
@@ -288,7 +291,7 @@ class campaign_model extends CI_Model {
 		$datajson_model->modified                           = date(DATE_ISO8601, strtotime($raw_data->metadata_modified));
 		$datajson_model->PrimaryITInvestmentUII             = null;
 		$datajson_model->programCode                        = null;
-		$datajson_model->publisher                          = $raw_data->organization->name;
+		$datajson_model->publisher                          = $raw_data->organization->title;
 		$datajson_model->references                         = null;
 		$datajson_model->spatial                            = null;
 		$datajson_model->systemOfRecords                    = null;
@@ -300,43 +303,6 @@ class campaign_model extends CI_Model {
 		return $datajson_model;
 	}	
 	
-	public function csv_crosswalk($raw_data) {
-
-		$organization_name = ($raw_data->organization->name) ? $raw_data->organization->name : '';
-
-		if(!empty($raw_data->tags)) {
-			$tags = '';
-			foreach ($raw_data->tags as $tag) {
-				$tags .= $tag->name . ',';				
-			}			
-			trim($tags, ',');
-		} else {
-			$tags = '';
-		}
-		
-		if(!empty($raw_data->license_url)) unset($raw_data->license_url);
-
-
-		$output = array();
-		foreach ($raw_data as $key => $value) {
-			
-			if(is_object($value) == true || is_array($value) == true) {
-				unset($raw_data->$key);
-			}
-
-		}
-		
-		$raw_data->organization_name = $organization_name;
-		$raw_data->tags = $tags;
-		$raw_data->catalog_url = 'http://catalog.data.gov/dataset/' . $raw_data->id; 
-		
-		$raw_data->author       = (!empty($raw_data->author)) ? $raw_data->author : '' ;
-		$raw_data->author_email = (!empty($raw_data->author_email)) ? $raw_data->author_email : '';
-		
-
-		return $raw_data;
-		
-	}
 	
 	
 
