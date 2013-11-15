@@ -118,7 +118,7 @@
 				<span class="text-warning">
 					<?php echo $office_campaign->expected_datajson_status->redirect_count . ' redirects'; ?>
 				</span>				
-            		<?php if($office_campaign->datapage_status->redirect_count > 5): ?>			
+            		<?php if($office_campaign->expected_datajson_status->redirect_count > 5): ?>			
             		    <span style="color:#ccc"> (stops tracking after 6)</span>
             		<?php endif; ?>
 				<?php endif; ?>			
