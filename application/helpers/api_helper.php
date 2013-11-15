@@ -18,15 +18,17 @@ function curl_from_json($url, $array=false) {
 function curl_header($url) {
 	$info = array();
 	
-	$curl = curl_init();
+	$ch = curl_init();
 //	curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_FILETIME, true);
-    curl_setopt($curl, CURLOPT_NOBODY, true);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    $info['header'] = curl_exec($curl);
-    $info['info'] = curl_getinfo($curl);
-    curl_close($curl);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);    
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_FILETIME, true);
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $info['header'] = curl_exec($ch);
+    $info['info'] = curl_getinfo($ch);
+    curl_close($ch);
 
 	return $info;
 }
