@@ -115,7 +115,7 @@
 			<th>Redirects</th>
 			<td>
 				<?php if(!empty($office_campaign->expected_datajson_status->redirect_count)): ?>
-				<span class="text-warning">
+				<span class="text-<?php echo ($office_campaign->expected_datajson_status->redirect_count > 3) ? 'danger' : 'warning'?>">
 					<?php echo $office_campaign->expected_datajson_status->redirect_count . ' redirects'; ?>
 				</span>				
             		<?php if($office_campaign->expected_datajson_status->redirect_count > 5): ?>			
@@ -222,7 +222,7 @@
     				}	
 
     				if(!empty($office_campaign->datapage_status->content_type)) {
-    					if (strpos($office_campaign->datapage_status->content_type, 'application/json') !== false) {
+    					if (strpos($office_campaign->datapage_status->content_type, 'text/html') !== false) {
     						$mime_color = 'success';
     					} else {
     						$mime_color = 'danger';
@@ -249,7 +249,7 @@
         	<th>Redirects</th>
         	<td>
         		<?php if(!empty($office_campaign->datapage_status->redirect_count)): ?>
-        		<span class="text-warning">
+        		<span class="text-<?php echo ($office_campaign->datapage_status->redirect_count > 5) ? 'danger' : 'warning'?>">
         			<?php echo $office_campaign->datapage_status->redirect_count . ' redirects'; ?>
         		</span>	
             		<?php if($office_campaign->datapage_status->redirect_count > 5): ?>			
