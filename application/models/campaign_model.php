@@ -278,7 +278,7 @@ class campaign_model extends CI_Model {
 	
 		
 		
-	
+	    $datajson_model->accessURL                          = null; 
 //		$datajson_model->accessLevel                        = $datajson_model->accessLevel;
 		$datajson_model->accessLevelComment                 = null;
 //		$datajson_model->accrualPeriodicity                 = $datajson_model->accrualPeriodicity;
@@ -288,6 +288,7 @@ class campaign_model extends CI_Model {
 		$datajson_model->dataQuality                        = null;
 		$datajson_model->description                        = $raw_data->notes;
 		$datajson_model->distribution                       = $distributions;
+	    $datajson_model->format                             = null;		
 		$datajson_model->identifier                         = $raw_data->id;
 //		$datajson_model->issued                             = $datajson_model->issued;
 		$datajson_model->keyword                            = (!empty($datajson_model->keyword)) ? $datajson_model->keyword : $tags;

@@ -157,6 +157,14 @@ class Campaign extends CI_Controller {
 
 			$model      = clone $datajson_model;								    		    
 		    $csv_row    = $this->campaign->datajson_crosswalk($ckan_data, $model);
+
+            $csv_row->accessURL  = array();
+            $csv_row->format     = array();            
+            foreach ($csv_row->distribution as $distribution) {
+                $csv_row->accessURL[]   = $distribution->accessURL;
+                $csv_row->format[]      = $distribution->format;                
+            }
+		    
     		foreach ($csv_row as $key => $value) {
 
     			if(empty($value) OR is_object($value) == true OR (is_array($value) == true && !empty($value[0]) && is_object($value[0]) == true)) {
@@ -170,10 +178,9 @@ class Campaign extends CI_Controller {
 
     		}	
     		
-    		$csv_row->catalog_url       = 'http://catalog.data.gov/dataset/' . $csv_row->identifier; 
-            $csv_row->formats           = $special_extras->formats;
-            $csv_row->groups            = $special_extras->groups;
-            $csv_row->group_categories  = $special_extras->group_categories;            
+    		$csv_row->_extra_catalog_url                = 'http://catalog.data.gov/dataset/' . $csv_row->identifier; 
+            $csv_row->_extra_communities                = $special_extras->groups;
+            $csv_row->_extra_communities_categories     = $special_extras->group_categories;            
             
 			$csv_rows[] = (array) $csv_row;		    
 		}
