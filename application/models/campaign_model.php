@@ -100,8 +100,8 @@ class campaign_model extends CI_Model {
 
 		if($data = @file_get_contents($uri)) {
     		$data = json_decode($data);
-
-    		if(empty($data)) {
+        
+    		if(!empty($data)) {
     			return Jsv4::validate($data, $schema);
     		} else {
     			return false;
