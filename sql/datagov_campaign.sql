@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2013 at 09:34 AM
+-- Generation Time: Nov 22, 2013 at 02:46 PM
 -- Server version: 5.5.28
 -- PHP Version: 5.3.26
 
@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `datagov_campaign` (
   `contact_email` text,
   `datajson_url` text,
   `datajson_status` text,
+  `datajson_errors` text,
   `datajson_notes` text,
   `datapage_url` text,
   `datapage_status` text,
