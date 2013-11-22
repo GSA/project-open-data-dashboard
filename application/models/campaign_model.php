@@ -189,7 +189,7 @@ class campaign_model extends CI_Model {
 		if ($geospatial == 'both') {
 		    $geo_harvest = '';
 		} else {
-		    $geo_harvest = ($geospatial) ? 'metadata_type:geospatial%20AND%20' : "-harvest_source_id:[''%20TO%20*]%20AND%20";
+		    $geo_harvest = ($geospatial == 'true') ? 'metadata_type:geospatial%20AND%20' : "-harvest_source_id:[''%20TO%20*]%20AND%20";
 		}
 
 		
