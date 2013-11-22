@@ -135,7 +135,8 @@ class campaign_model extends CI_Model {
                 if ($validator->isValid()) {
                     $results = array('valid' => true, 'errors' => null);
                 } else {                
-                    $results = array('valid' => false, 'errors' => $validator->getErrors());
+                    $errors =  array_slice($validator->getErrors(), 0, 50);                                
+                    $results = array('valid' => false, 'errors' => $errors);                    
                 }    		
             
           	   //header('Content-type: application/json');
@@ -358,38 +359,6 @@ class campaign_model extends CI_Model {
 	
 		return $datajson_model;
 	}	
-	
-	public function retry() {
-	    
-        
-        // Get the schema and data as objects
-        $retriever = new JsonSchema\Uri\UriRetriever;        
-            
-        $schema = $retriever->retrieve('file://' . realpath('./schema/catalog.json'));
-        $data = json_decode(file_get_contents(realpath('./schema/data.json')));
-
-        // If you use $ref or if you are unsure, resolve those references here
-        // This modifies the $schema object
-        $refResolver = new JsonSchema\RefResolver($retriever);
-        $refResolver->resolve($schema, 'file://' . __DIR__);
-
-        // Validate
-        $validator = new JsonSchema\Validator();
-        $validator->check($data, $schema);
-
-        if ($validator->isValid()) {
-            echo "The supplied JSON validates against the schema.\n";
-        } else {
-            echo "JSON does not validate. Violations:\n";
-            foreach ($validator->getErrors() as $error) {
-                echo "<br>"; 
-                echo sprintf("[%s] %s\n", $error['property'], $error['message']);
-            }
-        }	    
-	    
-	    
-	}
-	
 	
 
 }

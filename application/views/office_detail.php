@@ -182,15 +182,17 @@
 			<?php
 			    $datajson_errors = json_decode($office_campaign->datajson_errors);
 			    
-			    echo 'There are ' . count($datajson_errors) . ' schema validation errors (only showing first 50): <br><br>';
+			    if(count($datajson_errors) < 50) {
+			        echo 'There are ' . count($datajson_errors) . ' validation errors: <br><br>';
+			    } else {
+			        echo 'Only showing first 50 validation errors: <br><br>';			        
+			    }
 			    
 			    $count = 1;
 			    foreach ($datajson_errors as $error) {
-
                     echo sprintf("[%s] %s\n", $error->property, $error->message);
                     echo "<br>";
                     $count++;
-                    if($count > 50) break;			        
 			    }
     			    
 			?>
