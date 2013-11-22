@@ -390,7 +390,7 @@ class Campaign extends CI_Controller {
 		    
 		    if($schema_validate) {
     			$validation = $this->campaign->validate_datajson($status['url']);
-                var_dump($validation); exit;
+                //var_dump($validation); exit;
     			if(!empty($validation)) {
     				$status['valid_json'] = true;
     				$status['valid_schema'] = $validation->valid;
