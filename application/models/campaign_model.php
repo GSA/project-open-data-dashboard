@@ -184,10 +184,17 @@ class campaign_model extends CI_Model {
 		
 	}
 	
-	public function get_datagov_json($orgs, $rows = 100, $offset = 0, $raw = false) {
+	public function get_datagov_json($orgs, $geospatial = false, $rows = 100, $offset = 0, $raw = false) {
+		
+		if ($geospatial == 'both') {
+		    $geo_harvest = '';
+		} else {
+		    $geo_harvest = ($geospatial) ? 'metadata_type:geospatial%20AND%20' : "-harvest_source_id:[''%20TO%20*]%20AND%20";
+		}
+
 		
 		$orgs = rawurlencode($orgs);
-		$query = "-harvest_source_id:[''%20TO%20*]%20AND%20-type:harvest%20AND%20organization:(" . $orgs . ")&rows=" . $rows . '&start=' . $offset;
+		$query = $geo_harvest . "-type:harvest%20AND%20organization:(" . $orgs . ")&rows=" . $rows . '&start=' . $offset;
 		$uri = 'http://catalog.data.gov/api/3/action/package_search?q=' . $query;
 		$datagov_json = curl_from_json($uri, false);
 						

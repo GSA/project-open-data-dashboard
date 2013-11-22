@@ -48,6 +48,7 @@ class Campaign extends CI_Controller {
 		$this->load->model('campaign_model', 'campaign');			
 				
 		$orgs = $this->input->get('orgs', TRUE);
+		$geospatial = $this->input->get('geospatial', TRUE);
 
 
 		$row_total = 100;
@@ -57,7 +58,7 @@ class Campaign extends CI_Controller {
 		$raw_data = array();        	        
 		        
 		while($row_count < $row_total) {
-			$result 	= $this->campaign->get_datagov_json($orgs, $row_pagesize, $row_count, true);
+			$result 	= $this->campaign->get_datagov_json($orgs, $geospatial, $row_pagesize, $row_count, true);
 			
 			if(!empty($result)) {
 				$row_total = $result->result->count;
@@ -104,8 +105,14 @@ class Campaign extends CI_Controller {
 		
 		if(empty($orgs)) {
 		    $orgs = $this->input->get('orgs', TRUE);		    
+		}	
+		
+		if(empty($orgs)) {
+		    $geospatial = $this->input->get('geospatial', TRUE);
+		} else {
+		    $geospatial = false;
 		}		
-
+		
         // if we didn't get any requests, bail
         if(empty($orgs)) {
     		show_404($orgs, false);
@@ -119,7 +126,7 @@ class Campaign extends CI_Controller {
 		$raw_data = array();
 		
 		while($row_count < $row_total) {
-			$result 	= $this->campaign->get_datagov_json($orgs, $row_pagesize, $row_count, true);
+			$result 	= $this->campaign->get_datagov_json($orgs, $geospatial, $row_pagesize, $row_count, true);
 			
 			if(!empty($result)) {
 				$row_total = $result->result->count;
@@ -383,7 +390,7 @@ class Campaign extends CI_Controller {
 		    
 		    if($schema_validate) {
     			$validation = $this->campaign->validate_datajson($status['url']);
-
+                var_dump($validation); exit;
     			if(!empty($validation)) {
     				$status['valid_json'] = true;
     				$status['valid_schema'] = $validation->valid;
