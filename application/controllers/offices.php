@@ -116,6 +116,8 @@ class Offices extends CI_Controller {
 		
 		}
 		
+		//var_dump($view_data['office_campaign']); exit;
+		
 		$this->load->view('office_detail', $view_data);		
 			
 	}

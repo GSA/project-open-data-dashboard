@@ -355,6 +355,10 @@ class Campaign extends CI_Controller {
                 $page_status = $this->uri_status($page_status_url, false);                
 								
 				$update = $this->campaign->datagov_model();
+				$update['datajson_errors'] = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;
+				
+				if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);
+				
 				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null;
 				$update['datapage_status'] = (!empty($page_status)) ? json_encode($page_status) : null;
 				$update['office_id'] = $office->id;
@@ -389,12 +393,12 @@ class Campaign extends CI_Controller {
 		if($status['http_code'] == 200) {
 		    
 		    if($schema_validate) {
-    			$validation = $this->campaign->validate_datajson($status['url']);
+    			$validation = $this->campaign->validate_datajson_new($status['url']);
                 //var_dump($validation); exit;
     			if(!empty($validation)) {
     				$status['valid_json'] = true;
-    				$status['valid_schema'] = $validation->valid;
-    				$status['schema_errors'] = $validation->errors;	
+    				$status['valid_schema'] = $validation['valid'];
+    				$status['schema_errors'] = $validation['errors'];	
     			} else {
     				// data.json was not valid json
     				$status['valid_json'] = false;

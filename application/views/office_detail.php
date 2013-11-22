@@ -29,6 +29,7 @@
 		<?php if(!empty($office_campaign)): ?>
 		
 		<?php 		
+		
 			if(!empty($office_campaign->datajson_status)) {
 				$office_campaign->datajson_status = json_decode($office_campaign->datajson_status);			
 			}
@@ -84,12 +85,9 @@
 							$mime_color = 'danger';
 					}
 
-					
-					if (empty($office_campaign->datajson_status->valid_json)) $office_campaign->datajson_status->valid_json = false;					
-					if (empty($office_campaign->datajson_status->valid_schema)) $office_campaign->datajson_status->valid_schema = false;
-								
+				
 				?>
-		
+				
 			
 
 				
@@ -143,40 +141,65 @@
 				</span>			
 			</td>
 		</tr>		
+
+        <?php
+            $valid_json = (isset($office_campaign->datajson_status->valid_json)) ? $office_campaign->datajson_status->valid_json : null;
+            $valid_schema = (isset($office_campaign->datajson_status->valid_schema)) ? $office_campaign->datajson_status->valid_schema : null;
+        ?>		
 		
-		<tr class="<?php echo ($office_campaign->datajson_status->valid_json == true) ? 'success' : 'danger'?>">
+		
+		<tr class="<?php echo ($valid_json == true) ? 'success' : 'danger'?>">
 			<th>Valid JSON</th>
 			<td>
-			<?php
-				$valid_json = (!empty($office_campaign->datajson_status->valid_json)) ? $office_campaign->datajson_status->valid_json : null;
-			?>
-			<span class="text-<?php echo ($office_campaign->datajson_status->valid_json == true) ? 'success' : 'danger'?>">
+			<span class="text-<?php echo ($valid_json == true) ? 'success' : 'danger'?>">
 			<?php		
 				if($valid_json == true) echo 'Valid';
-				if($valid_json === false || ($office_campaign->expected_datajson_status->http_code == 200 && $valid_json != true)) echo 'Invalid <span><a href="http://jsonlint.com/">Check a JSON Validator</a></span>';			
+				if(($valid_json == false && $valid_json !== null) || ($office_campaign->expected_datajson_status->http_code == 200 && $valid_json != true)) echo 'Invalid <span><a href="http://jsonlint.com/">Check a JSON Validator</a></span>';			
 			?>
 			</td>
-		</tr>		
-		
-		<tr class="<?php echo ($office_campaign->datajson_status->valid_schema == true) ? 'success' : 'danger'?>">
+		</tr>								    		
+        
+		<tr class="<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
 			<th>Valid Schema</th>
 			<td>
+			<span class="text-<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
 			<?php
-				
-				$valid_schema = (!empty($office_campaign->datajson_status->valid_schema)) ? $office_campaign->datajson_status->valid_schema : null;
-			
-			?>
-			<span class="text-<?php echo ($office_campaign->datajson_status->valid_schema == true) ? 'success' : 'danger'?>">
-			<?php
+			//var_dump($valid_schema);
 				if($valid_schema == true) echo 'Valid';
-				if($valid_schema === false) echo 'Invalid';							
+				if($valid_schema == false && $valid_schema !== null) echo 'Invalid';							
 			?>
 			</span>
 			</td>
+
+		</tr>	
+		
+		<?php if(isset($office_campaign->datajson_errors)): ?>
+		
+		<tr class="danger">
+			<th>Schema Errors</th>
+			<td>
+			<span>
+			<?php
+			    $datajson_errors = json_decode($office_campaign->datajson_errors);
+			    
+			    echo 'There are ' . count($datajson_errors) . ' schema validation errors (only showing first 50): <br><br>';
+			    
+			    $count = 1;
+			    foreach ($datajson_errors as $error) {
+
+                    echo sprintf("[%s] %s\n", $error->property, $error->message);
+                    echo "<br>";
+                    $count++;
+                    if($count > 50) break;			        
+			    }
+    			    
+			?>
+			</span>
+			</td>
+
+		</tr>	
+		<?php endif; ?>	
 			
-			
-			
-		</tr>		
 		
 		<tr>
 			<th>Data.json Notes</th>
