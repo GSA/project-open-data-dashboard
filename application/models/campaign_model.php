@@ -120,6 +120,15 @@ class campaign_model extends CI_Model {
         $schema = $retriever->retrieve('file://' . realpath('./schema/catalog.json'));
         
 		if($data = @file_get_contents($uri)) {
+		    
+		    /*
+		    This is to help accomodate encoding issues, eg invalid newlines. See: 
+		    http://forum.jquery.com/topic/json-with-newlines-in-strings-should-be-valid#14737000000866332 
+		    http://stackoverflow.com/posts/17846592/revisions
+		    */
+		    $data = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($data)); 
+		    $data = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($data));     		
+    		
     		$data = json_decode($data);
     		    		
 		    if(!empty($data)) {    		
