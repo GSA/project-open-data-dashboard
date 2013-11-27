@@ -127,7 +127,15 @@ class campaign_model extends CI_Model {
 		    http://stackoverflow.com/posts/17846592/revisions
 		    */
 		    $data = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($data)); 
-		    $data = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($data));     		
+		    $data = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($data));    
+		     
+		    /* 
+		    This is to replace any possible BOM "Byte order mark" that might be present
+		    See: http://stackoverflow.com/questions/10290849/how-to-remove-multiple-utf-8-bom-sequences-before-doctype
+		    */
+		    
+            $bom = pack('H*','EFBBBF');
+            $data = preg_replace("/^$bom/", '', $data);		    		
     		
     		$data = json_decode($data);
     		    		

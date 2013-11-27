@@ -333,7 +333,10 @@ class Campaign extends CI_Controller {
 		
 			foreach ($offices as $office) {
 				
-				
+				// initialize update object
+                $update = $this->campaign->datagov_model();				
+				$update['office_id'] = $office->id;
+	
 	
 				$url =  parse_url($office->url);
 				$url = $url['scheme'] . '://' . $url['host'];
@@ -343,25 +346,47 @@ class Campaign extends CI_Controller {
 				if ($this->environment == 'terminal') {
 					echo 'Attempting to request ' . $expected_datajson_url . PHP_EOL;
 				}
+                
+                // Follow redirects and get headers
+        		$status = $this->campaign->uri_header($expected_datajson_url);
+        		$status['expected_url'] = $expected_datajson_url;
 
-                $status = $this->uri_status($expected_datajson_url, true);
+                // Save current update status in case things break during json_status 
+				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null; 
 				
+				if ($this->environment == 'terminal') {
+					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
+				}				
+				
+				$this->campaign->update_status($update);
+				           
+
+                // Check JSON status
+                $status = $this->json_status($status);
+
+				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null; 
+				$update['datajson_errors'] = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
+				if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
+                
+                
+				if ($this->environment == 'terminal') {
+					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
+				}                
+                
+                $this->campaign->update_status($update);
+				
+
+                // Get status of html /data page				
 				$page_status_url = $url . '/data';
 				
 				if ($this->environment == 'terminal') {
 					echo 'Attempting to request ' . $page_status_url . PHP_EOL;
 				}				
 
-                $page_status = $this->uri_status($page_status_url, false);                
-								
-				$update = $this->campaign->datagov_model();
-				$update['datajson_errors'] = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;
-				
-				if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);
-				
-				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null;
+        		$page_status = $this->campaign->uri_header($page_status_url);
+        		$page_status['expected_url'] = $page_status_url;
+
 				$update['datapage_status'] = (!empty($page_status)) ? json_encode($page_status) : null;
-				$update['office_id'] = $office->id;
 				
 				if ($this->environment == 'terminal') {
 					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
@@ -385,26 +410,20 @@ class Campaign extends CI_Controller {
         
 	}
 	
-	private function uri_status($uri, $schema_validate = true) {
-	    
-		$status = $this->campaign->uri_header($uri);
-		$status['expected_url'] = $uri;				
-		
+	private function json_status($status) {
+
 		if($status['http_code'] == 200) {
 		    
-		    if($schema_validate) {
-    			$validation = $this->campaign->validate_datajson_new($status['url']);
-                //var_dump($validation); exit;
-    			if(!empty($validation)) {
-    				$status['valid_json'] = true;
-    				$status['valid_schema'] = $validation['valid'];
-    				$status['schema_errors'] = $validation['errors'];	
-    			} else {
-    				// data.json was not valid json
-    				$status['valid_json'] = false;
-    			}		        
-		    }
-
+			$validation = $this->campaign->validate_datajson_new($status['url']);
+            //var_dump($validation); exit;
+			if(!empty($validation)) {
+				$status['valid_json'] = true;
+				$status['valid_schema'] = $validation['valid'];
+				$status['schema_errors'] = $validation['errors'];	
+			} else {
+				// data.json was not valid json
+				$status['valid_json'] = false;
+			}		        
 			
 		}	
 		
