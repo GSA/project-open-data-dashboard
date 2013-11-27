@@ -4,9 +4,20 @@ function curl_from_json($url, $array=false) {
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+	
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);	
+	
+    curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+    curl_setopt($ch, CURLOPT_FILETIME, true);
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+    curl_setopt($ch, CURLOPT_COOKIE, "");
+    
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);    
+    
+
 	$data=curl_exec($ch);
 	curl_close($ch);
 
@@ -21,13 +32,20 @@ function curl_header($url) {
 	
 	$ch = curl_init();
 //	curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);    
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);    
+
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);	
+	
+    curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
     curl_setopt($ch, CURLOPT_FILETIME, true);
     curl_setopt($ch, CURLOPT_NOBODY, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+    curl_setopt($ch, CURLOPT_COOKIE, "");
+    
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+
     $info['header'] = curl_exec($ch);
     $info['info'] = curl_getinfo($ch);
     curl_close($ch);
