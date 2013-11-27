@@ -20,7 +20,7 @@ class ComposerAutoloaderInit4a2f32c08d6ed102b2e739f3ee7a543a
         }
 
         spl_autoload_register(array('ComposerAutoloaderInit4a2f32c08d6ed102b2e739f3ee7a543a', 'loadClassLoader'), true, true);
-        self::$loader = $loader = new \Composer\Autoload\ClassLoader();
+        self::$loader = $loader = new Composer\Autoload\ClassLoader();
         spl_autoload_unregister(array('ComposerAutoloaderInit4a2f32c08d6ed102b2e739f3ee7a543a', 'loadClassLoader'));
 
         $vendorDir = dirname(__DIR__);
