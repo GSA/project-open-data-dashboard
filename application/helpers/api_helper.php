@@ -24,7 +24,7 @@ function curl_header($url) {
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 10);    
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($c, CURLOPT_FRESH_CONNECT, 1);    
+    curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);    
     curl_setopt($ch, CURLOPT_FILETIME, true);
     curl_setopt($ch, CURLOPT_NOBODY, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
