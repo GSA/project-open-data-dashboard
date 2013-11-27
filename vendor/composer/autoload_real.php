@@ -9,7 +9,7 @@ class ComposerAutoloaderInit4a2f32c08d6ed102b2e739f3ee7a543a
     public static function loadClassLoader($class)
     {
         if ('Composer\Autoload\ClassLoader' === $class) {
-            require __DIR__ . '/ClassLoader.php';
+            require dirname(__FILE__) . '/ClassLoader.php';
         }
     }
 
@@ -20,22 +20,22 @@ class ComposerAutoloaderInit4a2f32c08d6ed102b2e739f3ee7a543a
         }
 
         spl_autoload_register(array('ComposerAutoloaderInit4a2f32c08d6ed102b2e739f3ee7a543a', 'loadClassLoader'), true, true);
-        self::$loader = $loader = new Composer\Autoload\ClassLoader();
+        self::$loader = $loader = new \Composer\Autoload\ClassLoader();
         spl_autoload_unregister(array('ComposerAutoloaderInit4a2f32c08d6ed102b2e739f3ee7a543a', 'loadClassLoader'));
 
-        $vendorDir = dirname(__DIR__);
+        $vendorDir = dirname(dirname(__FILE__));
         $baseDir = dirname($vendorDir);
 
-        $includePaths = require __DIR__ . '/include_paths.php';
+        $includePaths = require dirname(__FILE__) . '/include_paths.php';
         array_push($includePaths, get_include_path());
         set_include_path(join(PATH_SEPARATOR, $includePaths));
 
-        $map = require __DIR__ . '/autoload_namespaces.php';
+        $map = require dirname(__FILE__) . '/autoload_namespaces.php';
         foreach ($map as $namespace => $path) {
             $loader->set($namespace, $path);
         }
 
-        $classMap = require __DIR__ . '/autoload_classmap.php';
+        $classMap = require dirname(__FILE__) . '/autoload_classmap.php';
         if ($classMap) {
             $loader->addClassMap($classMap);
         }
