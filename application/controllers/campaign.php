@@ -342,13 +342,20 @@ class Campaign extends CI_Controller {
 				$url = $url['scheme'] . '://' . $url['host'];
 			
 				$expected_datajson_url = $url . '/data.json';
+				
+				// attempt to break any caching
+				$expected_datajson_url_refresh = $expected_datajson_url . '?refresh=' . time();
 
 				if ($this->environment == 'terminal') {
-					echo 'Attempting to request ' . $expected_datajson_url . PHP_EOL;
+					echo 'Attempting to request ' . $expected_datajson_url . ' and ' . $expected_datajson_url_refresh . PHP_EOL;
 				}
                 
-                // Follow redirects and get headers
-        		$status = $this->campaign->uri_header($expected_datajson_url);
+                // Try to force refresh the cache, follow redirects and get headers
+        		$status = $this->campaign->uri_header($expected_datajson_url_refresh);
+        		if(!$status OR $status['http_code'] != 200) {
+        		    $status = $this->campaign->uri_header($expected_datajson_url);
+        		}
+        		$status['url']          = $expected_datajson_url;
         		$status['expected_url'] = $expected_datajson_url;
 
                 // Save current update status in case things break during json_status 
