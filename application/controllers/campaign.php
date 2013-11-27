@@ -410,7 +410,18 @@ class Campaign extends CI_Controller {
         
 	}
 	
-	private function json_status($status) {
+	public function json_status($status) {
+
+        // if this isn't an array, assume it's a urlencoded URI
+        if(is_string($status)) {
+            $this->load->model('campaign_model', 'campaign');
+
+            $expected_datajson_url = urldecode($status);
+            
+       		$status = $this->campaign->uri_header($expected_datajson_url);
+        	$status['expected_url'] = $expected_datajson_url;            
+        }
+
 
 		if($status['http_code'] == 200) {
 		    
@@ -426,7 +437,7 @@ class Campaign extends CI_Controller {
 			}		        
 			
 		}	
-		
+			
 		return $status;	    
 	}
 	
