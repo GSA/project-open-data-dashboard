@@ -351,8 +351,11 @@ class Campaign extends CI_Controller {
 				}
                 
                 // Try to force refresh the cache, follow redirects and get headers
+    		    $json_refresh = true;
         		$status = $this->campaign->uri_header($expected_datajson_url_refresh);
+        		
         		if(!$status OR $status['http_code'] != 200) {
+        		    $json_refresh = false;
         		    $status = $this->campaign->uri_header($expected_datajson_url);
         		}
         		$status['url']          = $expected_datajson_url;
@@ -369,7 +372,10 @@ class Campaign extends CI_Controller {
 				           
 
                 // Check JSON status
-                $status = $this->json_status($status);
+                $real_url = ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
+                $status = $this->json_status($status, $real_url);
+        		$status['url']          = $expected_datajson_url;
+        		$status['expected_url'] = $expected_datajson_url;                
 
 				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null; 
 				$update['datajson_errors'] = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
@@ -417,7 +423,7 @@ class Campaign extends CI_Controller {
         
 	}
 	
-	public function json_status($status) {
+	public function json_status($status, $real_url = null) {
 
         // if this isn't an array, assume it's a urlencoded URI
         if(is_string($status)) {
@@ -429,6 +435,7 @@ class Campaign extends CI_Controller {
         	$status['expected_url'] = $expected_datajson_url;            
         }
 
+        $status['expected_url'] = (!empty($real_url)) ? $real_url : $status['expected_url'];
 
 		if($status['http_code'] == 200) {
 		    
