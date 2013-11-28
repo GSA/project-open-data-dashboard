@@ -1,8 +1,9 @@
 <?php
 
-function curl_from_json($url, $array=false) {
+function curl_from_json($url, $array=false, $decode=true) {
 
 	$ch = curl_init();
+    curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
 	curl_setopt($ch, CURLOPT_URL, $url);
 	
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -10,7 +11,9 @@ function curl_from_json($url, $array=false) {
 	
     curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
     curl_setopt($ch, CURLOPT_FILETIME, true);
-    curl_setopt($ch, CURLOPT_NOBODY, true);
+    
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET'); 
+    
     curl_setopt($ch, CURLOPT_COOKIESESSION, true);
     curl_setopt($ch, CURLOPT_COOKIE, "");
     
@@ -21,8 +24,12 @@ function curl_from_json($url, $array=false) {
 	$data=curl_exec($ch);
 	curl_close($ch);
 
+    if($decode == true) {
+	    return json_decode($data, $array);	        
+    } else {
+        return $data;
+    }
 
-	return json_decode($data, $array);	
 
 }
 
@@ -32,6 +39,7 @@ function curl_header($url) {
 	
 	$ch = curl_init();
 //	curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
     curl_setopt($ch, CURLOPT_URL, $url);
 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -39,7 +47,9 @@ function curl_header($url) {
 	
     curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
     curl_setopt($ch, CURLOPT_FILETIME, true);
+    
     curl_setopt($ch, CURLOPT_NOBODY, true);
+    
     curl_setopt($ch, CURLOPT_COOKIESESSION, true);
     curl_setopt($ch, CURLOPT_COOKIE, "");
     
@@ -98,5 +108,6 @@ function array_nsearch($needle, array $haystack) {
    }
    return false;
 }
+
 
 ?>

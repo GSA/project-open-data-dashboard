@@ -74,7 +74,7 @@ class campaign_model extends CI_Model {
 		
 		$status = curl_header($url);	
 		$status = $status['info'];	//content_type and http_code		
-		
+
 		if($status['redirect_count'] == 0 && !(empty($redirect_count))) $status['redirect_count'] = 1;		
 		$status['redirect_count'] = $status['redirect_count'] + $redirect_count;
 
@@ -118,25 +118,33 @@ class campaign_model extends CI_Model {
         $retriever = new JsonSchema\Uri\UriRetriever;        
             
         $schema = $retriever->retrieve('file://' . realpath('./schema/catalog.json'));
-        
-		if($data = @file_get_contents($uri)) {
-		    
+	    
+		if($data = curl_from_json($uri, false, false)) {	 
+		       
 		    /*
 		    This is to help accomodate encoding issues, eg invalid newlines. See: 
 		    http://forum.jquery.com/topic/json-with-newlines-in-strings-should-be-valid#14737000000866332 
 		    http://stackoverflow.com/posts/17846592/revisions
 		    */
 		    $data = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($data)); 
-		    $data = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($data));    
-		     
-		    /* 
+            //$data = str_replace(array("\r", "\n", "\\n", "\r\n"), " ", $data);	
+            //$data = preg_replace('!\s+!', ' ', $data);
+            //$data = str_replace(' "', '"', $data);            
+            $data = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($data));               
+		    
+            
+            /* 
 		    This is to replace any possible BOM "Byte order mark" that might be present
 		    See: http://stackoverflow.com/questions/10290849/how-to-remove-multiple-utf-8-bom-sequences-before-doctype
-		    */
-		    
+		    */    
             $bom = pack('H*','EFBBBF');
-            $data = preg_replace("/^$bom/", '', $data);		    		
-    		
+            $data = preg_replace("/^$bom/", '', $data);
+	
+    	 		    
+        	 //header('Content-type: application/json');
+        	 //print $data;
+        	 //exit; 	 		    
+    	 		    		
     		$data = json_decode($data);
     		    		
 		    if(!empty($data)) {    		
