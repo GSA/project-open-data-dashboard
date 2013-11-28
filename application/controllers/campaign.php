@@ -432,10 +432,10 @@ class Campaign extends CI_Controller {
             $expected_datajson_url = urldecode($status);
             
        		$status = $this->campaign->uri_header($expected_datajson_url);
-        	$status['expected_url'] = $expected_datajson_url;            
+        	$status['url'] = $expected_datajson_url;            
         }
 
-        $status['expected_url'] = (!empty($real_url)) ? $real_url : $status['expected_url'];
+        $status['url'] = (!empty($real_url)) ? $real_url : $status['url'];
 
 		if($status['http_code'] == 200) {
 		    
