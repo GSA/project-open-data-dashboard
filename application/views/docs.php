@@ -65,8 +65,11 @@
                     unicode, preferably <a href="http://en.wikipedia.org/wiki/Utf-8">UTF-8</a>.
             </p>
             <p>
-                <strong>This should be: <code class="text-success">application/json; charset=utf-8</code></strong>
+                <strong>For data.json this should be: <code class="text-success">application/json; charset=utf-8</code></strong>                
             </p>
+            <p>
+                <strong>For /data this should be: <code class="text-success">text/html; charset=utf-8</code></strong>                
+            </p>                
             
             
             <h4>Valid JSON</h4>
