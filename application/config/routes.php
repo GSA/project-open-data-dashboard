@@ -38,9 +38,10 @@
 |
 */
 
-$route['default_controller'] = "docs";
+$route['default_controller'] = "docs/intro";
 $route['404_override'] = '';
 $route['datagov/(:any)'] = "campaign/$1";
+$route['export'] = "docs/export";
 
 
 

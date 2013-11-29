@@ -1,4 +1,5 @@
 
+<hr>
       <footer>
         <p><a href="http://github.com/philipashlock/farm-server">Fork me on Github</a></p>
       </footer>

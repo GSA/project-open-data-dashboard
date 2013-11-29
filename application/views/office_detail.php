@@ -14,13 +14,20 @@
 		
           <h2><?php echo $office->name ?></h2>
 
-			<div><a href="<?php echo $office->url ?>"><?php echo $office->url ?></a></div>
-			<div><?php echo $office->notes ?></div>				
+            <div style="margin-bottom : 1em">
+    			<div><a href="<?php echo $office->url ?>"><?php echo $office->url ?></a></div>
+    			<div><?php echo $office->notes ?></div>				
 		
 		
-			<?php if(!empty($office->parent_office_id)): ?>
-				<div><a href="<?php echo $office->parent_office_id ?>">Parent Office</a></div>				
-			<?php endif; ?>
+    			<?php if(!empty($office->parent_office_id)): ?>
+    				<div><a href="<?php echo $office->parent_office_id ?>">Parent Office</a></div>				
+    			<?php endif; ?>
+			</div>
+			
+			
+            <p>
+              See the <a href="/docs">documentation</a> for an explanation of how to read this table.
+            </p>			
 		
         </div>
 

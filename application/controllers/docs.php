@@ -19,8 +19,19 @@ class Docs extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
+		$this->load->view('docs');
 	}
+	
+	public function intro()
+	{
+		$this->load->view('welcome_message');
+	}	
+	
+	public function export()
+	{
+		$this->load->view('export');
+	}	
+	
 }
 
 /* End of file welcome.php */

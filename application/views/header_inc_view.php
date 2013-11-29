@@ -11,11 +11,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Data FARM</a>
+      <a class="navbar-brand" href="/">Project Open Data Dashboard</a>
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li><a href="/offices">Agencies</a></li>
+        <li><a href="/docs">Documentation</a></li>
+        <li><a href="/export">Export API</a></li>
+        <li><a href="https://github.com/philipashlock/farm-server/issues">Feedback</a></li>        
+        
+        
 <!--
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -31,6 +36,7 @@
         </li>
 -->
       </ul>
+<!--
       <form class="navbar-form navbar-right">
         <div class="form-group">
           <input type="text" placeholder="Email" class="form-control">
@@ -40,6 +46,7 @@
         </div>
         <button type="submit" class="btn btn-success">Sign in</button>
       </form>
+-->      
     </div><!--/.navbar-collapse -->
   </div>
 </div>
