@@ -26,7 +26,7 @@
 			
 			
             <p>
-              See the <a href="/docs">documentation</a> for an explanation of how to read this table.
+                See the <a href="/docs">documentation</a> for an explanation of this table.
             </p>			
 		
         </div>

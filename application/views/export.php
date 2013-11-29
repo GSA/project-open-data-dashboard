@@ -15,13 +15,13 @@
             <h3>As JSON</h3>
             <code>GET /datagov/convert</code>
             <p>
-                The only parameter is <code>?orgs</code> where the <code>org</code> refers the the name of the organization in CKAN. For example: <code><a href="/datagov/convert?orgs=usgs-gov">/datagov/convert?orgs=usgs-gov</a></code>
+                The only parameter is <code>?orgs</code> where the <code>orgs</code> refers the the name of the organization in CKAN. For example: <code><a href="/datagov/convert?orgs=usgs-gov">/datagov/convert?orgs=usgs-gov</a></code>
             </p>
             
             <h3>As CSV</h3>
             <code>GET /datagov/csv</code>
             <p>
-                The only parameter is <code>?orgs</code> where the <code>org</code> refers the the name of the organization in CKAN. For example: <code><a href="/datagov/csv?orgs=usgs-gov">/datagov/csv?orgs=usgs-gov</a></code>
+                The only parameter is <code>?orgs</code> where the <code>orgs</code> refers the the name of the organization in CKAN. For example: <code><a href="/datagov/csv?orgs=usgs-gov">/datagov/csv?orgs=usgs-gov</a></code>
             </p>            
                         
         </div>
