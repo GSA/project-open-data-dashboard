@@ -8,8 +8,8 @@ function status_table($title, $rows) {
 	<div class="panel-heading"><?php echo $title?></div>
 	<table class="table table-striped table-hover">
 		<tr>
-			<th>Agency</th>
-			<th>data.json</th>									
+			<th class="col-sm-10">Agency</th>
+			<th class="col-sm-2">data.json</th>									
 		</tr>
 		<?php foreach ($rows as $office):?>
 		
