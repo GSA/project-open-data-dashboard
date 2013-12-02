@@ -10,9 +10,6 @@
       <div class="row">
         <div>
           <h2>Agencies</h2>
-          <p>
-            See the <a href="/docs">documentation</a> for an explanation of this table.
-          </p>
 
 			<?php
 
