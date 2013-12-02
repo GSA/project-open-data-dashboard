@@ -52,7 +52,7 @@
 		<?php if(!empty($office->url)): ?>
 		
 		<div class="panel panel-default">
-		<div class="panel-heading">data.json <a type="button" class="btn btn-success btn-xs pull-right" href="/datagov/status/<?php echo $office->id; ?>">Refresh</a></div>
+		<div class="panel-heading">data.json <a type="button" class="btn btn-success btn-xs pull-right hidden" href="/datagov/status/<?php echo $office->id; ?>">Refresh</a></div>
 		
 		<table class="table table-striped table-hover">		
 
