@@ -9,7 +9,7 @@ function status_table($title, $rows) {
 	<table class="table table-striped table-hover">
 		<tr>
 			<th>Agency</th>
-			<th>Status</th>									
+			<th>data.json</th>									
 		</tr>
 		<?php foreach ($rows as $office):?>
 		
