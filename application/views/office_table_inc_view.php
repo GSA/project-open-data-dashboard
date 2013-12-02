@@ -9,10 +9,7 @@ function status_table($title, $rows) {
 	<table class="table table-striped table-hover">
 		<tr>
 			<th>Agency</th>
-			<th>Status</th>
-			<th>Content-Type</th>
-			<th>JSON</th>					
-			<th>Schema</th>										
+			<th>Status</th>									
 		</tr>
 		<?php foreach ($rows as $office):?>
 		
@@ -53,15 +50,35 @@ function status_table($title, $rows) {
 			} else {
 				$mime_color = 'danger';
 			}
+			
+			$icon = null;
+			
+			if (isset($office->datajson_status->valid_json)) {
+			    $json_status = ($office->datajson_status->valid_json == true) ? 'success' : 'danger';									    
+			} else {
+			    $json_status = 'danger';
+			}
+
+			
+			if ($json_status == 'success') {
+			    $icon = '<i class="text-' . $json_status . ' fa fa-check-square"></i>';			    
+			}
+			
+			if ($json_status == 'danger') {
+			    $icon = '<i class="text-' . $json_status . ' fa fa-times-circle"></i>';			    
+			}
+			
+			if ($status_color == 'warning') {
+                $icon = '<i class="text-' . $status_color . ' fa fa-exclamation-triangle"></i>';			    			    
+			}
+			    
+		
 						
 		?>				
 		
 		<tr class="<?php echo $status_color ?>">
 			<td><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></td>
-			<td><?php if (!empty($office->datajson_status->http_code)): ?><a class="text-<?php echo $http_status_color ?>" href="<?php echo $office->datajson_status->url;?>"><?php echo $office->datajson_status->http_code ?></a><?php endif; ?></td>
-			<td><?php if (!empty($office->datajson_status->content_type)): ?><span class="text-<?php echo $mime_color ?>"><?php echo $office->datajson_status->content_type?></span><?php endif; ?></td>					
-			<td><?php if (isset($office->datajson_status->valid_json)): ?><span class="text-<?php echo ($office->datajson_status->valid_json == true) ? 'success' : 'danger'?>"><?php echo ($office->datajson_status->valid_json == true) ? 'Valid' : 'Invalid'?></span><?php endif; ?></td>					
-			<td><?php if (isset($office->datajson_status->valid_schema)): ?><span class="text-<?php echo ($office->datajson_status->valid_schema == true) ? 'success' : 'danger'?>"><?php echo ($office->datajson_status->valid_schema == true) ? 'Valid' : 'Invalid' ?></span><?php endif; ?></td>					
+			<td><?php echo $icon; ?>
 		</tr>
 		<?php endforeach;?>
 	</table>
