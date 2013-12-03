@@ -313,8 +313,10 @@ class Campaign extends CI_Controller {
     
     
 
-
-	public function status($id = null) {
+    /*
+    $component can be datajson, datapage, digitalstrategy
+    */
+	public function status($id = null, $component = null) {
 		
 		
 		$this->load->model('campaign_model', 'campaign');			
@@ -322,9 +324,10 @@ class Campaign extends CI_Controller {
 		
 		$this->db->select('url, id');
 		
-		if(!empty($id)) {
+		if(!empty($id) && $id != 'all') {
     		$this->db->where('id', $id);					    
 		}
+		
 				
 		$query = $this->db->get('offices');
 		
@@ -336,79 +339,131 @@ class Campaign extends CI_Controller {
 				// initialize update object
                 $update = $this->campaign->datagov_model();				
 				$update['office_id'] = $office->id;
-	
+    
 	
 				$url =  parse_url($office->url);
 				$url = $url['scheme'] . '://' . $url['host'];
 			
-				$expected_datajson_url = $url . '/data.json';
+			
+			
+                /*
+                ################ datajson ################
+                */			
+			
+			    if (empty($component) || $component == 'datajson') {
+			        			        
+    				$expected_datajson_url = $url . '/data.json';
 				
-				// attempt to break any caching
-				$expected_datajson_url_refresh = $expected_datajson_url . '?refresh=' . time();
+    				// attempt to break any caching
+    				$expected_datajson_url_refresh = $expected_datajson_url . '?refresh=' . time();
 
-				if ($this->environment == 'terminal') {
-					echo 'Attempting to request ' . $expected_datajson_url . ' and ' . $expected_datajson_url_refresh . PHP_EOL;
-				}
+    				if ($this->environment == 'terminal') {
+    					echo 'Attempting to request ' . $expected_datajson_url . ' and ' . $expected_datajson_url_refresh . PHP_EOL;
+    				}
                 
-                // Try to force refresh the cache, follow redirects and get headers
-    		    $json_refresh = true;
-        		$status = $this->campaign->uri_header($expected_datajson_url_refresh);
+                    // Try to force refresh the cache, follow redirects and get headers
+        		    $json_refresh = true;
+            		$status = $this->campaign->uri_header($expected_datajson_url_refresh);
         		
-        		if(!$status OR $status['http_code'] != 200) {
-        		    $json_refresh = false;
-        		    $status = $this->campaign->uri_header($expected_datajson_url);
-        		}
-        		$status['url']          = $expected_datajson_url;
-        		$status['expected_url'] = $expected_datajson_url;
+            		if(!$status OR $status['http_code'] != 200) {
+            		    $json_refresh = false;
+            		    $status = $this->campaign->uri_header($expected_datajson_url);
+            		}
+            		$status['url']          = $expected_datajson_url;
+            		$status['expected_url'] = $expected_datajson_url;
 
-                // Save current update status in case things break during json_status 
-				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null; 
+                    // Save current update status in case things break during json_status 
+    				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null; 
 				
-				if ($this->environment == 'terminal') {
-					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
-				}				
+    				if ($this->environment == 'terminal') {
+    					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
+    				}				
 				
-				$this->campaign->update_status($update);
+    				$this->campaign->update_status($update);
 				           
 
-                // Check JSON status
-                $real_url = ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
-                $status = $this->json_status($status, $real_url);
-        		$status['url']          = $expected_datajson_url;
-        		$status['expected_url'] = $expected_datajson_url;                
+                    // Check JSON status
+                    $real_url = ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
+                    $status = $this->json_status($status, $real_url);
+            		$status['url']          = $expected_datajson_url;
+            		$status['expected_url'] = $expected_datajson_url;                
 
-				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null; 
-				$update['datajson_errors'] = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
-				if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
+    				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null; 
+    				$update['datajson_errors'] = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
+    				if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
                 
                 
-				if ($this->environment == 'terminal') {
-					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
-				}                
+    				if ($this->environment == 'terminal') {
+    					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
+    				}                
                 
-                $this->campaign->update_status($update);
+                    $this->campaign->update_status($update);
 				
+				}
 
-                // Get status of html /data page				
-				$page_status_url = $url . '/data';
-				
-				if ($this->environment == 'terminal') {
-					echo 'Attempting to request ' . $page_status_url . PHP_EOL;
-				}				
 
-        		$page_status = $this->campaign->uri_header($page_status_url);
-        		$page_status['expected_url'] = $page_status_url;
+                /*
+                ################ datapage ################
+                */
+                
+               if (empty($component) || $component == 'datapage') {
+			    
+                
+                    // Get status of html /data page				
+    				$page_status_url = $url . '/data';
+				
+    				if ($this->environment == 'terminal') {
+    					echo 'Attempting to request ' . $page_status_url . PHP_EOL;
+    				}				
 
-				$update['datapage_status'] = (!empty($page_status)) ? json_encode($page_status) : null;
+            		$page_status = $this->campaign->uri_header($page_status_url);
+            		$page_status['expected_url'] = $page_status_url;
+
+    				$update['datapage_status'] = (!empty($page_status)) ? json_encode($page_status) : null;
 				
-				if ($this->environment == 'terminal') {
-					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
-				}				
+    				if ($this->environment == 'terminal') {
+    					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datapage_status'] . PHP_EOL . PHP_EOL;
+    				}				
 				
-				// Instead of hacking together an upsert or preloading existing status data, 
-				// let's just be really inefficient and do a lookup for each record			
+    				// Instead of hacking together an upsert or preloading existing status data, 
+    				// let's just be really inefficient and do a lookup for each record			
 				
-				$this->campaign->update_status($update);
+    				$this->campaign->update_status($update);
+				
+			    }
+			    
+			    
+                 /*
+                 ################ digitalstrategy ################
+                 */
+
+                if (empty($component) || $component == 'digitalstrategy') {
+
+
+                     // Get status of html /data page				
+     				$digitalstrategy_status_url = $url . '/digitalstrategy.json';
+
+     				if ($this->environment == 'terminal') {
+     					echo 'Attempting to request ' . $digitalstrategy_status_url . PHP_EOL;
+     				}				
+
+             		$page_status = $this->campaign->uri_header($digitalstrategy_status_url);
+             		$page_status['expected_url'] = $digitalstrategy_status_url;
+
+     				$update['digitalstrategy_status'] = (!empty($page_status)) ? json_encode($page_status) : null;
+
+     				if ($this->environment == 'terminal') {
+     					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['digitalstrategy_status'] . PHP_EOL . PHP_EOL;
+     				}				
+
+     				// Instead of hacking together an upsert or preloading existing status data, 
+     				// let's just be really inefficient and do a lookup for each record			
+
+     				$this->campaign->update_status($update);
+
+ 			    }			    
+			    
+			    
 								
         		if(!empty($id) && $this->environment != 'terminal') {			
         		    $this->load->helper('url');
