@@ -284,7 +284,9 @@ class Import extends CI_Controller {
 		'Department of the Treasury',  
 		'Department of Veterans Affairs',  
 		'Environmental Protection Agency',  
-		'National Aeronautics and Space Administration');		
+		'National Aeronautics and Space Administration', 
+		'Social Security Administration', 
+		'National Archives and Records Administration');		
 	
 		// iterate through array see if agency_name matches any of them
 	
