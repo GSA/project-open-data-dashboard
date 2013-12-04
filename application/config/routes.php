@@ -42,6 +42,8 @@ $route['default_controller'] = "docs/intro";
 $route['404_override'] = '';
 $route['export'] = "docs/export";
 
+$route['digitalstrategy'] = "campaign/digitalstrategy";
+
 $route['datagov/(:any)/'] = "campaign/$1";
 $route['datagov/(:any)/(:any)'] = "campaign/$1/$2";
 $route['datagov/(:any)/(:any)/(:any)'] = "campaign/$1/$2/$3";

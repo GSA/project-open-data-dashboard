@@ -309,7 +309,35 @@ class Campaign extends CI_Controller {
     
     
     
-    
+	public function digitalstrategy($id = null) {
+		
+		
+		$this->load->model('campaign_model', 'campaign');   
+		
+		$this->db->select('*');	
+		$this->db->from('offices');			
+		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
+		$this->db->where('offices.cfo_act_agency', 'true');	
+		$this->db->where('offices.no_parent', 'true');	
+		
+		if(!empty($id) && $id != 'all') {
+    		$this->db->where('offices.id', $id);					    
+		}		
+				
+		$this->db->order_by("offices.name", "asc"); 			
+		$query = $this->db->get();
+        
+		if ($query->num_rows() > 0) {		
+			$view_data['digitalstrategy'] = $query->result();
+			$query->free_result();
+			
+			$this->load->view('digitalstrategy', $view_data);	    		
+		} else {
+    		show_404('digitalgov', false);
+		}
+		
+		
+	}    
     
     
 
