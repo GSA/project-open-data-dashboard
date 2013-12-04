@@ -346,13 +346,16 @@ class Campaign extends CI_Controller {
     */
 	public function status($id = null, $component = null) {
 		
-		
+		// enforce explicit component selection
+		if(empty($component)) {
+		    show_404('status', false);    		
+		}		
+				
 		$this->load->model('campaign_model', 'campaign');			
-		
-		
+				
 		$this->db->select('url, id');
 		
-		if(!empty($id) && $id != 'all') {
+		if($id != 'all') {
     		$this->db->where('id', $id);					    
 		}
 		
@@ -378,7 +381,7 @@ class Campaign extends CI_Controller {
                 ################ datajson ################
                 */			
 			
-			    if (empty($component) || $component == 'datajson') {
+			    if ($component == 'all' || $component == 'datajson') {
 			        			        
     				$expected_datajson_url = $url . '/data.json';
 				
@@ -434,7 +437,7 @@ class Campaign extends CI_Controller {
                 ################ datapage ################
                 */
                 
-               if (empty($component) || $component == 'datapage') {
+               if ($component == 'all' || $component == 'datapage') {
 			    
                 
                     // Get status of html /data page				
@@ -465,7 +468,7 @@ class Campaign extends CI_Controller {
                  ################ digitalstrategy ################
                  */
 
-                if (empty($component) || $component == 'digitalstrategy') {
+                if ($component == 'all' || $component == 'digitalstrategy') {
 
 
                      // Get status of html /data page				
