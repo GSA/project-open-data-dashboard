@@ -2,6 +2,11 @@
 
 $config['import_active'] = true;
 
+$config['google_analytics_id'] = ''; // UA-xxxxxxx-xx
+$config['google_analytics_domain'] = ''; // domain.com
+
+
+
 
 /*
 |--------------------------------------------------------------------------
