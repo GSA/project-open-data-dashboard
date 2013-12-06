@@ -43,11 +43,13 @@
 			
 			if(!empty($office_campaign->datapage_status)) {
 				$office_campaign->datapage_status = json_decode($office_campaign->datapage_status);			
-			}		
+			}	
+				
 			
 			if(!empty($office_campaign->digitalstrategy_status)) {
 				$office_campaign->digitalstrategy_status = json_decode($office_campaign->digitalstrategy_status);			
-			}				
+			}		
+							
 		?>
 		
 		
@@ -184,14 +186,17 @@
 
 		</tr>	
 		
-		<?php if(isset($office_campaign->datajson_errors)): ?>
+		<?php 
+		
+	
+		if(isset($office_campaign->datajson_status->schema_errors)): ?>
 		
 		<tr class="danger">
 			<th>Schema Errors</th>
 			<td>
 			<span>
 			<?php
-			    $datajson_errors = json_decode($office_campaign->datajson_errors);
+			    $datajson_errors = $office_campaign->datajson_status->schema_errors;
 			    
 			    if(count($datajson_errors) < 50) {
 			        echo 'There are ' . count($datajson_errors) . ' validation errors: <br><br>';
