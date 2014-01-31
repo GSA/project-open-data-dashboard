@@ -540,6 +540,106 @@ class Campaign extends CI_Controller {
 			
 		return $status;	    
 	}
+
+
+	public function validate($datajson = null) {
+
+		
+		$datajson = (isset($_POST['datajson'])) ? $_POST['datajson'] : false; 
+		// check to see if we have $datajson
+
+		// check to see if it's actually json
+
+
+
+		// if it is run validator
+		if($datajson) {
+
+	        $this->load->model('campaign_model', 'campaign');
+			$validation = $this->campaign->jsonschema_validator($datajson);
+
+	     	header('Content-type: application/json');
+	        print json_encode($validation);
+	        exit;
+
+		} else {
+			$this->load->view('validate');	    		
+        } 		
+
+	}
+
+
+
+	/*
+	Crawl each record in a datajson file and save current version + validation results
+	*/
+	public function version_datajson($office_id = null) {
+
+        
+        $this->load->model('campaign_model', 'campaign');
+
+
+		// look up last crawl cycle for this office id
+        if(!empty($office_id)) {
+
+        	$current_crawl = $this->campaign->datajson_crawl();
+        	$current_crawl->office_id = $office_id;
+
+        	if($last_crawl = $this->campaign->get_datajson_crawl($current_crawl->office_id)) {
+
+        		// make sure last crawl completed
+        		if ($last_crawl->crawl_status == 'completed' && !empty($last_crawl->crawl_end)) {
+        			$current_crawl->crawl_cycle = $last_crawl->crawl_cycle + 1;	
+        		} else {
+        			// abort
+        			$current_crawl->crawl_cycle = $last_crawl->crawl_cycle;
+        			$current_crawl->crawl_status = 'aborted';
+
+        			// save crawl status
+        			$this->campaign->save_datajson_crawl($current_crawl);
+
+        			return $current_crawl;
+
+        		}
+        		
+        	} else {
+        		$last_crawl = false;
+        		$current_crawl->crawl_cycle = 1;        		
+        	}
+
+
+    		$current_crawl->crawl_status = 'started';
+
+			// save crawl status
+			$this->campaign->save_datajson_crawl($current_crawl);
+
+
+
+
+        	if ($current_crawl->crawl_status == 'started') {
+
+    			// check to see if datajson status is good enough to parse
+
+    			// ******** missing code here
+
+    			foreach ($metadata_records as $metadata_record) {
+    				$this->version_metadata_record($current_crawl);	
+    			}
+
+    			// save crawl status
+    			$this->campaign->save_datajson_crawl($current_crawl);
+
+    			return $current_crawl;
+
+        	}
+
+
+        	
+
+        }
+
+
+	}
 	
 
 }
