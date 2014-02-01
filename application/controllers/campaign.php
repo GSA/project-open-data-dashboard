@@ -545,12 +545,21 @@ class Campaign extends CI_Controller {
 	public function validate($datajson = null) {
 
 		
-		$datajson = (isset($_POST['datajson'])) ? $_POST['datajson'] : false; 
+		$datajson 		= (isset($_POST['datajson'])) ? $_POST['datajson'] : false; 
+		
+		if (isset($_POST['datajson_url'])) {
+			$datajson_url = $_POST['datajson_url'];
+			
+			if ($datajson = json_decode(file_get_contents($datajson_url, false))) {
+				$datajson = json_encode($datajson);
+			}
+
+
+		} 
+
 		// check to see if we have $datajson
 
 		// check to see if it's actually json
-
-
 
 		// if it is run validator
 		if($datajson) {

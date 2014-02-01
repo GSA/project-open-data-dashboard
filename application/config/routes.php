@@ -44,6 +44,9 @@ $route['export'] = "docs/export";
 
 $route['digitalstrategy'] = "campaign/digitalstrategy";
 
+$route['validate'] = "campaign/validate";
+
+
 $route['datagov/(:any)/'] = "campaign/$1";
 $route['datagov/(:any)/(:any)'] = "campaign/$1/$2";
 $route['datagov/(:any)/(:any)/(:any)'] = "campaign/$1/$2/$3";

@@ -9,10 +9,17 @@
         <div class="col-lg-12">
           <h2>Validator</h2>
             
-            <form action="/campaign/validate" method="post">
+            <form action="/validate" method="post">
                 <textarea name="datajson" style="height : 30em; width: 100%"></textarea>
                 <input type="submit" value="Submit">
             </form>
+
+
+
+            <form action="/validate" method="post">
+                <input name="datajson_url">
+                <input type="submit" value="Submit">
+            </form>            
 
             
         </div>
