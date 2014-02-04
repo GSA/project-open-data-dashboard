@@ -49,24 +49,24 @@ class campaign_model extends CI_Model {
 	
 	public function datagov_model() {
 		
-		$datagov_model = array(
-			'office_id' => null,                
-			'contact_name' => null,             
-			'contact_email' => null,            
-			'datajson_url' => null,   
-			'datajson_status' => null,   			          
-			'datajson_errors' => null,  						         						
-			'datajson_notes' => null,  
-			'datapage_url' => null,  
-			'datapage_status' => null,  						         
-			'feedback_mechanism' => null,       
-			'catalog_view' => null,             
-			'community_plan' => null,           
-			'central_inventory' => null,        
-			'inventory_plan' => null			
-		);
+		$model = new stdClass();
+
+		$model->office_id						= null;               
+		$model->contact_name					= null;            
+		$model->contact_email					= null;           
+		$model->datajson_url					= null;  
+		$model->datajson_status					= null;  			          
+		$model->datajson_errors					= null; 						         						
+		$model->datajson_notes					= null; 
+		$model->datapage_url					= null; 
+		$model->datapage_status					= null; 						         
+		$model->feedback_mechanism				= null;      
+		$model->catalog_view					= null;            
+		$model->community_plan					= null;          
+		$model->central_inventory				= null;       
+		$model->inventory_plan					= null;		
 		
-		return $datagov_model;
+		return $model;
 	}
 
 
@@ -146,7 +146,7 @@ class campaign_model extends CI_Model {
 	}
 		
 	
-	public function validate_datajson($uri) {
+	public function validate_datajson_old($uri) {
 		
 		$this->load->helper('jsonschema');					
 
@@ -165,16 +165,47 @@ class campaign_model extends CI_Model {
 		}
 	}
 	
-	public function validate_datajson_new($uri) {
-	            
-	    
-		if($data = curl_from_json($uri, false, false)) {	 
-		       
-			$this->jsonschema_validator($data);
-    		
-    	}        
-        
-	    
+	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null) {
+
+		
+		if ($datajson_url) {
+			
+
+			$datajson_header = ($headers) ? $headers : $this->campaign->uri_header($datajson_url);
+			//$datajson = json_encode($datajson_header);
+
+			$errors = array();
+
+			if($datajson_header['http_code'] !== 200) {
+				$errors[] = "The URL for the data.json file is not accessible";
+			}			
+
+			// Set max size around 7mb
+			if($datajson_header['download_content_length'] > 7000000) {
+				
+				$filesize = human_filesize($datajson_header['download_content_length']);
+				$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";		
+			}     	
+
+			if(!empty($errors)) {
+				return array('valid' => false, 'errors' => $errors);				
+			}
+			
+			if ($datajson = json_decode(file_get_contents($datajson_url, false))) {			
+				$datajson = json_encode($datajson);
+			}
+
+
+		}   
+
+		if ($datajson && is_json($datajson)) {
+			return $this->campaign->jsonschema_validator($datajson);	
+		} else {
+			return false;
+		}
+		
+
+
 	}	
 	
 	public function jsonschema_validator($data) {
@@ -254,20 +285,20 @@ class campaign_model extends CI_Model {
 	public function update_status($update) {		
 		
 		$this->db->select('datajson_status');		
-		$this->db->where('office_id', $update['office_id']);						
+		$this->db->where('office_id', $update->office_id);						
 		$query = $this->db->get('datagov_campaign');				
 		
 		if ($query->num_rows() > 0) {
 			// update
 			
 			if ($this->environment == 'terminal') {
-				echo 'Updating ' . $update['office_id'] . PHP_EOL . PHP_EOL;
+				echo 'Updating ' . $update->office_id . PHP_EOL . PHP_EOL;
 			}	
 			
-			$current_data = $query->row_array();				
-			$update = array_mash($update, $current_data);
+			//$current_data = $query->row_array();				
+			//$update = array_mash($update, $current_data);
 			
-			$this->db->where('office_id', $update['office_id']);						
+			$this->db->where('office_id', $update->office_id);						
 			$this->db->update('datagov_campaign', $update);					
 			
 			
@@ -276,7 +307,7 @@ class campaign_model extends CI_Model {
 			// insert
 			
 			if ($this->environment == 'terminal') {
-				echo 'Adding ' . $update['office_id'] . PHP_EOL . PHP_EOL;
+				echo 'Adding ' . $update->office_id . PHP_EOL . PHP_EOL;
 			}					
 			
 			$this->db->insert('datagov_campaign', $update);					

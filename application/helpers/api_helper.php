@@ -110,4 +110,28 @@ function array_nsearch($needle, array $haystack) {
 }
 
 
+/**
+ * Provides a human readable file size from an integer of bytes
+ */
+function human_filesize($size,$unit="") {
+  if( (!$unit && $size >= 1<<30) || $unit == "GB")
+    return number_format($size/(1<<30),2)."GB";
+  if( (!$unit && $size >= 1<<20) || $unit == "MB")
+    return number_format($size/(1<<20),2)."MB";
+  if( (!$unit && $size >= 1<<10) || $unit == "KB")
+    return number_format($size/(1<<10),2)."KB";
+  return number_format($size)." bytes";
+}
+
+
+
+
+function is_json($string) {
+ json_decode($string);
+ return (json_last_error() == JSON_ERROR_NONE);
+}
+
+
+
+
 ?>

@@ -91,7 +91,7 @@ class Offices extends CI_Controller {
 			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id);
 		
 			if(empty($view_data['office_campaign'])) {
-				$view_data['office_campaign'] = (object) $this->campaign->datagov_model();
+				$view_data['office_campaign'] = $this->campaign->datagov_model();
 			}
 		
 		

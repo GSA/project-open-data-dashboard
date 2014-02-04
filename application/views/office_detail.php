@@ -144,8 +144,8 @@
 					<?php echo $office_campaign->expected_datajson_status->http_code?>
 				</span>			
 			</td>
-		</tr>				
-		
+		</tr>		
+	
 		<tr class="<?php echo $mime_color;?>">
 			<th>Content Type</th>
 			<td>
@@ -153,7 +153,7 @@
 					<?php echo $office_campaign->expected_datajson_status->content_type?>
 				</span>			
 			</td>
-		</tr>		
+		</tr>	
 
         <?php
             $valid_json = (isset($office_campaign->datajson_status->valid_json)) ? $office_campaign->datajson_status->valid_json : null;
@@ -204,11 +204,14 @@
 			        echo 'Only showing first 50 validation errors: <br><br>';			        
 			    }
 			    
-			    $count = 1;
 			    foreach ($datajson_errors as $error) {
-                    echo sprintf("[%s] %s\n", $error->property, $error->message);
+                    if (is_string($error)){
+                        echo $error;
+                    } else {
+                        echo sprintf("[%s] %s\n", $error->property, $error->message);    
+                    }
+                    
                     echo "<br>";
-                    $count++;
 			    }
     			    
 			?>
@@ -218,7 +221,17 @@
 		</tr>	
 		<?php endif; ?>	
 			
-		
+        <?php if(!empty($office_campaign->expected_datajson_status->download_content_length)): ?>
+        <tr>
+            <th>File Size</th>
+            <td>
+                <span>
+                    <?php echo human_filesize($office_campaign->expected_datajson_status->download_content_length)?>
+                </span>         
+            </td>
+        </tr>   
+        <?php endif; ?>		
+
 		<tr>
 			<th>Data.json Notes</th>
 			<td><?php echo '' ?></td>

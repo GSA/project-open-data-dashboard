@@ -367,10 +367,14 @@ class Campaign extends CI_Controller {
 		
 			foreach ($offices as $office) {
 				
-				// initialize update object
-                $update = $this->campaign->datagov_model();				
-				$update['office_id'] = $office->id;
-    
+				// initialize update object  
+
+				$update = $this->campaign->datagov_office($office->id);
+
+    			if(!$update){
+    				$update = $this->campaign->datagov_model();				
+					$update->office_id = $office->id;    									
+    			}
 	
 				$url =  parse_url($office->url);
 				$url = $url['scheme'] . '://' . $url['host'];
@@ -404,28 +408,28 @@ class Campaign extends CI_Controller {
             		$status['expected_url'] = $expected_datajson_url;
 
                     // Save current update status in case things break during json_status 
-    				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null; 
+    				$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
 				
     				if ($this->environment == 'terminal') {
-    					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
+    					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
     				}				
 				
     				$this->campaign->update_status($update);
 				           
 
                     // Check JSON status
-                    $real_url = ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
-                    $status = $this->json_status($status, $real_url);
+                    $real_url 				= ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
+                    $status 				= $this->json_status($status, $real_url);
             		$status['url']          = $expected_datajson_url;
             		$status['expected_url'] = $expected_datajson_url;                
 
-    				$update['datajson_status'] = (!empty($status)) ? json_encode($status) : null; 
-    				$update['datajson_errors'] = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
+    				$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
+    				$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
     				if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
                 
                 
     				if ($this->environment == 'terminal') {
-    					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datajson_status'] . PHP_EOL . PHP_EOL;
+    					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
     				}                
                 
                     $this->campaign->update_status($update);
@@ -450,15 +454,13 @@ class Campaign extends CI_Controller {
             		$page_status = $this->campaign->uri_header($page_status_url);
             		$page_status['expected_url'] = $page_status_url;
 
-    				$update['datapage_status'] = (!empty($page_status)) ? json_encode($page_status) : null;
+    				$update->datapage_status = (!empty($page_status)) ? json_encode($page_status) : null;
 				
     				if ($this->environment == 'terminal') {
-    					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['datapage_status'] . PHP_EOL . PHP_EOL;
+    					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datapage_status . PHP_EOL . PHP_EOL;
     				}				
 				
-    				// Instead of hacking together an upsert or preloading existing status data, 
-    				// let's just be really inefficient and do a lookup for each record			
-				
+    							
     				$this->campaign->update_status($update);
 				
 			    }
@@ -481,14 +483,11 @@ class Campaign extends CI_Controller {
              		$page_status = $this->campaign->uri_header($digitalstrategy_status_url);
              		$page_status['expected_url'] = $digitalstrategy_status_url;
 
-     				$update['digitalstrategy_status'] = (!empty($page_status)) ? json_encode($page_status) : null;
+     				$update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status) : null;
 
      				if ($this->environment == 'terminal') {
-     					echo 'Attempting to set ' . $update['office_id'] . ' with ' . $update['digitalstrategy_status'] . PHP_EOL . PHP_EOL;
+     					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->digitalstrategy_status . PHP_EOL . PHP_EOL;
      				}				
-
-     				// Instead of hacking together an upsert or preloading existing status data, 
-     				// let's just be really inefficient and do a lookup for each record			
 
      				$this->campaign->update_status($update);
 
@@ -525,7 +524,7 @@ class Campaign extends CI_Controller {
 
 		if($status['http_code'] == 200) {
 		    
-			$validation = $this->campaign->validate_datajson_new($status['url']);
+			$validation = $this->campaign->validate_datajson($status['url']);
             //var_dump($validation); exit;
 			if(!empty($validation)) {
 				$status['valid_json'] = true;
@@ -542,30 +541,18 @@ class Campaign extends CI_Controller {
 	}
 
 
-	public function validate($datajson = null) {
+	public function validate($datajson_url = null, $datajson = null, $headers = null) {
 
-		
-		$datajson 		= (isset($_POST['datajson'])) ? $_POST['datajson'] : false; 
-		
-		if (isset($_POST['datajson_url'])) {
-			$datajson_url = $_POST['datajson_url'];
-			
-			if ($datajson = json_decode(file_get_contents($datajson_url, false))) {
-				$datajson = json_encode($datajson);
-			}
+        $this->load->model('campaign_model', 'campaign');
 
+		$datajson 		= (isset($_POST['datajson'])) ? $_POST['datajson'] : $datajson;
+		$datajson_url   = (isset($_POST['datajson_url'])) ? $_POST['datajson_url'] : $datajson_url; 
 
-		} 
+		if($datajson OR $datajson_url) {
+			$validation = $this->campaign->validate_datajson($datajson, $datajson_url, $headers);
+		}
 
-		// check to see if we have $datajson
-
-		// check to see if it's actually json
-
-		// if it is run validator
-		if($datajson) {
-
-	        $this->load->model('campaign_model', 'campaign');
-			$validation = $this->campaign->jsonschema_validator($datajson);
+		if(!empty($validation)) {
 
 	     	header('Content-type: application/json');
 	        print json_encode($validation);
