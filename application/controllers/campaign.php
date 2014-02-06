@@ -549,7 +549,7 @@ class Campaign extends CI_Controller {
 		$datajson_url   = (isset($_POST['datajson_url'])) ? $_POST['datajson_url'] : $datajson_url; 
 
 		if($datajson OR $datajson_url) {
-			$validation = $this->campaign->validate_datajson($datajson, $datajson_url, $headers);
+			$validation = $this->campaign->validate_datajson($datajson_url, $datajson, $headers);
 		}
 
 		if(!empty($validation)) {
