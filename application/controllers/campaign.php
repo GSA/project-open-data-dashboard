@@ -385,7 +385,7 @@ class Campaign extends CI_Controller {
                 ################ datajson ################
                 */			
 			
-			    if ($component == 'all' || $component == 'datajson') {
+			    if ($component == 'all' || $component == 'datajson' || $component == 'datajson-refresh') {
 			        			        
     				$expected_datajson_url = $url . '/data.json';
 				
@@ -411,7 +411,7 @@ class Campaign extends CI_Controller {
             		$reload = true;
 
             		// Check to see if the file has been updated since last time
-            		if( !empty($status['filetime']) ) {
+            		if( !empty($status['filetime']) && $component !== 'datajson-refresh') {
             			if ($old_status = json_decode($update->datajson_status)) {
             				if ($status['filetime'] == $old_status->filetime) {
             					$reload = false;
