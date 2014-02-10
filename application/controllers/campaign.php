@@ -421,7 +421,8 @@ class Campaign extends CI_Controller {
                     $real_url 				= ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
                     $status 				= $this->json_status($status, $real_url);
             		$status['url']          = $expected_datajson_url;
-            		$status['expected_url'] = $expected_datajson_url;                
+            		$status['expected_url'] = $expected_datajson_url;   
+					$status['last_crawl']	= mktime();
 
     				$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
     				$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				

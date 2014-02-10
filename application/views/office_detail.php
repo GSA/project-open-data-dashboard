@@ -232,6 +232,32 @@
         </tr>   
         <?php endif; ?>		
 
+
+        <?php if(!empty($office_campaign->expected_datajson_status->filetime)): ?>
+        <tr>
+            <th>Last modified</th>
+            <td>
+                <span>
+                    <?php echo date("l, d-M-Y H:i:s T", $office_campaign->expected_datajson_status->filetime)?>
+                </span>         
+            </td>
+        </tr>   
+        <?php endif; ?> 
+
+
+        <?php if(!empty($office_campaign->expected_datajson_status->last_crawl)): ?>
+        <tr>
+            <th>Last crawl</th>
+            <td>
+                <span>
+                    <?php echo date("l, d-M-Y H:i:s T", $office_campaign->expected_datajson_status->last_crawl)?>
+                </span>         
+            </td>
+        </tr>   
+        <?php endif; ?>         
+
+
+
 		<tr>
 			<th>Data.json Notes</th>
 			<td><?php echo '' ?></td>
