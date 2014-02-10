@@ -407,33 +407,55 @@ class Campaign extends CI_Controller {
             		$status['url']          = $expected_datajson_url;
             		$status['expected_url'] = $expected_datajson_url;
 
-                    // Save current update status in case things break during json_status 
-    				$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
-				
-    				if ($this->environment == 'terminal') {
-    					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-    				}				
-				
-    				$this->campaign->update_status($update);
-				           
 
-                    // Check JSON status
-                    $real_url 				= ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
-                    $status 				= $this->json_status($status, $real_url);
-            		$status['url']          = $expected_datajson_url;
-            		$status['expected_url'] = $expected_datajson_url;   
-					$status['last_crawl']	= mktime();
+            		$reload = true;
 
-    				$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
-    				$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
-    				if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
-                
-                
-    				if ($this->environment == 'terminal') {
-    					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-    				}                
-                
-                    $this->campaign->update_status($update);
+            		// Check to see if the file has been updated since last time
+            		if( !empty($status['filetime']) ) {
+            			if ($old_status = json_decode($update->datajson_status)) {
+            				if ($status['filetime'] == $old_status->filetime) {
+            					$reload = false;
+
+			    				if ($this->environment == 'terminal') {
+			    					echo 'Nothing to update for ' . $update->office_id . ' on ' . $status['url'] . PHP_EOL . PHP_EOL;
+			    				}
+
+            				}
+            			}
+            		}
+
+            		if($reload) {
+
+	                    // Save current update status in case things break during json_status 
+	    				$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
+					
+	    				if ($this->environment == 'terminal') {
+	    					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
+	    				}				
+					
+	    				$this->campaign->update_status($update);
+					           
+
+	                    // Check JSON status
+	                    $real_url 				= ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
+	                    $status 				= $this->json_status($status, $real_url);
+	            		$status['url']          = $expected_datajson_url;
+	            		$status['expected_url'] = $expected_datajson_url;   
+						$status['last_crawl']	= mktime();
+
+	    				$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
+	    				$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
+	    				if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
+	                
+	                
+	    				if ($this->environment == 'terminal') {
+	    					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
+	    				}                
+	                
+	                    $this->campaign->update_status($update);
+
+            		}
+
 				
 				}
 
