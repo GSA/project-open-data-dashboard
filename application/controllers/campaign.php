@@ -342,7 +342,7 @@ class Campaign extends CI_Controller {
     
 
     /*
-    $component can be datajson, datapage, digitalstrategy
+    $id can be all, cfo-act, or a specific id / $component can be datajson, datajson-refresh, datapage, digitalstrategy
     */
 	public function status($id = null, $component = null) {
 		
@@ -355,8 +355,13 @@ class Campaign extends CI_Controller {
 				
 		$this->db->select('url, id');
 		
-		if($id != 'all') {
-    		$this->db->where('id', $id);					    
+		// Filter for certain offices
+		if($id == 'cfo-act') {
+			$this->db->where('cfo_act_agency', 'true');	
+		}
+
+		if (is_numeric($id)) {
+			$this->db->where('id', $id);	
 		}
 		
 				
