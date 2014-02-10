@@ -180,8 +180,8 @@ class campaign_model extends CI_Model {
 				$errors[] = "The URL for the data.json file is not accessible";
 			}			
 
-			// Set max size around 7mb
-			if($datajson_header['download_content_length'] > 7000000) {
+			// Set max size around 5mb
+			if($datajson_header['download_content_length'] > 5000000) {
 				
 				$filesize = human_filesize($datajson_header['download_content_length']);
 				$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";		
