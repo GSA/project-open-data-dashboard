@@ -180,6 +180,14 @@ class campaign_model extends CI_Model {
 				$errors[] = "The URL for the data.json file is not accessible";
 			}			
 
+
+			// Load the JSON
+			$datajson = file_get_contents($datajson_url, false);
+
+			if(empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < 0) {
+				$datajson_header['download_content_length'] = strlen($datajson);
+			}			
+
 			// Set max size around 5mb
 			if($datajson_header['download_content_length'] > 5000000) {
 				
@@ -189,10 +197,6 @@ class campaign_model extends CI_Model {
 
 			if(!empty($errors)) {
 				return array('valid' => false, 'errors' => $errors);				
-			}
-			
-			if ($datajson = json_decode(file_get_contents($datajson_url, false))) {			
-				$datajson = json_encode($datajson);
 			}
 
 
