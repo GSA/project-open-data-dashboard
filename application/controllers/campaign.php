@@ -349,7 +349,11 @@ class Campaign extends CI_Controller {
 		// enforce explicit component selection
 		if(empty($component)) {
 		    show_404('status', false);    		
-		}		
+		}	
+
+		if($component == 'download' || $component == 'download-refresh' ) {
+			$this->load->helper('file');
+		}
 				
 		$this->load->model('campaign_model', 'campaign');			
 				
@@ -390,7 +394,7 @@ class Campaign extends CI_Controller {
                 ################ datajson ################
                 */			
 			
-			    if ($component == 'all' || $component == 'datajson' || $component == 'datajson-refresh') {
+			    if ($component == 'all' || $component == 'datajson' || $component == 'datajson-refresh' || $component == 'download' || $component == 'download-refresh') {
 			        			        
     				$expected_datajson_url = $url . '/data.json';
 				
@@ -429,35 +433,132 @@ class Campaign extends CI_Controller {
             			}
             		}
 
+            		if ($component == 'download-refresh') {
+            			$reload = true;
+            		}
+
             		if($reload) {
 
-	                    // Save current update status in case things break during json_status 
-	    				$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
-					
-	    				if ($this->environment == 'terminal') {
-	    					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-	    				}				
-					
-	    				$this->campaign->update_status($update);
-					           
+		                $real_url = ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
 
-	                    // Check JSON status
-	                    $real_url 				= ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
-	                    $status 				= $this->json_status($status, $real_url);
-	            		$status['url']          = $expected_datajson_url;
-	            		$status['expected_url'] = $expected_datajson_url;   
-						$status['last_crawl']	= mktime();
 
-	    				$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
-	    				$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
-	    				if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
-	                
-	                
-	    				if ($this->environment == 'terminal') {
-	    					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-	    				}                
-	                
-	                    $this->campaign->update_status($update);
+
+		                /*
+                		################ download ################
+                		*/	
+            			if ($component == 'download' || $component == 'download-refresh') {
+
+            				if(!($status['http_code'] == 200)) {
+
+			    				if ($this->environment == 'terminal') {
+			    					echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
+			    				}
+
+            					continue;
+            				}
+
+            				// download and version this data.json file. 
+            				
+            				$download_dir = $this->config->item('download_dir');
+            				$crawl_date = date("Y-m-d");
+            				$directory = $download_dir . '/' . $crawl_date;
+            				$filepath = $directory . '/' . $office->id . '.json';           				
+
+            				if(!get_dir_file_info($directory)) {
+
+            					if ($this->environment == 'terminal') {
+			    					echo 'Creating directory ' . $directory . PHP_EOL;
+			    				}
+
+            					mkdir($directory);
+            				}
+           				
+
+			    			if ($this->environment == 'terminal') {
+			    				echo 'Attempting to download ' . $real_url . ' to ' . $filepath . PHP_EOL;
+			    			}
+
+
+							$opts = array(
+							  'http'=>array(
+							    'method'=>"GET",
+							    'user_agent'=>"Data.gov data.json crawler"							              
+							  )
+							);
+
+							$context = stream_context_create($opts);			    			
+
+			    			$copy = fopen($real_url, 'rb', false, $context);
+			    			$paste = fopen($filepath, 'wb');
+
+			    			// If we can't read from this file, skip 
+							if ($copy===false) {
+
+								if ($this->environment == 'terminal') {
+			    					echo 'Could not read from ' . $real_url . PHP_EOL;
+			    				}
+
+			    				continue;
+							}
+
+							// If we can't write to this file, skip 
+							if ($paste===false) {
+
+								if ($this->environment == 'terminal') {
+			    					echo 'Could not read from ' . $real_url . PHP_EOL;
+			    				}
+
+			    				continue;
+							}
+
+
+        					while (!feof($copy)) {
+        					    if (fwrite($paste, fread($copy, 1024)) === FALSE) {
+        					           
+        					    		if ($this->environment == 'terminal') {        					    			
+	    									echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
+	    								}
+
+        					       }
+        					}
+        					fclose($copy);
+        					fclose($paste);
+
+
+
+  							if ($this->environment == 'terminal') {
+			    				echo 'Done' . PHP_EOL . PHP_EOL;
+			    			}
+
+            			} else {
+            				// Save current update status in case things break during json_status 
+	    					$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
+						
+	    					if ($this->environment == 'terminal') {
+	    						echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
+	    					}				
+						
+	    					$this->campaign->update_status($update);
+					    	       
+	
+	                    	// Check JSON status
+	                    	$status 				= $this->json_status($status, $real_url);
+	            			$status['url']          = $expected_datajson_url;
+	            			$status['expected_url'] = $expected_datajson_url;   
+							$status['last_crawl']	= mktime();
+	
+	    					$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
+	    					$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
+	    					if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
+	                	
+	                	
+	    					if ($this->environment == 'terminal') {
+	    						echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
+	    					}                
+	                	
+	                    	$this->campaign->update_status($update);
+            			}
+
 
             		}
 

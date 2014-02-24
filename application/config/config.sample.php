@@ -1,5 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+$config['download_dir'] = '/var/www/project-open-data-dashboard/downloads';
 $config['import_active'] = true;
 
 $config['google_analytics_id'] = ''; // UA-xxxxxxx-xx
