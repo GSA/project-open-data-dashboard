@@ -707,23 +707,9 @@ class Campaign extends CI_Controller {
 
 				$json_old = urlencode($json_old);
 				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . '&rows=200';				
-
-   				if ($this->environment == 'terminal') {
-     				echo 'Downloading ' . $json_old . PHP_EOL;
-     			}
-
 				$json_old 	= curl_from_json($json_old, false);
 
-
-   				if ($this->environment == 'terminal') {
-     				echo 'Downloading ' . $datajson_new . PHP_EOL;
-     			}
-
 				$datajson_new 	= curl_from_json($datajson_new, false);
-
-   				if ($this->environment == 'terminal') {
-     				echo 'Analyzing... ' . PHP_EOL . PHP_EOL;
-     			}
 
      			$changeset = 0;
      			$match_count = 0;
@@ -764,10 +750,13 @@ class Campaign extends CI_Controller {
 								if(!empty($datajson_entry->distribution) && is_array($datajson_entry->distribution)) {
 									
 									foreach($datajson_entry->distribution as $distribution) {
-										if ($resource->url == $distribution->accessURL && empty($matched_urls[$distribution->accessURL])) {
-											$matches[] = 'Match on URL for data.json id ' . $datajson_entry->identifier . ': '. $distribution->accessURL;
+										if(!empty($distribution->accessURL)) {
+											if ($resource->url == $distribution->accessURL && empty($matched_urls[$distribution->accessURL])) {
+												$matches[] = 'Match on URL for data.json id ' . $datajson_entry->identifier . ': '. $distribution->accessURL;
+											}
+											$matched_urls[$distribution->accessURL] = true;
 										}
-										$matched_urls[$distribution->accessURL] = true;
+										
 									}
 									if(is_array($datajson_entry->distribution)) {
 										reset($datajson_entry->distribution);	
@@ -783,7 +772,6 @@ class Campaign extends CI_Controller {
 							reset($datajson_new);	
 						}
 						
-						$match_count += count($matches);
 						$matchset = array();
 
 	     				if(!empty($matches)) {
@@ -792,7 +780,7 @@ class Campaign extends CI_Controller {
 	     					$matchset['matches'] = $matches;
 
 	     					$output['changeset'][] = $matchset;
-
+	     					$match_count++;
 	     				} else {
 							
 	     					$matchset['url'] = $old_json_url;
