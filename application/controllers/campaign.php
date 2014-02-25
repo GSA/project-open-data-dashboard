@@ -751,6 +751,16 @@ class Campaign extends CI_Controller {
 							$matched_urls = array();
 							foreach ($old_json->resources as $resource) {
 
+								if(empty($datajson_entry->distribution)) {
+									$datajson_entry->distribution = array();
+								}
+
+								if (!empty($datajson_entry->accessURL)) {
+									$distribution = new stdClass();
+									$distribution->accessURL = $datajson_entry->accessURL;
+									$datajson_entry->distribution[] = $distribution;
+								}
+
 								if(!empty($datajson_entry->distribution) && is_array($datajson_entry->distribution)) {
 									
 									foreach($datajson_entry->distribution as $distribution) {
