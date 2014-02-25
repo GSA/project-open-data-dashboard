@@ -694,6 +694,106 @@ class Campaign extends CI_Controller {
 	}
 
 
+	public function changeset($json_old = null, $datajson_new = null) {
+	
+		$json_old 		= ($this->input->get_post('json_old', TRUE)) ? $this->input->get_post('json_old', TRUE) : $json_old;
+		$datajson_new 	= ($this->input->get_post('datajson_new', TRUE)) ? $this->input->get_post('datajson_new', TRUE) : $datajson_new;
+
+		//$datajson_new = 'http://www.treasury.gov/jsonfiles/data.json';
+
+		echo '<pre>';
+
+		if($json_old && $datajson_new) {
+
+				$json_old = urlencode($json_old);
+				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . '&rows=200';				
+
+   				if ($this->environment == 'terminal') {
+     				echo 'Downloading ' . $json_old . PHP_EOL;
+     			}
+
+				$json_old 	= curl_from_json($json_old, false);
+
+
+   				if ($this->environment == 'terminal') {
+     				echo 'Downloading ' . $datajson_new . PHP_EOL;
+     			}
+
+				$datajson_new 	= curl_from_json($datajson_new, false);
+
+
+   				if ($this->environment == 'terminal') {
+     				echo 'Analyzing... ' . PHP_EOL . PHP_EOL;
+     			}
+
+     			$changeset = 0;
+
+				if ($json_old->result->results) {
+					foreach ($json_old->result->results as $old_json) {
+
+						$matches = array();
+						$old_json_url = 'http://catalog.data.gov/dataset/' . $old_json->name;						
+
+						foreach ($datajson_new as $datajson_entry) {
+							
+							// match on id
+							if ($datajson_entry->identifier == $old_json->id) {
+								$matches[] = 'Match on identifier: '. $datajson_entry->identifier;
+							} 
+
+							// match on URL
+							$matched_urls = array();
+							foreach ($old_json->resources as $resource) {
+
+								if(!empty($datajson_entry->distribution) && is_array($datajson_entry->distribution)) {
+									
+									foreach($datajson_entry->distribution as $distribution) {
+										if ($resource->url == $distribution->accessURL && empty($matched_urls[$distribution->accessURL])) {
+											$matches[] = 'Match on URL for data.json id ' . $datajson_entry->identifier . ': '. $distribution->accessURL;
+										}
+										$matched_urls[$distribution->accessURL] = true;
+									}
+									if(is_array($datajson_entry->distribution)) {
+										reset($datajson_entry->distribution);	
+									}									
+
+								}
+
+							}
+							reset($old_json->resources);
+
+						}
+						if(is_array($datajson_new)) {
+							reset($datajson_new);	
+						}
+						
+
+		   				//if ($this->environment == 'terminal') {
+		     				echo 'Looking for matches for ' . $old_json_url . PHP_EOL;
+		     			//}
+
+		     				if(!empty($matches)) var_dump($matches) . "\n\n\n";
+
+		     			$changeset++;
+					}
+				}
+
+		}
+
+		if(!empty($changeset)) {
+
+			echo '</pre>';
+	     	//header('Content-type: application/json');
+	        //print json_encode($changeset);
+	        exit;
+
+		} else {
+			$this->load->view('changeset');	    		
+        } 		
+
+	}	
+
+
 
 	/*
 	Crawl each record in a datajson file and save current version + validation results
