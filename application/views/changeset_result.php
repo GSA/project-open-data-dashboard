@@ -15,6 +15,10 @@
 <h3 style="color : #666">Data listings in data.json: <span style="color : #000"><?php echo $new_count ?></span></h3>
 <h3 style="color : #666">Matches: <span style="color : #000"><?php echo $match_count ?></span></h3>
 
+<h3 style="color : red">Removed: <?php echo ($old_count - $match_count) ?></h3>
+<h3 style="color : green">Added: <?php echo ($new_count - $match_count) ?></h3>
+
+
 <?php
 
 if(!empty($changeset)) {
