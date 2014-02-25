@@ -709,10 +709,15 @@ class Campaign extends CI_Controller {
 				$output['json_old_request'] = $json_old;
 
 				$json_old = urlencode($json_old);
-				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . '&rows=200';		
+				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . "%20AND%20-harvest_source_id:[''%20TO%20*]%20AND%20-type:harvest" . '&rows=200';		
 
-				$output['json_old_url'] = $json_old;
-				$output['datajson_new_url'] = $datajson_new;
+				$datajson_domain 				= parse_url($datajson_new);
+     			$output['datajson_domain'] 		= $datajson_domain['host']; 			
+				$output['json_old_url'] 		= $json_old;
+				$output['datajson_new_url'] 	= $datajson_new;
+
+
+
 
 				$json_old 	= curl_from_json($json_old, false);
 				$datajson_new 	= curl_from_json($datajson_new, false);
@@ -721,9 +726,10 @@ class Campaign extends CI_Controller {
      			$match_count = 0;
 
 
-				$output['new_count'] = count($datajson_new);
-				$output['old_count'] = $json_old->result->count;		
-				$output['changeset'] = array();
+				$output['match_count'] 	= $match_count;
+				$output['new_count'] 	= count($datajson_new);
+				$output['old_count'] 	= $json_old->result->count;		
+				$output['changeset'] 	= array();
 
 				if ($json_old->result->results) {
 					foreach ($json_old->result->results as $old_json) {

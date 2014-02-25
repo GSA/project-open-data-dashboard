@@ -14,13 +14,13 @@
 
                 <div class="form-group">
                     <label for="json_old">Old CKAN JSON URL - http://catalog.data.gov/api/3/action/package_search?q=</label>
-                    <input name="json_old" id="json_old" class="form-control">
+                    <input placeholder="organization:(neia-doe-gov OR doe-gov OR ornl-gov OR osti-gov)" name="json_old" id="json_old" class="form-control">
                 </div>
 
 
                 <div class="form-group">
                     <label for="datajson_new">New data.json URL</label>
-                    <input name="datajson_new" id="datajson_new" class="form-control">
+                    <input placeholder="http://energy.gov/data.json" name="datajson_new" id="datajson_new" class="form-control">
                 </div>                
 
                 <div class="form-group">

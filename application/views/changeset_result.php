@@ -7,7 +7,7 @@
       
       <div class="row">
         <div class="col-lg-12">
-          <h2>Changeset Report</h2>
+          <h2>Changeset Report for <?php echo $datajson_domain; ?></h2>
            
 
 <div style="margin-bottom : 2em; border-bottom : 1px solid #ccc">
