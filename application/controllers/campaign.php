@@ -701,10 +701,13 @@ class Campaign extends CI_Controller {
 
 		//$datajson_new = 'http://www.treasury.gov/jsonfiles/data.json';
 
-		echo '<pre>';
+		
 
 		if($json_old && $datajson_new) {
 
+
+				echo '<pre>';
+				
 				$json_old = urlencode($json_old);
 				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . '&rows=200';				
 
