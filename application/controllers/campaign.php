@@ -705,16 +705,21 @@ class Campaign extends CI_Controller {
 
 		if($json_old && $datajson_new) {
 
-				$json_old = urlencode($json_old);
-				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . '&rows=200';				
-				$json_old 	= curl_from_json($json_old, false);
+				$output = array();
+				$output['json_old_request'] = $json_old;
 
+				$json_old = urlencode($json_old);
+				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . '&rows=200';		
+
+				$output['json_old_url'] = $json_old;
+				$output['datajson_new_url'] = $datajson_new;
+
+				$json_old 	= curl_from_json($json_old, false);
 				$datajson_new 	= curl_from_json($datajson_new, false);
 
      			$changeset = 0;
      			$match_count = 0;
 
-     			$output = array();
 
 				$output['new_count'] = count($datajson_new);
 				$output['old_count'] = $json_old->result->count;		

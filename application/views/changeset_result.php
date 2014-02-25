@@ -10,14 +10,20 @@
           <h2>Changeset Report</h2>
            
 
+<div style="margin-bottom : 2em; border-bottom : 1px solid #ccc">
 
-<h3 style="color : #666">Data listings in CKAN: <span style="color : #000"><?php echo $old_count ?></span></h3>
-<h3 style="color : #666">Data listings in data.json: <span style="color : #000"><?php echo $new_count ?></span></h3>
-<h3 style="color : #666">Matches: <span style="color : #000"><?php echo $match_count ?></span></h3>
+    <h3 style="color : #666; margin-bottom : 0; padding-bottom : 0">Data listings in CKAN: <span style="color : #000"><?php echo $old_count ?></span></h3>
+    <div style="color: #666">source: <a style="color: #666" href="<?php echo $json_old_url; ?>"><?php echo $json_old_request; ?></a></div>
 
-<h3 style="color : red">Removed: <?php echo ($old_count - $match_count) ?></h3>
-<h3 style="color : green">Added: <?php echo ($new_count - $match_count) ?></h3>
+    <h3 style="color : #666; margin-bottom : 0; padding-bottom : 0">Data listings in data.json: <span style="color : #000"><?php echo $new_count ?></span></h3>
+    <div style="color: #666">source: <a style="color: #666" href="<?php echo $datajson_new_url ?>"><?php echo $datajson_new_url; ?></a></div>
 
+    <h3 style="color : blue">Matches: <span style="color : #000"><?php echo $match_count ?></span></h3>
+
+    <h3 style="color : red">Removed: <?php echo ($old_count - $match_count) ?></h3>
+    <h3 style="color : green">Added: <?php echo ($new_count - $match_count) ?></h3>
+
+</div>
 
 <?php
 
