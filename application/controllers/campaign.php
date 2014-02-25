@@ -705,9 +705,6 @@ class Campaign extends CI_Controller {
 
 		if($json_old && $datajson_new) {
 
-
-				echo '<pre>';
-				
 				$json_old = urlencode($json_old);
 				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . '&rows=200';				
 
@@ -724,12 +721,18 @@ class Campaign extends CI_Controller {
 
 				$datajson_new 	= curl_from_json($datajson_new, false);
 
-
    				if ($this->environment == 'terminal') {
      				echo 'Analyzing... ' . PHP_EOL . PHP_EOL;
      			}
 
      			$changeset = 0;
+     			$match_count = 0;
+
+     			$output = array();
+
+				$output['new_count'] = count($datajson_new);
+				$output['old_count'] = $json_old->result->count;		
+				$output['changeset'] = array();
 
 				if ($json_old->result->results) {
 					foreach ($json_old->result->results as $old_json) {
@@ -770,12 +773,25 @@ class Campaign extends CI_Controller {
 							reset($datajson_new);	
 						}
 						
+						$match_count += count($matches);
+						$matchset = array();
 
-		   				//if ($this->environment == 'terminal') {
-		     				echo 'Looking for matches for ' . $old_json_url . PHP_EOL;
-		     			//}
+	     				if(!empty($matches)) {
+	     					$matchset['url'] = $old_json_url;
+	     					$matchset['match'] = true;
+	     					$matchset['matches'] = $matches;
 
-		     				if(!empty($matches)) var_dump($matches) . "\n\n\n";
+	     					$output['changeset'][] = $matchset;
+
+	     				} else {
+							
+	     					$matchset['url'] = $old_json_url;
+	     					$matchset['match'] = false;
+
+	     					$output['changeset'][] = $matchset;
+
+
+	     				}	     				
 
 		     			$changeset++;
 					}
@@ -785,10 +801,11 @@ class Campaign extends CI_Controller {
 
 		if(!empty($changeset)) {
 
-			echo '</pre>';
-	     	//header('Content-type: application/json');
-	        //print json_encode($changeset);
-	        exit;
+			if(!empty($match_count)) {
+				$output['match_count'] = $match_count;
+			}
+
+	     	$this->load->view('changeset_result', $output);
 
 		} else {
 			$this->load->view('changeset');	    		
