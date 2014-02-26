@@ -185,7 +185,17 @@ class campaign_model extends CI_Model {
 
 			// Load the JSON
 			if(empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < $max_size) {
-				$datajson = file_get_contents($datajson_url, false);
+
+				$opts = array(
+							  'http'=>array(
+							    'method'=>"GET",
+							    'user_agent'=>"Data.gov data.json crawler"							              
+							  )
+							);
+
+				$context = stream_context_create($opts);	
+
+				$datajson = file_get_contents($datajson_url, false, $context);
 			}
 
 			if(!empty($datajson) && (empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < 0)) {
@@ -205,6 +215,32 @@ class campaign_model extends CI_Model {
 
 
 		}   
+
+		if ($datajson) {
+
+	        // Clean up the data a bit
+
+		    /*
+		    This is to help accomodate encoding issues, eg invalid newlines. See: 
+		    http://forum.jquery.com/topic/json-with-newlines-in-strings-should-be-valid#14737000000866332 
+		    http://stackoverflow.com/posts/17846592/revisions
+		    */
+		    $datajson = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($datajson)); 
+            //$data = str_replace(array("\r", "\n", "\\n", "\r\n"), " ", $data);	
+            //$data = preg_replace('!\s+!', ' ', $data);
+            //$data = str_replace(' "', '"', $data);            
+            $datajson = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($datajson));               
+		    
+            
+            /* 
+		    This is to replace any possible BOM "Byte order mark" that might be present
+		    See: http://stackoverflow.com/questions/10290849/how-to-remove-multiple-utf-8-bom-sequences-before-doctype
+		    */    
+            $bom = pack('H*','EFBBBF');
+            $datajson = preg_replace("/^$bom/", '', $datajson);
+			
+		}
+
 
 		if ($datajson && is_json($datajson)) {
 			return $this->campaign->jsonschema_validator($datajson);	
@@ -226,28 +262,7 @@ class campaign_model extends CI_Model {
 	        $retriever = new JsonSchema\Uri\UriRetriever;                    
 	        $schema = $retriever->retrieve('file://' . realpath('./schema/catalog.json'));
 		       
-	        // Clean up the data a bit
 
-		    /*
-		    This is to help accomodate encoding issues, eg invalid newlines. See: 
-		    http://forum.jquery.com/topic/json-with-newlines-in-strings-should-be-valid#14737000000866332 
-		    http://stackoverflow.com/posts/17846592/revisions
-		    */
-		    $data = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($data)); 
-            //$data = str_replace(array("\r", "\n", "\\n", "\r\n"), " ", $data);	
-            //$data = preg_replace('!\s+!', ' ', $data);
-            //$data = str_replace(' "', '"', $data);            
-            $data = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($data));               
-		    
-            
-            /* 
-		    This is to replace any possible BOM "Byte order mark" that might be present
-		    See: http://stackoverflow.com/questions/10290849/how-to-remove-multiple-utf-8-bom-sequences-before-doctype
-		    */    
-            $bom = pack('H*','EFBBBF');
-            $data = preg_replace("/^$bom/", '', $data);
-	
-    	 		    
         	 //header('Content-type: application/json');
         	 //print $data;
         	 //exit; 	 		    
