@@ -165,9 +165,9 @@ class campaign_model extends CI_Model {
 		}
 	}
 	
-	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null) {
+	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null) {
 
-		
+
 		if ($datajson_url) {
 			
 
@@ -241,9 +241,9 @@ class campaign_model extends CI_Model {
 			
 		}
 
-
+		
 		if ($datajson && is_json($datajson)) {
-			return $this->campaign->jsonschema_validator($datajson);	
+			return $this->campaign->jsonschema_validator($datajson, $schema);	
 		} else {
 			return false;
 		}
@@ -252,15 +252,19 @@ class campaign_model extends CI_Model {
 
 	}	
 	
-	public function jsonschema_validator($data) {
+	public function jsonschema_validator($data, $schema = null) {
 
         
-
 		if($data) {	 
 
+			$schema_variant = (!empty($schema)) ? "$schema/" : "";
+			$path = './schema/' . $schema_variant . 'catalog.json';
+
+			//echo $path; exit;
+
 			// Get the schema and data as objects
-	        $retriever = new JsonSchema\Uri\UriRetriever;                    
-	        $schema = $retriever->retrieve('file://' . realpath('./schema/catalog.json'));
+	        $retriever = new JsonSchema\Uri\UriRetriever;       	                   
+	        $schema = $retriever->retrieve('file://' . realpath($path));
 		       
 
         	 //header('Content-type: application/json');
@@ -273,7 +277,7 @@ class campaign_model extends CI_Model {
                 // If you use $ref or if you are unsure, resolve those references here
                 // This modifies the $schema object
                 $refResolver = new JsonSchema\RefResolver($retriever);
-                $refResolver->resolve($schema, 'file://' . __DIR__ . '/../../schema/');
+                $refResolver->resolve($schema, 'file://' . __DIR__ . '/../../schema/' . $schema_variant);
 
                 // Validate
                 $validator = new JsonSchema\Validator();

@@ -670,15 +670,17 @@ class Campaign extends CI_Controller {
 	}
 
 
-	public function validate($datajson_url = null, $datajson = null, $headers = null) {
+	public function validate($datajson_url = null, $datajson = null, $headers = null, $schema = null) {
 
         $this->load->model('campaign_model', 'campaign');		
 		
 		$datajson 		= ($this->input->post('datajson', TRUE)) ? $this->input->post('datajson', TRUE) : $datajson;
+		$schema 		= ($this->input->post('schema', TRUE)) ? $this->input->post('schema', TRUE) : $schema;
+
 		$datajson_url 	= ($this->input->get_post('datajson_url', TRUE)) ? $this->input->get_post('datajson_url', TRUE) : $datajson_url;
 
 		if($datajson OR $datajson_url) {
-			$validation = $this->campaign->validate_datajson($datajson_url, $datajson, $headers);
+			$validation = $this->campaign->validate_datajson($datajson_url, $datajson, $headers, $schema);
 		}
 
 		if(!empty($validation)) {

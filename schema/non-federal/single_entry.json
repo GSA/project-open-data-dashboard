@@ -4,7 +4,7 @@
     "title": "Common Core Metadata Schema",
     "description": "The metadata format for all federal open data. Validates a single JSON object entry (as opposed to entire Data.json catalog).",
     "type": "object",
-    "required": ["title", "description", "keyword", "modified", "publisher", "contactPoint", "mbox", "identifier", "accessLevel"],
+    "required": ["title", "description", "license", "publisher", "contactPoint", "mbox", "identifier", "accessLevel"],
     "properties": {
         "accessLevel": {
             "description":"The degree to which this dataset could be made publicly-available, regardless of whether it has been made available. Choices: public (Data asset is or could be made publicly available to all without restrictions), restricted public (Data asset is available under certain use restrictions), or non-public (Data asset is not available to members of the public)",
@@ -178,13 +178,21 @@
         "keyword": {
             "title": "Tags",
             "description": "Tags (or keywords) help users discover your dataset; please include terms that would be used by technical and non-technical users.",
-            "type": "array",
-             "items": {
-                 "type": "string", 
-                 "minLength": 1
-             },
-             "minItems": 1,
-             "uniqueItems": true
+            "anyOf": [
+                {
+                   "type": "array",
+                   "items": {
+                       "type": "string", 
+                       "minLength": 1
+                   },
+                   "minItems": 1,
+                   "uniqueItems": true
+                },
+                {
+                    "type": "null"                    
+                }
+              ]             
+            
         },
         "landingPage": {
             "title":"Homepage URL",
