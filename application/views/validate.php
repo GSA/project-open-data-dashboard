@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <label for="datajson">Schema</label>
                     <select name="schema">
-                        <option value="" selected="selected">Select an Option</option>
+                        <option value="" selected="selected">Project Open Data</option>
                         <option value="non-federal">Non-Federal</option>
                         <option value="federal">Federal</option>
                     </select>
@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <label for="datajson">Schema</label>
                     <select name="schema">
-                        <option value="" selected="selected">Select an Option</option>
+                        <option value="" selected="selected">Project Open Data</option>
                         <option value="non-federal">Non-Federal</option>
                         <option value="federal">Federal</option>
                     </select>
