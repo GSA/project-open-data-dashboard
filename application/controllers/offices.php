@@ -17,7 +17,7 @@ class Offices extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
+	public function index($output=null)
 	{
 		
 		$view_data = array();
@@ -66,12 +66,34 @@ class Offices extends CI_Controller {
 		   $query->free_result();		
 		}			
 		
-		
+		if ($output == 'json') {
+			return $view_data;
+		}
 		
 		$this->load->view('office_list', $view_data);
 	}
 	
 	
+	public function export() {
+		$listing = $this->index('json');
+
+		$output = array();
+
+		foreach ($listing as $group) {
+
+			foreach ($group as $office) {
+				$output[] = array("key" => $office->id, "name" => $office->name);
+			}
+
+		}
+
+		header('Content-type: application/json');
+		print json_encode($output);		
+		exit;
+
+	}
+
+
 	public function detail($id) {
 		
 		$this->load->helper('api');		
