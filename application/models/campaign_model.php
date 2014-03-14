@@ -176,9 +176,9 @@ class campaign_model extends CI_Model {
 
 			$errors = array();
 
-			if($datajson_header['http_code'] !== 200) {
-				$errors[] = "The URL for the data.json file is not accessible";
-			}			
+			//if($datajson_header['http_code'] !== 200) {
+			//	$errors[] = "The URL for the data.json file is not accessible";
+			//}			
 
 			// Max file size - TODO add as config variable
 			$max_size = 5000000; 
