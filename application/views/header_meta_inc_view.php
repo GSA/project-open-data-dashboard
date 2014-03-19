@@ -19,7 +19,7 @@
         </style>
         <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 
-        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/main.css?refresh=now">
         <link rel="shortcut icon" href="/favicon.ico" />
 
         <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
