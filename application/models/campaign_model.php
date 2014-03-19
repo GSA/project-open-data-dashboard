@@ -210,7 +210,7 @@ class campaign_model extends CI_Model {
 			}     	
 
 			if(!empty($errors)) {
-				return array('valid' => false, 'errors' => $errors);				
+				return array('valid' => false, 'fail' => $errors);				
 			}
 
 

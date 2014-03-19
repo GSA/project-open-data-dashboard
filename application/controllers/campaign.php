@@ -698,6 +698,10 @@ class Campaign extends CI_Controller {
 
 				$this->load->view('validate_response', array('validation' => $validation));	 
 
+			} else if (!empty($validation['fail'])) {
+					
+				$this->load->view('validate_response', array('validation' => $validation));
+
 			} else {
 
 		     	header('Content-type: application/json');

@@ -12,6 +12,18 @@
 
             <p>Only displaying first 100 results</p>
 
+            <?php if(!empty($validation['fail'])) : ?>
+
+                <?php foreach ($validation['fail'] as $fail) {   ?>
+
+                    <p><?php echo $fail ?></p>
+
+                <?php } ?>
+
+
+            <?php endif; ?>
+
+
             <?php 
                 if(!empty($validation['errors'])) {
 
@@ -105,11 +117,11 @@
                     </div>
 
 
-        <?php } else { ?>
-
-            Valid!
-
         <?php } ?>
+
+        <?php if(!empty($validation['fail']) && !empty($validation['errors'])) : ?>
+            100% Valid!
+        <?php endif; ?>
 
         </div>
     </div>      
