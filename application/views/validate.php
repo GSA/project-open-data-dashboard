@@ -10,7 +10,7 @@
           <h2>Validator</h2>
             
 
-            <form action="/validate" method="post" role="form">
+            <form action="/validate" method="get" role="form">
                 <div class="form-group">
                     <label for="datajson">data.json JSON</label>
                     <textarea class="form-control" id="datajson" name="datajson" style="height : 30em; width: 100%"></textarea>
@@ -34,7 +34,7 @@
 
             <div style="margin : 2em 0">OR</div>
 
-            <form action="/validate" method="post" role="form">
+            <form action="/validate" method="get" role="form">
 
 
                 <div class="form-group">
@@ -48,7 +48,7 @@
 
                 <div class="form-group">
                     <label class="radio-inline">
-                        <input type="radio" id="output-browser" name="output" value="browser"> View in Browser
+                        <input checked="checked" type="radio" id="output-browser" name="output" value="browser"> View in Browser
                     </label>
 
                     <label class="radio-inline">
