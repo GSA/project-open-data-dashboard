@@ -31,9 +31,7 @@
 
                     <div class="validation-source col-md-6">
                         <h4>Report for identifier: <?php echo $validation['source'][$key]->identifier ?></h4>
-                        <pre>
-                            <?php print prettyPrint(json_encode($validation['source'][$key])); ?>           
-                        </pre>
+                        <pre><?php print prettyPrint(json_encode($validation['source'][$key])); ?></pre>
                     </div>
 
                     <div class="validation-errors col-md-6">
