@@ -165,7 +165,7 @@ class campaign_model extends CI_Model {
 		}
 	}
 	
-	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null) {
+	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false) {
 
 
 		if ($datajson_url) {
@@ -243,7 +243,15 @@ class campaign_model extends CI_Model {
 
 		
 		if ($datajson && is_json($datajson)) {
-			return $this->campaign->jsonschema_validator($datajson, $schema);	
+
+			$response = $this->campaign->jsonschema_validator($datajson, $schema);	
+
+			if ($return_source) {
+				$response['source'] = json_decode($datajson);
+			}
+
+			return $response;
+
 		} else {
 			return false;
 		}
@@ -286,7 +294,7 @@ class campaign_model extends CI_Model {
                 if ($validator->isValid()) {
                     $results = array('valid' => true, 'errors' => null);
                 } else {                
-                    $errors =  array_slice($validator->getErrors(), 0, 50);                                
+                    $errors =  array_slice($validator->getErrors(), 0, 100);                                
                     $results = array('valid' => false, 'errors' => $errors);                    
                 }    		
             

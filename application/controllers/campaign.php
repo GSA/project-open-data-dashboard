@@ -670,7 +670,7 @@ class Campaign extends CI_Controller {
 	}
 
 
-	public function validate($datajson_url = null, $datajson = null, $headers = null, $schema = null) {
+	public function validate($datajson_url = null, $datajson = null, $headers = null, $schema = null, $output = 'browser') {
 
         $this->load->model('campaign_model', 'campaign');		
 		
@@ -678,20 +678,78 @@ class Campaign extends CI_Controller {
 		$schema 		= ($this->input->post('schema', TRUE)) ? $this->input->post('schema', TRUE) : $schema;
 	
 		$datajson_url 	= ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url') : $datajson_url;
+		$output_type 	= ($this->input->get_post('output')) ? $this->input->get_post('output') : $output;		
+
+
+		$return_source 	= ($output_type == 'browser') ? true : false;
 
 		if($datajson OR $datajson_url) {
-			$validation = $this->campaign->validate_datajson($datajson_url, $datajson, $headers, $schema);
+			$validation = $this->campaign->validate_datajson($datajson_url, $datajson, $headers, $schema, $return_source);
 		}
 
 		if(!empty($validation)) {
 
-	     	header('Content-type: application/json');
-	        print json_encode($validation);
-	        exit;
+
+			if (!empty($validation['errors'])) {
+				$validation['errors'] = $this->process_validation_errors($validation['errors']);	
+			}	
+
+			if ($output_type == 'browser' && !empty($validation['source'])) {
+
+				$this->load->view('validate_response', array('validation' => $validation));	 
+
+			} else {
+
+		     	header('Content-type: application/json');
+		        print json_encode($validation);
+		        exit;
+
+			}
 
 		} else {
 			$this->load->view('validate');	    		
         } 		
+
+	}
+
+
+	public function process_validation_errors($errors) {
+
+
+		$output = array();
+
+		foreach ($errors as $error) {
+
+			if(is_numeric($error['property'])) {
+				$key = $error['property'];
+				$field = 'ALL';				
+			} else {
+
+				$key = substr($error['property'], 0, strpos($error['property'], '.'));
+				$full_field = substr($error['property'], strpos($error['property'], '.') + 1);
+
+				if (strpos($full_field, '[')) {
+					$field 		= substr($full_field, 0, strpos($full_field, '[') );
+					$subfield 	= 'child-' . get_between($full_field, '[', ']');
+				} else {
+					$field = $full_field;
+				}
+
+			}
+
+			if (isset($subfield)) {
+				$output[$key][$field]['sub_fields'][$subfield][] = $error['message'];	
+			} else {
+				$output[$key][$field]['errors'][] = $error['message'];
+			}
+
+			unset($subfield);
+			
+
+
+		}
+
+		return $output;
 
 	}
 

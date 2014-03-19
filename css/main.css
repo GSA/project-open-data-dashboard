@@ -8,9 +8,22 @@
 
 
 
+.validation-record {
+	border-bottom : 1px solid #ccc; 
+	margin-bottom : 2em; 
+	padding-bottom : 2em
+}
 
+.validation-errors ul.validation-full-record {
+	border : 1px solid #DDDDDD; 
+	background-color : #F9F9F9; 
+	margin-bottom : 2em; 
+	padding : 1em;
+}
 
-
+.validation-errors ul.validation-full-record li {
+	margin : .5em 1em;
+}
 
 
 

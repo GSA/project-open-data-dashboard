@@ -26,6 +26,7 @@
                 </div>
 
                 <div class="form-group">
+                    <input type="hidden" name="output" value="browser">
                     <input type="submit" value="Validate JSON" class="btn btn-primary">
                 </div>
 
@@ -45,14 +46,24 @@
                     </select>
                 </div>
 
-                    <label for="datajson_url">data.json URL</label>
-                    <div class="input-group">
-                        <input name="datajson_url" id="datajson_url" class="form-control">
-                        <span class="input-group-btn">
-                            <input type="submit" class="btn btn-default" value="Validate URL">   
-                        </span>
-                        
-                    </div>
+                <div class="form-group">
+                    <label class="radio-inline">
+                        <input type="radio" id="output-browser" name="output" value="browser"> View in Browser
+                    </label>
+
+                    <label class="radio-inline">
+                        <input type="radio" id="output-browser" name="output" value="json"> Output JSON
+                    </label>
+                </div>
+
+                <label for="datajson_url">data.json URL</label>
+                <div class="input-group">
+                    <input name="datajson_url" id="datajson_url" class="form-control">
+                    <span class="input-group-btn">
+                        <input type="submit" class="btn btn-default" value="Validate URL">   
+                    </span>
+                    
+                </div>
             </form>            
 
             
