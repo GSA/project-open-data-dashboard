@@ -698,7 +698,7 @@ class Campaign extends CI_Controller {
 
 				$this->load->view('validate_response', array('validation' => $validation));	 
 
-			} else if (!empty($validation['fail'])) {
+			} else if ($output_type == 'browser' && !empty($validation['fail'])) {
 					
 				$this->load->view('validate_response', array('validation' => $validation));
 
