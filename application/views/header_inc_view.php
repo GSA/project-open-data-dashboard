@@ -16,6 +16,7 @@
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li><a href="/offices">Agencies</a></li>
+        <li><a href="/validate">Validator</a></li>
         <li><a href="/docs">Documentation</a></li>
         <li><a href="/export">Export API</a></li>
         <li><a href="https://github.com/philipashlock/farm-server/issues">Feedback</a></li>        
