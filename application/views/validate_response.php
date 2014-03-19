@@ -75,6 +75,18 @@
 
                                             <li><?php echo $error_description ?></li>
                                         <?php } ?>
+
+
+                                        <?php if(!empty($description['sub_fields'])):?>
+                                            <li>Sub fields
+                                                <ul>
+                                                <?php foreach ($description['sub_fields'] as $sub_field => $sub_field_error) { ?>
+                                                    <li><strong><?php echo $sub_field ?>:</strong> <?php echo $sub_field_error[0] ?></li>
+                                                 <?php } ?>
+                                                </ul>
+                                            </li>
+                                        <?php endif; ?>
+
                                         </ul>
                                     </td>
                                 </tr>    
