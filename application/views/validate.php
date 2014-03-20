@@ -10,7 +10,7 @@
           <h2>Validator</h2>
             
 
-            <form action="/validate" method="get" role="form">
+            <form action="/validate" method="post" role="form">
                 <div class="form-group">
                     <label for="datajson">data.json JSON</label>
                     <textarea class="form-control" id="datajson" name="datajson" style="height : 30em; width: 100%"></textarea>
