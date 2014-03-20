@@ -119,7 +119,7 @@
 
         <?php } ?>
 
-        <?php if(!empty($validation['fail']) && !empty($validation['errors'])) : ?>
+        <?php if(empty($validation['fail']) && empty($validation['errors'])) : ?>
             100% Valid!
         <?php endif; ?>
 
