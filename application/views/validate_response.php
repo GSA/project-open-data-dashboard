@@ -34,12 +34,7 @@
 
                     $erroneous_record_count = count($validation['errors']);
             ?>
-
-                    <?php if($erroneous_record_count > 100): ?>
-                        <p class="text-danger">Only displaying first 100 invalid records</p>
-                    <?php else: ?>
-                        <p class="text-danger"><?php echo $erroneous_record_count;?> records are invalid</p>
-                    <?php endif; ?>
+                    <p class="text-danger"><?php echo $erroneous_record_count;?> records are invalid</p>
 
             <?php
                 $key_count = array();

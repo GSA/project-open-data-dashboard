@@ -294,7 +294,8 @@ class campaign_model extends CI_Model {
                 if ($validator->isValid()) {
                     $results = array('valid' => true, 'errors' => null);
                 } else {                
-                    $errors =  array_slice($validator->getErrors(), 0, 100);                                
+                    $errors =  $validator->getErrors();                                
+
                     $results = array('valid' => false, 'errors' => $errors);                    
                 }    		
             
