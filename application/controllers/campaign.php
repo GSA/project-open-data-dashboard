@@ -671,11 +671,10 @@ class Campaign extends CI_Controller {
 
 
 	public function validate($datajson_url = null, $datajson = null, $headers = null, $schema = null, $output = 'browser') {
-
         $this->load->model('campaign_model', 'campaign');		
 		
 		$datajson 		= ($this->input->post('datajson', TRUE)) ? $this->input->post('datajson', TRUE) : $datajson;
-		$schema 		= ($this->input->post('schema', TRUE)) ? $this->input->post('schema', TRUE) : $schema;
+		$schema 		= ($this->input->get_post('schema', TRUE)) ? $this->input->get_post('schema', TRUE) : $schema;
 	
 		$datajson_url 	= ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url') : $datajson_url;
 		$output_type 	= ($this->input->get_post('output')) ? $this->input->get_post('output') : $output;		
