@@ -10,7 +10,12 @@
 
             <h2>Validation Results</h2>
 
-            <p>Only displaying first 100 results</p>
+            <?php 
+                if(!empty($validation['source'])) {
+                    echo '<p>' . count($validation['source']) . ' total records</p>'; 
+                }
+            ?>
+
 
             <?php if(!empty($validation['fail'])) : ?>
 
@@ -27,7 +32,16 @@
             <?php 
                 if(!empty($validation['errors'])) {
 
+                    $erroneous_record_count = count($validation['errors']);
+            ?>
 
+                    <?php if($erroneous_record_count > 100): ?>
+                        <p class="text-danger">Only displaying first 100 invalid records</p>
+                    <?php else: ?>
+                        <p class="text-danger"><?php echo $erroneous_record_count;?> records are invalid</p>
+                    <?php endif; ?>
+
+            <?php
                 $key_count = array();
                 foreach ($validation['errors'] as $key => $error) {   
 
