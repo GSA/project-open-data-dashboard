@@ -213,15 +213,8 @@
         "license": {
             "title":"License",
             "description":"The license dataset or API is published with. See <a href=\"http://project-open-data.github.io/open-licenses/\">Open Licenses</a> for more information.",
-            "anyOf": [
-                {
-                   "type": "string",
-                   "minLength": 1
-                },
-                {
-                    "type": "null"                    
-                }
-              ]
+            "type": "string",
+            "minLength": 1
         },
         "mbox": {
             "title":"Contact Email",
