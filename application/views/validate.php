@@ -42,7 +42,7 @@
                     <select name="schema">
                         <option value="" selected="selected">Project Open Data</option>
                         <option value="non-federal">Non-Federal</option>
-                        <option value="federal">Federal</option>
+                        <option value="federal">Federal (strict)</option>
                     </select>
                 </div>
 
