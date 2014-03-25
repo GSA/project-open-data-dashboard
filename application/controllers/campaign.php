@@ -759,6 +759,7 @@ class Campaign extends CI_Controller {
 
 	public function changeset($json_old = null, $datajson_new = null) {
 	
+
 		$json_old 		= ($this->input->get_post('json_old', TRUE)) ? $this->input->get_post('json_old', TRUE) : $json_old;
 		
 
@@ -768,7 +769,6 @@ class Campaign extends CI_Controller {
 				$json_old  = $selection;
 			}
 		}
-
 
 		$datajson_new 	= ($this->input->get_post('datajson_new', TRUE)) ? $this->input->get_post('datajson_new', TRUE) : $datajson_new;
 
@@ -789,8 +789,6 @@ class Campaign extends CI_Controller {
      			$output['datajson_domain'] 		= $datajson_domain['host']; 			
 				$output['json_old_url'] 		= $json_old;
 				$output['datajson_new_url'] 	= $datajson_new;
-
-
 
 
 				$json_old 	= curl_from_json($json_old, false);
@@ -978,6 +976,8 @@ class Campaign extends CI_Controller {
 			$org['name'] = $key;
 
 			$id = $org['id'];
+			$id = str_replace('[,', '(', $id);
+			$id = str_replace(',]', ')', $id);
 			$id = str_replace(',', ' OR ', $id);
 			$id = str_replace('[', '(', $id);
 			$id = str_replace(']', ')', $id);

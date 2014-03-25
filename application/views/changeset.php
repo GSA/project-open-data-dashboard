@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="json_old">Optionally Manually specify CKAN Organization</label>
+                    <label for="json_old">Optional: manually overide selected CKAN organizations</label>
                     <input placeholder="organization:(eia-gov OR doe-gov OR ornl-gov OR osti-gov)" name="json_old" id="json_old" class="form-control">
                 </div>
 
