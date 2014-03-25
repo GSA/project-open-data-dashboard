@@ -1,4 +1,4 @@
-farm-server
+Project Open Data Dashboard
 ===========
 
-Farm is a lightweight CRM for managing federal agencies (Federal Agency Relationship Management)
+See docs at http://data.civicagency.org/docs
