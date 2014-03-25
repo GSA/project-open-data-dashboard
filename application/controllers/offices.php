@@ -20,6 +20,7 @@ class Offices extends CI_Controller {
 	public function index($output=null)
 	{
 		
+		
 		$view_data = array();
 	
 		$this->db->select('*');	
@@ -35,36 +36,40 @@ class Offices extends CI_Controller {
 			$query->free_result();
 		}
 		
-		$this->db->select('*');	
-		$this->db->from('offices');			
-		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
-		$this->db->where('offices.cfo_act_agency', 'false');			
-		$this->db->where('offices.reporting_authority_type', 'executive');	
-		$this->db->where('offices.no_parent', 'true');			
-		$this->db->order_by("offices.name", "asc");		
-		$query = $this->db->get();
-        
-		if ($query->num_rows() > 0) {
-		   $view_data['executive_offices'] = $query->result();
-		   $query->free_result();
-		}	
-		
-		
-		$this->db->select('*');	
-		$this->db->from('offices');			
-		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
-		$this->db->where('offices.cfo_act_agency', 'false');			
-		$this->db->where('offices.reporting_authority_type', 'independent');	
-		$this->db->where('offices.no_parent', 'true');			
-		$this->db->order_by("offices.name", "asc");		
-		$query = $this->db->get();		
-		
-        
-		// if successful return ocdid
-		if ($query->num_rows() > 0) {
-		   $view_data['independent_offices'] = $query->result();
-		   $query->free_result();		
-		}			
+		if ($this->config->item('show_all_offices')) {
+
+			$this->db->select('*');	
+			$this->db->from('offices');			
+			$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
+			$this->db->where('offices.cfo_act_agency', 'false');			
+			$this->db->where('offices.reporting_authority_type', 'executive');	
+			$this->db->where('offices.no_parent', 'true');			
+			$this->db->order_by("offices.name", "asc");		
+			$query = $this->db->get();
+	        
+			if ($query->num_rows() > 0) {
+			   $view_data['executive_offices'] = $query->result();
+			   $query->free_result();
+			}	
+			
+			
+			$this->db->select('*');	
+			$this->db->from('offices');			
+			$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
+			$this->db->where('offices.cfo_act_agency', 'false');			
+			$this->db->where('offices.reporting_authority_type', 'independent');	
+			$this->db->where('offices.no_parent', 'true');			
+			$this->db->order_by("offices.name", "asc");		
+			$query = $this->db->get();		
+			
+	        
+			// if successful return ocdid
+			if ($query->num_rows() > 0) {
+			   $view_data['independent_offices'] = $query->result();
+			   $query->free_result();		
+			}	
+
+		}		
 		
 		if ($output == 'json') {
 			return $view_data;
@@ -124,17 +129,23 @@ class Offices extends CI_Controller {
 				$view_data['office_campaign']->expected_datajson_status = (object) json_decode($view_data['office_campaign']->datajson_status);
 			}
 		
-			// Get sub offices
-			$this->db->select('*');	
-			$this->db->from('offices');			
-			$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
-			$this->db->where('offices.parent_office_id', $view_data['office']->id);				
-			$this->db->order_by("offices.name", "asc"); 			
-			$query = $this->db->get();			
-																	
-			if ($query->num_rows() > 0) {
-			   $view_data['child_offices'] = $query->result();				
+			if ($this->config->item('show_all_offices')) {
+
+				// Get sub offices
+				$this->db->select('*');	
+				$this->db->from('offices');			
+				$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
+				$this->db->where('offices.parent_office_id', $view_data['office']->id);				
+				$this->db->order_by("offices.name", "asc"); 			
+				$query = $this->db->get();			
+																		
+				if ($query->num_rows() > 0) {
+				   $view_data['child_offices'] = $query->result();				
+				}
+
 			}
+
+
 		
 		}
 		

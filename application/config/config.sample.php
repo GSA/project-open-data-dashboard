@@ -2,6 +2,8 @@
 
 $config['download_dir'] = '/var/www/project-open-data-dashboard/downloads';
 $config['import_active'] = true;
+$config['show_all_offices'] = false;
+
 
 $config['google_analytics_id'] = ''; // UA-xxxxxxx-xx
 $config['google_analytics_domain'] = ''; // domain.com
