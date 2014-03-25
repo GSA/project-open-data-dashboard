@@ -9,30 +9,11 @@
         <div class="col-lg-12">
           <h2>Validator</h2>
             
+            <p>There are two ways you can validate data.json, either by validating a public URL or by pasting the raw JSON into the form. 
 
-            <form action="/validate" method="post" role="form">
-                <div class="form-group">
-                    <label for="datajson">data.json JSON</label>
-                    <textarea class="form-control" id="datajson" name="datajson" style="height : 30em; width: 100%"></textarea>
-                </div>
 
-                <div class="form-group">
-                    <label for="datajson">Schema</label>
-                    <select name="schema">
-                        <option value="" selected="selected">Project Open Data</option>
-                        <option value="non-federal">Non-Federal</option>
-                        <option value="federal">Federal</option>
-                    </select>
-                </div>
 
-                <div class="form-group">
-                    <input type="hidden" name="output" value="browser">
-                    <input type="submit" value="Validate JSON" class="btn btn-primary">
-                </div>
-
-            </form>
-
-            <div style="margin : 2em 0">OR</div>
+            <h3 style="margin-top : 3em;">Validate data.json URL</h3>
 
             <form action="/validate" method="get" role="form">
 
@@ -58,13 +39,39 @@
 
                 <label for="datajson_url">data.json URL</label>
                 <div class="input-group">
-                    <input name="datajson_url" id="datajson_url" class="form-control">
+                    <input name="datajson_url" id="datajson_url" class="form-control"  placeholder="e.g. http://energy.gov/data.json" >
                     <span class="input-group-btn">
                         <input type="submit" class="btn btn-default" value="Validate URL">   
                     </span>
                     
                 </div>
-            </form>            
+            </form>    
+
+            <hr>        
+
+            <h3 style="margin-top : 3em;">Validate raw JSON</h3>
+
+            <form action="/validate" method="post" role="form">
+                <div class="form-group">
+                    <label for="datajson">data.json JSON</label>
+                    <textarea class="form-control" id="datajson" name="datajson" style="height : 30em; width: 100%"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="datajson">Schema</label>
+                    <select name="schema">
+                        <option value="" selected="selected">Project Open Data</option>
+                        <option value="non-federal">Non-Federal</option>
+                        <option value="federal">Federal (strict)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="hidden" name="output" value="browser">
+                    <input type="submit" value="Validate JSON" class="btn btn-primary">
+                </div>
+
+            </form>
 
             
         </div>
