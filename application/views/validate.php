@@ -41,7 +41,7 @@
                 <div class="input-group">
                     <input name="datajson_url" id="datajson_url" class="form-control"  placeholder="e.g. http://energy.gov/data.json" >
                     <span class="input-group-btn">
-                        <input type="submit" class="btn btn-default" value="Validate URL">   
+                        <button type="submit" class="btn btn-primary">Validate URL</button>  
                     </span>
                     
                 </div>
