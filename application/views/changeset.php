@@ -13,8 +13,24 @@
             <form action="/changeset" method="post" role="form">
 
                 <div class="form-group">
-                    <label for="json_old">Old CKAN JSON URL - http://catalog.data.gov/api/3/action/package_search?q=</label>
-                    <input placeholder="organization:(neia-doe-gov OR doe-gov OR ornl-gov OR osti-gov)" name="json_old" id="json_old" class="form-control">
+
+                    <label>Agency</label>
+                    <select id="agency-select" name="json_old_select" class="form-control">
+                        <option value="">Select an Agency</option>
+                        <?php
+                            foreach ($orgs as $org) {
+                        ?>
+                                <option value="organization:<?php echo $org['id']; ?>"><?php echo $org['name']; ?></option>
+                        <?php
+                            }
+                        ?>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="json_old">Optionally Manually specify CKAN Organization</label>
+                    <input placeholder="organization:(eia-gov OR doe-gov OR ornl-gov OR osti-gov)" name="json_old" id="json_old" class="form-control">
                 </div>
 
 

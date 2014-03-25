@@ -760,9 +760,20 @@ class Campaign extends CI_Controller {
 	public function changeset($json_old = null, $datajson_new = null) {
 	
 		$json_old 		= ($this->input->get_post('json_old', TRUE)) ? $this->input->get_post('json_old', TRUE) : $json_old;
+		
+
+		if ($this->input->get_post('json_old_select', TRUE)) {
+			$selection = $this->input->get_post('json_old_select', TRUE);
+			if(!empty($selection)) {
+				$json_old  = $selection;
+			}
+		}
+
+
 		$datajson_new 	= ($this->input->get_post('datajson_new', TRUE)) ? $this->input->get_post('datajson_new', TRUE) : $datajson_new;
 
 		//$datajson_new = 'http://www.treasury.gov/jsonfiles/data.json';
+
 
 		
 
@@ -880,11 +891,118 @@ class Campaign extends CI_Controller {
 	     	$this->load->view('changeset_result', $output);
 
 		} else {
-			$this->load->view('changeset');	    		
+
+			$data = array();
+			$data['orgs'] = $this->assemble_org_structure();
+
+			$this->load->view('changeset', $data);	    		
         } 		
 
 	}	
 
+
+	public function assemble_org_structure() {
+
+		$url = 'https://idm.data.gov/fed_agency.json';
+		$agency_list = curl_from_json($url, $array=true, $decode=true);
+
+		$taxonomies = $agency_list['taxonomies'];
+
+	    $return = array();
+	    // This should be the ONLY loop that go through all taxonomies.
+	    foreach ($taxonomies as $taxonomy) {
+	        $taxonomy = $taxonomy['taxonomy'];
+
+			//        ignore bad ones
+	        if (strlen($taxonomy['unique id']) == 0) {
+	            continue;
+	        }
+
+			//        ignore 3rd level ones
+	        if ($taxonomy['unique id'] != $taxonomy['term']) {
+	            continue;
+	        }
+
+			//        Make sure we got $return[$sector], ex. $return['Federal Organization']
+	        if (!isset($return[$taxonomy['vocabulary']])) {
+	            $return[$taxonomy['vocabulary']] = array();
+	        }
+
+	        if (strlen($taxonomy['Sub Agency']) != 0) {
+				
+				// This is sub-agency
+				//  $return['Federal Organization']['National Archives and Records Administration']
+	            if (!isset($return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']])) {
+					
+					// Make sure we got $return[$sector][$unit]
+	                $return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']] = array(
+	                    // use [ ] to indicate this is agency with subs. e.g [,sub_id]
+	        	            'id' => "[," . $taxonomy['unique id'] . "]",
+	                    'is_cfo' => $taxonomy['is_cfo'],
+	                    'subs' => array(),
+	                );
+	            } else {
+			//                Add sub id to existing agency entry, e.g. [id,sub_id1,sub_id2] or [,sub_id1,sub_id2]
+	                $return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['id']
+	                    = "[" . trim($return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['id'], "[]") . "," . $taxonomy['unique id'] . "]";
+	            }
+
+			//            Add term to parent's subs
+	            $return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['subs'][$taxonomy['Sub Agency']] = array(
+	                'id' => $taxonomy['unique id'],
+	                'is_cfo' => $taxonomy['is_cfo'],
+	            );
+	        } else {
+			//        ELSE this is ROOT agency
+	            if (!isset($return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']])) {
+			//                Has not been set by its subunits before
+	                $return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']] = array(
+	                    'id' => $taxonomy['unique id'], // leave it without [ ] if no subs.
+	                    'is_cfo' => $taxonomy['is_cfo'],
+	                    'subs' => array(),
+	                );
+	            } else {
+			//                Has been added by subunits before. so let us change it from [,sub_id1,sub_id2] to [id,sub_id1,sub_id2]
+	                $return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['id'] = "[" . $taxonomy['unique id'] . trim($return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['id'], "[]") . "]";
+	            }
+	        }
+	    }
+
+	    $orgs = $return['Federal Organization'];	
+
+	    $cfo = array();
+	    $non_cfo = array();
+
+	    foreach($orgs as $key => $org) {
+
+			$org['name'] = $key;
+
+			$id = $org['id'];
+			$id = str_replace(',', ' OR ', $id);
+			$id = str_replace('[', '(', $id);
+			$id = str_replace(']', ')', $id);
+
+			$org['id'] = $id;
+
+	    	if($org['is_cfo'] == 'Y') {	    		
+	    		$cfo[$key] = $org;
+	    	} else {
+	    		$non_cfo[$key] = $org;
+	    	}
+
+
+
+	    }
+
+	    ksort($cfo);
+	    ksort($non_cfo);
+
+	    $return = array_merge($cfo, $non_cfo);
+
+
+	    return $return;
+
+	}
 
 
 	/*
