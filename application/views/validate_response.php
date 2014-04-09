@@ -1,5 +1,9 @@
 <?php include 'header_meta_inc_view.php';?>
 
+<link rel="stylesheet" href="css/highlight.css">
+<script src="js/vendor/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
 <?php include 'header_inc_view.php';?>
 
     <div class="container">
@@ -52,7 +56,7 @@
 
                     <div class="validation-source col-md-6">
                         <h4>Report for identifier: <?php echo $validation['source'][$key]->identifier ?></h4>
-                        <pre><?php print prettyPrint(json_encode($validation['source'][$key])); ?></pre>
+                        <pre><code><?php print htmlentities(prettyPrint(str_replace('\/', '/', json_encode($validation['source'][$key])))); ?></code></pre>
                     </div>
 
                     <div class="validation-errors col-md-6">
@@ -82,7 +86,7 @@
                             </tr>
                             <?php foreach ($error as $field => $description) { ?>
                                 <tr>                                    
-                                    <td><?php echo $field; ?></td>
+                                    <td><code class="hljs-attribute"><?php echo $field; ?></code></td>
                                     <td>
                                         <ul>
                                         <?php foreach ($description['errors'] as $error_description) { ?>

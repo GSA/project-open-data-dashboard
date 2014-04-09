@@ -27,7 +27,9 @@
 
 
 
-
+.validation-source pre code {
+	white-space : pre;
+}
 
 
 
