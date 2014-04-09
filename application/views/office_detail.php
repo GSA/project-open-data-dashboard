@@ -177,9 +177,15 @@
 			<td>
 			<span class="text-<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
 			<?php
-			//var_dump($valid_schema);
-				if($valid_schema == true) echo 'Valid';
-				if($valid_schema == false && $valid_schema !== null) echo 'Invalid';							
+			//var_dump($office_campaign->datajson_status); exit;
+
+            if($office_campaign->datajson_status->download_content_length > $config['max_size']) {
+                echo 'File is too large to validate';
+            } else {
+                if($valid_schema == true) echo 'Valid';
+                if($valid_schema == false && $valid_schema !== null) echo 'Invalid';                            
+            }
+	
 			?>
 			</span>
 			</td>

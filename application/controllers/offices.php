@@ -71,6 +71,9 @@ class Offices extends CI_Controller {
 
 		}		
 		
+		// pass config variable
+		$view_data['max_size'] = $this->config->item('max_size');
+
 		if ($output == 'json') {
 			return $view_data;
 		}
@@ -148,6 +151,9 @@ class Offices extends CI_Controller {
 
 		
 		}
+
+		// pass config variable
+		$view_data['config'] = array('max_size' => $this->config->item('max_size'));
 		
 		//var_dump($view_data['office_campaign']); exit;
 		

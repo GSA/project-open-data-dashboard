@@ -342,7 +342,8 @@ class Campaign extends CI_Controller {
     
 
     /*
-    $id can be all, cfo-act, or a specific id / $component can be datajson, datajson-refresh, datapage, digitalstrategy
+    $id can be all, cfo-act, or a specific id 
+    $component can be datajson, datajson-refresh, datapage, digitalstrategy, download, download-refresh
     */
 	public function status($id = null, $component = null) {
 		
@@ -546,9 +547,11 @@ class Campaign extends CI_Controller {
 	            			$status['url']          = $expected_datajson_url;
 	            			$status['expected_url'] = $expected_datajson_url;   
 							$status['last_crawl']	= mktime();
-	
+							$status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 50) : null;				
+
+
 	    					$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
-	    					$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode($status['schema_errors']) : null;				
+	    					$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode(array_slice($status['schema_errors'], 0, 50)) : null;				
 	    					if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
 	                	
 	                	
@@ -658,7 +661,11 @@ class Campaign extends CI_Controller {
 			if(!empty($validation)) {
 				$status['valid_json'] = true;
 				$status['valid_schema'] = $validation['valid'];
-				$status['schema_errors'] = $validation['errors'];	
+				$status['schema_errors'] = (!empty($validation['errors'])) ? $validation['errors'] : false;	
+
+				$status['download_content_length'] = (!empty($status['download_content_length'])) ? $status['download_content_length'] : null;
+				$status['download_content_length'] = (!empty($validation['download_content_length'])) ? $validation['download_content_length'] : $status['download_content_length']; 
+
 			} else {
 				// data.json was not valid json
 				$status['valid_json'] = false;

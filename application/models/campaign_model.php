@@ -181,7 +181,7 @@ class campaign_model extends CI_Model {
 			//}			
 
 			// Max file size - TODO add as config variable
-			$max_size = 5000000; 
+			$max_size = $this->config->item('max_size');
 
 			// Load the JSON
 			if(empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < $max_size) {
@@ -206,11 +206,11 @@ class campaign_model extends CI_Model {
 			if($datajson_header['download_content_length'] > $max_size) {
 				
 				$filesize = human_filesize($datajson_header['download_content_length']);
-				$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";		
+				$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";						
 			}     	
 
 			if(!empty($errors)) {
-				return array('valid' => false, 'fail' => $errors);				
+				return array('valid' => false, 'fail' => $errors, 'download_content_length' => $datajson_header['download_content_length']);				
 			}
 
 
