@@ -180,7 +180,7 @@ class campaign_model extends CI_Model {
 			//	$errors[] = "The URL for the data.json file is not accessible";
 			//}			
 
-			// Max file size - TODO add as config variable
+			// Max file size
 			$max_size = $this->config->item('max_size');
 
 			// Load the JSON
@@ -462,7 +462,7 @@ class campaign_model extends CI_Model {
 		        }		        
 		        
 		        if ($extra->key == 'theme') {
-		            $datajson_model->theme[0] = $extra->value;
+		            $datajson_model->theme = $extra->value;
 		        }		        
 		        
 		        if ($extra->key == 'access-level') {
