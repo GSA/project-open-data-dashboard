@@ -203,13 +203,17 @@
 			<span>
 			<?php
 			    $datajson_errors = $office_campaign->datajson_status->schema_errors;
+
+                $validation_url = '/validate?schema=&output=browser&datajson_url=' . urlencode($office_campaign->expected_datajson_status->url);
+
+                echo "<p><strong>For more readable validation results, see the <a href=\"$validation_url\">validator</a></strong></p>";
 			    
 			    if(count($datajson_errors) < 50) {
 			        echo 'There are ' . count($datajson_errors) . ' validation errors: <br><br>';
 			    } else {
 			        echo 'Only showing first 50 validation errors: <br><br>';			        
 			    }
-			    
+
 			    foreach ($datajson_errors as $error) {
                     if (is_string($error)){
                         echo $error;

@@ -65,8 +65,7 @@ function status_table($title, $rows, $config = null) {
 			// var_dump($office->datajson_status); exit;
 
 
-			if (!empty($config['max_size']) && 
-				
+			if (!empty($config['max_size']) && 				
 				($office->datajson_status->download_content_length > $config['max_size'])) {
 				$schema_status = 'warning';
 			}
