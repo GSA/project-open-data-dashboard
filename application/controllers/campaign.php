@@ -790,7 +790,8 @@ class Campaign extends CI_Controller {
 				$output['json_old_request'] = $json_old;
 
 				$json_old = urlencode($json_old);
-				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . "%20AND%20-harvest_source_id:[''%20TO%20*]%20AND%20-type:harvest" . '&rows=200';		
+				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . "%20AND%20-type:harvest" . '&rows=200';		
+
 
 				$datajson_domain 				= parse_url($datajson_new);
      			$output['datajson_domain'] 		= $datajson_domain['host']; 			
