@@ -31,7 +31,13 @@
 	white-space : pre;
 }
 
+.form-striped .form-group {
+padding : 1em 0;
+}
 
+.form-striped .form-group:nth-child(odd) {
+background-color : #f9f9f9;
+}
 
 
 

@@ -90,10 +90,140 @@ class Campaign extends CI_Controller {
 			return false;
 		}
 
-				
-
-		
 	}
+
+	public function csv_to_json() {
+		
+
+		$csv_id 		= ($this->input->post('csv_id', TRUE)) ? $this->input->post('csv_id', TRUE) : null;
+
+
+		// Initial file upload
+		if(!empty($_FILES)) {
+
+			$this->load->library('upload');
+
+			if($this->do_upload('csv_upload')) {
+
+				$data = $this->upload->data();
+
+
+				ini_set("auto_detect_line_endings", true);
+				$csv_handle = fopen($data['full_path'], 'r');
+				$headings = fgetcsv($csv_handle);		
+
+				// Provide mapping between csv headings and POD schema
+				$this->load->model('campaign_model', 'campaign');	
+
+				$json_schema = $this->campaign->datajson_schema();
+				$datajson_model = $this->campaign->schema_to_model($json_schema->properties);					
+
+				$output = array();
+				$output['headings'] 		= $headings;
+				$output['datajson_model'] 	= $datajson_model;
+				$output['csv_id'] 			= $data['file_name'];
+				
+				$this->load->view('csv_mapping', $output);
+
+
+			}	
+			
+		} 
+
+		// Apply mapping and convert file to JSON
+		else if (!empty($csv_id)) {
+
+			$mapping = ($this->input->post('mapping', TRUE)) ? $this->input->post('mapping', TRUE) : null;
+
+	 		$this->config->load('upload', TRUE); 
+	 		$upload_config = $this->config->item('upload');
+
+			$full_path = $upload_config['upload_path'] . $csv_id;
+
+			// Parse CSV Data into an array. Todo: better to do db inserts line by line from csv, esp large files
+			$parse_file = file_get_contents($full_path);
+			$csv = array_map("str_getcsv", preg_split('/\r*\n+|\r+/', $parse_file));
+							
+			$column_headers = array();
+			foreach($csv[0] as $key => $this_header) {	
+				$column_headers[$key] = trim($this_header);
+			}
+			
+			// Remove column headings from array
+			unset($csv[0]);
+
+			$json = array();
+			foreach ($csv as $row) {
+
+				$count = 0;
+				$json_row = array();
+				foreach($row as $key => $value) {
+					if(!empty($column_headers[$key]) && $mapping[$count] !== 'null') {
+
+
+						if(is_json($value)){
+							$value = json_decode($value);
+						} else if ($mapping[$count] == 'keyword' | 
+								   $mapping[$count] == 'language' |
+								   $mapping[$count] == 'programCode' |
+								   $mapping[$count] == 'bureauCode') {
+							$value = str_getcsv($value);
+						} else if ($mapping[$count] == 'dataQuality' && !empty($value)) {
+							$value = (bool) $value;
+						}
+
+						if(is_array($value)) {
+							$value = array_map("trim", $value);
+						} else if (is_string($value)) {
+							$value = trim($value); 
+						}
+
+						$value = (!is_bool($value) && empty($value)) ? null : $value;						
+
+						$json_row[$mapping[$count]] = $value;	
+					}	
+
+					$count++;					
+				}
+
+				$json[] = $json_row;
+			}
+
+
+		    //header('Content-type: application/json');
+		    //print json_encode($json);		
+			//exit;	
+
+
+    		header("Pragma: public");
+    		header("Expires: 0");
+    		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    		header("Cache-Control: private",false);
+    		header('Content-type: application/json');		
+    		header("Content-Disposition: attachment; filename=\"$csv_id.json\";" );
+    		header("Content-Transfer-Encoding: binary");
+
+    		exit(json_encode($json));
+
+
+
+		} 
+
+		// Show upload form
+		else {
+			$this->load->view('csv_upload');
+		}
+
+	}
+
+	public function do_upload($field_name = null) {
+
+		if (!$this->upload->do_upload($field_name)) {
+		    return false;
+		} else {
+		    return true;
+		}
+	}				
 
 
 	public function csv($orgs = null) {

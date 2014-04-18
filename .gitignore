@@ -11,3 +11,5 @@ application/config/config.php
 application/config/database.php
 downloads/*
 
+
+application/config/upload.php
