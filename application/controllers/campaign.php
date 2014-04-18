@@ -190,11 +190,10 @@ class Campaign extends CI_Controller {
 			}
 
 
-		    //header('Content-type: application/json');
-		    //print json_encode($json);		
-			//exit;	
+			// delete temporary uploaded csv file
+			unlink($full_path);
 
-
+			// provide json for download
     		header("Pragma: public");
     		header("Expires: 0");
     		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
