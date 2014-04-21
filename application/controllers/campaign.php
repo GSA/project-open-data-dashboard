@@ -140,9 +140,11 @@ class Campaign extends CI_Controller {
 
 			$full_path = $upload_config['upload_path'] . $csv_id;
 
-			// Parse CSV Data into an array. Todo: better to do db inserts line by line from csv, esp large files
-			$parse_file = file_get_contents($full_path);
-			$csv = array_map("str_getcsv", preg_split('/\r*\n+|\r+/', $parse_file));
+			$this->load->helper('csv');		
+			ini_set("auto_detect_line_endings", true);
+
+			$importer = new CsvImporter($full_path, $parse_header = true, $delimiter = ",");
+			$csv = $importer->get(); 
 							
 			$column_headers = array();
 			foreach($csv[0] as $key => $this_header) {	
