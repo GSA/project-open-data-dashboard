@@ -9,7 +9,7 @@
         <div class="col-lg-12">
           <h2>Validator</h2>
             
-            <p>There are two ways you can validate data.json, either by validating a public URL or by pasting the raw JSON into the form. 
+            <p>There are three ways you can validate data.json, either by validating a public URL, uploading a json file, or pasting the raw JSON into the form. 
 
 
 
@@ -47,7 +47,39 @@
                 </div>
             </form>    
 
-            <hr>        
+            <hr>       
+
+
+            <h3 style="margin-top : 3em;">Validate data.json file upload</h3>
+
+            <form action="/validate" method="post" enctype="multipart/form-data" role="form">
+
+
+                <div class="form-group">
+                    <label for="datajson">Schema</label>
+                    <select name="schema">
+                        <option value="" selected="selected">Project Open Data</option>
+                        <option value="non-federal">Non-Federal</option>
+                        <option value="federal">Federal (strict)</option>
+                    </select>
+                </div>
+               
+                 <div class="form-group">
+                    <label for="datajson_upload">Upload a data.json file</label>
+                    <input type="file" name="datajson_upload">
+                </div>
+
+                <div class="form-group">
+                    <input type="hidden" name="output" value="browser">
+                    <input type="submit" value="Validate File" class="btn btn-primary">
+                </div>                
+                    
+                
+            </form>    
+
+            <hr> 
+
+
 
             <h3 style="margin-top : 3em;">Validate raw JSON</h3>
 

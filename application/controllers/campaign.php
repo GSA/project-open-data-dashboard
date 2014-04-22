@@ -818,6 +818,23 @@ class Campaign extends CI_Controller {
 		$output_type 	= ($this->input->get_post('output')) ? $this->input->get_post('output') : $output;		
 
 
+
+		if(!empty($_FILES)) {
+
+			$this->load->library('upload');
+
+			if($this->do_upload('datajson_upload')) {
+
+				$data = $this->upload->data();
+
+				$datajson = file_get_contents($data['full_path']);
+				unlink($data['full_path']);
+
+			}
+		}
+
+
+
 		$return_source 	= ($output_type == 'browser') ? true : false;
 
 		if($datajson OR $datajson_url) {
