@@ -177,6 +177,7 @@ class Campaign extends CI_Controller {
 						if(is_array($value)) {
 							$value = array_map("trim", $value);
 							$value = array_filter($value); // removes any empty elements in an array
+							$value = array_values($value); // ensures array_filter doesn't create an associative array
 						} else if (is_string($value)) {
 							$value = trim($value); 
 						}
