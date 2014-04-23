@@ -1,7 +1,7 @@
 
 <hr>
       <footer>
-        <p><a href="http://github.com/philipashlock/farm-server">Fork me on Github</a></p>
+        <p><a href="https://github.com/GSA/project-open-data-dashboard/issues">Fork me on Github</a></p>
       </footer>
     </div> <!-- /container -->        
 

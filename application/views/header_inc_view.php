@@ -17,9 +17,10 @@
       <ul class="nav navbar-nav">
         <li><a href="/offices">Agencies</a></li>
         <li><a href="/validate">Validator</a></li>
-        <li><a href="/docs">Documentation</a></li>
         <li><a href="/export">Export API</a></li>
-        <li><a href="https://github.com/philipashlock/farm-server/issues">Feedback</a></li>        
+        <li><a href="/datagov/csv_to_json">CSV Converter</a></li>
+        <li><a href="/docs">Documentation</a></li>       
+        <li><a href="https://github.com/GSA/project-open-data-dashboard/issues">Feedback</a></li>        
         
         
 <!--
