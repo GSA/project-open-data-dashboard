@@ -151,9 +151,6 @@ class Campaign extends CI_Controller {
 				$column_headers[$key] = trim($this_header);
 			}
 			
-			// Remove column headings from array
-			unset($csv[0]);
-
 			$json = array();
 			foreach ($csv as $row) {
 
