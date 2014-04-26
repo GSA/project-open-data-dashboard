@@ -8,10 +8,11 @@ function status_table($title, $rows, $config = null) {
 	<div class="panel-heading"><?php echo $title?></div>
 	<table class="table table-striped table-hover">
 		<tr>
-			<th class="col-sm-6">Agency</th>
-		    <th class="col-sm-2">/data</th>												
+			<th class="col-sm-4">Agency</th>
 			<th class="col-sm-2">/data.json</th>
-			<th class="col-sm-2">valid schema</th>										
+			<th class="col-sm-2">records</th>						
+			<th class="col-sm-2">valid schema</th>			
+			<th class="col-sm-2">percent valid</th>										
 		</tr>
 		<?php foreach ($rows as $office):?>
 		
@@ -65,7 +66,7 @@ function status_table($title, $rows, $config = null) {
 			// var_dump($office->datajson_status); exit;
 
 
-			if (!empty($config['max_size']) && 				
+			if (!empty($config['max_size']) && !empty($office->datajson_status->download_content_length) && 				
 				($office->datajson_status->download_content_length > $config['max_size'])) {
 				$schema_status = 'warning';
 			}
@@ -77,16 +78,39 @@ function status_table($title, $rows, $config = null) {
 			$schema_icon 	 = page_status($schema_status);
 			
 			$page_icon       = page_status($html_status);
+
+
+
+			$error_count 		= (!empty($office->datajson_status->error_count)) ? $office->datajson_status->error_count : 0;
+			$total_records	 	=	(!empty($office->datajson_status->total_records)) ? $office->datajson_status->total_records : '';
+
+			$percent_valid 		= '';
+			$percent_valid		=	(!empty($total_records)) ? ($total_records - $error_count)/$total_records : '';
 			
+			if($percent_valid) {
+
+				if ($percent_valid == 1) {
+					$percent_valid = "100%";
+				} 
+				else {
+					$percent_valid = sprintf("%.1f%%", $percent_valid * 100);
+				}
+
+			}
+
+			if ($percent_valid === 0) {
+				$percent_valid = "0%";
+			}			
 			
 				
 		?>				
 		
 		<tr class="<?php echo $status_color ?>">
 			<td><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></td>
-			<td><?php if($html_status != 'success') echo $page_icon; ?>
 			<td><?php echo $json_icon; ?>	
-			<td><?php echo $schema_icon; ?>		
+			<td><?php echo $total_records; ?>			
+			<td><?php echo $schema_icon; ?>	
+			<td><?php echo $percent_valid?>
 		</tr>
 		<?php endforeach;?>
 	</table>

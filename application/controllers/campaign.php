@@ -573,7 +573,6 @@ class Campaign extends CI_Controller {
 		                $real_url = ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
 
 
-
 		                /*
                 		################ download ################
                 		*/	
@@ -677,11 +676,17 @@ class Campaign extends CI_Controller {
 	            			$status['url']          = $expected_datajson_url;
 	            			$status['expected_url'] = $expected_datajson_url;   
 							$status['last_crawl']	= mktime();
-							$status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 50) : null;				
 
+							
+							$status['schema_errors'] = (!empty($status['schema_errors'])) ? $this->process_validation_errors($status['schema_errors']) : null;				
+
+//var_dump($status['schema_errors']); exit;
+
+							$status['error_count'] = (!empty($status['schema_errors'])) ? count($status['schema_errors']) : null;
+							$status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;				
 
 	    					$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
-	    					$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode(array_slice($status['schema_errors'], 0, 50)) : null;				
+	    					//$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode(array_slice($status['schema_errors'], 0, 10, true)) : null;				
 	    					if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
 	                	
 	                	
@@ -791,6 +796,7 @@ class Campaign extends CI_Controller {
 			if(!empty($validation)) {
 				$status['valid_json'] = true;
 				$status['valid_schema'] = $validation['valid'];
+				$status['total_records'] = (!empty($validation['total_records'])) ? $validation['total_records'] : null;
 				$status['schema_errors'] = (!empty($validation['errors'])) ? $validation['errors'] : false;	
 
 				$status['download_content_length'] = (!empty($status['download_content_length'])) ? $status['download_content_length'] : null;

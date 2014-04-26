@@ -246,8 +246,12 @@ class campaign_model extends CI_Model {
 
 			$response = $this->campaign->jsonschema_validator($datajson, $schema);	
 
+			$catalog = json_decode($datajson);
+
+			$response['total_records'] = count($catalog);
+
 			if ($return_source) {
-				$response['source'] = json_decode($datajson);
+				$response['source'] = $catalog;
 			}
 
 			return $response;

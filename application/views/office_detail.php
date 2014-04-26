@@ -202,29 +202,62 @@
 			<td>
 			<span>
 			<?php
-			    $datajson_errors = $office_campaign->datajson_status->schema_errors;
-
                 $validation_url = '/validate?schema=&output=browser&datajson_url=' . urlencode($office_campaign->expected_datajson_status->url);
 
-                echo "<p><strong>For more readable validation results, see the <a href=\"$validation_url\">validator</a></strong></p>";
-			    
-			    if(count($datajson_errors) < 50) {
-			        echo 'There are ' . count($datajson_errors) . ' validation errors: <br><br>';
-			    } else {
-			        echo 'Only showing first 50 validation errors: <br><br>';			        
-			    }
+                echo "<p><strong>For more readable validation results, see the <a href=\"$validation_url\">validator</a></strong></p>\n";
+	
+                $datajson_errors = (array) $office_campaign->datajson_status->schema_errors;
 
-			    foreach ($datajson_errors as $error) {
-                    if (is_string($error)){
-                        echo $error;
-                    } else {
-                        echo sprintf("[%s] %s\n", $error->property, $error->message);    
-                    }
+                $error_count        = (!empty($office_campaign->datajson_status->error_count)) ? $office_campaign->datajson_status->error_count : 0;
+
+                echo 'There are validation errors on ' . $error_count . ' records <br><br>';
+                
+                if($error_count > 10) {
+                    echo 'Only showing errors from the first 10 records: <br><br>';                  
+                }
+                ?>
+             
+
+                <?php foreach ($datajson_errors as $key => $fields) : ?>
                     
-                    echo "<br>";
-			    }
-    			    
-			?>
+                    <strong>Errors on record <?php echo $key ?>: </strong> <br>
+
+                    <?php if(!empty($fields->ALL)): ?>
+    
+                            <ul class="validation-full-record">
+                                <?php foreach ($fields->ALL->errors as $error_description) : ?>
+                                    <?php if(strpos($error_description, 'but a null is required')) continue; ?>
+                                    <li><?php echo $error_description ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+    
+                    <?php 
+                        unset($fields->ALL);
+                        endif; 
+                    ?>
+                
+    
+    
+                    <?php
+                        foreach ($fields as $field => $details) {
+                            echo "<code>$field</code><br>";
+    
+                            if(!empty($details->errors)) {
+                                echo "<ul>";
+    
+                                foreach($details->errors as $error) {
+                                    echo "<li>$error</li>";
+                                }
+                            
+                                echo "</ul>";
+    
+                            }
+                            
+                        }
+                    ?>
+
+                 <?php endforeach; ?>
+
 			</span>
 			</td>
 
