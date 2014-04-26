@@ -100,6 +100,7 @@ function status_table($title, $rows, $config = null) {
 
 			if ($percent_valid === 0) {
 				$percent_valid = "0%";
+				$status_color = 'danger';
 			}			
 			
 				
