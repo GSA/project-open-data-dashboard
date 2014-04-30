@@ -63,3 +63,27 @@ background-image: linear-gradient(to bottom, #3C3C3C 0px, #141414 100%);
 .panel {
 	margin-bottom : 6em;
 }
+
+
+.form-flash {
+	padding : 1em;
+	margin-top : 1em;
+}
+
+.footer .container {
+	margin : 1em auto !important;
+}
+
+.dashboard-heading th.tilt {
+	height : 120px;
+	vertical-align: bottom;
+	padding-bottom : 50px;
+}
+
+.dashboard-heading th.tilt div {
+	
+-webkit-transform: rotate(-70deg);
+-o-transform: rotate(-70deg);
+transform: rotate(-70deg);
+
+}

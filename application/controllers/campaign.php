@@ -830,7 +830,11 @@ class Campaign extends CI_Controller {
 				$field_name = "note_$field";
 
 				if(!empty($update->$field_name)) {
-					$note_data = json_encode($update->$field_name);
+
+					$note_data = array("note" => $update->$field_name, "date" => null, "author" => null);
+					$note_data = array("current" => $note_data, "previous" => null);
+
+					$note_data = json_encode($note_data);
 
 					$note = array('note' => $note_data, 'field_name' => $field, 'office_id' => $update->office_id);	
 					$note = (object) $note;
@@ -842,8 +846,13 @@ class Campaign extends CI_Controller {
 
 	        $this->campaign->update_status($update);
 
-	        var_dump($update); exit;
-			
+	        $this->session->set_flashdata('outcome', 'success');
+	        $this->session->set_flashdata('status', 'Status updated');
+
+
+			$this->load->helper('url');
+            redirect('offices/detail/' . $update->office_id); 	
+	        
  		} else {
 			$this->load->helper('url');
             redirect('/'); 			

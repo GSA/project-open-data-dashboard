@@ -1,7 +1,8 @@
 </div> <!-- /#main-container -->
 
 <hr>
-      <footer>
+      <footer class="footer">
+        <div class="container">
         <div class="pull-left"><a href="https://github.com/GSA/project-open-data-dashboard/issues">Fork me on Github</a></div>
 
 
@@ -15,7 +16,7 @@
     
     
 
-
+      </div>
       </footer>
     </div> <!-- /container -->        
 

@@ -63,7 +63,7 @@ class campaign_model extends CI_Model {
 		$model->inventory_superset				= null;	
 		$model->datajson_posted					= null;	
 		$model->datajson_slashdata				= null;	
-		$model->Feedback						= null;	
+		$model->feedback						= null;	
 		$model->schedule_posted					= null;	
 		$model->publication_process_posted		= null;	
 		

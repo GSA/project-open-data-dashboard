@@ -296,6 +296,80 @@ class Import extends CI_Controller {
 			return false;
 		}
 	}
+
+
+	function tracker() {
+
+		$this->load->helper('csv');		
+		$this->load->helper('api');	
+		$this->load->model('campaign_model', 'campaign');			
+
+
+		ini_set("auto_detect_line_endings", true);
+
+		$full_path = $this->config->item('tmp_csv_import');
+
+		$importer = new CsvImporter($full_path, $parse_header = true, $delimiter = ",");
+		$csv = $importer->get(); 
+		
+		$model = (array) $this->campaign->datagov_model();
+
+		$note_count = 0;
+		$status_count = 0;
+
+		$column_headers = array();
+		foreach($csv as $row) {	
+
+			$notes = array();
+			foreach ($row as $key => $value) {
+				if(substr($key, 0, 5) == 'note_') {
+					$key = substr($key, 5);
+					$notes[$key] = $value;
+
+				}
+			}
+
+			reset($row);
+
+
+			$filtered = array_mash($model, $row);
+
+			$processed = array();
+			foreach ($filtered as $key => $value) {
+				if (strtolower($value) == 'yes' OR strtolower($value) == 'no') {
+					$value = strtolower($value);
+				}
+
+				if(!empty($value)) {
+					$processed[$key] = $value;	
+				}				
+			}
+
+			$update = (object) $processed;
+			$this->campaign->update_status($update);
+			$status_count++;
+
+			foreach ($notes as $field_name => $note_data) {
+					$note_data = array("note" => $note_data, "date" => null, "author" => null);
+					$note_data = array("current" => $note_data, "previous" => null);
+
+					$note_data = json_encode($note_data);
+
+					$note = array('note' => $note_data, 'field_name' => $field_name, 'office_id' => $update->office_id);	
+					$note = (object) $note;
+					$this->campaign->update_note($note);
+					$note_count++;
+			}
+
+		}
+
+	
+		echo "Status count: $status_count / Note count: $note_count";
+
+	}
+
+
+
 	
 }
 

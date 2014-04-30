@@ -105,7 +105,8 @@ class Offices extends CI_Controller {
 	public function detail($id) {
 		
 		$this->load->helper('api');		
-		$this->load->model('campaign_model', 'campaign');			
+		$this->load->model('campaign_model', 'campaign');	
+		$this->load->library('markdown');		
 				
 		$this->db->select('*');		
 		$this->db->where('id', $id);			
@@ -126,6 +127,12 @@ class Offices extends CI_Controller {
 				foreach ($notes->result() as $note) {
 					$note_field = 'note_' . $note->field_name;
 					$note_list[$note_field] = json_decode($note->note);
+					if(!empty($note_list[$note_field]->current->note)) {
+
+						$note_html = $note_list[$note_field]->current->note;
+						$note_html = linkToAnchor($note_html);
+						$note_list[$note_field]->current->note_html =  $this->markdown->parse($note_html);
+					}
 				}
 
 				$view_data['notes'] = $note_list;

@@ -12,6 +12,11 @@
       <div class="row">
         <div>
 		
+
+            <?php if($this->session->flashdata('outcome') && $this->session->flashdata('status')): ?>
+                <p class="form-flash bg-<?php echo $this->session->flashdata('outcome'); ?>"><?php echo $this->session->flashdata('status'); ?></p>
+            <?php endif; ?>
+
           <h2><?php echo $office->name ?></h2>
 
             <div style="margin-bottom : 1em">
@@ -20,7 +25,7 @@
 		
 		
     			<?php if(!empty($office->parent_office_id)): ?>
-    				<div><a href="<?php echo $office->parent_office_id ?>">Parent Office</a></div>				
+    				<div class="hidden"><a href="<?php echo $office->parent_office_id ?>">Parent Office</a></div>				
     			<?php endif; ?>
 			</div>
 	
@@ -73,10 +78,38 @@
 
                 ?>
 
+                <tr>
+                        <td colspan="5">
+                            General notes
+                        </td>
+                </tr>
+
                 <?php foreach ($status_fields as $status_field_name => $status_field_label) : ?>
 
-                    <tr>
-                        <td class="col-md-1"><?php echo $office_campaign->$status_field_name ?></td>
+                            <?php
+                                
+                                if (!empty($office_campaign->$status_field_name)) {
+                                    if($office_campaign->$status_field_name == 'yes') {
+                                        $status_icon = '<i class="text-success fa fa-check-square"></i>';  
+                                        $status_class = 'success';  
+                                    } else if ($office_campaign->$status_field_name == 'no') {
+                                        $status_icon =  '<i class="text-danger fa fa-times-circle"></i>';    
+                                        $status_class = 'danger';
+                                    } else {
+                                        $status_icon = '<i class="text fa fa-exclamation-triangle"></i>';            
+                                        $status_class = '';
+                                    } 
+                                } else {
+                                    $status_icon = '';            
+                                    $status_class = '';
+                                }
+                           
+                            ?>
+
+                    <tr class="<?php echo $status_class; ?>">
+                        <td class="col-md-1">
+                            <?php echo $status_icon; ?>
+                        </td>
 
                         <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                             <td class="col-md-2">
@@ -99,11 +132,15 @@
                             <?php endif; ?>
                         </td>     
                         <td>
+                            <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                             <a class="btn btn-xs btn-default collapsed pull-right" href="#note-expander-<?php echo $status_field_name ?>" data-parent="note-expander-parent" data-toggle="collapse">
                                 Notes
                             </a>
+                            <?php endif; ?>
                         </td>     
                     </tr>
+
+                    <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                     <tr>
                         <td colspan="5" class="hidden-row">
                             <div class="edit-toggle collapse container form-group" id="note-expander-<?php echo $status_field_name ?>">
@@ -111,10 +148,20 @@
                                 <?php 
                                     $note_field = "note_$status_field_name";
                                     $note_data = (!empty($notes[$note_field])) ? $notes[$note_field] : '';
+
+                                    if(!empty($notes[$note_field])) {
+                                        
+                                        $note_data = $notes[$note_field];
+                                        $note_raw = $note_data->current->note;
+                                        $note_html = (!empty($note_data->current->note_html)) ? $note_data->current->note_html : '';
+                                    } else {
+                                        $note_raw = '';
+                                        $note_html = '';
+                                    }
                                 ?>    
 
-                                <div class="edit-area"><?php echo $note_data; ?></div>
-                                <div class="edit-raw hidden" data-fieldname="note_<?php echo $status_field_name ?>"><?php echo $note_data; ?></div>
+                                <div class="edit-area"><?php echo $note_html; ?></div>
+                                <div class="edit-raw hidden" data-fieldname="note_<?php echo $status_field_name ?>"><?php echo $note_raw; ?></div>
                                 
                                 <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                     <button class="btn btn-primary edit-button pull-right" type="button">Edit</button>                                
@@ -122,6 +169,7 @@
                             </div>
                         </td>
                     </tr>
+                    <?php endif;?>
 
 
 

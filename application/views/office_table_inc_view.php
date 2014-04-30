@@ -6,13 +6,24 @@ function status_table($title, $rows, $config = null) {
 ?>
 	<div class="panel panel-default">
 	<div class="panel-heading"><?php echo $title?></div>
-	<table class="table table-striped table-hover">
-		<tr>
-			<th class="col-sm-4">Agency</th>
-			<th class="col-sm-2">/data.json</th>
-			<th class="col-sm-2">records</th>						
-			<th class="col-sm-2">valid schema</th>			
-			<th class="col-sm-2">percent valid</th>										
+	<table class="table table-striped table-hover table-bordered">
+		<tr class="dashboard-heading">
+			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
+			<th class="tilt"><div>/data.json 		</div></th>
+			<th class="tilt"><div>Records 			</div></th>						
+			<th class="tilt"><div>Valid schema 	</div></th>			
+			<th class="tilt"><div>Percent valid 	</div></th>	
+			
+			<th class="tilt"><div>Data.gov Harvest	</div></th>		
+			<th class="tilt"><div>Inventory	</div></th>		
+			<th class="tilt"><div>Inventory Superset	</div></th>		
+			<th class="tilt"><div>/data	</div></th>		
+			<th class="tilt"><div>Feedback	</div></th>		
+			<th class="tilt"><div>Schedule	</div></th>		
+			<th class="tilt"><div>Publication Process	</div></th>		
+
+
+
 		</tr>
 		<?php foreach ($rows as $office):?>
 		
@@ -107,11 +118,21 @@ function status_table($title, $rows, $config = null) {
 		?>				
 		
 		<tr class="<?php echo $status_color ?>">
-			<td><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></td>
-			<td><?php echo $json_icon; ?>	
-			<td><?php echo $total_records; ?>			
-			<td><?php echo $schema_icon; ?>	
-			<td><?php echo $percent_valid?>
+			<td><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></td>									
+			<td><?php echo $json_icon; ?>								</td>											
+			<td><?php echo $total_records; ?>							</td>											
+			<td><?php echo $schema_icon; ?>								</td>											
+			<td><?php echo $percent_valid?>								</td>											
+																														
+    		<td><?php echo page_status($office->datagov_harvest); 		?></td>											
+    		<td><?php echo page_status($office->inventory_posted); 		?></td>											
+    		<td><?php echo page_status($office->inventory_superset);	?></td>											
+    		<td><?php echo page_status($office->datajson_slashdata); 	?></td>											
+    		<td><?php echo page_status($office->feedback); 				?></td>											
+    		<td><?php echo page_status($office->schedule_posted); 		?></td>											
+    		<td><?php echo page_status($office->publication_process_posted); ?></td>									
+
+
 		</tr>
 		<?php endforeach;?>
 	</table>
@@ -140,6 +161,9 @@ function http_status_color($status_code) {
 }
 
 function page_status($data_status, $status_color = null) {
+
+	if($data_status == 'yes') $data_status = 'success';
+	if($data_status == 'no') $data_status = 'danger';
     
 	if ($data_status == 'success') {
 	    $icon = '<i class="text-' . $data_status . ' fa fa-check-square"></i>';			    
@@ -152,6 +176,10 @@ function page_status($data_status, $status_color = null) {
 	if ($data_status == 'warning' || $status_color == 'warning') {
         $icon = '<i class="text-' . $status_color . ' fa fa-exclamation-triangle"></i>';			    			    
 	}	
+
+	if(empty($icon) && !empty($data_status))  $icon = '<i class="text-' . $status_color . ' fa fa-exclamation-triangle"></i>';			    			    
+
+	if(empty($icon)) $icon = '';
 	
 	return $icon;		    
 }
