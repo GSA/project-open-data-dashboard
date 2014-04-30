@@ -4,7 +4,7 @@
 
 <?php include 'office_table_inc_view.php';?>
 
-
+<?php $permission_level = 'admin' ?>
 
 
     <div class="container">
@@ -23,15 +23,121 @@
     				<div><a href="<?php echo $office->parent_office_id ?>">Parent Office</a></div>				
     			<?php endif; ?>
 			</div>
-			
-			
-            <p>
-                See the <a href="/docs">documentation</a> for an explanation of this table.
-            </p>			
+	
 		
         </div>
 
+        <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+            <form method="post" action="/datagov/status-update" role="form">
+        <?php endif; ?>        
+        <div class="panel panel-default">
 
+            
+
+            <div class="panel-heading">Status 
+                <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                    <button type="submit" class="btn btn-success btn-xs pull-right" href="/datagov/status/<?php echo $office->id; ?>">Update</button> <button class="btn btn-default btn-xs pull-right" style="margin-right : 1em" id="accShow">Show All Notes</button>
+                <?php endif; ?>
+            </div>
+     
+
+            <table class="table table-striped table-hover" id="note-expander-parent">
+
+            <!--
+                <tr>
+                    <th>Contact Name</th>
+                    <td><?php echo $office_campaign->contact_name ?></td>
+                </tr>   
+
+                <tr>
+                    <th>Contact Email</th>
+                    <td><?php echo $office_campaign->contact_email ?></td>
+                </tr>
+            -->
+
+
+                <?php 
+
+                $status_fields = array(
+                'datagov_harvest' => "Data.gov Harvest", 
+                'inventory_posted' => "EDI Posted", 
+                'inventory_superset' => "EDI is a superset of PDL", 
+                'datajson_posted' => "PDL data.json", 
+                'datajson_slashdata' => "PDL /data", 
+                'feedback' => "Feedback Mechanism", 
+                'schedule_posted' => "Schedule", 
+                'publication_process_posted' => "Data Publication Process" 
+                );
+
+                $crawl_details = array('datajson_posted', 'datajson_slashdata', 'feedback', 'schedule_posted', 'publication_process_posted');
+
+                ?>
+
+                <?php foreach ($status_fields as $status_field_name => $status_field_label) : ?>
+
+                    <tr>
+                        <td class="col-md-1"><?php echo $office_campaign->$status_field_name ?></td>
+
+                        <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                            <td class="col-md-2">
+                                <select name="<?php echo $status_field_name ?>">
+                                    <option value="" disabled <?php echo (empty($office_campaign->$status_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
+                                    <option <?php echo ($office_campaign->$status_field_name == "yes") ? 'selected = "selected"' : '' ?> value="yes">Yes</option>
+                                    <option <?php echo ($office_campaign->$status_field_name == "no") ? 'selected = "selected"' : '' ?> value="no">No</option>
+                                    <option <?php echo ($office_campaign->$status_field_name == "partially") ? 'selected = "selected"' : '' ?> value="partially">Partially</option>
+                                    <option <?php echo ($office_campaign->$status_field_name == "other") ? 'selected = "selected"' : '' ?> value="other">Other</option>
+                                </select>
+                            </td>
+                        <?php endif; ?>
+                        
+                        <td><strong><?php echo $status_field_label ?></strong></td>                        
+                        <td>
+                            <?php if (array_search($status_field_name, $crawl_details) !== false):?> 
+
+                                <a href="#<?php echo $status_field_name ?>">Crawl details</a>
+
+                            <?php endif; ?>
+                        </td>     
+                        <td>
+                            <a class="btn btn-xs btn-default collapsed pull-right" href="#note-expander-<?php echo $status_field_name ?>" data-parent="note-expander-parent" data-toggle="collapse">
+                                Notes
+                            </a>
+                        </td>     
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="hidden-row">
+                            <div class="edit-toggle collapse container form-group" id="note-expander-<?php echo $status_field_name ?>">
+                                
+                                <?php 
+                                    $note_field = "note_$status_field_name";
+                                    $note_data = (!empty($notes[$note_field])) ? $notes[$note_field] : '';
+                                ?>    
+
+                                <div class="edit-area"><?php echo $note_data; ?></div>
+                                <div class="edit-raw hidden" data-fieldname="note_<?php echo $status_field_name ?>"><?php echo $note_data; ?></div>
+                                
+                                <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                                    <button class="btn btn-primary edit-button pull-right" type="button">Edit</button>                                
+                                <?php endif; ?>
+                            </div>
+                        </td>
+                    </tr>
+
+
+
+
+                <?php endforeach; ?>
+
+            </table>   
+
+        </div>
+
+        <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">
+
+
+        <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+            </form>
+        <?php endif; ?>        
 
 		<?php if(!empty($office_campaign)): ?>
 		
@@ -57,6 +163,12 @@
 		
 		<?php if(!empty($office->url)): ?>
 		
+            
+        <a name="datajson_posted" class="anchor-point"></a>
+        <p>
+            See the <a href="/docs">documentation</a> for an explanation of this table.
+        </p>    
+
 		<div class="panel panel-default">
 		<div class="panel-heading">data.json <a type="button" class="btn btn-success btn-xs pull-right hidden" href="/datagov/status/<?php echo $office->id; ?>">Refresh</a></div>
 		
@@ -109,12 +221,7 @@
 				
 			</td>
 		</tr>
-						
-		<tr>
-			<th>Declared Data.json URL</th>
-			<td><?php echo $office_campaign->datajson_url ?></td>
-		</tr>
-		
+							
 		<tr>
 			<th>Resolved Data.json URL</th>
 			<td>
@@ -312,6 +419,7 @@
 		
 
 		<?php if(!empty($office_campaign->datapage_status)): ?>
+        <a name="datajson_slashdata" class="anchor-point"></a>
 
     	<div class="panel panel-default">
     	<div class="panel-heading">/data page</div>
@@ -417,6 +525,8 @@
                 
                 
 		<?php if(!empty($office_campaign->digitalstrategy_status)): ?>
+
+
 
     	<div class="panel panel-default">
     	<div class="panel-heading">/digitalstrategy.json</div>
@@ -537,10 +647,17 @@
      	    <div class="panel-heading">Digital Strategy</div>
      	    <div style="padding : 1em;">
             <?php 
-                $sections = array("1.2.4", "1.2.5", "1.2.6", "1.2.7");
-            
+                $sections = array(  "1.2.4" => "schedule_posted", 
+                                    "1.2.5" => "schedule", 
+                                    "1.2.6" => "feedback", 
+                                    "1.2.7" => "publication_process_posted");
+        
+
+
                 foreach ($digital_strategy->items as $item) {
-                    if (in_array($item->id, $sections)) {
+                    if (!empty($sections[$item->id])) {
+
+                        echo "<a name=\"{$sections[$item->id]}\" class=\"anchor-point\"></a>";
                         echo "<h3>{$item->id} {$item->text}</h3>";
                         
                         if($item->multiple === false) {
@@ -602,88 +719,7 @@
 		
 		
 		
-		
-		
-		<div class="panel panel-default">
-		<div class="panel-heading">Project Open Data</div>
 
-		<table class="table table-striped table-hover">
-		<tr>
-			<th>Posted an Enterprise Data Inventory Schedule</th>
-			<td><?php  ?></td>
-		</tr>
-		<tr>
-			<th>Created an Enterprise Data Inventory</th>
-			<td><?php  ?></td>
-		</tr>
-		<tr>
-			<th>Developed a Public Data Listing (machine readable)</th>
-			<td><?php  ?></td>
-		</tr>
-		<tr>
-			<th>Developed a Public Data Listing (human readable)</th>
-			<td><?php  ?></td>
-		</tr>
-		<tr>
-			<th>Developed a Customer Feedback Process </th>
-			<td><?php  ?></td>
-		</tr>								
-		<tr>
-			<th>Described the Data Publication Process</th>
-			<td><?php  ?></td>
-		</tr>		
-		<tr>
-			<th>Identified agency Point of Contact</th>
-			<td><?php  ?></td>
-		</tr>					
-		</table>
-		</div>
-		
-		
-		
-		<!--
-		<div class="panel panel-default">
-		<div class="panel-heading">Data.gov Support</div>
-		
-		<table class="table table-striped table-hover">
-		<tr>
-			<th>Contact Name</th>
-			<td><?php echo $office_campaign->contact_name ?></td>
-		</tr>	
-
-		<tr>
-			<th>Contact Email</th>
-			<td><?php echo $office_campaign->contact_email ?></td>
-		</tr>
-
-		<tr>
-			<th>Feedback Mechanism</th>
-			<td><?php echo $office_campaign->feedback_mechanism ?></td>
-		</tr>
-
-		<tr>
-			<th>Catalog View</th>
-			<td><?php echo $office_campaign->catalog_view ?></td>
-		</tr>								
-
-		<tr>
-			<th>Community Plan</th>
-			<td><?php echo $office_campaign->community_plan ?></td>
-		</tr>
-
-		<tr>
-			<th>Central Inventory</th>
-			<td><?php echo $office_campaign->central_inventory ?></td>
-		</tr>				
-
-		<tr>
-			<th>Inventory Plan</th>
-			<td><?php echo $office_campaign->inventory_plan ?></td>
-		</tr>	
-
-		</table>		
-		</div>
-		-->
 
 
 		

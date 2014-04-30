@@ -54,20 +54,28 @@ class campaign_model extends CI_Model {
 		$model->office_id						= null;               
 		$model->contact_name					= null;            
 		$model->contact_email					= null;           
-		$model->datajson_url					= null;  
 		$model->datajson_status					= null;  			          
-		$model->datajson_errors					= null; 						         						
-		$model->datajson_notes					= null; 
-		$model->datapage_url					= null; 
-		$model->datapage_status					= null; 						         
-		$model->feedback_mechanism				= null;      
-		$model->catalog_view					= null;            
-		$model->community_plan					= null;          
-		$model->central_inventory				= null;       
-		$model->inventory_plan					= null;		
+		$model->datapage_status					= null; 					
+		$model->digitalstrategy_status			= null; 							
+
+		$model->datagov_harvest					= null;	
+		$model->inventory_posted				= null;	
+		$model->inventory_superset				= null;	
+		$model->datajson_posted					= null;	
+		$model->datajson_slashdata				= null;	
+		$model->Feedback						= null;	
+		$model->schedule_posted					= null;	
+		$model->publication_process_posted		= null;	
 		
 		return $model;
 	}
+
+
+	
+	
+
+
+
 
 
 	public function datajson_crawl() {
@@ -118,6 +126,9 @@ class campaign_model extends CI_Model {
 		
 		return $model;
 	}
+
+
+
 
  
 
@@ -355,6 +366,51 @@ class campaign_model extends CI_Model {
 		}		
 		
 	}
+
+
+	public function update_note($update) {		
+		
+		$this->db->select('note');		
+		$this->db->where('office_id', $update->office_id);	
+		$this->db->where('field_name', $update->field_name);	
+		$query = $this->db->get('notes');				
+		
+		if ($query->num_rows() > 0) {
+			// update
+			
+			if ($this->environment == 'terminal') {
+				echo 'Updating ' . $update->office_id . PHP_EOL . PHP_EOL;
+			}	
+			
+			//$current_data = $query->row_array();				
+			//$update = array_mash($update, $current_data);
+			
+			$this->db->where('office_id', $update->office_id);						
+			$this->db->update('notes', $update);					
+			
+			
+			
+		} else {
+			// insert
+			
+			if ($this->environment == 'terminal') {
+				echo 'Adding ' . $update->office_id . PHP_EOL . PHP_EOL;
+			}					
+			
+			$this->db->insert('notes', $update);					
+			
+		}		
+		
+	}
+
+	public function get_notes($office_id) {
+		
+		$query = $this->db->get_where('notes', array('office_id' => $office_id));	
+
+		return $query;
+		
+	}		
+
 	
 	
 	

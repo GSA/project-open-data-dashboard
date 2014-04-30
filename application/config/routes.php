@@ -47,6 +47,8 @@ $route['digitalstrategy'] = "campaign/digitalstrategy";
 $route['validate'] = "campaign/validate";
 $route['changeset'] = "campaign/changeset";
 
+$route['datagov/status-update'] = "campaign/status_update";
+
 $route['datagov/(:any)'] = "campaign/$1";
 $route['datagov/(:any)/'] = "campaign/$1";
 $route['datagov/(:any)/(:any)'] = "campaign/$1/$2";

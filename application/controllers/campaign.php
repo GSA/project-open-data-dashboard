@@ -813,6 +813,47 @@ class Campaign extends CI_Controller {
 	}
 
 
+	public function status_update() {
+
+		if ($this->session->userdata('permissions') == 'admin') {
+
+	        $this->load->model('campaign_model', 'campaign');		
+			
+			//$datajson 		= ($this->input->post('datajson', TRUE)) ? $this->input->post('datajson', TRUE) : $datajson;
+
+	        $update = (object) $this->input->post(NULL, TRUE);
+
+			$datagov_model_fields = $this->campaign->datagov_model();
+
+			foreach ($datagov_model_fields as $field => $nothing) {
+
+				$field_name = "note_$field";
+
+				if(!empty($update->$field_name)) {
+					$note_data = json_encode($update->$field_name);
+
+					$note = array('note' => $note_data, 'field_name' => $field, 'office_id' => $update->office_id);	
+					$note = (object) $note;
+					$this->campaign->update_note($note);
+				}
+
+				unset($update->$field_name);				
+			}	        	
+
+	        $this->campaign->update_status($update);
+
+	        var_dump($update); exit;
+			
+ 		} else {
+			$this->load->helper('url');
+            redirect('/'); 			
+ 		}
+
+
+
+	}
+
+
 	public function validate($datajson_url = null, $datajson = null, $headers = null, $schema = null, $output = 'browser') {
         $this->load->model('campaign_model', 'campaign');		
 		

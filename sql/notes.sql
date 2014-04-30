@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2013 at 02:46 PM
+-- Generation Time: Apr 30, 2014 at 02:24 AM
 -- Server version: 5.5.28
 -- PHP Version: 5.3.26
 
@@ -23,26 +23,16 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `datagov_campaign`
+-- Table structure for table `notes`
 --
 
-CREATE TABLE IF NOT EXISTS `datagov_campaign` (
+CREATE TABLE IF NOT EXISTS `notes` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `office_id` int(10) NOT NULL,
-  `contact_name` text,
-  `contact_email` text,
-  `datajson_status` longblob,
-  `datapage_status` longblob,
-  `digitalstrategy_status` longblob,
-  `datagov_harvest` text,
-  `inventory_posted` text,
-  `inventory_superset` text,
-  `datajson_posted` text,
-  `datajson_slashdata` text,
-  `feedback` text,
-  `schedule_posted` text,
-  `publication_process_posted` text,
-  PRIMARY KEY (`office_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `field_name` varchar(256) NOT NULL,
+  `note` longblob NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

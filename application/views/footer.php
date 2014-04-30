@@ -1,3 +1,4 @@
+</div> <!-- /#main-container -->
 
 <hr>
       <footer>

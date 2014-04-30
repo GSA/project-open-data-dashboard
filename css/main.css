@@ -4,9 +4,11 @@
    Author's custom styles
    ========================================================================== */
 
+body { padding-top: 50px; }
 
-
-
+.anchor-point {
+	padding-top : 60px;
+}
 
 .validation-record {
 	border-bottom : 1px solid #ccc; 
@@ -42,4 +44,22 @@ background-color : #f9f9f9;
 .navbar-inverse .btn-inverse {
     color : #fff;
 background-image: linear-gradient(to bottom, #3C3C3C 0px, #141414 100%);    
+}
+
+.hidden-row {
+    padding: 0 !important;
+    border : 0 !important;
+}
+
+.edit-toggle {
+	padding : 1em;
+}
+
+.edit-toggle textarea,
+.edit-toggle div {
+	margin : 1em 0;
+}
+
+.panel {
+	margin-bottom : 6em;
 }

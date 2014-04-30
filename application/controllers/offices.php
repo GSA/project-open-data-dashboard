@@ -117,9 +117,23 @@ class Offices extends CI_Controller {
 		   $view_data['office'] = $query->row();
 		
 
-		
+			// Get note data		
+			$notes = $this->campaign->get_notes($view_data['office']->id);
+
+			if ($notes->num_rows() > 0) {
+				
+				$note_list = array();
+				foreach ($notes->result() as $note) {
+					$note_field = 'note_' . $note->field_name;
+					$note_list[$note_field] = json_decode($note->note);
+				}
+
+				$view_data['notes'] = $note_list;
+			}
+
+			// Get crawler data
 			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id);
-		
+
 			if(empty($view_data['office_campaign'])) {
 				$view_data['office_campaign'] = $this->campaign->datagov_model();
 			}
