@@ -18,6 +18,9 @@ $config['github_oauth_secret'] = '############';
 $config['github_oauth_redirect'] =  'http://' . $_SERVER['SERVER_NAME'] . '/auth/session/github';
 
 
+$config['tmp_csv_import'] = '/var/www/project-open-data-dashboard/downloads/import.csv';
+$config['pre_approved_admins'] = array('user1', 'user2');
+
 
 /*
 |--------------------------------------------------------------------------
