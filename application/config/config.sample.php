@@ -10,6 +10,13 @@ $config['google_analytics_id'] = ''; // UA-xxxxxxx-xx
 $config['google_analytics_domain'] = ''; // domain.com
 
 
+// OAuth Settings
+$config['github_oauth_id'] = '############';
+$config['github_oauth_secret'] = '############';
+
+// You shouldn't need to edit this unless you're not hosting this a the root of your server
+$config['github_oauth_redirect'] =  'http://' . $_SERVER['SERVER_NAME'] . '/auth/session/github';
+
 
 
 /*

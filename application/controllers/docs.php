@@ -31,6 +31,12 @@ class Docs extends CI_Controller {
 	{
 		$this->load->view('export');
 	}	
+
+	public function user()
+	{
+		$this->load->view('user');
+	}
+
 	
 }
 
