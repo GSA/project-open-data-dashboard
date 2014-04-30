@@ -55,7 +55,7 @@ class Auth extends CI_Controller
 				if(empty($user)) {
 
 					$pre_approved_admins = $this->config->item('pre_approved_admins');
-					var_dump($pre_approved_admins); 
+					
 					if(array_search($user_data['username'], $pre_approved_admins) !== false) {
 						$user_data['permissions'] = 'admin';
 					}
