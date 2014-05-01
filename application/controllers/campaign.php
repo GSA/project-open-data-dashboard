@@ -680,8 +680,6 @@ class Campaign extends CI_Controller {
 							
 							$status['schema_errors'] = (!empty($status['schema_errors'])) ? $this->process_validation_errors($status['schema_errors']) : null;				
 
-//var_dump($status['schema_errors']); exit;
-
 							$status['error_count'] = (!empty($status['schema_errors'])) ? count($status['schema_errors']) : null;
 							$status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;				
 
@@ -788,13 +786,12 @@ class Campaign extends CI_Controller {
         }
 
         $status['url'] = (!empty($real_url)) ? $real_url : $status['url'];
-
 		if($status['http_code'] == 200) {
 		    
 			$validation = $this->campaign->validate_datajson($status['url']);
-            //var_dump($validation); exit;
+
 			if(!empty($validation)) {
-				$status['valid_json'] = true;
+				$status['valid_json'] = $validation['valid_json'];
 				$status['valid_schema'] = $validation['valid'];
 				$status['total_records'] = (!empty($validation['total_records'])) ? $validation['total_records'] : null;
 				$status['schema_errors'] = (!empty($validation['errors'])) ? $validation['errors'] : false;	

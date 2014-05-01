@@ -221,7 +221,7 @@ class campaign_model extends CI_Model {
 			}     	
 
 			if(!empty($errors)) {
-				return array('valid' => false, 'fail' => $errors, 'download_content_length' => $datajson_header['download_content_length']);				
+				return array('valid_json' => false, 'valid' => false, 'fail' => $errors, 'download_content_length' => $datajson_header['download_content_length']);				
 			}
 
 
@@ -249,11 +249,12 @@ class campaign_model extends CI_Model {
 		    */    
             $bom = pack('H*','EFBBBF');
             $datajson = preg_replace("/^$bom/", '', $datajson);
-			
 		}
 
 		
 		if ($datajson && is_json($datajson)) {
+
+			$response['valid_json'] = true;
 
 			$response = $this->campaign->jsonschema_validator($datajson, $schema);	
 
@@ -268,7 +269,8 @@ class campaign_model extends CI_Model {
 			return $response;
 
 		} else {
-			return false;
+			$errors[] = "This does not appear to be valid JSON";		
+			return array('valid_json' => false, 'valid' => false, 'fail' => $errors, 'download_content_length' => $datajson_header['download_content_length']);				
 		}
 		
 
