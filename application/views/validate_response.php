@@ -55,7 +55,7 @@
                 <div class="validation-record row">
 
                     <div class="validation-source col-md-6">
-                        <h4>Report for identifier: <?php echo $validation['source'][$key]->identifier ?></h4>
+                        <h4>Report for identifier: <?php echo (!empty($validation['source'][$key]->identifier)) ? $validation['source'][$key]->identifier : '' ?></h4>
                         <pre><code><?php print htmlentities(prettyPrint(str_replace('\/', '/', json_encode($validation['source'][$key])))); ?></code></pre>
                     </div>
 
