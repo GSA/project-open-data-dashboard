@@ -80,7 +80,14 @@
 
                 <tr>
                         <td colspan="5">
-                            General notes
+                            <p>General notes</p>
+                            <?php if ($this->session->userdata('permissions') == $permission_level): ?>
+                                <?php if(!empty($office_campaign->contact_email)): ?>
+                                    <p>Contact: <a href="mailto:<?php echo $office_campaign->contact_email; ?>"><?php echo $office_campaign->contact_email; ?></a></p>
+                                <?php else:?>
+                                    <p class="bg-danger">No Data Lead listed!</p>
+                                <?php endif;?>
+                            <?php endif;?>
                         </td>
                 </tr>
 
