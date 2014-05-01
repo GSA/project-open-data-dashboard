@@ -221,7 +221,10 @@ class campaign_model extends CI_Model {
 			}     	
 
 			if(!empty($errors)) {
-				return array('valid_json' => false, 'valid' => false, 'fail' => $errors, 'download_content_length' => $datajson_header['download_content_length']);				
+
+				$valid_json = is_json($datajson);
+
+				return array('valid_json' => $valid_json, 'valid' => false, 'fail' => $errors, 'download_content_length' => $datajson_header['download_content_length']);				
 			}
 
 
@@ -260,7 +263,7 @@ class campaign_model extends CI_Model {
 
 			$response['total_records'] = count($catalog);
 			$response['valid_json'] = true;
-			
+
 			if ($return_source) {
 				$response['source'] = $catalog;
 			}
