@@ -254,14 +254,13 @@ class campaign_model extends CI_Model {
 		
 		if ($datajson && is_json($datajson)) {
 
-			$response['valid_json'] = true;
-
 			$response = $this->campaign->jsonschema_validator($datajson, $schema);	
 
 			$catalog = json_decode($datajson);
 
 			$response['total_records'] = count($catalog);
-
+			$response['valid_json'] = true;
+			
 			if ($return_source) {
 				$response['source'] = $catalog;
 			}
