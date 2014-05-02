@@ -262,7 +262,7 @@ class Campaign extends CI_Controller {
 				$row_total = $result->result->count;
 				$row_count = $row_count + $row_pagesize; 
 
-                if ($this->environment == 'terminal') {
+                if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                     echo 'Exporting ' . $row_count . ' of ' . $row_total .  PHP_EOL;					
                 }
 
@@ -330,7 +330,7 @@ class Campaign extends CI_Controller {
 		$headings = array_keys($csv_rows[0]);		
 		
 		// Open the output stream
-        if ($this->environment == 'terminal') {
+        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
             $filepath = realpath('./csv/output.csv');
             $fh = fopen($filepath, 'w');
             echo 'Attempting to save csv to ' . $filepath .  PHP_EOL;					            
@@ -532,7 +532,7 @@ class Campaign extends CI_Controller {
     				// attempt to break any caching
     				$expected_datajson_url_refresh = $expected_datajson_url . '?refresh=' . time();
 
-    				if ($this->environment == 'terminal') {
+    				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
     					echo 'Attempting to request ' . $expected_datajson_url . ' and ' . $expected_datajson_url_refresh . PHP_EOL;
     				}
                 
@@ -556,7 +556,7 @@ class Campaign extends CI_Controller {
             				if ($status['filetime'] == $old_status->filetime) {
             					$reload = false;
 
-			    				if ($this->environment == 'terminal') {
+			    				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			    					echo 'Nothing to update for ' . $update->office_id . ' on ' . $status['url'] . PHP_EOL . PHP_EOL;
 			    				}
 
@@ -580,7 +580,7 @@ class Campaign extends CI_Controller {
 
             				if(!($status['http_code'] == 200)) {
 
-			    				if ($this->environment == 'terminal') {
+			    				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			    					echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
 			    				}
 
@@ -596,7 +596,7 @@ class Campaign extends CI_Controller {
 
             				if(!get_dir_file_info($directory)) {
 
-            					if ($this->environment == 'terminal') {
+            					if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			    					echo 'Creating directory ' . $directory . PHP_EOL;
 			    				}
 
@@ -604,7 +604,7 @@ class Campaign extends CI_Controller {
             				}
            				
 
-			    			if ($this->environment == 'terminal') {
+			    			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			    				echo 'Attempting to download ' . $real_url . ' to ' . $filepath . PHP_EOL;
 			    			}
 
@@ -624,7 +624,7 @@ class Campaign extends CI_Controller {
 			    			// If we can't read from this file, skip 
 							if ($copy===false) {
 
-								if ($this->environment == 'terminal') {
+								if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			    					echo 'Could not read from ' . $real_url . PHP_EOL;
 			    				}
 
@@ -634,7 +634,7 @@ class Campaign extends CI_Controller {
 							// If we can't write to this file, skip 
 							if ($paste===false) {
 
-								if ($this->environment == 'terminal') {
+								if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			    					echo 'Could not read from ' . $real_url . PHP_EOL;
 			    				}
 
@@ -645,7 +645,7 @@ class Campaign extends CI_Controller {
         					while (!feof($copy)) {
         					    if (fwrite($paste, fread($copy, 1024)) === FALSE) {
         					           
-        					    		if ($this->environment == 'terminal') {        					    			
+        					    		if ($this->environment == 'terminal' OR $this->environment == 'cron') {        					    			
 	    									echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
 	    								}
 
@@ -656,7 +656,7 @@ class Campaign extends CI_Controller {
 
 
 
-  							if ($this->environment == 'terminal') {
+  							if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			    				echo 'Done' . PHP_EOL . PHP_EOL;
 			    			}
 
@@ -664,9 +664,11 @@ class Campaign extends CI_Controller {
             				// Save current update status in case things break during json_status 
 	    					$update->datajson_status = (!empty($status)) ? json_encode($status) : null; 
 						
-	    					if ($this->environment == 'terminal') {
+	    					if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 	    						echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-	    					}				
+	    					}	
+
+
 						
 	    					$this->campaign->update_status($update);
 					    	       
@@ -688,7 +690,7 @@ class Campaign extends CI_Controller {
 	    					if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);                
 	                	
 	                	
-	    					if ($this->environment == 'terminal') {
+	    					if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 	    						echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
 	    					}                
 	                	
@@ -712,7 +714,7 @@ class Campaign extends CI_Controller {
                     // Get status of html /data page				
     				$page_status_url = $url . '/data';
 				
-    				if ($this->environment == 'terminal') {
+    				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
     					echo 'Attempting to request ' . $page_status_url . PHP_EOL;
     				}				
 
@@ -721,7 +723,7 @@ class Campaign extends CI_Controller {
 
     				$update->datapage_status = (!empty($page_status)) ? json_encode($page_status) : null;
 				
-    				if ($this->environment == 'terminal') {
+    				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
     					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datapage_status . PHP_EOL . PHP_EOL;
     				}				
 				
@@ -741,7 +743,7 @@ class Campaign extends CI_Controller {
                      // Get status of html /data page				
      				$digitalstrategy_status_url = $url . '/digitalstrategy.json';
 
-     				if ($this->environment == 'terminal') {
+     				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
      					echo 'Attempting to request ' . $digitalstrategy_status_url . PHP_EOL;
      				}				
 
@@ -750,7 +752,7 @@ class Campaign extends CI_Controller {
 
      				$update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status) : null;
 
-     				if ($this->environment == 'terminal') {
+     				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
      					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->digitalstrategy_status . PHP_EOL . PHP_EOL;
      				}				
 
@@ -758,9 +760,9 @@ class Campaign extends CI_Controller {
 
  			    }			    
 			    
-			    
+			     
 								
-        		if(!empty($id) && $this->environment != 'terminal') {			
+        		if(!empty($id) && $this->environment != 'terminal' && $this->environment != 'cron') {			
         		    $this->load->helper('url');
                     redirect('/offices/detail/' . $id, 'location');
                 }
