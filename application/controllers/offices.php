@@ -120,6 +120,7 @@ class Offices extends CI_Controller {
 
 			// Get note data		
 			$notes = $this->campaign->get_notes($view_data['office']->id);
+			$view_data['note_model'] = $this->campaign->note_model();
 
 			if ($notes->num_rows() > 0) {
 				
@@ -132,6 +133,8 @@ class Offices extends CI_Controller {
 						$note_html = $note_list[$note_field]->current->note;
 						$note_html = linkToAnchor($note_html);
 						$note_list[$note_field]->current->note_html =  $this->markdown->parse($note_html);
+					} else {
+						$note_list[$note_field]->current->note_html = null;
 					}
 				}
 

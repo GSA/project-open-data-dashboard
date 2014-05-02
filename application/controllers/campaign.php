@@ -824,13 +824,18 @@ class Campaign extends CI_Controller {
 
 			$datagov_model_fields = $this->campaign->datagov_model();
 
+
+
+			// add fake field for general notes
+			$datagov_model_fields->office_general = null;
+
 			foreach ($datagov_model_fields as $field => $nothing) {
 
 				$field_name = "note_$field";
 
 				if(!empty($update->$field_name)) {
 
-					$note_data = array("note" => $update->$field_name, "date" => null, "author" => null);
+					$note_data = array("note" => $update->$field_name, "date" =>  date("F j, Y, g:i a T"), "author" => $this->session->userdata('name_full'));
 					$note_data = array("current" => $note_data, "previous" => null);
 
 					$note_data = json_encode($note_data);

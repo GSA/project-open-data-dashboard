@@ -71,6 +71,22 @@ class campaign_model extends CI_Model {
 	}
 
 
+	public function note_model() {
+		
+		$model = new stdClass();
+
+		$model->date							= null;               
+		$model->author							= null;            
+		$model->note							= null;           
+		$model->note_html						= null;  			          
+	
+		$note = new stdClass();
+
+		$note->current							= $model; 
+		
+		return $note;
+	}
+
 	
 	
 
@@ -389,7 +405,9 @@ class campaign_model extends CI_Model {
 			//$current_data = $query->row_array();				
 			//$update = array_mash($update, $current_data);
 			
-			$this->db->where('office_id', $update->office_id);						
+			$this->db->where('office_id', $update->office_id);	
+			$this->db->where('field_name', $update->field_name);	
+
 			$this->db->update('notes', $update);					
 			
 			

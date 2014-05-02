@@ -51,8 +51,13 @@ background-image: linear-gradient(to bottom, #3C3C3C 0px, #141414 100%);
     border : 0 !important;
 }
 
-.edit-toggle {
+.edit-toggle, 
+.add-padding {
 	padding : 1em;
+}
+
+.note-heading {
+	padding : 0 .5em;
 }
 
 .edit-toggle textarea,
@@ -86,4 +91,10 @@ background-image: linear-gradient(to bottom, #3C3C3C 0px, #141414 100%);
 -o-transform: rotate(-70deg);
 transform: rotate(-70deg);
 
+}
+
+
+.note-metadata {
+	font-style: italic;
+	color : #ccc;
 }

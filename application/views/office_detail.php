@@ -80,13 +80,55 @@
 
                 <tr>
                         <td colspan="5">
-                            <p>General notes</p>
-                            <?php if ($this->session->userdata('permissions') == $permission_level): ?>
-                                <?php if(!empty($office_campaign->contact_email)): ?>
-                                    <p>Contact: <a href="mailto:<?php echo $office_campaign->contact_email; ?>"><?php echo $office_campaign->contact_email; ?></a></p>
-                                <?php else:?>
-                                    <p class="bg-danger">No Data Lead listed!</p>
+                            <div>
+                                
+                                <?php 
+                                    $status_field_name = 'office_general';
+                                    $note_field = "note_office_general";
+                                    $note_data = (!empty($notes[$note_field])) ? $notes[$note_field] : '';
+
+                                    if(!empty($notes[$note_field])) {                                        
+                                        $note_data = $notes[$note_field];
+                                    } else {
+                                        $note_data = $note_model;
+                                    }
+                                ?>
+
+                                <?php if(empty($note_data->current->note)): ?>
+                                    <div class="note-heading">
+                                        <span class="note-metadata">
+                                            No general notes have been added yet
+                                        </span>                                    
+                                    </div>
                                 <?php endif;?>
+
+                                <?php if(!empty($note_data->current->note) OR ($this->session->userdata('permissions') == $permission_level)): ?>
+                                <div class="edit-toggle">
+                                    <div class="edit-area"><?php echo $note_data->current->note_html; ?></div>
+                                    <div class="edit-raw hidden" data-fieldname="note_<?php echo $status_field_name ?>"><?php echo $note_data->current->note; ?></div>
+
+                                    <?php if (!empty($note_data->current->date) && !empty($note_data->current->author)): ?>
+                                        <div class="note-metadata">
+                                            Lasted edited on <?php echo $note_data->current->date;?> by <?php echo $note_data->current->author;?>
+                                        </div> 
+                                    <?php endif; ?>
+
+                                    <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                                        <button class="btn btn-primary edit-button pull-right" type="button">Edit</button>                                
+                                    <?php endif; ?>
+                                </div>
+                                <?php endif; ?>
+
+                            </div>
+
+                            <?php if ($this->session->userdata('permissions') == $permission_level): ?>
+                                <div class="add-padding">
+                                    <?php if(!empty($office_campaign->contact_email)): ?>
+                                        <span>Contact: <a href="mailto:<?php echo $office_campaign->contact_email; ?>"><?php echo $office_campaign->contact_email; ?></a></span>
+                                    <?php else:?>
+                                        <span class="bg-danger">No Data Lead listed!</span>
+                                    <?php endif;?>
+                                </div>
                             <?php endif;?>
                         </td>
                 </tr>
@@ -154,25 +196,32 @@
                                 
                                 <?php 
                                     $note_field = "note_$status_field_name";
+
                                     $note_data = (!empty($notes[$note_field])) ? $notes[$note_field] : '';
 
-                                    if(!empty($notes[$note_field])) {
-                                        
+                                    if(!empty($notes[$note_field])) {                                        
                                         $note_data = $notes[$note_field];
-                                        $note_raw = $note_data->current->note;
-                                        $note_html = (!empty($note_data->current->note_html)) ? $note_data->current->note_html : '';
                                     } else {
-                                        $note_raw = '';
-                                        $note_html = '';
+                                        $note_data = $note_model;
                                     }
-                                ?>    
 
-                                <div class="edit-area"><?php echo $note_html; ?></div>
-                                <div class="edit-raw hidden" data-fieldname="note_<?php echo $status_field_name ?>"><?php echo $note_raw; ?></div>
+
+                                ?>  
                                 
+                                <div class="edit-area"><?php echo $note_data->current->note_html; ?></div>
+                                <div class="edit-raw hidden" data-fieldname="note_<?php echo $status_field_name ?>"><?php echo $note_data->current->note; ?></div>
+
+                                <?php if (!empty($note_data->current->date) && !empty($note_data->current->author)): ?>
+                                    <div class="note-metadata">
+                                        Lasted edited on <?php echo $note_data->current->date;?> by <?php echo $note_data->current->author;?>
+                                    </div> 
+                                <?php endif; ?>
+
                                 <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                     <button class="btn btn-primary edit-button pull-right" type="button">Edit</button>                                
                                 <?php endif; ?>
+                                
+
                             </div>
                         </td>
                     </tr>
