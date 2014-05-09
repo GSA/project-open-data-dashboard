@@ -265,9 +265,12 @@ class campaign_model extends CI_Model {
             /* 
 		    This is to replace any possible BOM "Byte order mark" that might be present
 		    See: http://stackoverflow.com/questions/10290849/how-to-remove-multiple-utf-8-bom-sequences-before-doctype
+		    and
+		    http://stackoverflow.com/questions/3255993/how-do-i-remove-i-from-the-beginning-of-a-file
 		    */    
-            $bom = pack('H*','EFBBBF');
-            $datajson = preg_replace("/^$bom/", '', $datajson);
+            // $bom = pack('H*','EFBBBF');
+            // $datajson = preg_replace("/^$bom/", '', $datajson);
+            $datajson = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $datajson);
 		}
 
 		
