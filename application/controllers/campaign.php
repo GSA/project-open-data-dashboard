@@ -49,6 +49,8 @@ class Campaign extends CI_Controller {
 				
 		$orgs = $this->input->get('orgs', TRUE);
 		$geospatial = $this->input->get('geospatial', TRUE);
+		$harvest = $this->input->get('harvest', TRUE);
+		$from_export = $this->input->get('from_export', TRUE);
 
 
 		$row_total = 100;
@@ -58,13 +60,17 @@ class Campaign extends CI_Controller {
 		$raw_data = array();        	        
 		        
 		while($row_count < $row_total) {
-			$result 	= $this->campaign->get_datagov_json($orgs, $geospatial, $row_pagesize, $row_count, true);
+			$result 	= $this->campaign->get_datagov_json($orgs, $geospatial, $row_pagesize, $row_count, true, $harvest);
 			
-			if(!empty($result)) {
+			if(!empty($result->result)) {
+
 				$row_total = $result->result->count;
 				$row_count = $row_count + $row_pagesize; 
 
-				$raw_data = array_merge($raw_data, $result->result->results);				
+				$raw_data = array_merge($raw_data, $result->result->results);
+
+				if($from_export == 'true') break;
+
 			} else {
 				break;
 			}
@@ -87,7 +93,9 @@ class Campaign extends CI_Controller {
 			exit;			
 			
 		} else {
-			return false;
+	    	header('Content-type: application/json');
+		    print json_encode(array("error" => "no results"));		
+			exit;
 		}
 
 	}
