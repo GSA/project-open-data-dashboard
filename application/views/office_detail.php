@@ -767,7 +767,7 @@
                         if($item->multiple === false) {
                             echo "<h4>{$item->fields[0]->label}</h4>";
                             echo '<br>';
-                            echo $item->fields[0]->value ;                           
+                            echo '<pre style="white-space: pre-wrap; word-break: keep-all; ">' . $item->fields[0]->value . '</pre>';                           
                         } else {
                             
                             $columns = count($item->fields);
