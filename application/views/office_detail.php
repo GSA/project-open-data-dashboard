@@ -413,7 +413,7 @@
 			<td>
 			<span>
 			<?php
-                $validation_url = '/validate?schema=&output=browser&datajson_url=' . urlencode($office_campaign->expected_datajson_status->url);
+                $validation_url = '/validate?schema=federal&output=browser&datajson_url=' . urlencode($office_campaign->expected_datajson_status->url);
 
                 echo "<p><strong>For more readable validation results, see the <a href=\"$validation_url\">validator</a></strong></p>\n";
 	

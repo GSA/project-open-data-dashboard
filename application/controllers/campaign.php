@@ -798,7 +798,7 @@ class Campaign extends CI_Controller {
         $status['url'] = (!empty($real_url)) ? $real_url : $status['url'];
 		if($status['http_code'] == 200) {
 		    
-			$validation = $this->campaign->validate_datajson($status['url']);
+			$validation = $this->campaign->validate_datajson($status['url'], null, null, 'federal');
 
 			if(!empty($validation)) {
 				$status['valid_json'] = $validation['valid_json'];
