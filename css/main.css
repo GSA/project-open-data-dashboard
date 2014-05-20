@@ -98,3 +98,50 @@ transform: rotate(-70deg);
 	font-style: italic;
 	color : #ccc;
 }
+
+.dashboard .metrics-row td {
+	padding : 0;
+}
+
+.dashboard .metrics-row td a {
+	padding : 1em;
+	display : inline-block;
+	width : 100%;
+	text-align: center;
+}
+
+.dashboard .metrics-row td.content-metric a {
+	color : #000;
+}
+
+.dashboard .metrics-row td.content-metric.warning a i {
+	color : yellow;
+}
+
+.dashboard .metrics-row td.content-metric.success a i {
+	color : #3C763D;
+}
+
+.dashboard .metrics-row td.content-metric.danger a i {
+	color : #A94442;
+}
+
+
+
+
+.dashboard .metrics-row td.boolean-metric a span {
+	display : inline-block;
+	text-indent : -9999em;
+	overflow : hidden;
+	width : 2em;
+	text-align: center;
+}
+
+
+.dashboard .metrics-row td.boolean-metric a:hover span {
+text-indent : 0;
+}
+
+.dashboard .metrics-row td a:hover {
+text-decoration: none;
+}

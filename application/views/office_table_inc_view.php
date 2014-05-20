@@ -6,7 +6,7 @@ function status_table($title, $rows, $config = null) {
 ?>
 	<div class="panel panel-default">
 	<div class="panel-heading"><?php echo $title?></div>
-	<table class="table table-striped table-hover table-bordered">
+	<table class="dashboard table table-striped table-hover table-bordered">
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
 			
@@ -121,21 +121,18 @@ function status_table($title, $rows, $config = null) {
 				
 		?>				
 		
-		<tr>
-			<td><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></td>									
-
-			<td class="<?php echo $json_status?>"><?php echo $total_records; ?>							</td>														
-			<td class="<?php echo $schema_status ?>"><?php echo $percent_valid?>								</td>											
-																														
-    		<td class="<?php echo status_color($office->datagov_harvest) ?>"></td>
-    		<td class="<?php echo status_color($office->inventory_posted) ?>"></td>
-    		<td class="<?php echo status_color($office->inventory_superset) ?>"></td>
-    		<td class="<?php echo status_color($office->datajson_slashdata) ?>"></td>
-    		<td class="<?php echo status_color($office->feedback) ?>"></td>
-    		<td class="<?php echo status_color($office->schedule_posted) ?>"></td>
-    		<td class="<?php echo status_color($office->publication_process_posted) ?>"></td>
-
-
+		<tr class="metrics-row">
+			<th><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></th>									
+			<td class="content-metric <?php echo $json_status?>"><a href="/offices/detail/<?php echo $office->id;?>#datajson_posted"><span><?php echo $total_records; ?>&nbsp;</span></a></td>														
+			<td class="content-metric <?php echo $schema_status ?>"><a href="/offices/detail/<?php echo $office->id;?>#datajson_posted"><span><?php echo $percent_valid?>&nbsp;</span></a> </td>																																								
+    		
+    		<td class="boolean-metric <?php echo status_color($office->datagov_harvest) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->datagov_harvest); 		?>&nbsp;</span></a></td>											
+    		<td class="boolean-metric <?php echo status_color($office->inventory_posted) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->inventory_posted); 		?>&nbsp;</span></a></td>											
+    		<td class="boolean-metric <?php echo status_color($office->inventory_superset) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->inventory_superset);	?>&nbsp;</span></a></td>											
+    		<td class="boolean-metric <?php echo status_color($office->datajson_slashdata) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->datajson_slashdata); 	?>&nbsp;</span></a></td>											
+    		<td class="boolean-metric <?php echo status_color($office->feedback) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->feedback); 				?>&nbsp;</span></a></td>											
+    		<td class="boolean-metric <?php echo status_color($office->schedule_posted) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->schedule_posted); 		?>&nbsp;</span></a></td>											
+    		<td class="boolean-metric <?php echo status_color($office->publication_process_posted) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->publication_process_posted); ?>&nbsp;</span></a></td>									
 		</tr>
 		<?php endforeach;?>
 	</table>
