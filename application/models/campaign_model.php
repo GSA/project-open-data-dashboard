@@ -617,7 +617,7 @@ class campaign_model extends CI_Model {
 		$datajson_model->landingPage                        = null;
 		$datajson_model->language                           = null;
 //		$datajson_model->license                            = $datajson_model->license;
-		$datajson_model->mbox                               = (!($datajson_model->mbox)) ? $datajson_model->mbox : $raw_data->maintainer_email;
+		$datajson_model->mbox                               = (!empty($datajson_model->mbox)) ? $datajson_model->mbox : $raw_data->maintainer_email;
 		$datajson_model->modified                           = date(DATE_ISO8601, strtotime($raw_data->metadata_modified));
 		$datajson_model->PrimaryITInvestmentUII             = null;
 		$datajson_model->programCode                        = null;

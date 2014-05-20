@@ -1007,6 +1007,7 @@ class Campaign extends CI_Controller {
 				$json_old = urlencode($json_old);
 				$json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . "%20AND%20-type:harvest" . '&rows=200';		
 
+				// $json_old = 'http://test.dev/temp/ocsit-gsa-gov.json';
 
 				$datajson_domain 				= parse_url($datajson_new);
      			$output['datajson_domain'] 		= $datajson_domain['host']; 			
@@ -1016,6 +1017,12 @@ class Campaign extends CI_Controller {
 
 				$json_old 	= curl_from_json($json_old, false);
 				$datajson_new 	= curl_from_json($datajson_new, false);
+
+				// $object_shim = new stdClass();
+				// $object_shim->result 			= new stdClass();
+				// $object_shim->result->count 	= count($json_old);
+				// $object_shim->result->results 	= $json_old;
+				// $json_old = $object_shim;
 
      			$changeset = 0;
      			$match_count = 0;
