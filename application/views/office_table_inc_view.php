@@ -165,12 +165,14 @@ function http_status_color($status_code) {
 
 function status_color($status) {
 
+	if(empty($status)) return '';
+
 	if ($status == 'yes') {
 		return 'success';
 	} else if ($status == 'no') {
 		return 'danger';
 	} else {
-		return '';
+		return 'warning';
 	}
 
 }
