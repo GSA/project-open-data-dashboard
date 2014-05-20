@@ -9,9 +9,8 @@ function status_table($title, $rows, $config = null) {
 	<table class="table table-striped table-hover table-bordered">
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
-			<th class="tilt"><div>/data.json 		</div></th>
+			
 			<th class="tilt"><div>Records 			</div></th>						
-			<th class="tilt"><div>Valid schema 	</div></th>			
 			<th class="tilt"><div>Percent valid 	</div></th>	
 			
 			<th class="tilt"><div>Data.gov Harvest	</div></th>		
@@ -114,14 +113,18 @@ function status_table($title, $rows, $config = null) {
 				$status_color = 'danger';
 			}			
 			
+
+			if(empty($total_records)) {
+				$total_records = $schema_icon;
+			}
+
 				
 		?>				
 		
-		<tr class="<?php echo $status_color ?>">
+		<tr>
 			<td><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></td>									
-			<td><?php echo $json_icon; ?>								</td>											
-			<td><?php echo $total_records; ?>							</td>											
-			<td><?php echo $schema_icon; ?>								</td>											
+
+			<td><?php echo $total_records; ?>							</td>														
 			<td><?php echo $percent_valid?>								</td>											
 																														
     		<td><?php echo page_status($office->datagov_harvest); 		?></td>											
