@@ -124,16 +124,16 @@ function status_table($title, $rows, $config = null) {
 		<tr>
 			<td><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></td>									
 
-			<td><?php echo $total_records; ?>							</td>														
-			<td><?php echo $percent_valid?>								</td>											
+			<td class="<?php echo $json_status?>"><?php echo $total_records; ?>							</td>														
+			<td class="<?php echo $schema_status ?>"><?php echo $percent_valid?>								</td>											
 																														
-    		<td><?php echo page_status($office->datagov_harvest); 		?></td>											
-    		<td><?php echo page_status($office->inventory_posted); 		?></td>											
-    		<td><?php echo page_status($office->inventory_superset);	?></td>											
-    		<td><?php echo page_status($office->datajson_slashdata); 	?></td>											
-    		<td><?php echo page_status($office->feedback); 				?></td>											
-    		<td><?php echo page_status($office->schedule_posted); 		?></td>											
-    		<td><?php echo page_status($office->publication_process_posted); ?></td>									
+    		<td class="<?php echo status_color($office->datagov_harvest) ?>"></td>
+    		<td class="<?php echo status_color($office->inventory_posted) ?>"></td>
+    		<td class="<?php echo status_color($office->inventory_superset) ?>"></td>
+    		<td class="<?php echo status_color($office->datajson_slashdata) ?>"></td>
+    		<td class="<?php echo status_color($office->feedback) ?>"></td>
+    		<td class="<?php echo status_color($office->schedule_posted) ?>"></td>
+    		<td class="<?php echo status_color($office->publication_process_posted) ?>"></td>
 
 
 		</tr>
@@ -161,6 +161,18 @@ function http_status_color($status_code) {
     }
     
     return $status_color;
+}
+
+function status_color($status) {
+
+	if ($status == 'yes') {
+		return 'success';
+	} else if ($status == 'no') {
+		return 'danger';
+	} else {
+		return '';
+	}
+
 }
 
 function page_status($data_status, $status_color = null) {
