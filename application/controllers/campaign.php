@@ -172,6 +172,8 @@ class Campaign extends CI_Controller {
 							$value = json_decode($value);
 						} else if ($mapping[$count] == 'keyword' | 
 								   $mapping[$count] == 'language' |
+								   $mapping[$count] == 'references' |
+								   $mapping[$count] == 'theme' |
 								   $mapping[$count] == 'programCode' |
 								   $mapping[$count] == 'bureauCode') {
 							$value = str_getcsv($value);
