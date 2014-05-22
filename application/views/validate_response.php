@@ -86,7 +86,7 @@
                             </tr>
                             <?php foreach ($error as $field => $description) { ?>
                                 <tr>                                    
-                                    <td><code class="hljs-attribute"><?php echo $field; ?></code></td>
+                                    <td><a href="http://project-open-data.github.io/schema/#<?php echo $field; ?>"><code class="hljs-attribute"><?php echo $field; ?></code></a></td>
                                     <td>
                                         <ul>
                                         <?php foreach ($description['errors'] as $error_description) { ?>
