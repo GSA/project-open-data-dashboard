@@ -17,7 +17,7 @@ class Offices extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index($output=null)
+	public function index($output=null, $show_all_offices = false)
 	{
 		
 		
@@ -36,7 +36,7 @@ class Offices extends CI_Controller {
 			$query->free_result();
 		}
 		
-		if ($this->config->item('show_all_offices')) {
+		if ($this->config->item('show_all_offices') || $show_all_offices) {
 
 			$this->db->select('*');	
 			$this->db->from('offices');			
@@ -184,6 +184,12 @@ class Offices extends CI_Controller {
 		$this->load->view('office_detail', $view_data);		
 			
 	}
+
+	public function all() {
+		return $this->index($output=null, $show_all_offices = true);
+	}
+
+
 	
 }
 
