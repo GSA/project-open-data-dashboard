@@ -124,6 +124,9 @@ function human_filesize($size,$unit="") {
 }
 
 
+function make_utf8 ($input) {
+  return iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($input));
+}
 
 
 function is_json($string) {

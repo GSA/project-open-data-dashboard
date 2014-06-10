@@ -182,11 +182,13 @@ class Campaign extends CI_Controller {
 						}
 
 						if(is_array($value)) {
+							$value = array_map("make_utf8", $value);
 							$value = array_map("trim", $value);
 							$value = array_filter($value); // removes any empty elements in an array
 							$value = array_values($value); // ensures array_filter doesn't create an associative array
 						} else if (is_string($value)) {
 							$value = trim($value);
+							$value = make_utf8($value);
 						}
 
 						$value = (!is_bool($value) && empty($value)) ? null : $value;
@@ -198,6 +200,7 @@ class Campaign extends CI_Controller {
 				}
 
 				$json[] = $json_row;
+
 			}
 
 
@@ -213,7 +216,8 @@ class Campaign extends CI_Controller {
     		header("Content-Disposition: attachment; filename=\"$csv_id.json\";" );
     		header("Content-Transfer-Encoding: binary");
 
-    		exit(json_encode($json));
+    		print json_encode($json);
+    		exit;
 
 
 
