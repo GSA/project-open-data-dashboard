@@ -137,8 +137,8 @@ class campaign_model extends CI_Model {
 		$model->pdl_datagov_harvested				= $field;
 		$model->pdl_datagov_harvested->label 		= "";
 
-		$model->pe_feedback_description				= $field;
-		$model->pe_feedback_description->label 		= "";
+		$model->pe_feedback_specified				= $field;
+		$model->pe_feedback_specified->label 		= "";
 
 		$model->pe_prioritization					= $field;
 		$model->pe_prioritization->label 			= "";
