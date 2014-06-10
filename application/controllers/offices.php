@@ -152,7 +152,7 @@ class Offices extends CI_Controller {
 		
 		
 			if(!empty($view_data['office_campaign']->datajson_status)) {
-				$view_data['office_campaign']->expected_datajson_url = $view_data['office_campaign']->datajson_status['url'];
+				$view_data['office_campaign']->expected_datajson_url = (!empty($view_data['office_campaign']->datajson_status['url'])) ? $view_data['office_campaign']->datajson_status['url'] : '';
 				$view_data['office_campaign']->expected_datajson_status = (object) json_decode($view_data['office_campaign']->datajson_status);
 			}
 		
