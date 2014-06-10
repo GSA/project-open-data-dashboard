@@ -4,10 +4,10 @@
 
     <div class="container">
       <!-- Example row of columns -->
-      
+
       <div class="row">
         <div class="col-lg-12">
-          <h2>Account</h2>           
+          <h2>Account</h2>
            <table class="table table-bordered table-hover">
                 <tr>
                     <th>Name</th>
@@ -18,17 +18,17 @@
                     <th>Username</th>
                     <td><a href="<?php echo ($this->session->userdata('provider_url')); ?>"><?php echo ($this->session->userdata('username')); ?></a></td>
                 </tr>
- 
+
                 <tr>
                     <th>Permissions</th>
                     <td><?php echo ($this->session->userdata('permissions')); ?></td>
                 </tr>
-             
 
 
-                
-           </table>                        
+
+
+           </table>
         </div>
-    </div>      
+    </div>
 
 <?php include 'footer.php'; ?>

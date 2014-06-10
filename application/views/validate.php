@@ -4,12 +4,12 @@
 
     <div class="container">
       <!-- Example row of columns -->
-      
+
       <div class="row">
         <div class="col-lg-12">
           <h2>Validator</h2>
-            
-            <p>There are three ways you can validate data.json, either by validating a public URL, uploading a json file, or pasting the raw JSON into the form. 
+
+            <p>There are three ways you can validate data.json, either by validating a public URL, uploading a json file, or pasting the raw JSON into the form.
 
 
 
@@ -41,13 +41,13 @@
                 <div class="input-group">
                     <input name="datajson_url" id="datajson_url" class="form-control"  placeholder="e.g. http://energy.gov/data.json" >
                     <span class="input-group-btn">
-                        <button type="submit" class="btn btn-primary">Validate URL</button>  
+                        <button type="submit" class="btn btn-primary">Validate URL</button>
                     </span>
-                    
-                </div>
-            </form>    
 
-            <hr>       
+                </div>
+            </form>
+
+            <hr>
 
 
             <h3 style="margin-top : 3em;">Validate data.json file upload</h3>
@@ -63,7 +63,7 @@
                         <option value="federal">Federal (strict)</option>
                     </select>
                 </div>
-               
+
                  <div class="form-group">
                     <label for="datajson_upload">Upload a data.json file</label>
                     <input type="file" name="datajson_upload">
@@ -72,12 +72,12 @@
                 <div class="form-group">
                     <input type="hidden" name="output" value="browser">
                     <input type="submit" value="Validate File" class="btn btn-primary">
-                </div>                
-                    
-                
-            </form>    
+                </div>
 
-            <hr> 
+
+            </form>
+
+            <hr>
 
 
 
@@ -105,8 +105,8 @@
 
             </form>
 
-            
+
         </div>
-    </div>      
+    </div>
 
 <?php include 'footer.php'; ?>

@@ -6,19 +6,19 @@
         <div class="pull-left"><a href="https://github.com/GSA/project-open-data-dashboard/issues">Fork me on Github</a></div>
 
 
-     
+
 
         <?php if (!$this->session->userdata('username')) : ?>
           <div class="pull-right">
             <a class="btn btn-default btn-auth btn-github" href="/login">Sign in with <b>GitHub</b></a>
-          </div> 
+          </div>
         <?php endif; ?>
-    
-    
+
+
 
       </div>
       </footer>
-    </div> <!-- /container -->        
+    </div> <!-- /container -->
 
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>

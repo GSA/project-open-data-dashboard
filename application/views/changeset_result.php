@@ -4,7 +4,7 @@
 
     <div class="container">
       <!-- Example row of columns -->
-      
+
       <div class="row">
         <div class="col-lg-12">
           <h2 style="margin-bottom : 0; padding-bottom : 0">Changeset Report for <?php echo $datajson_domain; ?></h2>
@@ -58,6 +58,6 @@ if(!empty($changeset)) {
 ?>
 
         </div>
-    </div>      
+    </div>
 
 <?php include 'footer.php'; ?>

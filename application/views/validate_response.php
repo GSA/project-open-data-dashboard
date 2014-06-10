@@ -8,15 +8,15 @@
 
     <div class="container">
       <!-- Example row of columns -->
-      
+
       <div class="row">
         <div class="col-lg-12">
 
             <h2>Validation Results</h2>
 
-            <?php 
+            <?php
                 if(!empty($validation['source'])) {
-                    echo '<p>' . count($validation['source']) . ' total records</p>'; 
+                    echo '<p>' . count($validation['source']) . ' total records</p>';
                 }
             ?>
 
@@ -33,7 +33,7 @@
             <?php endif; ?>
 
 
-            <?php 
+            <?php
                 if(!empty($validation['errors'])) {
 
                     $erroneous_record_count = count($validation['errors']);
@@ -42,7 +42,7 @@
 
             <?php
                 $key_count = array();
-                foreach ($validation['errors'] as $key => $error) {   
+                foreach ($validation['errors'] as $key => $error) {
 
             ?>
                     <?php if(!empty($key_count)): ?>
@@ -74,9 +74,9 @@
                         <?php } ?>
                         </ul>
 
-                <?php 
+                <?php
                     unset($error['ALL']);
-                endif; 
+                endif;
                 ?>
 
                         <table class="table table-striped">
@@ -85,16 +85,16 @@
                                 <th>Errors</th>
                             </tr>
                             <?php foreach ($error as $field => $description) { ?>
-                                <tr>                                    
+                                <tr>
                                     <td><a href="http://project-open-data.github.io/schema/#<?php echo $field; ?>"><code class="hljs-attribute"><?php echo $field; ?></code></a></td>
                                     <td>
                                         <ul>
                                         <?php foreach ($description['errors'] as $error_description) { ?>
 
-                                            <?php 
+                                            <?php
 
-                                                if(strpos($error_description, 'but a null is required')) continue; 
-                                                if(strpos($error_description, 'regex pattern')) continue; 
+                                                if(strpos($error_description, 'but a null is required')) continue;
+                                                if(strpos($error_description, 'regex pattern')) continue;
 
                                             ?>
 
@@ -114,18 +114,18 @@
 
                                         </ul>
                                     </td>
-                                </tr>    
-                            <?php } ?>           
+                                </tr>
+                            <?php } ?>
                         </table>
 
 
-            <?php 
+            <?php
 
                 $key_count[$key] = true;
 
-            } 
+            }
 
-            ?>  
+            ?>
                         </div>
                     </div>
 
@@ -137,6 +137,6 @@
         <?php endif; ?>
 
         </div>
-    </div>      
+    </div>
 
 <?php include 'footer.php'; ?>

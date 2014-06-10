@@ -16,15 +16,15 @@
 			$config = (!empty($max_size)) ? array('max_size' => $max_size) : null;
 
 			if(!empty($cfo_offices)) {
-				status_table('CFO Act Agencies', $cfo_offices, $config); 	
+				status_table('CFO Act Agencies', $cfo_offices, $config);
 			}
 
 			if(!empty($executive_offices)) {
-				status_table('Other Offices Reporting to the White House', $executive_offices); 	
+				status_table('Other Offices Reporting to the White House', $executive_offices);
 			}
 
 			if(!empty($independent_offices)) {
-				status_table('Other Independent Offices', $independent_offices); 	
+				status_table('Other Independent Offices', $independent_offices);
 			}
 
 			?>

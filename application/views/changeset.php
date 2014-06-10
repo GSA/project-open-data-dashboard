@@ -4,11 +4,11 @@
 
     <div class="container">
       <!-- Example row of columns -->
-      
+
       <div class="row">
         <div class="col-lg-12">
           <h2>Changeset Report Generator</h2>
-            
+
 
             <form action="/changeset" method="post" role="form">
 
@@ -37,16 +37,16 @@
                 <div class="form-group">
                     <label for="datajson_new">New data.json URL</label>
                     <input placeholder="http://energy.gov/data.json" name="datajson_new" id="datajson_new" class="form-control">
-                </div>                
+                </div>
 
                 <div class="form-group">
                     <input type="submit" value="Generate Report" class="btn btn-primary">
                 </div>
 
-            </form>       
+            </form>
 
-            
+
         </div>
-    </div>      
+    </div>
 
 <?php include 'footer.php'; ?>

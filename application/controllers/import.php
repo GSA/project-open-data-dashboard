@@ -7,21 +7,21 @@ class Import extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		
-		$this->load->helper('api');		
-		
-		// Determine the environment we're run from for debugging/output 
-		if (php_sapi_name() == 'cli') {   
-			if (isset($_SERVER['TERM'])) {   
-				$this->environment = 'terminal';  
-			} else {   
+
+		$this->load->helper('api');
+
+		// Determine the environment we're run from for debugging/output
+		if (php_sapi_name() == 'cli') {
+			if (isset($_SERVER['TERM'])) {
+				$this->environment = 'terminal';
+			} else {
 				$this->environment = 'cron';
-			}   
-		} else { 
+			}
+		} else {
 			$this->environment = 'server';
 		}
-	   	
-				
+
+
 	}
 
 
@@ -30,10 +30,10 @@ class Import extends CI_Controller {
 	 *
 	 * Maps to the following URL
 	 * 		http://example.com/index.php/welcome
-	 *	- or -  
+	 *	- or -
 	 * 		http://example.com/index.php/welcome/index
 	 *	- or -
-	 * Since this controller is set as the default controller in 
+	 * Since this controller is set as the default controller in
 	 * config/routes.php, it's displayed at http://example.com/
 	 *
 	 * So any other public methods not prefixed with an underscore will
@@ -41,12 +41,12 @@ class Import extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function index() {
-			
-		
-		
+
+
+
 		if(!$this->config->item('import_active')) {
-			redirect('docs');				
-		}	
+			redirect('docs');
+		}
 
 		$master_list_url = 'http://www.usa.gov/api/USAGovAPI/contacts.json/contacts/tree?include_descendants=true';
 
@@ -70,8 +70,8 @@ class Import extends CI_Controller {
 
 				if(!empty($department['Contact'])) {
 					foreach ($department['Contact'] as $subdepartment) {
-						$id = $subdepartment['Id'];					
-						$parent_list = $this->get_parents($parent_list, $id);					
+						$id = $subdepartment['Id'];
+						$parent_list = $this->get_parents($parent_list, $id);
 					}
 				}
 
@@ -80,46 +80,46 @@ class Import extends CI_Controller {
 
 		  	}
 		  }
-		
-		
-		
+
+
+
 		// Now lets seed the database with the top of the hierarchy
 		foreach ($parent_list as $type => $parents) {
-		
+
 			foreach ($parents as $id => $office) {
-				
+
 				if ($type == 'executive') {
 					$parent_id = 49743; // white house
 				}
-				
-				$office_model = $this->prepare_office_data($office, $type, $parent_id = null, $no_parent = 'true');				
-			
+
+				$office_model = $this->prepare_office_data($office, $type, $parent_id = null, $no_parent = 'true');
+
 				if ($this->environment == 'terminal') {
 					echo 'Adding ' . $office_model['name'] . PHP_EOL;
-				}			
-						
-				$this->db->insert('offices', $office_model);						
-			
+				}
+
+				$this->db->insert('offices', $office_model);
+
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	function get_parents($parent_list, $id) {
 
 
 		$parent_api_url = 'http://www.usa.gov/api/USAGovAPI/contacts.json/contact/' . $id . '/tree/parent';
-		
+
 		if ($this->environment == 'terminal') {
 			echo 'Loading ' . $parent_api_url . PHP_EOL;
-		}		
-		
+		}
+
 		$parent = curl_from_json($parent_api_url);
 
 		if(!empty($parent['Contact'][0])) {
 			$parent_id = $parent['Id'];
-			
+
 			// this id is the white house
 			if ($parent_id == 49743) {
 				$parent = $parent['Contact'][0];
@@ -132,83 +132,83 @@ class Import extends CI_Controller {
 
 
 		} else {
-			$parent_list['independent'][$parent['Id']] = $parent;				
+			$parent_list['independent'][$parent['Id']] = $parent;
 		}
 
-		return $parent_list;		
+		return $parent_list;
 
-	}	
-	
-	
+	}
+
+
 	public function children() {
-		
-		$this->db->select('id, reporting_authority_type');		
-		$this->db->where('no_parent', 'true');	
+
+		$this->db->select('id, reporting_authority_type');
+		$this->db->where('no_parent', 'true');
 		$query = $this->db->get('offices');
-        
+
 		if ($query->num_rows() > 0) {
 		   $parent_offices = $query->result();
-		
+
 			foreach ($parent_offices as $office) {
-				
+
 				// 49743 = White House. We should already have all subagencies of the white house in as no_parent = true;
 				if($office->id == 49743) {
 					continue;
-				}				
-				
+				}
+
 				$child_api_url = 'http://www.usa.gov/api/USAGovAPI/contacts.json/contact/' . $office->id . '/tree/descendant';
 
 				if ($this->environment == 'terminal') {
 					echo 'Loading ' . $child_api_url . PHP_EOL;
-				}		
-				
-				$parent = curl_from_json($child_api_url);				
-				
+				}
+
+				$parent = curl_from_json($child_api_url);
+
 				if(!empty($parent['Contact'][0])) {
 
 					$children = $parent['Contact'];
 					$this->process_descendants($children, $office->reporting_authority_type, $office->id);
 
 
-				}				
-				
-				
-				
+				}
+
+
+
 			}
-		
-		}		
-		
-	}	
-	
+
+		}
+
+	}
+
 	function process_descendants($children, $type, $parent_id = null) {
-		
+
 		foreach ($children as $child) {
-			
+
 			$no_parent = (empty($parent_id)) ? 'true' : 'false';
-			$office_model = $this->prepare_office_data($child, $type, $parent_id, $no_parent);				
-			
+			$office_model = $this->prepare_office_data($child, $type, $parent_id, $no_parent);
+
 			if ($this->environment == 'terminal') {
 				echo 'Adding ' . $office_model['name'] . PHP_EOL;
-			}			
+			}
 
 			$this->db->insert('offices', $office_model);
-			
+
 			if(!empty($child['Contact'][0])) {
 				$grand_children = $child['Contact'];
 				$this->process_descendants($grand_children, $type, $office_model['id']);
 			}
-			
-															
-		}		
+
+
+		}
 	}
-	
+
 	function prepare_office_data($office, $type, $parent_id, $no_parent='false') {
-		
-			$office_model = $this->office_model();			
-			$office_model['id'] = $office['Id'];    
-		
-			$office_model['name'] = $office['Name'];    
-		
+
+			$office_model = $this->office_model();
+			$office_model['id'] = $office['Id'];
+
+			$office_model['name'] = $office['Name'];
+
 			if(strpos($office_model['name'], '(') !== false && strpos($office_model['name'], ')') !== false) {
 				$abbreviation = get_between($office_model['name'], '(', ')');
 				$office_model['name'] = str_replace('(' . $abbreviation . ')', '', $office_model['name']);
@@ -216,80 +216,80 @@ class Import extends CI_Controller {
 			} else {
 				$abbreviation = null;
 			}
-			
+
 			if(strpos($office_model['name'], 'U.S. Department') !== false) {
 				$office_model['name'] = str_replace('U.S. Department', 'Department', $office_model['name']);
 				$office_model['name'] = trim($office_model['name']);
 			}
-			
-						
+
+
 			// see if this is a cfo act agency
 			$office_model['cfo_act_agency'] = ($this->cfo_act_check($office_model['name'])) ? 'true' : 'false';
-			
+
 			$url = (!empty($office['Web_Url'][0]['Url'])) ? $office['Web_Url'][0]['Url'] : null;
-		              
+
 			//if(!empty($url)) {
 			//	$url = substr($url, 0, strpos($url, '.gov') + 4);
 			//}
-		
-			$office_model['abbreviation'] = $abbreviation;            
-			$office_model['url'] = $url;                                         
-			$office_model['parent_office_id'] = $parent_id;                
-			$office_model['no_parent'] = $no_parent;                
-			$office_model['reporting_authority_type'] =	$type;		
-		
+
+			$office_model['abbreviation'] = $abbreviation;
+			$office_model['url'] = $url;
+			$office_model['parent_office_id'] = $parent_id;
+			$office_model['no_parent'] = $no_parent;
+			$office_model['reporting_authority_type'] =	$type;
+
 			return $office_model;
 	}
-	
-	
+
+
 	function office_model() {
-		
+
 		$office_model = array(
-			'id' => null,                        
-			'name' => null,                      
-			'abbreviation' => null,              
-			'url' => null,                       
-			'notes' => null,                     
-			'parent_office_id' => null,          
-			'no_parent' => null,                 
-			'reporting_authority_type' => null			
+			'id' => null,
+			'name' => null,
+			'abbreviation' => null,
+			'url' => null,
+			'notes' => null,
+			'parent_office_id' => null,
+			'no_parent' => null,
+			'reporting_authority_type' => null
 		);
-		
+
 		return $office_model;
-		
+
 	}
-	
+
 	function cfo_act_check($agency_name) {
 
 		$cfo_act_agencies = array(
-		'U.S. Agency for International Development', 
-		'General Services Administration',  
-		'National Science Foundation',  
-		'Nuclear Regulatory Commission',  
-		'Office of Personnel Management', 
+		'U.S. Agency for International Development',
+		'General Services Administration',
+		'National Science Foundation',
+		'Nuclear Regulatory Commission',
+		'Office of Personnel Management',
 		'Small Business Administration',
-		'Department of Agriculture',  
-		'Department of Commerce',  
-		'Department of Defense',  
-		'Department of Education',  
-		'Department of Energy',  
-		'Department of Health and Human Services',  
+		'Department of Agriculture',
+		'Department of Commerce',
+		'Department of Defense',
+		'Department of Education',
+		'Department of Energy',
+		'Department of Health and Human Services',
 		'Department of Homeland Security',
-		'Department of Housing and Urban Development',  
-		'Department of the Interior',  
-		'Department of Justice',  
-		'Department of Labor',  
-		'Department of State',  
-		'Department of Transportation',  
-		'Department of the Treasury',  
-		'Department of Veterans Affairs',  
-		'Environmental Protection Agency',  
-		'National Aeronautics and Space Administration', 
-		'Social Security Administration', 
-		'National Archives and Records Administration');		
-	
+		'Department of Housing and Urban Development',
+		'Department of the Interior',
+		'Department of Justice',
+		'Department of Labor',
+		'Department of State',
+		'Department of Transportation',
+		'Department of the Treasury',
+		'Department of Veterans Affairs',
+		'Environmental Protection Agency',
+		'National Aeronautics and Space Administration',
+		'Social Security Administration',
+		'National Archives and Records Administration');
+
 		// iterate through array see if agency_name matches any of them
-	
+
 		 if (array_search(strtolower($agency_name),array_map('strtolower',$cfo_act_agencies)) !== false){
 			return true;
 		} else {
@@ -300,9 +300,9 @@ class Import extends CI_Controller {
 
 	function tracker() {
 
-		$this->load->helper('csv');		
-		$this->load->helper('api');	
-		$this->load->model('campaign_model', 'campaign');			
+		$this->load->helper('csv');
+		$this->load->helper('api');
+		$this->load->model('campaign_model', 'campaign');
 
 
 		ini_set("auto_detect_line_endings", true);
@@ -310,15 +310,15 @@ class Import extends CI_Controller {
 		$full_path = $this->config->item('tmp_csv_import');
 
 		$importer = new CsvImporter($full_path, $parse_header = true, $delimiter = ",");
-		$csv = $importer->get(); 
-		
+		$csv = $importer->get();
+
 		$model = (array) $this->campaign->datagov_model();
 
 		$note_count = 0;
 		$status_count = 0;
 
 		$column_headers = array();
-		foreach($csv as $row) {	
+		foreach($csv as $row) {
 
 			$notes = array();
 			foreach ($row as $key => $value) {
@@ -341,8 +341,8 @@ class Import extends CI_Controller {
 				}
 
 				if(!empty($value)) {
-					$processed[$key] = $value;	
-				}				
+					$processed[$key] = $value;
+				}
 			}
 
 			$update = (object) $processed;
@@ -355,7 +355,7 @@ class Import extends CI_Controller {
 
 					$note_data = json_encode($note_data);
 
-					$note = array('note' => $note_data, 'field_name' => $field_name, 'office_id' => $update->office_id);	
+					$note = array('note' => $note_data, 'field_name' => $field_name, 'office_id' => $update->office_id);
 					$note = (object) $note;
 					$this->campaign->update_note($note);
 					$note_count++;
@@ -363,14 +363,14 @@ class Import extends CI_Controller {
 
 		}
 
-	
+
 		echo "Status count: $status_count / Note count: $note_count";
 
 	}
 
 
 
-	
+
 }
 
 /* End of file welcome.php */

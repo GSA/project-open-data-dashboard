@@ -39,10 +39,10 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="/docs">Documentation</a></li>       
-            <li><a href="https://github.com/GSA/project-open-data-dashboard/issues">Feedback</a></li> 
+            <li><a href="/docs">Documentation</a></li>
+            <li><a href="https://github.com/GSA/project-open-data-dashboard/issues">Feedback</a></li>
           </ul>
-        </li>        
+        </li>
 
       </ul>
 
@@ -51,7 +51,7 @@
               <li>
                     <div class="btn-group navbar-btn">
                       <button type="button" class="btn btn-inverse">
-                        <i class="glyphicon glyphicon-user glyphicon-white"></i> 
+                        <i class="glyphicon glyphicon-user glyphicon-white"></i>
                         <?php echo $this->session->userdata('name_full'); ?>
                       </button>
                       <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">
@@ -60,7 +60,7 @@
                       </button>
                       <ul class="dropdown-menu" role="menu">
                         <li><a href="/account"><i class="glyphicon glyphicon-pencil"></i> Account</a></li>
-                        <li><a href="/logout"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>    
+                        <li><a href="/logout"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>
                       </ul>
                     </div>
               </li>

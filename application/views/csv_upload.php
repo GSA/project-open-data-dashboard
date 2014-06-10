@@ -4,11 +4,11 @@
 
     <div class="container">
       <!-- Example row of columns -->
-      
+
       <div class="row">
         <div class="col-lg-12">
           <h2>CSV Converter</h2>
-          
+
             <form action="./csv_to_json" method="post" role="form" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="datajson">Upload a CSV File</label>
@@ -22,8 +22,8 @@
 
             </form>
 
-            
+
         </div>
-    </div>      
+    </div>
 
 <?php include 'footer.php'; ?>
