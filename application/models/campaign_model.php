@@ -71,6 +71,101 @@ class campaign_model extends CI_Model {
 	}
 
 
+	public function tracker_model() {
+
+		$model = new stdClass();
+		$field = new stdClass();
+
+		$field->type 								= null;
+		$field->value								= null;
+		$field->label								= null;
+
+		$model->edi_updated							= $field;
+		$model->edi_updated->label 					= "";
+
+		$model->edi_datasets						= $field;
+		$model->edi_datasets->label 				= "";
+
+		$model->edi_schedule_delivered				= $field;
+		$model->edi_schedule_delivered->label 		= "";
+
+		$model->edi_bureaus							= $field;
+		$model->edi_bureaus->label 					= "";
+
+		$model->edi_programs						= $field;
+		$model->edi_programs->label 				= "";
+
+		$model->edi_access_public					= $field;
+		$model->edi_access_public->label 			= "";
+
+		$model->edi_access_restricted				= $field;
+		$model->edi_access_restricted->label 		= "";
+
+		$model->edi_access_nonpublic				= $field;
+		$model->edi_access_nonpublic->label 		= "";
+
+		$model->edi_superset						= $field;
+		$model->edi_superset->label 				= "";
+
+		$model->edi_progress_evaluation				= $field;
+		$model->edi_progress_evaluation->label 		= "";
+
+		$model->edi_schedule_risk					= $field;
+		$model->edi_schedule_risk->label 			= "";
+
+		$model->edi_confidence_assessment			= $field;
+		$model->edi_confidence_assessment->label	= "";
+
+		$model->edi_quality_check					= $field;
+		$model->edi_quality_check->label 			= "";
+
+		$model->pdl_datasets						= $field;
+		$model->pdl_datasets->label 				= "";
+
+		$model->pdl_downloadable					= $field;
+		$model->pdl_downloadable->label 			= "";
+
+		$model->pdl_valid_metadata					= $field;
+		$model->pdl_valid_metadata->label 			= "";
+
+		$model->pdl_slashdata						= $field;
+		$model->pdl_slashdata->label 				= "";
+
+		$model->pdl_datajson						= $field;
+		$model->pdl_datajson->label 				= "";
+
+		$model->pdl_datagov_harvested				= $field;
+		$model->pdl_datagov_harvested->label 		= "";
+
+		$model->pe_feedback_description				= $field;
+		$model->pe_feedback_description->label 		= "";
+
+		$model->pe_prioritization					= $field;
+		$model->pe_prioritization->label 			= "";
+
+		$model->pe_dialogue							= $field;
+		$model->pe_dialogue->label 					= "";
+
+		$model->pe_impact							= $field;
+		$model->pe_impact->label 					= "";
+
+		$model->pe_reference						= $field;
+		$model->pe_reference->label 				= "";
+
+		$model->ps_breach_reports					= $field;
+		$model->ps_breach_reports->label 			= "";
+
+		$model->hc_lead								= $field;
+		$model->hc_lead->label 						= "";
+
+		$model->hc_contacts							= $field;
+		$model->hc_contacts->label 					= "";
+
+		return $model;
+}
+
+
+
 	public function note_model() {
 		
 		$model = new stdClass();
