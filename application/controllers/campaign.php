@@ -890,58 +890,6 @@ class Campaign extends CI_Controller {
 
 	}
 
-	// reformats db table into a json document
-	public function make_json() {
-		$this->db->select('office_id, inventory_posted, schedule_posted, inventory_superset, datajson_slashdata, datajson_posted, datagov_harvest, feedback');
-		$this->db->from('datagov_campaign');
-
-		$query = $this->db->get();
-
-		if ($query->num_rows() > 0) {
-			$result = $query->result();
-			$query->free_result();
-
-			$count = 0;
-
-			foreach ($result as $row) {
-
-				$office_id = $row->office_id;
-				unset($row->office_id);
-
-				// See if there's any data to update
-				$needs_migration = false;
-				foreach ($row as $field) {
-					if (!empty($field)) $needs_migration = true;
-				}
-
-				if($needs_migration) {
-
-					$tracker = new stdClass();
-
-					$tracker->edi_updated				= $row->inventory_posted;
-					$tracker->edi_schedule_delivered	= $row->schedule_posted;
-					$tracker->edi_superset				= $row->inventory_superset;
-					$tracker->pdl_slashdata				= $row->datajson_slashdata;
-					$tracker->pdl_datajson 				= $row->datajson_posted;
-					$tracker->pdl_datagov_harvested		= $row->datagov_harvest;
-					$tracker->pe_feedback_specified 	= $row->feedback;
-
-					$model = new stdClass();
-					$model->tracker_fields = json_encode($tracker);
-
-					$this->db->where('office_id', $office_id);
-					$this->db->update('datagov_campaign', $model);
-
-					$count++;
-				}
-
-			}
-
-
-			echo $count . ' records updated';
-		}
-
-	}
 
 
 	public function validate($datajson_url = null, $datajson = null, $headers = null, $schema = null, $output = 'browser') {
