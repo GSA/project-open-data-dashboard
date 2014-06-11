@@ -176,6 +176,9 @@ class Offices extends CI_Controller {
 
 		}
 
+		// pass tracker data model
+		$view_data['tracker_model'] = $this->campaign->tracker_model();
+
 		// pass config variable
 		$view_data['config'] = array('max_size' => $this->config->item('max_size'));
 

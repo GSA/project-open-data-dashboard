@@ -10,7 +10,7 @@ function status_table($title, $rows, $config = null) {
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
 
-			<th class="tilt"><div>Records 			</div></th>
+			<th class="tilt"><div>Datasets 			</div></th>
 			<th class="tilt"><div>Percent valid 	</div></th>
 
 			<th class="tilt"><div>Data.gov Harvest	</div></th>
@@ -19,8 +19,6 @@ function status_table($title, $rows, $config = null) {
 			<th class="tilt"><div>/data	</div></th>
 			<th class="tilt"><div>Feedback	</div></th>
 			<th class="tilt"><div>Schedule	</div></th>
-			<th class="tilt"><div>Publication Process	</div></th>
-
 
 
 		</tr>
@@ -37,6 +35,10 @@ function status_table($title, $rows, $config = null) {
 			if(!empty($office->datapage_status)) {
 				$office->datapage_status = json_decode($office->datapage_status);
 			}
+
+			if(!empty($office->tracker_fields)) {
+				$office->tracker_fields = json_decode($office->tracker_fields);
+			}			
 
 			$json_http_code = (!empty($office->datajson_status->http_code)) ? $office->datajson_status->http_code : 0;
 			$html_http_code = (!empty($office->datapage_status->http_code)) ? $office->datapage_status->http_code : 0;
@@ -126,13 +128,12 @@ function status_table($title, $rows, $config = null) {
 			<td class="content-metric <?php echo $json_status?>"><a href="/offices/detail/<?php echo $office->id;?>#datajson_posted"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
 			<td class="content-metric <?php echo $schema_status ?>"><a href="/offices/detail/<?php echo $office->id;?>#datajson_posted"><span><?php echo $percent_valid?>&nbsp;</span></a> </td>
 
-    		<td class="boolean-metric <?php echo status_color($office->datagov_harvest) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->datagov_harvest); 		?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php echo status_color($office->inventory_posted) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->inventory_posted); 		?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php echo status_color($office->inventory_superset) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->inventory_superset);	?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php echo status_color($office->datajson_slashdata) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->datajson_slashdata); 	?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php echo status_color($office->feedback) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->feedback); 				?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php echo status_color($office->schedule_posted) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->schedule_posted); 		?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php echo status_color($office->publication_process_posted) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php echo page_status($office->publication_process_posted); ?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo status_color($office->tracker_fields->pdl_datagov_harvested) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo page_status($office->tracker_fields->pdl_datagov_harvested); 		?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_updated)) echo status_color($office->tracker_fields->edi_updated) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->edi_updated)) echo page_status($office->tracker_fields->edi_updated); 		?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_superset)) echo status_color($office->tracker_fields->edi_superset) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->edi_superset)) echo page_status($office->tracker_fields->edi_superset);	?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_slashdata)) echo status_color($office->tracker_fields->pdl_slashdata) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->pdl_slashdata)) echo page_status($office->tracker_fields->pdl_slashdata); 	?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo status_color($office->tracker_fields->pe_feedback_specified) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo page_status($office->tracker_fields->pe_feedback_specified); 				?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo status_color($office->tracker_fields->edi_schedule_delivered) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo page_status($office->tracker_fields->edi_schedule_delivered); 		?>&nbsp;</span></a></td>
 		</tr>
 		<?php endforeach;?>
 	</table>
@@ -175,6 +176,8 @@ function status_color($status) {
 }
 
 function page_status($data_status, $status_color = null) {
+
+	if(empty($data_status)) return '';
 
 	if($data_status == 'yes') $data_status = 'success';
 	if($data_status == 'no') $data_status = 'danger';

@@ -58,6 +58,8 @@ class campaign_model extends CI_Model {
 		$model->datapage_status					= null;
 		$model->digitalstrategy_status			= null;
 
+		$model->tracker_fields					= null;
+
 		$model->datagov_harvest					= null;
 		$model->inventory_posted				= null;
 		$model->inventory_superset				= null;
@@ -80,86 +82,113 @@ class campaign_model extends CI_Model {
 		$field->value								= null;
 		$field->label								= null;
 
-		$model->edi_updated							= $field;
-		$model->edi_updated->label 					= "";
+		$model->edi_updated							= clone $field;
+		$model->edi_updated->label 					= "Inventory Updated this Quarter";
+		$model->edi_updated->type 					= "select";
 
-		$model->edi_datasets						= $field;
-		$model->edi_datasets->label 				= "";
+		$model->edi_datasets						= clone $field;
+		$model->edi_datasets->label 				= "Number of Datasets";
+		$model->edi_datasets->type 					= "string";
 
-		$model->edi_schedule_delivered				= $field;
-		$model->edi_schedule_delivered->label 		= "";
+		$model->edi_schedule_delivered				= clone $field;
+		$model->edi_schedule_delivered->label 		= "Schedule Delivered";
+		$model->edi_schedule_delivered->type 		= "select";
 
-		$model->edi_bureaus							= $field;
-		$model->edi_bureaus->label 					= "";
+		$model->edi_bureaus							= clone $field;
+		$model->edi_bureaus->label 					= "Bureaus represented";
+		$model->edi_bureaus->type 					= "string";
 
-		$model->edi_programs						= $field;
-		$model->edi_programs->label 				= "";
+		$model->edi_programs						= clone $field;
+		$model->edi_programs->label 				= "Programs represented";
+		$model->edi_programs->type 					= "string";
 
-		$model->edi_access_public					= $field;
-		$model->edi_access_public->label 			= "";
+		$model->edi_access_public					= clone $field;
+		$model->edi_access_public->label 			= "Access Level = Public";
+		$model->edi_access_public->type 			= "string";
 
-		$model->edi_access_restricted				= $field;
-		$model->edi_access_restricted->label 		= "";
+		$model->edi_access_restricted				= clone $field;
+		$model->edi_access_restricted->label 		= "Access Level = Restricted";
+		$model->edi_access_restricted->type 		= "string";
 
-		$model->edi_access_nonpublic				= $field;
-		$model->edi_access_nonpublic->label 		= "";
+		$model->edi_access_nonpublic				= clone $field;
+		$model->edi_access_nonpublic->label 		= "Access Level = Non-Public";
+		$model->edi_access_nonpublic->type 			= "string";
 
-		$model->edi_superset						= $field;
-		$model->edi_superset->label 				= "";
+		$model->edi_superset						= clone $field;
+		$model->edi_superset->label 				= "Inventory > Public listing";
+		$model->edi_superset->type 					= "select";
 
-		$model->edi_progress_evaluation				= $field;
-		$model->edi_progress_evaluation->label 		= "";
+		$model->edi_progress_evaluation				= clone $field;
+		$model->edi_progress_evaluation->label 		= "Progress Evaluation Since Last Quarter";
+		$model->edi_progress_evaluation->type 		= "string";
 
-		$model->edi_schedule_risk					= $field;
-		$model->edi_schedule_risk->label 			= "";
+		$model->edi_schedule_risk					= clone $field;
+		$model->edi_schedule_risk->label 			= "Schedule Risk for Nov 30, 2014";
+		$model->edi_schedule_risk->type 			= "string";
 
-		$model->edi_confidence_assessment			= $field;
-		$model->edi_confidence_assessment->label	= "";
+		$model->edi_confidence_assessment			= clone $field;
+		$model->edi_confidence_assessment->label	= "OMB Confidence Assesment";
+		$model->edi_confidence_assessment->type 	= "string";
 
-		$model->edi_quality_check					= $field;
-		$model->edi_quality_check->label 			= "";
+		$model->edi_quality_check					= clone $field;
+		$model->edi_quality_check->label 			= "Quality Check-- Does EDI include SORNs, PIAs, FOIA";
+		$model->edi_quality_check->type 			= "string";
 
-		$model->pdl_datasets						= $field;
-		$model->pdl_datasets->label 				= "";
+		$model->pdl_datasets						= clone $field;
+		$model->pdl_datasets->label 				= "Number of Datasets";
+		$model->pdl_datasets->type 					= "string";
 
-		$model->pdl_downloadable					= $field;
-		$model->pdl_downloadable->label 			= "";
+		$model->pdl_downloadable					= clone $field;
+		$model->pdl_downloadable->label 			= "Number of Downloadable Datasets";
+		$model->pdl_downloadable->type 				= "string";
 
-		$model->pdl_valid_metadata					= $field;
-		$model->pdl_valid_metadata->label 			= "";
+		$model->pdl_valid_metadata					= clone $field;
+		$model->pdl_valid_metadata->label 			= "Valid Metadata";
+		$model->pdl_valid_metadata->type 			= "string";
 
-		$model->pdl_slashdata						= $field;
-		$model->pdl_slashdata->label 				= "";
+		$model->pdl_slashdata						= clone $field;
+		$model->pdl_slashdata->label 				= "/data";
+		$model->pdl_slashdata->type 				= "select";
 
-		$model->pdl_datajson						= $field;
-		$model->pdl_datajson->label 				= "";
+		$model->pdl_datajson						= clone $field;
+		$model->pdl_datajson->label 				= "/data.json";
+		$model->pdl_datajson->type 					= "select";
 
-		$model->pdl_datagov_harvested				= $field;
-		$model->pdl_datagov_harvested->label 		= "";
+		$model->pdl_datagov_harvested				= clone $field;
+		$model->pdl_datagov_harvested->label 		= "Harvested by data.gov";
+		$model->pdl_datagov_harvested->type 		= "select";
 
-		$model->pe_feedback_specified				= $field;
-		$model->pe_feedback_specified->label 		= "";
+		$model->pe_feedback_specified				= clone $field;
+		$model->pe_feedback_specified->label 		= "Description of feedback mechanism delivered";
+		$model->pe_feedback_specified->type 		= "select";
 
-		$model->pe_prioritization					= $field;
-		$model->pe_prioritization->label 			= "";
+		$model->pe_prioritization					= clone $field;
+		$model->pe_prioritization->label 			= "Data release is prioritized through public engagement";
+		$model->pe_prioritization->type 			= "grade";
 
-		$model->pe_dialogue							= $field;
-		$model->pe_dialogue->label 					= "";
+		$model->pe_dialogue							= clone $field;
+		$model->pe_dialogue->label 					= "Feedback loop is closed, 2 way communication";
+		$model->pe_dialogue->type 					= "grade";
 
-		$model->pe_impact							= $field;
-		$model->pe_impact->label 					= "";
+		$model->pe_impact							= clone $field;
+		$model->pe_impact->label 					= "Feedback leads to change in data management and release practices";
+		$model->pe_impact->type 					= "grade";
 
-		$model->pe_reference						= $field;
-		$model->pe_reference->label 				= "";
+		$model->pe_reference						= clone $field;
+		$model->pe_reference->label 				= "Link to or description of Feedback Mechanism";
+		$model->pe_reference->type 					= "string";
 
-		$model->ps_breach_reports					= $field;
-		$model->ps_breach_reports->label 			= "";
+		$model->ps_breach_reports					= clone $field;
+		$model->ps_breach_reports->label 			= "Privacy/Data Breaches reported to US CERT";
+		$model->ps_breach_reports->type 			= "string";
 
-		$model->hc_lead								= $field;
-		$model->hc_lead->label 						= "";
+		$model->hc_lead								= clone $field;
+		$model->hc_lead->label 						= "Data Lead";
+		$model->hc_lead->type 						= "string";
 
-		$model->hc_contacts							= $field;
-		$model->hc_contacts->label 					= "";
+		$model->hc_contacts							= clone $field;
+		$model->hc_contacts->label 					= "POCs identified for required responsibilities";
+		$model->hc_contacts->type 					= "select";
 
 		return $model;
 }

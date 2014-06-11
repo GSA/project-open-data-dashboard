@@ -145,3 +145,11 @@ text-indent : 0;
 .dashboard .metrics-row td a:hover {
 text-decoration: none;
 }
+
+
+
+
+form .table-striped > tbody > tr:nth-child(4n) > td, 
+form .table-striped > tbody > tr:nth-child(4n) > th {
+    background-color: #F9F9F9;
+}

@@ -828,55 +828,118 @@ class Campaign extends CI_Controller {
 
 	public function status_update() {
 
-		if ($this->session->userdata('permissions') == 'admin') {
-
-	        $this->load->model('campaign_model', 'campaign');
-
-			//$datajson 		= ($this->input->post('datajson', TRUE)) ? $this->input->post('datajson', TRUE) : $datajson;
-
-	        $update = (object) $this->input->post(NULL, TRUE);
-
-			$datagov_model_fields = $this->campaign->datagov_model();
-
-
-
-			// add fake field for general notes
-			$datagov_model_fields->office_general = null;
-
-			foreach ($datagov_model_fields as $field => $nothing) {
-
-				$field_name = "note_$field";
-
-				if(!empty($update->$field_name)) {
-
-					$note_data = array("note" => $update->$field_name, "date" =>  date("F j, Y, g:i a T"), "author" => $this->session->userdata('name_full'));
-					$note_data = array("current" => $note_data, "previous" => null);
-
-					$note_data = json_encode($note_data);
-
-					$note = array('note' => $note_data, 'field_name' => $field, 'office_id' => $update->office_id);
-					$note = (object) $note;
-					$this->campaign->update_note($note);
-				}
-
-				unset($update->$field_name);
-			}
-
-	        $this->campaign->update_status($update);
-
-	        $this->session->set_flashdata('outcome', 'success');
-	        $this->session->set_flashdata('status', 'Status updated');
-
-
-			$this->load->helper('url');
-            redirect('offices/detail/' . $update->office_id);
-
- 		} else {
+		// Kick them out if they're not allowed here.
+		if ($this->session->userdata('permissions') !== 'admin') {
 			$this->load->helper('url');
             redirect('/');
+            exit;
  		}
 
 
+        $this->load->model('campaign_model', 'campaign');
+
+		//$datajson 		= ($this->input->post('datajson', TRUE)) ? $this->input->post('datajson', TRUE) : $datajson;
+
+        $update = (object) $this->input->post(NULL, TRUE);
+
+		$datagov_model_fields = $this->campaign->datagov_model();
+		$tracker_model_fields = $this->campaign->tracker_model();
+
+
+
+		// add fake field for general notes
+		$tracker_model_fields->office_general = null;
+
+		foreach ($tracker_model_fields as $field => $field_meta) {
+
+			$field_name = "note_$field";
+
+			if(!empty($update->$field_name)) {
+
+				$note_data = array("note" => $update->$field_name, "date" =>  date("F j, Y, g:i a T"), "author" => $this->session->userdata('name_full'));
+				$note_data = array("current" => $note_data, "previous" => null);
+
+				$note_data = json_encode($note_data);
+
+				$note = array('note' => $note_data, 'field_name' => $field, 'office_id' => $update->office_id);
+				$note = (object) $note;
+				$this->campaign->update_note($note);
+			}
+
+			unset($update->$field_name);
+		}
+
+		$datagov_model_fields->office_id = $update->office_id;
+		unset($update->office_id);
+
+		$datagov_model_fields->tracker_fields = json_encode($update);
+
+		// remove blank fields from update
+		foreach ($datagov_model_fields as $field => $data) {
+			if(empty($data)) unset($datagov_model_fields->$field);
+		}
+
+        $this->campaign->update_status($datagov_model_fields);
+
+        $this->session->set_flashdata('outcome', 'success');
+        $this->session->set_flashdata('status', 'Status updated');
+
+
+		$this->load->helper('url');
+        redirect('offices/detail/' . $datagov_model_fields->office_id);
+
+	}
+
+	// reformats db table into a json document
+	public function make_json() {
+		$this->db->select('office_id, inventory_posted, schedule_posted, inventory_superset, datajson_slashdata, datajson_posted, datagov_harvest, feedback');
+		$this->db->from('datagov_campaign');
+
+		$query = $this->db->get();
+
+		if ($query->num_rows() > 0) {
+			$result = $query->result();
+			$query->free_result();
+
+			$count = 0;
+
+			foreach ($result as $row) {
+
+				$office_id = $row->office_id;
+				unset($row->office_id);
+
+				// See if there's any data to update
+				$needs_migration = false;
+				foreach ($row as $field) {
+					if (!empty($field)) $needs_migration = true;
+				}
+
+				if($needs_migration) {
+
+					$tracker = new stdClass();
+
+					$tracker->edi_updated				= $row->inventory_posted;
+					$tracker->edi_schedule_delivered	= $row->schedule_posted;
+					$tracker->edi_superset				= $row->inventory_superset;
+					$tracker->pdl_slashdata				= $row->datajson_slashdata;
+					$tracker->pdl_datajson 				= $row->datajson_posted;
+					$tracker->pdl_datagov_harvested		= $row->datagov_harvest;
+					$tracker->pe_feedback_specified 	= $row->feedback;
+
+					$model = new stdClass();
+					$model->tracker_fields = json_encode($tracker);
+
+					$this->db->where('office_id', $office_id);
+					$this->db->update('datagov_campaign', $model);
+
+					$count++;
+				}
+
+			}
+
+
+			echo $count . ' records updated';
+		}
 
 	}
 

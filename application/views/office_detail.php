@@ -32,50 +32,56 @@
 		
         </div>
 
-        <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+
+
+        <?php if(!empty($office_campaign)): ?>
+        
+        <?php       
+        
+            if(!empty($office_campaign->datajson_status)) {
+                $office_campaign->datajson_status = json_decode($office_campaign->datajson_status);         
+            }
+            
+            if(!empty($office_campaign->datapage_status)) {
+                $office_campaign->datapage_status = json_decode($office_campaign->datapage_status);         
+            }   
+                
+            
+            if(!empty($office_campaign->digitalstrategy_status)) {
+                $office_campaign->digitalstrategy_status = json_decode($office_campaign->digitalstrategy_status);           
+            }      
+
+
+            if(!empty($office_campaign->tracker_fields)) {
+                $office_campaign->tracker_fields = json_decode($office_campaign->tracker_fields);           
+            }     
+
+                            
+        ?>
+
+
+
+
+
+
+<!-- ################################################################################ -->
+
+
+ <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
             <form method="post" action="/datagov/status-update" role="form">
         <?php endif; ?>        
         <div class="panel panel-default">
-
-            
 
             <div class="panel-heading">Status 
                 <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                     <button type="submit" class="btn btn-success btn-xs pull-right" href="/datagov/status/<?php echo $office->id; ?>">Update</button> <button class="btn btn-default btn-xs pull-right" style="margin-right : 1em" id="accShow">Show All Notes</button>
                 <?php endif; ?>
             </div>
-     
 
             <table class="table table-striped table-hover" id="note-expander-parent">
 
-            <!--
-                <tr>
-                    <th>Contact Name</th>
-                    <td><?php echo $office_campaign->contact_name ?></td>
-                </tr>   
-
-                <tr>
-                    <th>Contact Email</th>
-                    <td><?php echo $office_campaign->contact_email ?></td>
-                </tr>
-            -->
-
-
                 <?php 
-
-                $status_fields = array(
-                'datagov_harvest' => "Data.gov Harvest", 
-                'inventory_posted' => "EDI Posted", 
-                'inventory_superset' => "EDI is a superset of PDL", 
-                'datajson_posted' => "PDL data.json", 
-                'datajson_slashdata' => "PDL /data", 
-                'feedback' => "Feedback Mechanism", 
-                'schedule_posted' => "Schedule", 
-                'publication_process_posted' => "Data Publication Process" 
-                );
-
-                $crawl_details = array('datajson_posted', 'datajson_slashdata', 'feedback', 'schedule_posted', 'publication_process_posted');
-
+                    $crawl_details = array('pdl_datajson', 'pdl_slashdata', 'pe_feedback_specified', 'edi_schedule_delivered');
                 ?>
 
                 <tr>
@@ -133,56 +139,81 @@
                         </td>
                 </tr>
 
-                <?php foreach ($status_fields as $status_field_name => $status_field_label) : ?>
+                <?php foreach ($tracker_model as $tracker_field_name => $tracker_field_meta) : ?>
 
-                            <?php
-                                
-                                if (!empty($office_campaign->$status_field_name)) {
-                                    if($office_campaign->$status_field_name == 'yes') {
-                                        $status_icon = '<i class="text-success fa fa-check-square"></i>';  
-                                        $status_class = 'success';  
-                                    } else if ($office_campaign->$status_field_name == 'no') {
-                                        $status_icon =  '<i class="text-danger fa fa-times-circle"></i>';    
-                                        $status_class = 'danger';
-                                    } else {
-                                        $status_icon = '<i class="text fa fa-exclamation-triangle"></i>';            
-                                        $status_class = '';
-                                    } 
-                                } else {
-                                    $status_icon = '';            
-                                    $status_class = '';
-                                }
-                           
-                            ?>
+                    <?php
+                        
+                        if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
+                            if($office_campaign->tracker_fields->$tracker_field_name == 'yes') {
+                                $status_icon = '<i class="text-success fa fa-check-square"></i>';  
+                                $status_class = 'success';  
+                            } else if ($office_campaign->tracker_fields->$tracker_field_name == 'no') {
+                                $status_icon =  '<i class="text-danger fa fa-times-circle"></i>';    
+                                $status_class = 'danger';
+                            } else {
+                                $status_icon = '<i class="text fa fa-exclamation-triangle"></i>';            
+                                $status_class = '';
+                            } 
+                        } else {
+                            $office_campaign->tracker_fields->$tracker_field_name = '';
+                            $status_icon = '';            
+                            $status_class = '';
+                        }
+                   
+                    ?>
 
-                    <tr class="<?php echo $status_class; ?>">
+                    <tr <?php //if(!empty($status_class)) echo "class=\"$status_class\""; ?>>
                         <td class="col-md-1">
-                            <?php echo $status_icon; ?>
+                            <?php 
+                                if ($tracker_field_meta->type == "select") {
+                                    echo $status_icon;     
+                                }                         
+                            ?>
                         </td>
 
                         <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                             <td class="col-md-2">
-                                <select name="<?php echo $status_field_name ?>">
-                                    <option value="" disabled <?php echo (empty($office_campaign->$status_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
-                                    <option <?php echo ($office_campaign->$status_field_name == "yes") ? 'selected = "selected"' : '' ?> value="yes">Yes</option>
-                                    <option <?php echo ($office_campaign->$status_field_name == "no") ? 'selected = "selected"' : '' ?> value="no">No</option>
-                                    <option <?php echo ($office_campaign->$status_field_name == "partially") ? 'selected = "selected"' : '' ?> value="partially">Partially</option>
-                                    <option <?php echo ($office_campaign->$status_field_name == "other") ? 'selected = "selected"' : '' ?> value="other">Other</option>
-                                </select>
+
+                                <?php if ($tracker_field_meta->type == "select") : ?>
+                                    <select name="<?php echo $tracker_field_name ?>">
+                                        <option value="" disabled <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
+                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "yes") ? 'selected = "selected"' : '' ?> value="yes">Yes</option>
+                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "no") ? 'selected = "selected"' : '' ?> value="no">No</option>
+                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "partially") ? 'selected = "selected"' : '' ?> value="partially">Partially</option>
+                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "other") ? 'selected = "selected"' : '' ?> value="other">Other</option>
+                                    </select>
+                                <?php endif; ?>
+
+                                <?php if ($tracker_field_meta->type == "grade") : ?>
+                                    <select name="<?php echo $tracker_field_name ?>">
+                                        <option value="" disabled <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Grade</option>                                
+                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "A") ? 'selected = "selected"' : '' ?> value="yes">A</option>
+                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "B") ? 'selected = "selected"' : '' ?> value="no">B</option>
+                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "C") ? 'selected = "selected"' : '' ?> value="partially">C</option>
+                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "D") ? 'selected = "selected"' : '' ?> value="other">D</option>
+                                    </select>
+                                <?php endif; ?>
+
+
+                                <?php if ($tracker_field_meta->type == "string") : ?>
+                                    <input type="text" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name;?>">
+                                <?php endif; ?>
                             </td>
                         <?php endif; ?>
                         
-                        <td><strong><?php echo $status_field_label ?></strong></td>                        
+                        <td><strong><?php echo $tracker_field_meta->label ?></strong></td>                        
                         <td>
-                            <?php if (array_search($status_field_name, $crawl_details) !== false):?> 
+                            
+                            <?php if (array_search($tracker_field_name, $crawl_details) !== false):?> 
 
-                                <a href="#<?php echo $status_field_name ?>">Crawl details</a>
+                                <a href="#<?php echo $tracker_field_name ?>">Crawl details</a>
 
                             <?php endif; ?>
+
                         </td>     
                         <td>
                             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                            <a class="btn btn-xs btn-default collapsed pull-right" href="#note-expander-<?php echo $status_field_name ?>" data-parent="note-expander-parent" data-toggle="collapse">
+                            <a class="btn btn-xs btn-default collapsed pull-right" href="#note-expander-<?php echo $tracker_field_name ?>" data-parent="note-expander-parent" data-toggle="collapse">
                                 Notes
                             </a>
                             <?php endif; ?>
@@ -192,10 +223,10 @@
                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                     <tr>
                         <td colspan="5" class="hidden-row">
-                            <div class="edit-toggle collapse container form-group" id="note-expander-<?php echo $status_field_name ?>">
+                            <div class="edit-toggle collapse container form-group" id="note-expander-<?php echo $tracker_field_name ?>">
                                 
                                 <?php 
-                                    $note_field = "note_$status_field_name";
+                                    $note_field = "note_$tracker_field_name";
 
                                     $note_data = (!empty($notes[$note_field])) ? $notes[$note_field] : '';
 
@@ -204,12 +235,10 @@
                                     } else {
                                         $note_data = $note_model;
                                     }
-
-
                                 ?>  
                                 
                                 <div class="edit-area"><?php echo $note_data->current->note_html; ?></div>
-                                <div class="edit-raw hidden" data-fieldname="note_<?php echo $status_field_name ?>"><?php echo $note_data->current->note; ?></div>
+                                <div class="edit-raw hidden" data-fieldname="note_<?php echo $tracker_field_name ?>"><?php echo $note_data->current->note; ?></div>
 
                                 <?php if (!empty($note_data->current->date) && !empty($note_data->current->author)): ?>
                                     <div class="note-metadata">
@@ -227,9 +256,6 @@
                     </tr>
                     <?php endif;?>
 
-
-
-
                 <?php endforeach; ?>
 
             </table>   
@@ -241,26 +267,20 @@
 
         <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
             </form>
-        <?php endif; ?>        
+        <?php endif; ?>    
 
-		<?php if(!empty($office_campaign)): ?>
-		
-		<?php 		
-		
-			if(!empty($office_campaign->datajson_status)) {
-				$office_campaign->datajson_status = json_decode($office_campaign->datajson_status);			
-			}
-			
-			if(!empty($office_campaign->datapage_status)) {
-				$office_campaign->datapage_status = json_decode($office_campaign->datapage_status);			
-			}	
-				
-			
-			if(!empty($office_campaign->digitalstrategy_status)) {
-				$office_campaign->digitalstrategy_status = json_decode($office_campaign->digitalstrategy_status);			
-			}		
-							
-		?>
+
+
+
+
+
+<!-- ################################################################################ -->
+
+
+
+
+
+
 		
 		
 		
