@@ -25,6 +25,7 @@ function curl_from_json($url, $array=false, $decode=true) {
 	curl_close($ch);
 
     if($decode == true) {
+      $data = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($data));
 	    return json_decode($data, $array);	        
     } else {
         return $data;
