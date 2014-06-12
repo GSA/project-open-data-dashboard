@@ -1063,6 +1063,11 @@ class Campaign extends CI_Controller {
 								$matches[] = 'Match on identifier: '. $datajson_entry->identifier;
 							}
 
+							// match on title
+							if ($datajson_entry->title == $old_json->title) {
+								$matches[] = 'Match on title: '. $datajson_entry->title;
+							}							
+
 							// match on URL
 							$matched_urls = array();
 							foreach ($old_json->resources as $resource) {
