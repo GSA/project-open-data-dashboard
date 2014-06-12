@@ -13,7 +13,7 @@
 
 <div style="margin-bottom : 2em; border-bottom : 1px solid #ccc">
 
-    <h3 style="color : #666; margin-bottom : 0; padding-bottom : 0">Data listings in CKAN: <span style="color : #000"><?php echo $old_count ?></span></h3>
+    <h3 style="color : #666; margin-bottom : 0; padding-bottom : 0">Data listings in catalog.data.gov: <span style="color : #000"><?php echo $old_count ?></span></h3>
     <div style="color: #666">source: <a style="color: #666" href="<?php echo $json_old_url; ?>"><?php echo $json_old_request; ?></a></div>
 
     <h3 style="color : #666; margin-bottom : 0; padding-bottom : 0">Data listings in data.json: <span style="color : #000"><?php echo $new_count ?></span></h3>
