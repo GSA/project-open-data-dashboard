@@ -67,6 +67,8 @@
                                     );  
 
             $active_section = 'pdl';  
+
+
         ?>
 
 
@@ -81,6 +83,19 @@
 
             <?php endif;?>
                 
+
+            <ul class="milestone-selector nav nav-pills">
+                <li class="dropdown active">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                      Selected: <?php echo $milestones[$selected_milestone]  . ' - ' . date("F jS Y", strtotime($selected_milestone)); ?> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <?php foreach ($milestones as $milestone_date => $milestone): ?>
+                            <li><a href="?milestone=<?php echo $milestone_date;?>"><?php echo $milestone . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+            </ul>
 
 
            <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
@@ -290,6 +305,7 @@
 
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                     <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">   
+                    <input type="hidden" name="milestone" value="<?php echo $selected_milestone; ?>">                       
                 </form>
             <?php endif; ?>   
 
@@ -306,7 +322,7 @@
 		
 		
 		
-		<?php if(!empty($office->url)): ?>
+		<?php if(!empty($office_campaign->datajson_status)): ?>
 		
             
         <a name="pdl_datajson" class="anchor-point"></a>

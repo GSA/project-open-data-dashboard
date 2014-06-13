@@ -861,7 +861,7 @@ class Campaign extends CI_Controller {
 
 				$note_data = json_encode($note_data);
 
-				$note = array('note' => $note_data, 'field_name' => $field, 'office_id' => $update->office_id);
+				$note = array('note' => $note_data, 'field_name' => $field, 'office_id' => $update->office_id, 'milestone' => $update->milestone);
 				$note = (object) $note;
 				$this->campaign->update_note($note);
 			}
@@ -871,6 +871,9 @@ class Campaign extends CI_Controller {
 
 		$datagov_model_fields->office_id = $update->office_id;
 		unset($update->office_id);
+
+		$datagov_model_fields->milestone = $update->milestone;
+		unset($update->milestone);		
 
 		$datagov_model_fields->tracker_fields = json_encode($update);
 

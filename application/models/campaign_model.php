@@ -32,10 +32,13 @@ class campaign_model extends CI_Model {
 
 	}
 
-	public function datagov_office($office_id) {
+	public function datagov_office($office_id, $milestone = null) {
 
 		$this->db->select('*');
 		$this->db->where('office_id', $office_id);
+
+		if($milestone) $this->db->where('milestone', $milestone);
+
 		$query = $this->db->get('datagov_campaign');
 
 		if ($query->num_rows() > 0) {
@@ -52,6 +55,7 @@ class campaign_model extends CI_Model {
 		$model = new stdClass();
 
 		$model->office_id						= null;
+		$model->milestone						= null;
 		$model->contact_name					= null;
 		$model->contact_email					= null;
 		$model->datajson_status					= null;
@@ -192,6 +196,24 @@ class campaign_model extends CI_Model {
 
 		return $model;
 }
+
+
+
+	public function milestones_model() {
+
+		$milestones = array(
+							"2013-11-30" => "Milestone 1",
+							"2014-02-28" => "Milestone 2",
+							"2014-05-31" => "Milestone 3",
+							"2014-08-31" => "Milestone 4",
+							"2014-11-30" => "Milestone 5"
+							);
+
+		return $milestones;
+	}
+
+
+
 
 
 
@@ -484,6 +506,8 @@ class campaign_model extends CI_Model {
 
 		$this->db->select('datajson_status');
 		$this->db->where('office_id', $update->office_id);
+		$this->db->where('milestone', $update->milestone);
+
 		$query = $this->db->get('datagov_campaign');
 
 		if ($query->num_rows() > 0) {
@@ -497,6 +521,8 @@ class campaign_model extends CI_Model {
 			//$update = array_mash($update, $current_data);
 
 			$this->db->where('office_id', $update->office_id);
+			$this->db->where('milestone', $update->milestone);
+
 			$this->db->update('datagov_campaign', $update);
 
 
@@ -519,7 +545,9 @@ class campaign_model extends CI_Model {
 
 		$this->db->select('note');
 		$this->db->where('office_id', $update->office_id);
+		$this->db->where('milestone', $update->milestone);
 		$this->db->where('field_name', $update->field_name);
+		
 		$query = $this->db->get('notes');
 
 		if ($query->num_rows() > 0) {
@@ -533,6 +561,7 @@ class campaign_model extends CI_Model {
 			//$update = array_mash($update, $current_data);
 
 			$this->db->where('office_id', $update->office_id);
+			$this->db->where('milestone', $update->milestone);
 			$this->db->where('field_name', $update->field_name);
 
 			$this->db->update('notes', $update);
@@ -552,9 +581,9 @@ class campaign_model extends CI_Model {
 
 	}
 
-	public function get_notes($office_id) {
+	public function get_notes($office_id, $milestone) {
 
-		$query = $this->db->get_where('notes', array('office_id' => $office_id));
+		$query = $this->db->get_where('notes', array('office_id' => $office_id, 'milestone' => $milestone));
 
 		return $query;
 

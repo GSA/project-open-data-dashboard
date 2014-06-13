@@ -177,3 +177,7 @@ form .tracker-sections.nav-tabs {
 .tracker-content {
 	margin : 3em 0 6em 0;
 }
+
+.milestone-selector {
+	margin-top : 2em;
+}

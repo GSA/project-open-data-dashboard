@@ -20,12 +20,29 @@ class Offices extends CI_Controller {
 	public function index($output=null, $show_all_offices = false)
 	{
 
+		$this->load->model('campaign_model', 'campaign');
+		$milestones = $this->campaign->milestones_model();	
+		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : null;
+
+		if(empty($selected_milestone)) {
+	        foreach ($milestones as $milestone_date => $milestone) {
+	            if (strtotime($milestone_date) > time()) {
+	                $selected_milestone = $milestone_date;
+	                break;
+	            } 
+	        }
+		}
+
+		reset($milestones);
+
+
 
 		$view_data = array();
 
 		$this->db->select('*');
 		$this->db->from('offices');
-		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
+		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
+		$this->db->where('datagov_campaign.milestone', $selected_milestone);
 		$this->db->where('offices.cfo_act_agency', 'true');
 		$this->db->where('offices.no_parent', 'true');
 		$this->db->order_by("offices.name", "asc");
@@ -108,6 +125,30 @@ class Offices extends CI_Controller {
 		$this->load->model('campaign_model', 'campaign');
 		$this->load->library('markdown');
 
+		$milestones = $this->campaign->milestones_model();	
+		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : null;
+
+		
+		// Sets the first milestone in the future as the current and last available milestone
+	    foreach ($milestones as $milestone_date => $milestone) {
+	        if (strtotime($milestone_date) > time()) {
+	            
+	        	if(empty($current_milestone)) {
+	        		$current_milestone = $milestone_date;	
+	        	} else {
+	        		unset($milestones[$milestone_date]);
+	        	}	            
+	        } 
+	    }
+
+	    // if we didn't explicitly select a milestone, use the current one
+		if(empty($selected_milestone)) {
+			$selected_milestone = $current_milestone;
+		}
+
+
+		reset($milestones);
+
 		$this->db->select('*');
 		$this->db->where('id', $id);
 		$query = $this->db->get('offices');
@@ -119,7 +160,7 @@ class Offices extends CI_Controller {
 
 
 			// Get note data
-			$notes = $this->campaign->get_notes($view_data['office']->id);
+			$notes = $this->campaign->get_notes($view_data['office']->id, $selected_milestone);
 			$view_data['note_model'] = $this->campaign->note_model();
 
 			if ($notes->num_rows() > 0) {
@@ -142,13 +183,11 @@ class Offices extends CI_Controller {
 			}
 
 			// Get crawler data
-			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id);
+			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id, $selected_milestone);
 
 			if(empty($view_data['office_campaign'])) {
 				$view_data['office_campaign'] = $this->campaign->datagov_model();
 			}
-
-
 
 
 			if(!empty($view_data['office_campaign']->datajson_status)) {
@@ -175,6 +214,11 @@ class Offices extends CI_Controller {
 
 
 		}
+
+		// pass milestones data model
+		$view_data['milestones'] = $milestones;
+		$view_data['selected_milestone'] = $selected_milestone;
+
 
 		// pass tracker data model
 		$view_data['tracker_model'] = $this->campaign->tracker_model();
