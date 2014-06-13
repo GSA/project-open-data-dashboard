@@ -504,6 +504,28 @@ class campaign_model extends CI_Model {
 
 	public function update_status($update) {
 
+
+		$milestones = $this->milestones_model();	
+		$update->milestone	= (!empty($update->milestone)) ? $update->milestone : null;
+
+		
+		// Sets the first milestone in the future as the current and last available milestone
+	    foreach ($milestones as $milestone_date => $milestone) {
+	        if (strtotime($milestone_date) > time()) {
+	            
+	        	if(empty($current_milestone)) {
+	        		$current_milestone = $milestone_date;	
+	        	} else {
+	        		unset($milestones[$milestone_date]);
+	        	}	            
+	        } 
+	    }
+
+	    // if we didn't explicitly select a milestone, use the current one
+		if(empty($update->milestone)) {
+			$update->milestone = $current_milestone;
+		}
+
 		$this->db->select('datajson_status');
 		$this->db->where('office_id', $update->office_id);
 		$this->db->where('milestone', $update->milestone);
