@@ -152,9 +152,14 @@ text-decoration: none;
 	margin : 3em 0;
 }
 
-.tracker-content .table-striped > tbody > tr:nth-child(4n) > td, 
-.tracker-content .table-striped > tbody > tr:nth-child(4n) > th {
-    background-color: #F9F9F9;
+form .tracker-content .table-striped > tbody > tr > td, 
+form .tracker-content .table-striped > tbody > tr > th {
+	background-color: #fff !important;
+}
+
+form .tracker-content .table-striped > tbody > tr:nth-child(4n+1) > td, 
+form .tracker-content .table-striped > tbody > tr:nth-child(4n+1) > th {
+    background-color: #F9F9F9 !important;
 }
 
 .tab-content {
