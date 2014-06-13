@@ -147,9 +147,28 @@ text-decoration: none;
 }
 
 
+.general-notes {
+	border : 1px solid #F0F0F0;
+	margin : 3em 0;
+}
 
-
-form .table-striped > tbody > tr:nth-child(4n) > td, 
-form .table-striped > tbody > tr:nth-child(4n) > th {
+.tracker-content .table-striped > tbody > tr:nth-child(4n) > td, 
+.tracker-content .table-striped > tbody > tr:nth-child(4n) > th {
     background-color: #F9F9F9;
+}
+
+.tab-content {
+	margin : 1em 0;
+}
+
+form .tracker-sections.nav-tabs {
+	height : 41px;	
+}
+
+.tracker-sections {
+	margin-top : 2em;
+}
+
+.tracker-content {
+	margin : 3em 0 6em 0;
 }
