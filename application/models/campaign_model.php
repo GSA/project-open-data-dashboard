@@ -178,9 +178,9 @@ class campaign_model extends CI_Model {
 		$model->pe_reference->label 				= "Link to or description of Feedback Mechanism";
 		$model->pe_reference->type 					= "string";
 
-		$model->ps_breach_reports					= clone $field;
-		$model->ps_breach_reports->label 			= "Privacy/Data Breaches reported to US CERT";
-		$model->ps_breach_reports->type 			= "string";
+		$model->ps_publication_process				= clone $field;
+		$model->ps_publication_process->label 		= "Data Publication Process Delivered";
+		$model->ps_publication_process->type 		= "grade";
 
 		$model->hc_lead								= clone $field;
 		$model->hc_lead->label 						= "Data Lead";

@@ -57,7 +57,7 @@
             }     
 
                 
-            $crawl_details = array('pdl_datajson', 'pdl_slashdata', 'pdl_valid_metadata', 'pdl_datasets', 'pe_feedback_specified', 'edi_schedule_delivered');
+            $crawl_details = array('pdl_datajson', 'pdl_slashdata', 'pdl_valid_metadata', 'pdl_datasets', 'pe_feedback_specified', 'edi_schedule_delivered', 'ps_publication_process');
             $section_breakdown = array(
                                         "edi" => "Enterprise Data Inventory", 
                                         "pdl" => "Public Data Listing", 
@@ -830,7 +830,7 @@
                 $sections = array(  "1.2.4" => "edi_schedule_delivered", 
                                     "1.2.5" => "schedule", 
                                     "1.2.6" => "pe_feedback_specified", 
-                                    "1.2.7" => "publication_process_posted");
+                                    "1.2.7" => "ps_publication_process");
         
 
 
