@@ -336,8 +336,7 @@
 		
             
         <a name="pdl_datajson" class="anchor-point"></a>
-        <a name="pdl_valid_metadata" class="anchor-point"></a>
-        
+                
         <p>
             See the <a href="/docs">documentation</a> for an explanation of this table.
         </p>    
@@ -484,8 +483,9 @@
         <tr class="<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
             <th>Datasets with Valid Metadata</th>
             <td>
+                <a name="pdl_valid_metadata" class="anchor-point"></a>
                 <span class="text-<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
-                    <?php echo $percent_valid;?>
+                    <?php echo $percent_valid;?> <span style="color:#666">(<?php echo ($total_records - $error_count) . ' of ' . $total_records?>)</span>
                 </span>
             </td>
         </tr>   
