@@ -85,6 +85,14 @@ class campaign_model extends CI_Model {
 		$field->type 								= null;
 		$field->value								= null;
 		$field->label								= null;
+		$field->placeholder							= null;
+
+
+		// Enterprise Data Inventory
+
+		$model->edi_aggregate_score					= clone $field;
+		$model->edi_aggregate_score->label 			= "Overall Progress";
+		$model->edi_aggregate_score->type 			= "progress";
 
 		$model->edi_updated							= clone $field;
 		$model->edi_updated->label 					= "Inventory Updated this Quarter";
@@ -135,8 +143,15 @@ class campaign_model extends CI_Model {
 		$model->edi_confidence_assessment->type 	= "string";
 
 		$model->edi_quality_check					= clone $field;
-		$model->edi_quality_check->label 			= "Quality Check-- Does EDI include SORNs, PIAs, FOIA";
+		$model->edi_quality_check->label 			= "Quality Check - Does EDI include SORNs, PIAs, FOIA";
 		$model->edi_quality_check->type 			= "string";
+
+
+		// Public Data Listing
+
+		$model->pdl_aggregate_score					= clone $field;
+		$model->pdl_aggregate_score->label 			= "Overall Progress";
+		$model->pdl_aggregate_score->type 			= "progress";
 
 		$model->pdl_datasets						= clone $field;
 		$model->pdl_datasets->label 				= "Number of Datasets";
@@ -162,6 +177,14 @@ class campaign_model extends CI_Model {
 		$model->pdl_datagov_harvested->label 		= "Harvested by data.gov";
 		$model->pdl_datagov_harvested->type 		= "select";
 
+
+
+		// Public Engagement
+
+		$model->pe_aggregate_score					= clone $field;
+		$model->pe_aggregate_score->label 			= "Overall Progress";
+		$model->pe_aggregate_score->type 			= "progress";
+
 		$model->pe_feedback_specified				= clone $field;
 		$model->pe_feedback_specified->label 		= "Description of feedback mechanism delivered";
 		$model->pe_feedback_specified->type 		= "select";
@@ -182,9 +205,23 @@ class campaign_model extends CI_Model {
 		$model->pe_reference->label 				= "Link to or description of Feedback Mechanism";
 		$model->pe_reference->type 					= "string";
 
+
+		// Privacy & Security
+
+		$model->ps_aggregate_score					= clone $field;
+		$model->ps_aggregate_score->label 			= "Overall Progress";
+		$model->ps_aggregate_score->type 			= "progress";
+
 		$model->ps_publication_process				= clone $field;
 		$model->ps_publication_process->label 		= "Data Publication Process Delivered";
 		$model->ps_publication_process->type 		= "grade";
+
+
+		// Human Capital
+
+		$model->hc_aggregate_score					= clone $field;
+		$model->hc_aggregate_score->label 			= "Overall Progress";
+		$model->hc_aggregate_score->type 			= "progress";
 
 		$model->hc_lead								= clone $field;
 		$model->hc_lead->label 						= "Data Lead";

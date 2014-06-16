@@ -17,7 +17,7 @@
                 <p class="form-flash bg-<?php echo $this->session->flashdata('outcome'); ?>"><?php echo $this->session->flashdata('status'); ?></p>
             <?php endif; ?>
 
-          <h2><?php echo $office->name ?></h2>
+          <h2><?php echo $office->name ?> - <?php echo $milestones[$selected_milestone];?></h2>
 
         
 			<div><a href="<?php echo $office->url ?>"><?php echo $office->url ?></a></div>
@@ -212,7 +212,7 @@
 
                                                 <?php if ($tracker_field_meta->type == "select") : ?>
                                                     <select name="<?php echo $tracker_field_name ?>">
-                                                        <option value="" disabled <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "yes") ? 'selected = "selected"' : '' ?> value="yes">Yes</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "no") ? 'selected = "selected"' : '' ?> value="no">No</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "partially") ? 'selected = "selected"' : '' ?> value="partially">Partially</option>
@@ -222,13 +222,23 @@
 
                                                 <?php if ($tracker_field_meta->type == "grade") : ?>
                                                     <select name="<?php echo $tracker_field_name ?>">
-                                                        <option value="" disabled <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Grade</option>                                
-                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "A") ? 'selected = "selected"' : '' ?> value="yes">A</option>
-                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "B") ? 'selected = "selected"' : '' ?> value="no">B</option>
-                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "C") ? 'selected = "selected"' : '' ?> value="partially">C</option>
-                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "D") ? 'selected = "selected"' : '' ?> value="other">D</option>
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Grade</option>                                
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "A") ? 'selected = "selected"' : '' ?> value="A">A</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "B") ? 'selected = "selected"' : '' ?> value="B">B</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "C") ? 'selected = "selected"' : '' ?> value="C">C</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "D") ? 'selected = "selected"' : '' ?> value="D">D</option>
                                                     </select>
                                                 <?php endif; ?>
+
+
+                                                <?php if ($tracker_field_meta->type == "progress") : ?>
+                                                    <select name="<?php echo $tracker_field_name ?>">
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Progress</option>                                
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "progress") ? 'selected = "selected"' : '' ?> value="progress">Progress</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "neutral") ? 'selected = "selected"' : '' ?> value="neutral">Neutral</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "retrogress") ? 'selected = "selected"' : '' ?> value="retrogress">Retrogress</option>
+                                                    </select>
+                                                <?php endif; ?>                                                
 
 
                                                 <?php if ($tracker_field_meta->type == "string") : ?>
