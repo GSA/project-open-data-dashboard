@@ -484,9 +484,12 @@
             <th>Datasets with Valid Metadata</th>
             <td>
                 <a name="pdl_valid_metadata" class="anchor-point"></a>
-                <span class="text-<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
-                    <?php echo $percent_valid;?> <span style="color:#666">(<?php echo ($total_records - $error_count) . ' of ' . $total_records?>)</span>
-                </span>
+
+                <?php if(!empty($error_count)): ?>
+                    <span class="text-<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
+                        <?php echo $percent_valid;?> <span style="color:#666">(<?php echo ($total_records - $error_count) . ' of ' . $total_records?>)</span>
+                    </span>
+                <?php endif; ?>
             </td>
         </tr>   
 
