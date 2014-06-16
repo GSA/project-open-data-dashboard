@@ -394,19 +394,17 @@ class campaign_model extends CI_Model {
 			$max_size = $this->config->item('max_size');
 
 			// Load the JSON
-			if(empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < $max_size) {
+			$opts = array(
+						  'http'=>array(
+						    'method'=>"GET",
+						    'user_agent'=>"Data.gov data.json crawler"
+						  )
+						);
 
-				$opts = array(
-							  'http'=>array(
-							    'method'=>"GET",
-							    'user_agent'=>"Data.gov data.json crawler"
-							  )
-							);
+			$context = stream_context_create($opts);
 
-				$context = stream_context_create($opts);
-
-				$datajson = file_get_contents($datajson_url, false, $context);
-			}
+			$datajson = file_get_contents($datajson_url, false, $context);
+			
 
 			if(!empty($datajson) && (empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < 0)) {
 				$datajson_header['download_content_length'] = strlen($datajson);
@@ -423,7 +421,20 @@ class campaign_model extends CI_Model {
 
 				$valid_json = is_json($datajson);
 
-				return array('valid_json' => $valid_json, 'valid' => false, 'fail' => $errors, 'download_content_length' => $datajson_header['download_content_length']);
+				$response = array(
+								'valid_json' => $valid_json, 
+								'valid' => false, 
+								'fail' => $errors, 
+								'download_content_length' => $datajson_header['download_content_length']
+								);
+
+
+				if($valid_json) {
+					$catalog = json_decode($datajson);
+					$response['total_records'] = count($catalog);
+				}
+
+				return $response;
 			}
 
 
