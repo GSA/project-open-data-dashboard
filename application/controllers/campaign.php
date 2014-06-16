@@ -889,7 +889,7 @@ class Campaign extends CI_Controller {
 
 
 		$this->load->helper('url');
-        redirect('offices/detail/' . $datagov_model_fields->office_id);
+        redirect('offices/detail/' . $datagov_model_fields->office_id . '?milestone=' . $datagov_model_fields->milestone);
 
 	}
 
