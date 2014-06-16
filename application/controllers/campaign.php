@@ -558,7 +558,9 @@ class Campaign extends CI_Controller {
             		    $json_refresh = false;
             		    $status = $this->campaign->uri_header($expected_datajson_url);
             		}
-            		$status['url']          = $expected_datajson_url;
+
+
+            		//$status['url']          = $expected_datajson_url;
             		$status['expected_url'] = $expected_datajson_url;
 
 
@@ -689,7 +691,16 @@ class Campaign extends CI_Controller {
 
 	                    	// Check JSON status
 	                    	$status 				= $this->json_status($status, $real_url);
-	            			$status['url']          = $expected_datajson_url;
+	            			
+	            			// Set correct URL
+	            			if(!empty($status['url'])) {
+	            				if(strpos($status['url'], '?refresh=')) {
+	            					$status['url'] = substr($status['url'], 0, strpos($status['url'], '?refresh='));
+	            				} 
+	            			} else {
+	            				$status['url'] = $expected_datajson_url;
+	            			}
+
 	            			$status['expected_url'] = $expected_datajson_url;
 							$status['last_crawl']	= mktime();
 
@@ -798,10 +809,11 @@ class Campaign extends CI_Controller {
             $expected_datajson_url = urldecode($status);
 
        		$status = $this->campaign->uri_header($expected_datajson_url);
-        	$status['url'] = $expected_datajson_url;
+        	$status['url'] = (!empty($status['url'])) ? $status['url'] : $expected_datajson_url;
         }
 
-        $status['url'] = (!empty($real_url)) ? $real_url : $status['url'];
+        $status['url'] = (!empty($status['url'])) ? $status['url'] : $real_url;
+        
 		if($status['http_code'] == 200) {
 
 			$validation = $this->campaign->validate_datajson($status['url'], null, null, 'federal');
