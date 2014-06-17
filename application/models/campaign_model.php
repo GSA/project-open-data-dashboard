@@ -131,7 +131,7 @@ class campaign_model extends CI_Model {
 		$model->edi_superset->type 					= "select";
 
 		$model->edi_progress_evaluation				= clone $field;
-		$model->edi_progress_evaluation->label 		= "Progress Evaluation Since Last Quarter";
+		$model->edi_progress_evaluation->label 		= "Percentage growth in records since last quarter";
 		$model->edi_progress_evaluation->type 		= "traffic";
 
 		$model->edi_schedule_risk					= clone $field;
