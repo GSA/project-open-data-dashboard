@@ -180,14 +180,14 @@
                                         if (substr($tracker_field_name, 0, strlen($section_abbreviation)) !== $section_abbreviation) continue;                        
                                         
                                         if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
-                                            if($office_campaign->tracker_fields->$tracker_field_name == 'yes') {
+                                            if($office_campaign->tracker_fields->$tracker_field_name == 'yes' || $office_campaign->tracker_fields->$tracker_field_name == 'green') {
                                                 $status_icon = '<i class="text-success fa fa-check-square"></i>';  
                                                 $status_class = 'success';  
-                                            } else if ($office_campaign->tracker_fields->$tracker_field_name == 'no') {
+                                            } else if ($office_campaign->tracker_fields->$tracker_field_name == 'no' || $office_campaign->tracker_fields->$tracker_field_name == 'red') {
                                                 $status_icon =  '<i class="text-danger fa fa-times-circle"></i>';    
                                                 $status_class = 'danger';
                                             } else {
-                                                $status_icon = '<i class="text fa fa-exclamation-triangle"></i>';            
+                                                $status_icon = '<i class="text-warning fa fa-exclamation-triangle"></i>';            
                                                 $status_class = '';
                                             } 
                                         } else {
@@ -201,7 +201,7 @@
                                     <tr <?php //if(!empty($status_class)) echo "class=\"$status_class\""; ?>>
                                         <td class="col-md-1">
                                             <?php 
-                                                if ($tracker_field_meta->type == "select") {
+                                                if ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "traffic") {
                                                     echo $status_icon;     
                                                 }                         
                                             ?>
@@ -216,7 +216,6 @@
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "yes") ? 'selected = "selected"' : '' ?> value="yes">Yes</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "no") ? 'selected = "selected"' : '' ?> value="no">No</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "partially") ? 'selected = "selected"' : '' ?> value="partially">Partially</option>
-                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "other") ? 'selected = "selected"' : '' ?> value="other">Other</option>
                                                     </select>
                                                 <?php endif; ?>
 
