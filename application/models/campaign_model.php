@@ -138,9 +138,9 @@ class campaign_model extends CI_Model {
 		$model->edi_schedule_risk->label 			= "Schedule Risk for Nov 30, 2014";
 		$model->edi_schedule_risk->type 			= "traffic";
 
-		$model->edi_confidence_assessment			= clone $field;
-		$model->edi_confidence_assessment->label	= "OMB Confidence Assesment";
-		$model->edi_confidence_assessment->type 	= "string";
+		// $model->edi_confidence_assessment			= clone $field;
+		// $model->edi_confidence_assessment->label	= "OMB Confidence Assesment";
+		// $model->edi_confidence_assessment->type 	= "string";
 
 		$model->edi_quality_check					= clone $field;
 		$model->edi_quality_check->label 			= "Spot Check - Site search, SORNs, PIAs, FOIA";
