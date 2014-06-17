@@ -415,6 +415,7 @@ class campaign_model extends CI_Model {
 
 				$filesize = human_filesize($datajson_header['download_content_length']);
 				$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";
+
 			}
 
 			if(!empty($errors)) {
@@ -453,6 +454,7 @@ class campaign_model extends CI_Model {
             //$data = str_replace(array("\r", "\n", "\\n", "\r\n"), " ", $data);
             //$data = preg_replace('!\s+!', ' ', $data);
             //$data = str_replace(' "', '"', $data);
+            
             $datajson = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($datajson));
 
 
@@ -470,15 +472,31 @@ class campaign_model extends CI_Model {
 
 		if ($datajson && is_json($datajson)) {
 
-			$response = $this->campaign->jsonschema_validator($datajson, $schema);
 
-			$catalog = json_decode($datajson);
+			$datajson_decode = json_decode($datajson);
+			$datajson_chunks = array_chunk($datajson_decode, 500);			
 
-			$response['total_records'] = count($catalog);
+			$response = array();
+			$response['errors'] = array();
+
+			foreach ($datajson_chunks as $chunk_count => $chunk) {
+
+				$chunk = json_encode($chunk);
+				$validator = $this->campaign->jsonschema_validator($chunk, $schema);
+
+				if(!empty($validator['errors'])) {
+					$response['errors'] = array_merge($response['errors'], $validator['errors']);	
+				}
+				
+			}
+
+			
+			$response['total_records'] = count($datajson_decode);
 			$response['valid_json'] = true;
 
+
 			if ($return_source) {
-				$response['source'] = $catalog;
+				$response['source'] = $datajson_decode;
 			}
 
 			return $response;
