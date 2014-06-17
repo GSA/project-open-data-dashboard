@@ -241,7 +241,7 @@
                                                 <?php endif; ?>     
 
 
-                                                <?php if ($tracker_field_meta->type == "progress") : ?>
+                                                <?php if ($tracker_field_meta->type == "traffic") : ?>
                                                     <select name="<?php echo $tracker_field_name ?>">
                                                         <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "red") ? 'selected = "selected"' : '' ?> value="red">Red</option>
