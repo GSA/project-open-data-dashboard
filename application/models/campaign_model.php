@@ -487,10 +487,12 @@ class campaign_model extends CI_Model {
 				if(!empty($validator['errors'])) {
 					$response['errors'] = array_merge($response['errors'], $validator['errors']);	
 				}
+
+				//var_dump($response['errors']); exit;
 				
 			}
 
-			
+			$response['valid'] = (empty($response['errors'])) ? true : false;
 			$response['total_records'] = count($datajson_decode);
 			$response['valid_json'] = true;
 
