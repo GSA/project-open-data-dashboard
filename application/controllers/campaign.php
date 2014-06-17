@@ -868,7 +868,9 @@ class Campaign extends CI_Controller {
 
 			if(!empty($update->$field_name)) {
 
-				$note_data = array("note" => $update->$field_name, "date" =>  date("F j, Y, g:i a T"), "author" => $this->session->userdata('name_full'));
+				$author_name = (!empty($this->session->userdata('name_full'))) ? $this->session->userdata('name_full') : $this->session->userdata('username');
+
+				$note_data = array("note" => $update->$field_name, "date" =>  date("F j, Y, g:i a T"), "author" => $author_name);
 				$note_data = array("current" => $note_data, "previous" => null);
 
 				$note_data = json_encode($note_data);
