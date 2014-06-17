@@ -91,7 +91,7 @@ class campaign_model extends CI_Model {
 		// Enterprise Data Inventory
 
 		$model->edi_aggregate_score					= clone $field;
-		$model->edi_aggregate_score->label 			= "Overall Progress";
+		$model->edi_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->edi_aggregate_score->type 			= "progress";
 
 		$model->edi_updated							= clone $field;
@@ -132,7 +132,7 @@ class campaign_model extends CI_Model {
 
 		$model->edi_progress_evaluation				= clone $field;
 		$model->edi_progress_evaluation->label 		= "Progress Evaluation Since Last Quarter";
-		$model->edi_progress_evaluation->type 		= "string";
+		$model->edi_progress_evaluation->type 		= "select";
 
 		$model->edi_schedule_risk					= clone $field;
 		$model->edi_schedule_risk->label 			= "Schedule Risk for Nov 30, 2014";
@@ -150,7 +150,7 @@ class campaign_model extends CI_Model {
 		// Public Data Listing
 
 		$model->pdl_aggregate_score					= clone $field;
-		$model->pdl_aggregate_score->label 			= "Overall Progress";
+		$model->pdl_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->pdl_aggregate_score->type 			= "progress";
 
 		$model->pdl_datasets						= clone $field;
@@ -182,7 +182,7 @@ class campaign_model extends CI_Model {
 		// Public Engagement
 
 		$model->pe_aggregate_score					= clone $field;
-		$model->pe_aggregate_score->label 			= "Overall Progress";
+		$model->pe_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->pe_aggregate_score->type 			= "progress";
 
 		$model->pe_feedback_specified				= clone $field;
@@ -209,7 +209,7 @@ class campaign_model extends CI_Model {
 		// Privacy & Security
 
 		$model->ps_aggregate_score					= clone $field;
-		$model->ps_aggregate_score->label 			= "Overall Progress";
+		$model->ps_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->ps_aggregate_score->type 			= "progress";
 
 		$model->ps_publication_process				= clone $field;
@@ -220,7 +220,7 @@ class campaign_model extends CI_Model {
 		// Human Capital
 
 		$model->hc_aggregate_score					= clone $field;
-		$model->hc_aggregate_score->label 			= "Overall Progress";
+		$model->hc_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->hc_aggregate_score->type 			= "progress";
 
 		$model->hc_lead								= clone $field;
