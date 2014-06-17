@@ -13,3 +13,5 @@ downloads/*
 
 
 application/config/upload.php
+
+index.php
