@@ -238,7 +238,17 @@
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "neutral") ? 'selected = "selected"' : '' ?> value="neutral">Neutral</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "retrogress") ? 'selected = "selected"' : '' ?> value="retrogress">Retrogress</option>
                                                     </select>
-                                                <?php endif; ?>                                                
+                                                <?php endif; ?>     
+
+
+                                                <?php if ($tracker_field_meta->type == "progress") : ?>
+                                                    <select name="<?php echo $tracker_field_name ?>">
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "red") ? 'selected = "selected"' : '' ?> value="red">Red</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "yellow") ? 'selected = "selected"' : '' ?> value="yellow">Yellow</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "green") ? 'selected = "selected"' : '' ?> value="green">Green</option>
+                                                    </select>
+                                                <?php endif; ?>  
 
 
                                                 <?php if ($tracker_field_meta->type == "string") : ?>
