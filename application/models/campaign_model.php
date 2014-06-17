@@ -191,15 +191,15 @@ class campaign_model extends CI_Model {
 
 		$model->pe_prioritization					= clone $field;
 		$model->pe_prioritization->label 			= "Data release is prioritized through public engagement";
-		$model->pe_prioritization->type 			= "grade";
+		$model->pe_prioritization->type 			= "traffic";
 
 		$model->pe_dialogue							= clone $field;
 		$model->pe_dialogue->label 					= "Feedback loop is closed, 2 way communication";
-		$model->pe_dialogue->type 					= "grade";
+		$model->pe_dialogue->type 					= "traffic";
 
 		$model->pe_impact							= clone $field;
 		$model->pe_impact->label 					= "Feedback leads to change in data management and release practices";
-		$model->pe_impact->type 					= "grade";
+		$model->pe_impact->type 					= "traffic";
 
 		$model->pe_reference						= clone $field;
 		$model->pe_reference->label 				= "Link to or description of Feedback Mechanism";
@@ -214,7 +214,7 @@ class campaign_model extends CI_Model {
 
 		$model->ps_publication_process				= clone $field;
 		$model->ps_publication_process->label 		= "Data Publication Process Delivered";
-		$model->ps_publication_process->type 		= "grade";
+		$model->ps_publication_process->type 		= "traffic";
 
 
 		// Human Capital
