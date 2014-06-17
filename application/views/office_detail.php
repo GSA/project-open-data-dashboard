@@ -447,12 +447,12 @@
             $valid_json = (isset($office_campaign->datajson_status->valid_json)) ? $office_campaign->datajson_status->valid_json : null;
             $valid_schema = (isset($office_campaign->datajson_status->valid_schema)) ? $office_campaign->datajson_status->valid_schema : null;
 
-            $error_count        = (!empty($office_campaign->datajson_status->error_count)) ? $office_campaign->datajson_status->error_count : 0;
+            $error_count        = (is_numeric($office_campaign->datajson_status->error_count)) ? $office_campaign->datajson_status->error_count : null;
             $total_records      =   (!empty($office_campaign->datajson_status->total_records)) ? $office_campaign->datajson_status->total_records : '';
 
-            $percent_valid      =   (!empty($total_records) && !empty($total_records)) ? ($total_records - $error_count)/$total_records : 0;
+            $percent_valid      =   (!empty($total_records) && is_numeric($error_count)) ? ($total_records - $error_count)/$total_records : null;
 
-            if($percent_valid) {
+            if(is_numeric($percent_valid)) {
 
                 if ($percent_valid == 1) {
                     $percent_valid = "100%";
@@ -494,7 +494,7 @@
             <td>
                 <a name="pdl_valid_metadata" class="anchor-point"></a>
 
-                <?php if(!empty($error_count)): ?>
+                <?php if(!empty($percent_valid)): ?>
                     <span class="text-<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
                         <?php echo $percent_valid;?> <span style="color:#666">(<?php echo ($total_records - $error_count) . ' of ' . $total_records?>)</span>
                     </span>

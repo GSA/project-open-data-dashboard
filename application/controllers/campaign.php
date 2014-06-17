@@ -705,9 +705,19 @@ class Campaign extends CI_Controller {
 							$status['last_crawl']	= mktime();
 
 
-							$status['schema_errors'] = (!empty($status['schema_errors'])) ? $this->process_validation_errors($status['schema_errors']) : null;
+							// if we got an array of errors, process them
+							if(is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
+								$status['schema_errors'] = $this->process_validation_errors($status['schema_errors']);
+							} 
+				
+							if(is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
+								$status['error_count'] = count($status['schema_errors']);
+							} else if ($status['schema_errors'] === false) {
+								$status['error_count'] = 0;
+							} else {
+								$status['error_count'] = null;
+							}
 
-							$status['error_count'] = (!empty($status['schema_errors'])) ? count($status['schema_errors']) : null;
 							$status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;
 
 	    					$update->datajson_status = (!empty($status)) ? json_encode($status) : null;
