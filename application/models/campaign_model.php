@@ -197,9 +197,9 @@ class campaign_model extends CI_Model {
 		$model->pe_dialogue->label 					= "Feedback loop is closed, 2 way communication";
 		$model->pe_dialogue->type 					= "traffic";
 
-		$model->pe_impact							= clone $field;
-		$model->pe_impact->label 					= "Feedback leads to change in data management and release practices";
-		$model->pe_impact->type 					= "traffic";
+		//$model->pe_impact							= clone $field;
+		//$model->pe_impact->label 					= "Feedback leads to change in data management and release practices";
+		//$model->pe_impact->type 					= "traffic";
 
 		$model->pe_reference						= clone $field;
 		$model->pe_reference->label 				= "Link to or description of Feedback Mechanism";
