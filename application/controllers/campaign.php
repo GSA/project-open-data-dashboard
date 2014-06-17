@@ -868,8 +868,9 @@ class Campaign extends CI_Controller {
 
 			if(!empty($update->$field_name)) {
 
+				// Set author name with best data available
 				$author_full = $this->session->userdata('name_full');
-				$author_name = (!empty($author_full)) ? $this->session->userdata('name_full') : $this->session->userdata('username');
+				$author_name = (!empty($author_full)) ? $author_full : $this->session->userdata('username');
 
 				$note_data = array("note" => $update->$field_name, "date" =>  date("F j, Y, g:i a T"), "author" => $author_name);
 				$note_data = array("current" => $note_data, "previous" => null);
