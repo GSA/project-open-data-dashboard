@@ -216,6 +216,10 @@ class campaign_model extends CI_Model {
 		$model->ps_publication_process->label 		= "Data Publication Process Delivered";
 		$model->ps_publication_process->type 		= "traffic";
 
+		$model->ps_publication_process_qa			= clone $field;
+		$model->ps_publication_process_qa->label 	= "OMB Assessment of Data Publication Process";
+		$model->ps_publication_process_qa->type 	= "traffic";
+
 
 		// Human Capital
 
