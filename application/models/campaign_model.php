@@ -233,7 +233,7 @@ class campaign_model extends CI_Model {
 
 		$model->hc_contacts							= clone $field;
 		$model->hc_contacts->label 					= "POCs identified for required responsibilities";
-		$model->hc_contacts->type 					= "select";
+		$model->hc_contacts->type 					= "traffic";
 
 		return $model;
 }
