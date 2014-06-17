@@ -136,7 +136,7 @@ class campaign_model extends CI_Model {
 
 		$model->edi_schedule_risk					= clone $field;
 		$model->edi_schedule_risk->label 			= "Schedule Risk for Nov 30, 2014";
-		$model->edi_schedule_risk->type 			= "string";
+		$model->edi_schedule_risk->type 			= "select";
 
 		$model->edi_confidence_assessment			= clone $field;
 		$model->edi_confidence_assessment->label	= "OMB Confidence Assesment";
