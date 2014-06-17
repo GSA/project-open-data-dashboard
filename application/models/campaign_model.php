@@ -228,7 +228,7 @@ class campaign_model extends CI_Model {
 		$model->hc_aggregate_score->type 			= "traffic";
 
 		$model->hc_lead								= clone $field;
-		$model->hc_lead->label 						= "Data Lead";
+		$model->hc_lead->label 						= "Open Data Primary Point of Contact";
 		$model->hc_lead->type 						= "string";
 
 		$model->hc_contacts							= clone $field;
