@@ -132,7 +132,7 @@ class campaign_model extends CI_Model {
 
 		$model->edi_progress_evaluation				= clone $field;
 		$model->edi_progress_evaluation->label 		= "Progress Evaluation Since Last Quarter";
-		$model->edi_progress_evaluation->type 		= "select";
+		$model->edi_progress_evaluation->type 		= "traffic";
 
 		$model->edi_schedule_risk					= clone $field;
 		$model->edi_schedule_risk->label 			= "Schedule Risk for Nov 30, 2014";
