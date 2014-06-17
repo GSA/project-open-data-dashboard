@@ -101,11 +101,13 @@ function status_table($title, $rows, $config = null) {
 
 			if($percent_valid) {
 
-				if ($percent_valid == 1) {
+				if ($percent_valid == 1 && $valid_schema === true) {
 					$percent_valid = "100%";
 				}
-				else {
+				else if (!empty($error_count) && $valid_schema === false) {
 					$percent_valid = sprintf("%.1f%%", $percent_valid * 100);
+				} else {
+					$percent_valid = '';
 				}
 
 			}
