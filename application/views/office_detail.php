@@ -462,7 +462,7 @@
             $valid_json = (isset($office_campaign->datajson_status->valid_json)) ? $office_campaign->datajson_status->valid_json : null;
             $valid_schema = (isset($office_campaign->datajson_status->valid_schema)) ? $office_campaign->datajson_status->valid_schema : null;
 
-            $error_count        = (is_numeric($office_campaign->datajson_status->error_count)) ? $office_campaign->datajson_status->error_count : null;
+            $error_count        = (isset($office_campaign->datajson_status->error_count) && is_numeric($office_campaign->datajson_status->error_count)) ? $office_campaign->datajson_status->error_count : null;
             $total_records      =  (!empty($office_campaign->datajson_status->total_records)) ? $office_campaign->datajson_status->total_records : '';
 
             $valid_count        = (is_numeric($error_count) && is_numeric($total_records)) ? $total_records - $error_count : null;
