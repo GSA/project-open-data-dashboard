@@ -832,7 +832,14 @@ class Campaign extends CI_Controller {
 				$status['valid_json'] = $validation['valid_json'];
 				$status['valid_schema'] = $validation['valid'];
 				$status['total_records'] = (!empty($validation['total_records'])) ? $validation['total_records'] : null;
-				$status['schema_errors'] = (!empty($validation['errors'])) ? $validation['errors'] : false;
+
+				if(isset($validation['errors']) && is_array($validation['errors']) && !empty($validation['errors'])) {
+					$status['schema_errors'] = $validation['errors'];
+				} else if (isset($validation['errors']) && $validation['errors'] === false) {
+					$status['schema_errors'] = false;
+				} else {
+					$status['schema_errors'] = null;
+				}
 
 				$status['download_content_length'] = (!empty($status['download_content_length'])) ? $status['download_content_length'] : null;
 				$status['download_content_length'] = (!empty($validation['download_content_length'])) ? $validation['download_content_length'] : $status['download_content_length'];
