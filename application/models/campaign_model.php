@@ -401,7 +401,7 @@ class campaign_model extends CI_Model {
 			//}
 
 			// Max file size
-			$max_size = $this->config->item('max_size');
+			$max_size = $this->config->item('max_remote_size');
 
 			// Load the JSON
 			$opts = array(
@@ -751,7 +751,7 @@ class campaign_model extends CI_Model {
 			$qa['programCodes'] 		= $programCode;
 			$qa['bureauCodes'] 			= $bureauCode;
 		}
-		
+
 		$qa['accessURL_present'] 	= $accessURL_present;
 		$qa['accessURL_total'] 		= $accessURL_total;
 

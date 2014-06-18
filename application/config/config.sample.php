@@ -3,7 +3,7 @@
 $config['download_dir'] = '/var/www/project-open-data-dashboard/downloads';
 $config['import_active'] = true;
 $config['show_all_offices'] = false;
-$config['max_size'] = 5000000;
+$config['max_remote_size'] = 5000000;
 
 
 $config['google_analytics_id'] = ''; // UA-xxxxxxx-xx
