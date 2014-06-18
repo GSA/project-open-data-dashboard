@@ -102,6 +102,26 @@
                                     </tr>    
                                 <?php endif; ?>
 
+
+                                <?php if(!empty($validation['qa']['accessLevel_public'])) : ?>
+                                    <tr>
+                                        <th>Access Level: Public</th><td><?php echo $validation['qa']['accessLevel_public']; ?> </td>
+                                    </tr>
+                                 <?php endif; ?>
+
+                                <?php if(!empty($validation['qa']['accessLevel_restricted'])) : ?>
+                                    <tr>
+                                        <th>Access Level: Restricted</th><td><?php echo $validation['qa']['accessLevel_restricted']; ?> </td>
+                                    </tr>
+                                <?php endif; ?>
+
+                                <?php if(!empty($validation['qa']['accessLevel_nonpublic'])) : ?>
+                                    <tr>
+                                        <th>Access Level: Non-Public</th><td><?php echo $validation['qa']['accessLevel_nonpublic']; ?> </td>
+                                    </tr>
+                                <?php endif; ?>
+
+
                         </tbody>
                     </table>
 
