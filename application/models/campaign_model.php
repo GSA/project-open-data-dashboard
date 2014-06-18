@@ -416,7 +416,13 @@ class campaign_model extends CI_Model {
 			$datajson = @file_get_contents($datajson_url, false, $context);
 
 			if ($datajson == false) {
-				$errors[] = "File not found or couldn't be downloaded";
+
+				$datajson = curl_from_json($datajson_url, false, false);
+
+				if(!$datajson) {
+					$errors[] = "File not found or couldn't be downloaded";	
+				}
+				
 			} 
 
 			if(!empty($datajson) && (empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < 0)) {
@@ -433,7 +439,10 @@ class campaign_model extends CI_Model {
 
 			// See if it's valid JSON 
 			if(!empty($datajson)) {
-				$valid_json = is_json($datajson);
+
+				$datajson_processed = json_text_filter($datajson);
+
+				$valid_json = is_json($datajson_processed);
 
 				if ($valid_json !== true) {
 					$errors[] = 'The validator was unable to determine if this was valid JSON';
@@ -453,7 +462,7 @@ class campaign_model extends CI_Model {
 
 
 				if($valid_json && $return_source === false) {
-					$catalog = json_decode($datajson);
+					$catalog = json_decode($datajson_processed);
 					$response['total_records'] = count($catalog);
 				}
 
@@ -463,46 +472,24 @@ class campaign_model extends CI_Model {
 
 		}
 
-		if ($datajson) {
-
-	        // Clean up the data a bit
-
-		    /*
-		    This is to help accomodate encoding issues, eg invalid newlines. See:
-		    http://forum.jquery.com/topic/json-with-newlines-in-strings-should-be-valid#14737000000866332
-		    http://stackoverflow.com/posts/17846592/revisions
-		    */
-		    $datajson = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($datajson));
-            //$data = str_replace(array("\r", "\n", "\\n", "\r\n"), " ", $data);
-            //$data = preg_replace('!\s+!', ' ', $data);
-            //$data = str_replace(' "', '"', $data);
-            
-            $datajson = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($datajson));
-
-
-            /*
-		    This is to replace any possible BOM "Byte order mark" that might be present
-		    See: http://stackoverflow.com/questions/10290849/how-to-remove-multiple-utf-8-bom-sequences-before-doctype
-		    and
-		    http://stackoverflow.com/questions/3255993/how-do-i-remove-i-from-the-beginning-of-a-file
-		    */
-            // $bom = pack('H*','EFBBBF');
-            // $datajson = preg_replace("/^$bom/", '', $datajson);
-            $datajson = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $datajson);
+		// filter string for json conversion if we haven't already
+		if ($datajson && !$datajson_processed) {
+			$datajson_processed = json_text_filter($datajson);
 		}
 
 
-		if($datajson) {
+		// verify it's valid json
+		if($datajson_processed) {
 			if(!isset($valid_json)) {
 				$valid_json = is_json($datajson);
 			}
 		}
 
 
-		if ($datajson && $valid_json) {
+		if ($datajson_processed && $valid_json) {
 
 
-			$datajson_decode = json_decode($datajson);
+			$datajson_decode = json_decode($datajson_processed);
 			$datajson_chunks = array_chunk($datajson_decode, 500);			
 
 			$response = array();
@@ -536,6 +523,10 @@ class campaign_model extends CI_Model {
 			$response['total_records'] = count($datajson_decode);
 			$response['valid_json'] = true;
 
+
+			if(empty($response['errors'])) {
+				$response['errors'] = false;
+			}
 
 			if ($return_source) {
 				$response['source'] = $datajson_decode;
@@ -584,7 +575,7 @@ class campaign_model extends CI_Model {
                 $validator->check($data, $schema);
 
                 if ($validator->isValid()) {
-                    $results = array('valid' => true, 'errors' => null);
+                    $results = array('valid' => true, 'errors' => false);
                 } else {
                     $errors =  $validator->getErrors();
 
@@ -605,6 +596,8 @@ class campaign_model extends CI_Model {
 
 
 	}
+
+
 
 	public function datajson_qa($json) {
 
