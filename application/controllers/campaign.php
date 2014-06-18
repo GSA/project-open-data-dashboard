@@ -934,6 +934,8 @@ class Campaign extends CI_Controller {
 		$datajson_url 	= ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url') : $datajson_url;
 		$output_type 	= ($this->input->get_post('output')) ? $this->input->get_post('output') : $output;
 
+		$qa 			= ($this->input->get_post('qa') == 'true') ? true : false;
+
 
 
 		if(!empty($_FILES)) {
@@ -955,7 +957,7 @@ class Campaign extends CI_Controller {
 		$return_source 	= ($output_type == 'browser') ? true : false;
 
 		if($datajson OR $datajson_url) {
-			$validation = $this->campaign->validate_datajson($datajson_url, $datajson, $headers, $schema, $return_source);
+			$validation = $this->campaign->validate_datajson($datajson_url, $datajson, $headers, $schema, $return_source, $qa);
 		}
 
 		if(!empty($validation)) {

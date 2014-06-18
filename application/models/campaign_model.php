@@ -519,7 +519,7 @@ class campaign_model extends CI_Model {
 				}
 
 				if($quality == true) {
-					$datajson_qa = $this->campaign->datajson_qa($chunk);	
+					$datajson_qa = $this->campaign->datajson_qa($chunk, $schema);	
 
 					if(!empty($datajson_qa)) {
 						$response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);	
@@ -692,7 +692,7 @@ class campaign_model extends CI_Model {
 
 
 
-	public function datajson_qa($json) {
+	public function datajson_qa($json, $schema = null) {
 
 		$programCode = array();
 		$bureauCode = array();
@@ -703,20 +703,24 @@ class campaign_model extends CI_Model {
 
 		foreach ($json as $dataset) {
 
-			if(!empty($dataset->programCode) && is_array($dataset->programCode)) {
 
-				foreach ($dataset->programCode as $program) {
-					$programCode[$program] = true;	
+			if($schema == 'federal') {
+				if(!empty($dataset->programCode) && is_array($dataset->programCode)) {
+
+					foreach ($dataset->programCode as $program) {
+						$programCode[$program] = true;	
+					}
+					
 				}
-				
+
+				if(!empty($dataset->bureauCode) && is_array($dataset->bureauCode)) {
+
+					foreach ($dataset->bureauCode as $bureau) {
+						$bureauCode[$bureau] = true;	
+					}
+				}				
 			}
 
-			if(!empty($dataset->bureauCode) && is_array($dataset->bureauCode)) {
-
-				foreach ($dataset->bureauCode as $bureau) {
-					$bureauCode[$bureau] = true;	
-				}
-			}
 
 			$has_accessURL = false;
 
@@ -742,8 +746,12 @@ class campaign_model extends CI_Model {
 		}
 
 		$qa = array();
-		$qa['programCodes'] 		= $programCode;
-		$qa['bureauCodes'] 			= $bureauCode;
+
+		if($schema == 'federal') {
+			$qa['programCodes'] 		= $programCode;
+			$qa['bureauCodes'] 			= $bureauCode;
+		}
+		
 		$qa['accessURL_present'] 	= $accessURL_present;
 		$qa['accessURL_total'] 		= $accessURL_total;
 
