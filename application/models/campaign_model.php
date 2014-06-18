@@ -385,7 +385,7 @@ class campaign_model extends CI_Model {
 		}
 	}
 
-	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = true) {
+	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false) {
 
 
 		if ($datajson_url) {
@@ -508,6 +508,10 @@ class campaign_model extends CI_Model {
 			$response = array();
 			$response['errors'] = array();
 
+			if($quality == true) {
+				$response['qa'] = array();
+			}
+
 			foreach ($datajson_chunks as $chunk_count => $chunk) {
 
 				$chunk = json_encode($chunk);
@@ -516,7 +520,16 @@ class campaign_model extends CI_Model {
 				if(!empty($validator['errors'])) {
 					$response['errors'] = array_merge($response['errors'], $validator['errors']);	
 				}
-						
+
+				if($quality == true) {
+					$datajson_qa = $this->campaign->datajson_qa($chunk);	
+
+					if(!empty($datajson_qa)) {
+						$response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);	
+					}	
+
+				}
+								
 			}
 
 			$response['valid'] = (empty($response['errors'])) ? true : false;
@@ -593,7 +606,52 @@ class campaign_model extends CI_Model {
 
 	}
 
+	public function datajson_qa($json) {
 
+		$programCode = array();
+		$bureauCode = array();
+
+		$json = json_decode($json);
+
+		foreach ($json as $dataset) {
+
+			if(!empty($dataset->programCode) && is_array($dataset->programCode)) {
+
+				foreach ($dataset->programCode as $program) {
+					$programCode[$program] = true;	
+				}
+				
+			}
+
+			if(!empty($dataset->bureauCode) && is_array($dataset->bureauCode)) {
+
+				foreach ($dataset->bureauCode as $bureau) {
+					$bureauCode[$bureau] = true;	
+				}
+			}
+
+			//if(!empty($dataset['distribution'])) {
+//
+			//}
+
+		}
+
+		$qa = array();
+		$qa['program_count'] = count($programCode);
+		$qa['bureau_count'] = count($bureauCode);
+
+
+		return $qa;
+
+			// qa
+
+			// access level count
+			// downloadable - overall and per record
+			// programs
+			// bureaus
+			// formats
+
+	}
 
 
 
