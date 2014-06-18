@@ -543,13 +543,13 @@ class campaign_model extends CI_Model {
 					$response['qa']['programCodes'] = array_keys($response['qa']['programCodes']);
 				}
 
-				if(!empty($response['qa']['accessURL_present']) && is_array($response['qa']['accessURL_present'])) {					
-					$response['qa']['accessURL_present'] = array_sum($response['qa']['accessURL_present']);					 
-				}					
+				$sum_array_fields = array('accessURL_present', 'accessURL_total', 'accessLevel_public', 'accessLevel_restricted', 'accessLevel_nonpublic');
 
-				if(!empty($response['qa']['accessURL_total']) && is_array($response['qa']['accessURL_total'])) {					
-					$response['qa']['accessURL_total'] = array_sum($response['qa']['accessURL_total']);					 
-				}									
+				foreach ($sum_array_fields as $array_field) {
+					if(!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {					
+						$response['qa'][$array_field] = array_sum($response['qa'][$array_field]);					 
+					}	
+				}
 
 			}
 
@@ -768,7 +768,7 @@ class campaign_model extends CI_Model {
 		$qa = array();
 
 		if($schema == 'federal') {
-			
+
 			$qa['programCodes'] 				= $programCode;
 			$qa['bureauCodes'] 					= $bureauCode;
 
