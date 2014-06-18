@@ -24,7 +24,7 @@
 
                         <?php if(!empty($datajson_url)) : ?>
                             <tr>
-                                <th>Source<th> <td><?php echo $datajson_url; ?> </td>
+                                <th>Source</th> <td><?php echo $datajson_url; ?> </td>
                             </tr>
                         <?php endif; ?>
 
