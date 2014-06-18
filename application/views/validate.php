@@ -20,10 +20,10 @@
 
                 <div class="form-group">
                     <label for="datajson">Schema</label>
-                    <select name="schema">
-                        <option value="" selected="selected">Project Open Data</option>
+                    <select name="schema">                        
+                        <option value="federal" selected="selected">Federal</option>
                         <option value="non-federal">Non-Federal</option>
-                        <option value="federal">Federal (strict)</option>
+                        <option value="">Project Open Data</option>                        
                     </select>
                 </div>
 
@@ -58,9 +58,9 @@
                 <div class="form-group">
                     <label for="datajson">Schema</label>
                     <select name="schema">
-                        <option value="" selected="selected">Project Open Data</option>
+                        <option value="federal" selected="selected">Federal</option>
                         <option value="non-federal">Non-Federal</option>
-                        <option value="federal">Federal (strict)</option>
+                        <option value="">Project Open Data</option> 
                     </select>
                 </div>
 
@@ -92,9 +92,9 @@
                 <div class="form-group">
                     <label for="datajson">Schema</label>
                     <select name="schema">
-                        <option value="" selected="selected">Project Open Data</option>
+                        <option value="federal" selected="selected">Federal</option>
                         <option value="non-federal">Non-Federal</option>
-                        <option value="federal">Federal (strict)</option>
+                        <option value="">Project Open Data</option> 
                     </select>
                 </div>
 
