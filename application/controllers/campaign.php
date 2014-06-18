@@ -954,11 +954,15 @@ class Campaign extends CI_Controller {
 				unlink($data['full_path']);
 
 			} else {
-				var_dump($this->upload->display_errors()); exit;
+
+				$errors = array("Could not upload file"); // for more details see $this->upload->display_errors()
+				$validation = array(
+								'valid_json' => false, 
+								'valid' => false, 
+								'fail' => $errors 
+								);
 			}
 		}
-
-
 
 		$return_source 	= ($output_type == 'browser') ? true : false;
 
