@@ -14,34 +14,104 @@
 
             <h2>Validation Results</h2>
 
-            <?php
-                if(!empty($validation['source'])) {
-                    echo '<p>' . count($validation['source']) . ' total records</p>';
-                }
-            ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Metadata Validation
+                </div>
+
+                <table class="table table-striped table-hover">
+                    <tbody>
+
+                        <?php if(!empty($datajson_url)) : ?>
+                            <tr>
+                                <th>Source<th> <td><?php echo $datajson_url; ?> </td>
+                            </tr>
+                        <?php endif; ?>
+
+                        <?php if(!empty($schema)) : ?>
+                            <tr>
+                                <th>Schema</th> <td><?php echo $schema; ?></td>
+                            </tr>
+                        <?php endif; ?> 
+
+                        <?php if(!empty($validation['source'])) : ?>
+                            <tr>
+                                <th>Total datasets</th> <td><?php echo count($validation['source']); ?></td>
+                            </tr>
+                        <?php endif; ?>                       
 
 
-            <?php if(!empty($validation['fail'])) : ?>
+                        <?php if(!empty($validation['fail'])) : ?>
+                            <tr>
+                                <th>Errors</th>
+                                <td>
+                                    <?php foreach ($validation['fail'] as $fail) {   ?>
 
-                <?php foreach ($validation['fail'] as $fail) {   ?>
+                                        <p><?php echo $fail ?></p>
 
-                    <p><?php echo $fail ?></p>
+                                    <?php } ?>
+                                </td>
+                            </tr>
 
-                <?php } ?>
+                        <?php endif; ?>
+
+                        <?php if(!empty($validation['errors'])) : ?>                
+                            <tr class="danger">
+                                <th>Datasets with invalid metadata</th> <td><span class="text-danger"><?php echo count($validation['errors'])?></span></td>
+                            </tr>
+                        <?php endif; ?> 
+
+                    </tbody>
+                </table>
+
+            </div>
 
 
+            <?php if(!empty($validation['qa'])) : ?>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Completeness
+                    </div>
+
+                    <table class="table table-striped table-hover">
+                        <tbody>
+
+                                <?php if(!empty($validation['qa']['accessURL_present'])) : ?>
+                                    <tr>
+                                        <th>Datasets with Downloadable URLs (accessURL)</th><td><?php echo $validation['qa']['accessURL_present']; ?> </td>
+                                    </tr>
+                                 <?php endif; ?>
+
+                                <?php if(!empty($validation['qa']['accessURL_total'])) : ?>
+                                    <tr>
+                                        <th>Total Downloadable URLs (accessURL)</th><td><?php echo $validation['qa']['accessURL_total']; ?> </td>
+                                    </tr>
+                                <?php endif; ?>
+
+
+                                <?php if(!empty($validation['qa']['programCodes'])) : ?>
+                                    <tr>
+                                        <th>Programs Represented</th><td> <?php echo count($validation['qa']['programCodes']); ?>    </td>
+                                    </tr>
+                                 <?php endif; ?>
+
+                                <?php if(!empty($validation['qa']['bureauCodes'])) : ?>
+                                    <tr>
+                                        <th>Bureaus Represented</th><td> <?php echo count($validation['qa']['bureauCodes']); ?>   </td>
+                                    </tr>    
+                                <?php endif; ?>
+
+                        </tbody>
+                    </table>
+
+                </div>
             <?php endif; ?>
-
 
             <?php
                 if(!empty($validation['errors'])) {
 
-                    $erroneous_record_count = count($validation['errors']);
-            ?>
-                    <p class="text-danger"><?php echo $erroneous_record_count;?> records are invalid</p>
-
-            <?php
-                $key_count = array();
+                 $key_count = array();
                 foreach ($validation['errors'] as $key => $error) {
 
             ?>

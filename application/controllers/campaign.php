@@ -934,9 +934,13 @@ class Campaign extends CI_Controller {
 		$datajson_url 	= ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url') : $datajson_url;
 		$output_type 	= ($this->input->get_post('output')) ? $this->input->get_post('output') : $output;
 
-		$qa 			= ($this->input->get_post('qa') == 'true') ? true : false;
-
-
+		if ($this->input->get_post('qa') == 'true') {
+			$qa = true;
+		} else if ($this->input->get_post('qa') == 'false') {
+			$qa = false;
+		} else {
+			$qa = true;
+		}
 
 		if(!empty($_FILES)) {
 
@@ -949,6 +953,8 @@ class Campaign extends CI_Controller {
 				$datajson = file_get_contents($data['full_path']);
 				unlink($data['full_path']);
 
+			} else {
+				var_dump($this->upload->display_errors()); exit;
 			}
 		}
 
@@ -963,13 +969,15 @@ class Campaign extends CI_Controller {
 		if(!empty($validation)) {
 
 
-			if ($output_type == 'browser' && !empty($validation['source'])) {
+			if ($output_type == 'browser' && (!empty($validation['source']) || !empty($validation['fail']) )) {
 
-				$this->load->view('validate_response', array('validation' => $validation));
+				$validate_response = array(
+											'validation' => $validation, 
+											'schema'	=> $schema,
+											'datajson_url' => $datajson_url
+											);
 
-			} else if ($output_type == 'browser' && !empty($validation['fail'])) {
-
-				$this->load->view('validate_response', array('validation' => $validation));
+				$this->load->view('validate_response', $validate_response);
 
 			} else {
 
