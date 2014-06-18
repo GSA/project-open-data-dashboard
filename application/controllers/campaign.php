@@ -955,7 +955,7 @@ class Campaign extends CI_Controller {
 
 			} else {
 
-				$errors = array("Could not upload file"); // for more details see $this->upload->display_errors()
+				$errors = array("Could not upload file (it may be larger than PHP or application allows)"); // for more details see $this->upload->display_errors()
 				$validation = array(
 								'valid_json' => false, 
 								'valid' => false, 
