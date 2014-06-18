@@ -385,7 +385,7 @@ class campaign_model extends CI_Model {
 		}
 	}
 
-	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false) {
+	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = true) {
 
 
 		if ($datajson_url) {
@@ -412,15 +412,18 @@ class campaign_model extends CI_Model {
 						);
 
 			$context = stream_context_create($opts);
-
-			$datajson = file_get_contents($datajson_url, false, $context);
 			
+			$datajson = @file_get_contents($datajson_url, false, $context);
+
+			if ($datajson == false) {
+				$errors[] = "File not found or couldn't be downloaded";
+			} 
 
 			if(!empty($datajson) && (empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < 0)) {
 				$datajson_header['download_content_length'] = strlen($datajson);
 			}
 
-			// Set max size around 5mb
+			// See if it exceeds max size
 			if($datajson_header['download_content_length'] > $max_size) {
 
 				$filesize = human_filesize($datajson_header['download_content_length']);
@@ -428,9 +431,18 @@ class campaign_model extends CI_Model {
 
 			}
 
+			// See if it's valid JSON 
+			if(!empty($datajson)) {
+				$valid_json = is_json($datajson);
+
+				if ($valid_json !== true) {
+					$errors[] = 'The validator was unable to determine if this was valid JSON';
+				}				
+			}
+
 			if(!empty($errors)) {
 
-				$valid_json = is_json($datajson);
+				$valid_json = (isset($valid_json)) ? $valid_json : false;
 
 				$response = array(
 								'valid_json' => $valid_json, 
@@ -440,7 +452,7 @@ class campaign_model extends CI_Model {
 								);
 
 
-				if($valid_json) {
+				if($valid_json && $return_source === false) {
 					$catalog = json_decode($datajson);
 					$response['total_records'] = count($catalog);
 				}
@@ -480,7 +492,14 @@ class campaign_model extends CI_Model {
 		}
 
 
-		if ($datajson && is_json($datajson)) {
+		if($datajson) {
+			if(!isset($valid_json)) {
+				$valid_json = is_json($datajson);
+			}
+		}
+
+
+		if ($datajson && $valid_json) {
 
 
 			$datajson_decode = json_decode($datajson);
@@ -497,9 +516,7 @@ class campaign_model extends CI_Model {
 				if(!empty($validator['errors'])) {
 					$response['errors'] = array_merge($response['errors'], $validator['errors']);	
 				}
-
-				//var_dump($response['errors']); exit;
-				
+						
 			}
 
 			$response['valid'] = (empty($response['errors'])) ? true : false;
