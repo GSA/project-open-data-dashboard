@@ -204,4 +204,29 @@ function page_status($data_status, $status_color = null) {
 }
 
 
+function process_percentage ($numerator, $denominator) {
+
+    if (is_numeric($denominator) && is_numeric($numerator)) {
+        $percent_valid = $numerator/$denominator;
+    } else {
+        $percent_valid = null;
+    }
+
+    if(is_numeric($percent_valid)) {
+
+        if ($percent_valid == 1) {
+            $percent_valid = "100%";
+        }
+        else {
+            $percent_valid = sprintf("%.1f%%", $percent_valid * 100);
+        }
+
+    }
+
+    return $percent_valid;
+
+}
+
+
+
 ?>

@@ -57,7 +57,17 @@
             }     
 
                 
-            $crawl_details = array('pdl_datajson', 'pdl_slashdata', 'pdl_valid_metadata', 'pdl_datasets', 'pe_feedback_specified', 'edi_schedule_delivered', 'ps_publication_process');
+            $crawl_details = array(
+                                    'pdl_datajson', 
+                                    'pdl_slashdata', 
+                                    'pdl_valid_metadata', 
+                                    'pdl_datasets', 
+                                    'pe_feedback_specified', 
+                                    'edi_schedule_delivered', 
+                                    'ps_publication_process',
+                                    'pdl_downloadable'
+                                    );
+
             $section_breakdown = array(
                                         "edi" => "Enterprise Data Inventory", 
                                         "pdl" => "Public Data Listing", 
@@ -448,22 +458,11 @@
             $valid_schema = (isset($office_campaign->datajson_status->valid_schema)) ? $office_campaign->datajson_status->valid_schema : null;
 
             $error_count        = (is_numeric($office_campaign->datajson_status->error_count)) ? $office_campaign->datajson_status->error_count : null;
-            $total_records      =   (!empty($office_campaign->datajson_status->total_records)) ? $office_campaign->datajson_status->total_records : '';
+            $total_records      =  (!empty($office_campaign->datajson_status->total_records)) ? $office_campaign->datajson_status->total_records : '';
 
-            $percent_valid      =   (!empty($total_records) && is_numeric($error_count)) ? ($total_records - $error_count)/$total_records : null;
-
-            if(is_numeric($percent_valid)) {
-
-                if ($percent_valid == 1) {
-                    $percent_valid = "100%";
-                }
-                else {
-                    $percent_valid = sprintf("%.1f%%", $percent_valid * 100);
-                }
-
-            }
-
-
+            $valid_count        = (is_numeric($error_count) && is_numeric($total_records)) ? $total_records - $error_count : null;
+            
+            $percent_valid      = process_percentage($valid_count, $total_records);
 
         ?>		
 		
@@ -489,6 +488,54 @@
         </tr> 
 
 
+        <?php if(!empty($office_campaign->datajson_status->qa)): ?>
+
+
+            <?php if(!empty($office_campaign->datajson_status->qa->accessURL_present)): ?>
+            <tr>
+                <th>Datasets with Downloadable URLs (accessURL)</th>
+                <td>
+                    <a name="pdl_downloadable" class="anchor-point"></a>
+                    <?php echo process_percentage($office_campaign->datajson_status->qa->accessURL_present, $total_records); ?>
+                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->accessURL_present . ' of ' . $total_records; ?>)</span>
+                </td>
+            </tr> 
+            <?php endif; ?>
+
+            <?php if(!empty($office_campaign->datajson_status->qa->accessURL_total)): ?>
+            <tr>
+                <th>Total Downloadable URLs (accessURL)</th>
+                <td>
+                    <?php echo $office_campaign->datajson_status->qa->accessURL_total; ?>
+                </td>
+            </tr> 
+            <?php endif; ?>            
+
+
+            <?php if(!empty($office_campaign->datajson_status->qa->bureauCodes)): ?>
+            <tr>
+                <th>Bureaus Represented</th>
+                <td>
+                    <a name="pdl_bureaus" class="anchor-point"></a>
+                    <?php echo count($office_campaign->datajson_status->qa->bureauCodes); ?>
+                </td>
+            </tr> 
+            <?php endif; ?>
+
+            <?php if(!empty($office_campaign->datajson_status->qa->programCodes)): ?>
+            <tr>
+                <th>Programs Represented</th>
+                <td>
+                    <a name="pdl_programs" class="anchor-point"></a>
+                    <?php echo count($office_campaign->datajson_status->qa->programCodes); ?>
+                </td>
+            </tr> 
+            <?php endif; ?>
+
+
+        <?php endif; ?>
+
+
         <tr class="<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
             <th>Datasets with Valid Metadata</th>
             <td>
@@ -496,13 +543,12 @@
 
                 <?php if(!empty($percent_valid)): ?>
                     <span class="text-<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
-                        <?php echo $percent_valid;?> <span style="color:#666">(<?php echo ($total_records - $error_count) . ' of ' . $total_records?>)</span>
+                        <?php echo $percent_valid;?> <span style="color:#666">(<?php echo $valid_count . ' of ' . $total_records?>)</span>
                     </span>
                 <?php endif; ?>
             </td>
         </tr>   
-
-       
+     
 		<tr class="<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
 			<th>Valid Schema</th>
 			<td>
