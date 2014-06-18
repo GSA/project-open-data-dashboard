@@ -390,7 +390,6 @@ class campaign_model extends CI_Model {
 
 		if ($datajson_url) {
 
-
 			$datajson_header = ($headers) ? $headers : $this->campaign->uri_header($datajson_url);
 			//$datajson = json_encode($datajson_header);
 
@@ -472,6 +471,7 @@ class campaign_model extends CI_Model {
 
 		}
 
+
 		// filter string for json conversion if we haven't already
 		if ($datajson && empty($datajson_processed)) {
 			$datajson_processed = json_text_filter($datajson);
@@ -481,7 +481,7 @@ class campaign_model extends CI_Model {
 		// verify it's valid json
 		if($datajson_processed) {
 			if(!isset($valid_json)) {
-				$valid_json = is_json($datajson);
+				$valid_json = is_json($datajson_processed);
 			}
 		}
 
@@ -570,7 +570,7 @@ class campaign_model extends CI_Model {
 
 			return $response;
 
-		} else {
+		} else {			
 			$errors[] = "This does not appear to be valid JSON";
 			$response = array(
 							'valid_json' => false, 
