@@ -704,12 +704,7 @@ class Campaign extends CI_Controller {
 	            			$status['expected_url'] = $expected_datajson_url;
 							$status['last_crawl']	= mktime();
 
-
-							// if we got an array of errors, process them
-							if(is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
-								$status['schema_errors'] = $this->process_validation_errors($status['schema_errors']);
-							} 
-				
+			
 							if(is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
 								$status['error_count'] = count($status['schema_errors']);
 							} else if ($status['schema_errors'] === false) {
@@ -826,7 +821,7 @@ class Campaign extends CI_Controller {
         
 		if($status['http_code'] == 200) {
 
-			$validation = $this->campaign->validate_datajson($status['url'], null, null, 'federal');
+			$validation = $this->campaign->validate_datajson($status['url'], null, null, 'federal', false, true);
 
 			if(!empty($validation)) {
 				$status['valid_json'] = $validation['valid_json'];
@@ -840,6 +835,8 @@ class Campaign extends CI_Controller {
 				} else {
 					$status['schema_errors'] = null;
 				}
+
+				$status['qa'] = (!empty($validation['qa'])) ? $validation['qa'] : null;
 
 				$status['download_content_length'] = (!empty($status['download_content_length'])) ? $status['download_content_length'] : null;
 				$status['download_content_length'] = (!empty($validation['download_content_length'])) ? $validation['download_content_length'] : $status['download_content_length'];
@@ -964,10 +961,6 @@ class Campaign extends CI_Controller {
 		if(!empty($validation)) {
 
 
-			if (!empty($validation['errors'])) {
-				$validation['errors'] = $this->process_validation_errors($validation['errors']);
-			}
-
 			if ($output_type == 'browser' && !empty($validation['source'])) {
 
 				$this->load->view('validate_response', array('validation' => $validation));
@@ -987,47 +980,6 @@ class Campaign extends CI_Controller {
 		} else {
 			$this->load->view('validate');
         }
-
-	}
-
-
-	public function process_validation_errors($errors) {
-
-
-		$output = array();
-
-		foreach ($errors as $error) {
-
-			if(is_numeric($error['property'])) {
-				$key = $error['property'];
-				$field = 'ALL';
-			} else {
-
-				$key = substr($error['property'], 0, strpos($error['property'], '.'));
-				$full_field = substr($error['property'], strpos($error['property'], '.') + 1);
-
-				if (strpos($full_field, '[')) {
-					$field 		= substr($full_field, 0, strpos($full_field, '[') );
-					$subfield 	= 'child-' . get_between($full_field, '[', ']');
-				} else {
-					$field = $full_field;
-				}
-
-			}
-
-			if (isset($subfield)) {
-				$output[$key][$field]['sub_fields'][$subfield][] = $error['message'];
-			} else {
-				$output[$key][$field]['errors'][] = $error['message'];
-			}
-
-			unset($subfield);
-
-
-
-		}
-
-		return $output;
 
 	}
 

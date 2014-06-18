@@ -473,7 +473,7 @@ class campaign_model extends CI_Model {
 		}
 
 		// filter string for json conversion if we haven't already
-		if ($datajson && !$datajson_processed) {
+		if ($datajson && empty($datajson_processed)) {
 			$datajson_processed = json_text_filter($datajson);
 		}
 
@@ -488,9 +488,10 @@ class campaign_model extends CI_Model {
 
 		if ($datajson_processed && $valid_json) {
 
+			$chunk_size = 500;
 
 			$datajson_decode = json_decode($datajson_processed);
-			$datajson_chunks = array_chunk($datajson_decode, 500);			
+			$datajson_chunks = array_chunk($datajson_decode, $chunk_size);			
 
 			$response = array();
 			$response['errors'] = array();
@@ -504,8 +505,17 @@ class campaign_model extends CI_Model {
 				$chunk = json_encode($chunk);
 				$validator = $this->campaign->jsonschema_validator($chunk, $schema);
 
-				if(!empty($validator['errors'])) {
-					$response['errors'] = array_merge($response['errors'], $validator['errors']);	
+				if(!empty($validator['errors']) ) {
+
+					if ($chunk_count) {
+						$key_offset = $chunk_size * $chunk_count;
+						$key_offset = $key_offset;
+					} else {
+						$key_offset = 0;
+					}
+
+					$response['errors'] = $response['errors'] + $this->process_validation_errors($validator['errors'], $key_offset);
+					
 				}
 
 				if($quality == true) {
@@ -518,6 +528,32 @@ class campaign_model extends CI_Model {
 				}
 								
 			}
+
+
+
+
+			if(!empty($response['qa'])) {
+
+
+				if(!empty($response['qa']['bureauCodes'])) {
+					$response['qa']['bureauCodes'] = array_keys($response['qa']['bureauCodes']);
+				}
+
+				if(!empty($response['qa']['programCodes'])) {
+					$response['qa']['programCodes'] = array_keys($response['qa']['programCodes']);
+				}
+
+				if(!empty($response['qa']['accessURL_present']) && is_array($response['qa']['accessURL_present'])) {					
+					$response['qa']['accessURL_present'] = array_sum($response['qa']['accessURL_present']);					 
+				}					
+
+				if(!empty($response['qa']['accessURL_total']) && is_array($response['qa']['accessURL_total'])) {					
+					$response['qa']['accessURL_total'] = array_sum($response['qa']['accessURL_total']);					 
+				}									
+
+			}
+
+
 
 			$response['valid'] = (empty($response['errors'])) ? true : false;
 			$response['total_records'] = count($datajson_decode);
@@ -536,7 +572,16 @@ class campaign_model extends CI_Model {
 
 		} else {
 			$errors[] = "This does not appear to be valid JSON";
-			return array('valid_json' => false, 'valid' => false, 'fail' => $errors, 'download_content_length' => $datajson_header['download_content_length']);
+			$response = array(
+							'valid_json' => false, 
+							'valid' => false, 
+							'fail' => $errors 
+							);
+			if(!empty($datajson_header['download_content_length'])) {
+				$response['download_content_length'] = $datajson_header['download_content_length'];
+			}
+
+			return $response;
 		}
 
 
@@ -599,10 +644,60 @@ class campaign_model extends CI_Model {
 
 
 
+	public function process_validation_errors($errors, $offset = null) {
+
+
+		$output = array();
+
+		foreach ($errors as $error) {
+
+			if(is_numeric($error['property'])) {
+				$key = $error['property'];
+				$field = 'ALL';
+			} else {
+
+				$key = substr($error['property'], 0, strpos($error['property'], '.'));
+				$full_field = substr($error['property'], strpos($error['property'], '.') + 1);
+
+				if (strpos($full_field, '[')) {
+					$field 		= substr($full_field, 0, strpos($full_field, '[') );
+					$subfield 	= 'child-' . get_between($full_field, '[', ']');
+				} else {
+					$field = $full_field;
+				}
+
+			}
+
+			if ($offset) {
+				$key = $key + $offset;
+			}
+
+			if (isset($subfield)) {
+				$output[$key][$field]['sub_fields'][$subfield][] = $error['message'];
+			} else {
+				$output[$key][$field]['errors'][] = $error['message'];
+			}
+
+			unset($subfield);
+
+
+
+		}
+
+		return $output;
+
+	}
+
+
+
+
+
 	public function datajson_qa($json) {
 
 		$programCode = array();
 		$bureauCode = array();
+		$accessURL_total	= 0;
+		$accessURL_present 	= 0;
 
 		$json = json_decode($json);
 
@@ -623,15 +718,34 @@ class campaign_model extends CI_Model {
 				}
 			}
 
-			//if(!empty($dataset['distribution'])) {
-//
-			//}
+			$has_accessURL = false;
+
+			if(!empty($dataset->accessURL) && filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
+				$accessURL_total++;
+				$has_accessURL = true;
+			}
+
+			if(!empty($dataset->distribution) && is_array($dataset->distribution)) {
+				
+				foreach ($dataset->distribution as $distribution) {
+					if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
+						$accessURL_total++;
+						$has_accessURL = true;
+					}					
+				}
+
+			}
+
+			if($has_accessURL) $accessURL_present++;
+
 
 		}
 
 		$qa = array();
-		$qa['program_count'] = count($programCode);
-		$qa['bureau_count'] = count($bureauCode);
+		$qa['programCodes'] 		= $programCode;
+		$qa['bureauCodes'] 			= $bureauCode;
+		$qa['accessURL_present'] 	= $accessURL_present;
+		$qa['accessURL_total'] 		= $accessURL_total;
 
 
 		return $qa;
