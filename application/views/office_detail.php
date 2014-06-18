@@ -76,7 +76,9 @@
                                         "hc" => "Human Capital"
                                     );  
 
-            $active_section = 'pdl';  
+
+
+            $active_section = (!empty($selected_category)) ? $selected_category : 'pdl';  
 
 
         ?>
@@ -266,7 +268,10 @@
                                             </td>
                                         <?php endif; ?>
                                         
-                                        <td><strong><?php echo $tracker_field_meta->label ?></strong></td>                        
+                                        <td>                                            
+                                            <a name="tracker_<?php echo $tracker_field_name ?>" class="anchor-point"></a>
+                                            <strong><?php echo $tracker_field_meta->label ?></strong>
+                                        </td>                        
                                         <td>
                                             
                                             <?php if (array_search($tracker_field_name, $crawl_details) !== false):?> 

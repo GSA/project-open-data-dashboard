@@ -11,11 +11,11 @@ function status_table($title, $rows, $config = null) {
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
 
 			<th class="tilt"><div>Datasets 			</div></th>
-			<th class="tilt"><div>Percent valid 	</div></th>
+			<th class="tilt"><div>Valid Metadata 	</div></th>
 
 			<th class="tilt"><div>Data.gov Harvest	</div></th>
-			<th class="tilt"><div>Inventory	</div></th>
-			<th class="tilt"><div>Inventory Superset	</div></th>
+			<th class="tilt"><div>EDI to OMB</div></th>
+			<th class="tilt"><div>EDI > PDL</div></th>
 			<th class="tilt"><div>/data	</div></th>
 			<th class="tilt"><div>Feedback	</div></th>
 			<th class="tilt"><div>Schedule	</div></th>
@@ -127,15 +127,15 @@ function status_table($title, $rows, $config = null) {
 
 		<tr class="metrics-row">
 			<th><a href="/offices/detail/<?php echo $office->id;?>"><?php echo $office->name;?></a></th>
-			<td class="content-metric <?php echo $json_status?>"><a href="/offices/detail/<?php echo $office->id;?>#datajson_posted"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
-			<td class="content-metric <?php echo $schema_status ?>"><a href="/offices/detail/<?php echo $office->id;?>#datajson_posted"><span><?php echo $percent_valid?>&nbsp;</span></a> </td>
+			<td class="content-metric <?php echo $json_status?>"><a href="/offices/detail/<?php echo $office->id;?>#pdl_datasets"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
+			<td class="content-metric <?php echo $schema_status ?>"><a href="/offices/detail/<?php echo $office->id;?>#pdl_valid_metadata"><span><?php echo $percent_valid?>&nbsp;</span></a> </td>
 
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo status_color($office->tracker_fields->pdl_datagov_harvested) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo page_status($office->tracker_fields->pdl_datagov_harvested); 		?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_updated)) echo status_color($office->tracker_fields->edi_updated) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->edi_updated)) echo page_status($office->tracker_fields->edi_updated); 		?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_superset)) echo status_color($office->tracker_fields->edi_superset) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->edi_superset)) echo page_status($office->tracker_fields->edi_superset);	?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_slashdata)) echo status_color($office->tracker_fields->pdl_slashdata) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->pdl_slashdata)) echo page_status($office->tracker_fields->pdl_slashdata); 	?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo status_color($office->tracker_fields->pe_feedback_specified) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo page_status($office->tracker_fields->pe_feedback_specified); 				?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo status_color($office->tracker_fields->edi_schedule_delivered) ?>"><a href="/offices/detail/<?php echo $office->id;?>#"><span><?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo page_status($office->tracker_fields->edi_schedule_delivered); 		?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo status_color($office->tracker_fields->pdl_datagov_harvested) ?>"><a href="/offices/detail/<?php echo $office->id;?>#tracker_pdl_datagov_harvested"><span><?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo page_status($office->tracker_fields->pdl_datagov_harvested); 		?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_updated)) echo status_color($office->tracker_fields->edi_updated) ?>"><a href="/offices/detail/<?php echo $office->id;?>?highlight=edi#tracker_edi_updated"><span><?php if (!empty($office->tracker_fields->edi_updated)) echo page_status($office->tracker_fields->edi_updated); 		?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_superset)) echo status_color($office->tracker_fields->edi_superset) ?>"><a href="/offices/detail/<?php echo $office->id;?>?highlight=edi#tracker_edi_superset"><span><?php if (!empty($office->tracker_fields->edi_superset)) echo page_status($office->tracker_fields->edi_superset);	?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_slashdata)) echo status_color($office->tracker_fields->pdl_slashdata) ?>"><a href="/offices/detail/<?php echo $office->id;?>#tracker_pdl_slashdata"><span><?php if (!empty($office->tracker_fields->pdl_slashdata)) echo page_status($office->tracker_fields->pdl_slashdata); 	?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo status_color($office->tracker_fields->pe_feedback_specified) ?>"><a href="/offices/detail/<?php echo $office->id;?>?highlight=pe#tracker_pe_feedback_specified"><span><?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo page_status($office->tracker_fields->pe_feedback_specified); 				?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo status_color($office->tracker_fields->edi_schedule_delivered) ?>"><a href="/offices/detail/<?php echo $office->id;?>?highlight=edi#tracker_edi_schedule_delivered"><span><?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo page_status($office->tracker_fields->edi_schedule_delivered); 		?>&nbsp;</span></a></td>
 		</tr>
 		<?php endforeach;?>
 	</table>

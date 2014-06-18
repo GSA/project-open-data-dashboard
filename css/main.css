@@ -87,9 +87,9 @@ background-image: linear-gradient(to bottom, #3C3C3C 0px, #141414 100%);
 
 .dashboard-heading th.tilt div {
 	
--webkit-transform: rotate(-70deg);
--o-transform: rotate(-70deg);
-transform: rotate(-70deg);
+word-wrap : break-word;
+text-align : center;
+width : 6em;
 
 }
 

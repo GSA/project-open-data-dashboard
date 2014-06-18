@@ -128,6 +128,8 @@ class Offices extends CI_Controller {
 		$milestones = $this->campaign->milestones_model();	
 		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : null;
 
+		$selected_category	= ($this->input->get_post('highlight', TRUE)) ? $this->input->get_post('highlight', TRUE) : null;
+
 		
 		// Sets the first milestone in the future as the current and last available milestone
 	    foreach ($milestones as $milestone_date => $milestone) {
@@ -219,6 +221,8 @@ class Offices extends CI_Controller {
 		$view_data['milestones'] = $milestones;
 		$view_data['selected_milestone'] = $selected_milestone;
 
+		// selected tab
+		$view_data['selected_category'] = $selected_category;
 
 		// pass tracker data model
 		$view_data['tracker_model'] = $this->campaign->tracker_model();
