@@ -9,7 +9,7 @@
         <div class="col-lg-12">
           <h2>CSV Converter - Map Fields</h2>
 
-            <form class="form-horizontal form-striped" action="./csv_to_json" method="post" role="form">
+            <form class="form-horizontal form-striped" action="<?php echo site_url(); ?>/csv_to_json" method="post" role="form">
 
                 <?php $match = false; ?>
                 <?php $count = 0; ?>

@@ -25,7 +25,7 @@
 	
 	
 			<?php if(!empty($office->parent_office_id)): ?>
-				<div class="hidden"><a href="<?php echo $office->parent_office_id ?>">Parent Office</a></div>				
+				<div class="hidden"><a href="<?php echo site_url('office/') . $office->parent_office_id; ?>">Parent Office</a></div>				
 			<?php endif; ?>
 		
 	
@@ -111,7 +111,7 @@
 
 
            <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                <form method="post" action="/datagov/status-update" role="form">
+                <form method="post" action="<?php echo site_url(); ?>/datagov/status-update" role="form">
             <?php endif;?>
 
                 <div class="general-notes">
@@ -362,11 +362,11 @@
         <a name="pdl_datajson" class="anchor-point"></a>
                 
         <p>
-            See the <a href="/docs">documentation</a> for an explanation of this table.
+            See the <a href="<?php echo site_url('docs'); ?>">documentation</a> for an explanation of this table.
         </p>    
 
 		<div class="panel panel-default">
-		<div class="panel-heading">data.json <a type="button" class="btn btn-success btn-xs pull-right hidden" href="/datagov/status/<?php echo $office->id; ?>">Refresh</a></div>
+		<div class="panel-heading">data.json <a type="button" class="btn btn-success btn-xs pull-right hidden" href="<?php echo site_url('datagov/status'); ?>/<?php echo $office->id; ?>">Refresh</a></div>
 		
 		<table class="table table-striped table-hover">		
 
@@ -584,7 +584,7 @@
 			<td>
 			<span>
 			<?php
-                $validation_url = '/validate?schema=federal&output=browser&datajson_url=' . urlencode($office_campaign->expected_datajson_status->url);
+                $validation_url = site_url('validate?schema=federal&output=browser&datajson_url=') . urlencode($office_campaign->expected_datajson_status->url);
 
                 echo "<p><strong>For more readable validation results, see the <a href=\"$validation_url\">validator</a></strong></p>\n";
 	

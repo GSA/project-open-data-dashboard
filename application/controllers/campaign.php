@@ -7,6 +7,7 @@ class Campaign extends CI_Controller {
 		parent::__construct();
 
 		$this->load->helper('api');
+		$this->load->helper('url');
 
 		// Determine the environment we're run from for debugging/output
 		if (php_sapi_name() == 'cli') {

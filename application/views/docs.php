@@ -15,7 +15,7 @@
 
             <h3>Agency Dashboard</h3>
             <p>
-                The <a href="/offices">Agency Dashboard</a> is primarily used to track implementation of the machine readable
+                The <a href="./offices">Agency Dashboard</a> is primarily used to track implementation of the machine readable
                 data.json file described by project open data, but it also tracks implementation of the human
                 readable /data page. Below is an explanation of each part of the listing seen on a specific agency page.
             </p>

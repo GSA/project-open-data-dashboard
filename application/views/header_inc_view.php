@@ -17,7 +17,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Project Open Data Dashboard</a>
+      <a class="navbar-brand" href="<?php echo site_url('')?>">Project Open Data Dashboard</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -25,21 +25,21 @@
       <ul class="nav navbar-nav">
 
 
-        <li><a href="/offices">Agencies</a></li>
-        <li><a href="/validate">Validator</a></li>
+        <li><a href="<?php echo site_url('offices')?>">Agencies</a></li>
+        <li><a href="<?php echo site_url('validate')?>">Validator</a></li>
 
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Converters <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="/export">Export API</a></li>
-            <li><a href="/datagov/csv_to_json">CSV Converter</a></li>
+            <li><a href="<?php echo site_url('export')?>">Export API</a></li>
+            <li><a href="<?php echo site_url('datagov/csv_to_json')?>">CSV Converter</a></li>
           </ul>
         </li>
 
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="/docs">Documentation</a></li>
+            <li><a href="<?php echo site_url('docs')?>">Documentation</a></li>
             <li><a href="https://github.com/GSA/project-open-data-dashboard/issues">Feedback</a></li>
           </ul>
         </li>
@@ -59,8 +59,8 @@
                         <span class="sr-only">Toggle Dropdown</span>
                       </button>
                       <ul class="dropdown-menu" role="menu">
-                        <li><a href="/account"><i class="glyphicon glyphicon-pencil"></i> Account</a></li>
-                        <li><a href="/logout"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>
+                        <li><a href="<?php echo site_url('account')?>"><i class="glyphicon glyphicon-pencil"></i> Account</a></li>
+                        <li><a href="<?php echo site_url('logout')?>"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>
                       </ul>
                     </div>
               </li>

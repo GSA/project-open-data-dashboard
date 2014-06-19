@@ -2,6 +2,15 @@
 
 class Offices extends CI_Controller {
 
+
+
+
+	function __construct() {
+		parent::__construct();
+
+		$this->load->helper('url');
+	}
+
 	/**
 	 * Index Page for this controller.
 	 *

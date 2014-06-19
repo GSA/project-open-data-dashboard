@@ -15,7 +15,7 @@
 
             <h3 style="margin-top : 3em;">Validate data.json URL</h3>
 
-            <form action="/validate" method="get" role="form">
+            <form action="<?php echo site_url(); ?>/validate" method="get" role="form">
 
 
                 <div class="form-group">
@@ -52,7 +52,7 @@
 
             <h3 style="margin-top : 3em;">Validate data.json file upload</h3>
 
-            <form action="/validate" method="post" enctype="multipart/form-data" role="form">
+            <form action="<?php echo site_url(); ?>/validate" method="post" enctype="multipart/form-data" role="form">
 
 
                 <div class="form-group">
@@ -83,7 +83,7 @@
 
             <h3 style="margin-top : 3em;">Validate raw JSON</h3>
 
-            <form action="/validate" method="post" role="form">
+            <form action="<?php echo site_url(); ?>/validate" method="post" role="form">
                 <div class="form-group">
                     <label for="datajson">data.json JSON</label>
                     <textarea class="form-control" id="datajson" name="datajson" style="height : 30em; width: 100%"></textarea>
