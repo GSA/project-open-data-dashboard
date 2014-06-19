@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2014 at 07:33 PM
+-- Generation Time: Jun 19, 2014 at 05:04 PM
 -- Server version: 5.5.28
--- PHP Version: 5.3.26
+-- PHP Version: 5.5.11
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -28,15 +28,15 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `users_auth` (
   `user_id` int(8) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `username_url` varchar(255) NOT NULL,
-  `name_full` varchar(255) DEFAULT NULL,
-  `provider_url` text NOT NULL,
+  `username` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `username_url` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `name_full` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
+  `provider_url` text CHARACTER SET latin1 NOT NULL,
   `provider_user_id` int(12) NOT NULL,
-  `token` text NOT NULL,
-  `provider` varchar(255) NOT NULL DEFAULT 'github',
-  `permissions` varchar(256) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `token` text CHARACTER SET latin1 NOT NULL,
+  `provider` varchar(255) CHARACTER SET latin1 NOT NULL DEFAULT 'github',
+  `permissions` varchar(256) CHARACTER SET latin1 DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

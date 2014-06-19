@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 25, 2013 at 04:38 PM
+-- Generation Time: Jun 19, 2014 at 05:04 PM
 -- Server version: 5.5.28
--- PHP Version: 5.3.26
+-- PHP Version: 5.5.11
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -28,16 +28,16 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `offices` (
   `id` int(10) NOT NULL,
-  `name` varchar(256) NOT NULL,
-  `abbreviation` text,
-  `url` text,
-  `notes` text,
+  `name` varchar(256) CHARACTER SET latin1 NOT NULL,
+  `abbreviation` text CHARACTER SET latin1,
+  `url` text CHARACTER SET latin1,
+  `notes` text CHARACTER SET latin1,
   `parent_office_id` int(10) DEFAULT NULL,
-  `no_parent` varchar(256) NOT NULL,
-  `reporting_authority_type` varchar(256) NOT NULL,
-  `cfo_act_agency` varchar(256) DEFAULT NULL,
+  `no_parent` varchar(256) CHARACTER SET latin1 NOT NULL,
+  `reporting_authority_type` varchar(256) CHARACTER SET latin1 NOT NULL,
+  `cfo_act_agency` varchar(256) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

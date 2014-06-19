@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2013 at 02:46 PM
+-- Generation Time: Jun 19, 2014 at 05:03 PM
 -- Server version: 5.5.28
--- PHP Version: 5.3.26
+-- PHP Version: 5.5.11
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -28,21 +28,15 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `datagov_campaign` (
   `office_id` int(10) NOT NULL,
-  `contact_name` text,
-  `contact_email` text,
-  `datajson_status` longblob,
-  `datapage_status` longblob,
-  `digitalstrategy_status` longblob,
-  `datagov_harvest` text,
-  `inventory_posted` text,
-  `inventory_superset` text,
-  `datajson_posted` text,
-  `datajson_slashdata` text,
-  `feedback` text,
-  `schedule_posted` text,
-  `publication_process_posted` text,
-  PRIMARY KEY (`office_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `milestone` varchar(256) CHARACTER SET latin1 NOT NULL DEFAULT '',
+  `contact_name` text CHARACTER SET latin1,
+  `contact_email` text CHARACTER SET latin1,
+  `datajson_status` longtext CHARACTER SET latin1,
+  `datapage_status` longtext CHARACTER SET latin1,
+  `digitalstrategy_status` longtext CHARACTER SET latin1,
+  `tracker_fields` longtext CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`office_id`,`milestone`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
