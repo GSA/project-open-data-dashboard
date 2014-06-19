@@ -749,6 +749,11 @@ class campaign_model extends CI_Model {
 				$has_accessURL = true;
 			}
 
+			if(!empty($dataset->webService) && filter_var($dataset->webService, FILTER_VALIDATE_URL)) {
+				$accessURL_total++;
+				$has_accessURL = true;
+			}			
+
 			if(!empty($dataset->distribution) && is_array($dataset->distribution)) {
 				
 				foreach ($dataset->distribution as $distribution) {
