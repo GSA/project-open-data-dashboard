@@ -561,7 +561,7 @@
 			<?php
 			//var_dump($office_campaign->datajson_status); exit;
 
-            if($office_campaign->datajson_status->download_content_length > $config['max_size']) {
+            if($office_campaign->datajson_status->download_content_length > $config['max_remote_size']) {
                 echo 'File is too large to validate';
             } else {
                 if($valid_schema == true) echo 'Valid';

@@ -78,8 +78,8 @@ function status_table($title, $rows, $config = null) {
 			// var_dump($office->datajson_status); exit;
 
 
-			if (!empty($config['max_size']) && !empty($office->datajson_status->download_content_length) &&
-				($office->datajson_status->download_content_length > $config['max_size'])) {
+			if (!empty($config['max_remote_size']) && !empty($office->datajson_status->download_content_length) &&
+				($office->datajson_status->download_content_length > $config['max_remote_size'])) {
 				$schema_status = 'warning';
 			}
 

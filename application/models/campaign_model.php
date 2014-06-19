@@ -400,7 +400,7 @@ class campaign_model extends CI_Model {
 			//}
 
 			// Max file size
-			$max_size = $this->config->item('max_remote_size');
+			$max_remote_size = $this->config->item('max_remote_size');
 
 			// Load the JSON
 			$opts = array(
@@ -429,7 +429,7 @@ class campaign_model extends CI_Model {
 			}
 
 			// See if it exceeds max size
-			if($datajson_header['download_content_length'] > $max_size) {
+			if($datajson_header['download_content_length'] > $max_remote_size) {
 
 				$filesize = human_filesize($datajson_header['download_content_length']);
 				$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";

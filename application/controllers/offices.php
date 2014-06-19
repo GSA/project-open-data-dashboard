@@ -89,7 +89,7 @@ class Offices extends CI_Controller {
 		}
 
 		// pass config variable
-		$view_data['max_size'] = $this->config->item('max_size');
+		$view_data['max_remote_size'] = $this->config->item('max_remote_size');
 
 		if ($output == 'json') {
 			return $view_data;
@@ -228,7 +228,7 @@ class Offices extends CI_Controller {
 		$view_data['tracker_model'] = $this->campaign->tracker_model();
 
 		// pass config variable
-		$view_data['config'] = array('max_size' => $this->config->item('max_size'));
+		$view_data['config'] = array('max_remote_size' => $this->config->item('max_remote_size'));
 
 		//var_dump($view_data['office_campaign']); exit;
 

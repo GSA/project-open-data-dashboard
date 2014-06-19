@@ -13,7 +13,7 @@
 
 			<?php
 
-			$config = (!empty($max_size)) ? array('max_size' => $max_size) : null;
+			$config = (!empty($max_remote_size)) ? array('max_remote_size' => $max_remote_size) : null;
 
 			if(!empty($cfo_offices)) {
 				status_table('CFO Act Agencies', $cfo_offices, $config);
