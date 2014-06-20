@@ -33,9 +33,9 @@ class Offices extends CI_Controller {
 		$milestones = $this->campaign->milestones_model();	
 		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $milestone;
 
-		$milestone 			= $this->milestone_filter($selected_milestone, $milestones);
-		$milestones 		= $milestone['milestones'];
-		$selected_milestone = $milestone['selected_milestone'];
+		$milestone 			= $this->campaign->milestone_filter($selected_milestone, $milestones);
+		$milestones 		= $milestone->milestones;
+		$selected_milestone = $milestone->selected_milestone;
 
 		$view_data = array();
 
@@ -91,7 +91,7 @@ class Offices extends CI_Controller {
 		// pass milestones data model
 		$view_data['milestones'] = $milestones;
 		$view_data['selected_milestone'] = $selected_milestone;	
-		$view_data['milestone_specified'] = $milestone['specified'];
+		$view_data['milestone_specified'] = $milestone->specified;
 	
 
 		// pass config variable
@@ -136,9 +136,9 @@ class Offices extends CI_Controller {
 
 		$selected_category	= ($this->input->get_post('highlight', TRUE)) ? $this->input->get_post('highlight', TRUE) : null;
 	
-		$milestone 				= $this->milestone_filter($selected_milestone, $milestones);
-		$milestones 			= $milestone['milestones'];
-		$selected_milestone 	= $milestone['selected_milestone'];
+		$milestone 				= $this->campaign->milestone_filter($selected_milestone, $milestones);
+		$milestones 			= $milestone->milestones;
+		$selected_milestone 	= $milestone->selected_milestone;
 
 
 		$view_data = array();
@@ -146,7 +146,7 @@ class Offices extends CI_Controller {
 		// pass milestones data model
 		$view_data['milestones'] = $milestones;
 		$view_data['selected_milestone'] = $selected_milestone;
-		$view_data['milestone_specified'] = $milestone['specified'];
+		$view_data['milestone_specified'] = $milestone->specified;
 
 
 		$this->db->select('*');
@@ -248,41 +248,6 @@ class Offices extends CI_Controller {
 
 
 		
-	}
-
-
-	public function milestone_filter($selected_milestone, $milestones) {
-
-		// Sets the first milestone in the future as the current and last available milestone
-	    foreach ($milestones as $milestone_date => $milestone) {
-	        if (strtotime($milestone_date) > time()) {
-	            
-	        	if(empty($current_milestone)) {
-	        		$current_milestone = $milestone_date;	
-	        	} else {
-	        		unset($milestones[$milestone_date]);
-	        	}	            
-	        } 
-	    }
-
-	    // if we didn't explicitly select a milestone, use the current one
-		if(empty($selected_milestone)) {
-			$selected_milestone = $current_milestone;
-			$specified = "false";			
-		} else {
-			$specified = "true";
-		}
-
-		reset($milestones);
-
-		$response = array();
-
-		$response['selected_milestone'] = $selected_milestone;
-		$response['milestones'] 		= $milestones;
-		$response['specified']			= $specified;
-
-		return $response;
-
 	}
 
 

@@ -260,7 +260,39 @@ class campaign_model extends CI_Model {
 	}
 
 
+	public function milestone_filter($selected_milestone, $milestones) {
 
+		// Sets the first milestone in the future as the current and last available milestone
+	    foreach ($milestones as $milestone_date => $milestone) {
+	        if (strtotime($milestone_date) > time()) {
+	            
+	        	if(empty($current_milestone)) {
+	        		$current_milestone = $milestone_date;	
+	        	} else {
+	        		unset($milestones[$milestone_date]);
+	        	}	            
+	        } 
+	    }
+
+	    // if we didn't explicitly select a milestone, use the current one
+		if(empty($selected_milestone)) {
+			$selected_milestone = $current_milestone;
+			$specified = "false";			
+		} else {
+			$specified = "true";
+		}
+
+		reset($milestones);
+
+		$response = new stdClass();
+
+		$response->selected_milestone 	= $selected_milestone;
+		$response->milestones 			= $milestones;
+		$response->specified			= $specified;
+
+		return $response;
+
+	}
 
 
 
@@ -802,29 +834,14 @@ class campaign_model extends CI_Model {
 
 	public function update_status($update) {
 
+		// Determine current milestone
+		$selected_milestone	= (!empty($update->milestone)) ? $update->milestone : null;
+		$milestones 			= $this->milestones_model();	
+		$milestone 				= $this->milestone_filter($selected_milestone, $milestones);
 
-		$milestones = $this->milestones_model();	
-		$update->milestone	= (!empty($update->milestone)) ? $update->milestone : null;
+		$update->milestone 		= $milestone->selected_milestone;
 
-		
-		// Sets the first milestone in the future as the current and last available milestone
-	    foreach ($milestones as $milestone_date => $milestone) {
-	        if (strtotime($milestone_date) > time()) {
-	            
-	        	if(empty($current_milestone)) {
-	        		$current_milestone = $milestone_date;	
-	        	} else {
-	        		unset($milestones[$milestone_date]);
-	        	}	            
-	        } 
-	    }
-
-	    // if we didn't explicitly select a milestone, use the current one
-		if(empty($update->milestone)) {
-			$update->milestone = $current_milestone;
-		}
-
-		$this->db->select('datajson_status');
+		$this->db->select('*');
 		$this->db->where('office_id', $update->office_id);
 		$this->db->where('milestone', $update->milestone);
 

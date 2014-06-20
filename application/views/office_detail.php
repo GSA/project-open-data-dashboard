@@ -792,6 +792,8 @@
         <?php endif; ?> 
 
 
+
+
        <?php if(!empty($office_campaign->datapage_status->last_crawl)): ?>
         <tr>
             <th>Last crawl</th>
@@ -807,15 +809,6 @@
         </table>
         </div>
         <?php endif; ?>	
-                
-                
-                
-                
-                
-                
-                
-                
-                
                 
                 
                 

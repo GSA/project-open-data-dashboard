@@ -490,7 +490,7 @@ class Campaign extends CI_Controller {
     $id can be all, cfo-act, or a specific id
     $component can be datajson, datajson-refresh, datapage, digitalstrategy, download
     */
-	public function status($id = null, $component = null) {
+	public function status($id = null, $component = null, $selected_milestone = null) {
 
 		// enforce explicit component selection
 		if(empty($component)) {
@@ -514,6 +514,11 @@ class Campaign extends CI_Controller {
 			$this->db->where('id', $id);
 		}
 
+		// Determine current milestone
+
+		$milestones 			= $this->campaign->milestones_model();	
+		$milestone 				= $this->campaign->milestone_filter($selected_milestone, $milestones);
+
 
 		$query = $this->db->get('offices');
 
@@ -524,7 +529,7 @@ class Campaign extends CI_Controller {
 
 				// initialize update object
 
-				$update = $this->campaign->datagov_office($office->id);
+				$update = $this->campaign->datagov_office($office->id, $milestone->selected_milestone);
 
     			if(!$update){
     				$update = $this->campaign->datagov_model();
@@ -733,13 +738,13 @@ class Campaign extends CI_Controller {
 
             		$page_status = $this->campaign->uri_header($page_status_url);
             		$page_status['expected_url'] = $page_status_url;
+            		$page_status['last_crawl']	= mktime();
 
     				$update->datapage_status = (!empty($page_status)) ? json_encode($page_status) : null;
 
     				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
     					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datapage_status . PHP_EOL . PHP_EOL;
     				}
-
 
     				$this->campaign->update_status($update);
 
@@ -762,6 +767,7 @@ class Campaign extends CI_Controller {
 
              		$page_status = $this->campaign->uri_header($digitalstrategy_status_url);
              		$page_status['expected_url'] = $digitalstrategy_status_url;
+             		$page_status['last_crawl']	= mktime();
 
      				$update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status) : null;
 
