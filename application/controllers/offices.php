@@ -90,7 +90,9 @@ class Offices extends CI_Controller {
 
 		// pass milestones data model
 		$view_data['milestones'] = $milestones;
-		$view_data['selected_milestone'] = $selected_milestone;		
+		$view_data['selected_milestone'] = $selected_milestone;	
+		$view_data['milestone_specified'] = $milestone['specified'];
+	
 
 		// pass config variable
 		$view_data['max_remote_size'] = $this->config->item('max_remote_size');
@@ -134,15 +136,22 @@ class Offices extends CI_Controller {
 
 		$selected_category	= ($this->input->get_post('highlight', TRUE)) ? $this->input->get_post('highlight', TRUE) : null;
 	
-		$milestone 			= $this->milestone_filter($selected_milestone, $milestones);
-		$milestones 		= $milestone['milestones'];
-		$selected_milestone = $milestone['selected_milestone'];
+		$milestone 				= $this->milestone_filter($selected_milestone, $milestones);
+		$milestones 			= $milestone['milestones'];
+		$selected_milestone 	= $milestone['selected_milestone'];
+
+
+		$view_data = array();
+
+		// pass milestones data model
+		$view_data['milestones'] = $milestones;
+		$view_data['selected_milestone'] = $selected_milestone;
+		$view_data['milestone_specified'] = $milestone['specified'];
+
 
 		$this->db->select('*');
 		$this->db->where('id', $id);
 		$query = $this->db->get('offices');
-
-		$view_data = array();
 
 		if ($query->num_rows() > 0) {
 		   $view_data['office'] = $query->row();
@@ -204,9 +213,7 @@ class Offices extends CI_Controller {
 
 		}
 
-		// pass milestones data model
-		$view_data['milestones'] = $milestones;
-		$view_data['selected_milestone'] = $selected_milestone;
+
 
 		// selected tab
 		$view_data['selected_category'] = $selected_category;
@@ -261,6 +268,9 @@ class Offices extends CI_Controller {
 	    // if we didn't explicitly select a milestone, use the current one
 		if(empty($selected_milestone)) {
 			$selected_milestone = $current_milestone;
+			$specified = "false";			
+		} else {
+			$specified = "true";
 		}
 
 		reset($milestones);
@@ -269,6 +279,7 @@ class Offices extends CI_Controller {
 
 		$response['selected_milestone'] = $selected_milestone;
 		$response['milestones'] 		= $milestones;
+		$response['specified']			= $specified;
 
 		return $response;
 

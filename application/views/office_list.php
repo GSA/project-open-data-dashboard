@@ -18,7 +18,7 @@
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <?php foreach ($milestones as $milestone_date => $milestone): ?>
-                            <li><a href="?milestone=<?php echo $milestone_date;?>"><?php echo $milestone . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
+                            <li><a href="<?php echo site_url();?>offices/<?php echo $milestone_date;?>"><?php echo $milestone . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
@@ -29,7 +29,7 @@
 			$config = (!empty($max_remote_size)) ? array('max_remote_size' => $max_remote_size) : null;
 
 			if(!empty($cfo_offices)) {
-				status_table('CFO Act Agencies', $cfo_offices, $config);
+				status_table('CFO Act Agencies', $cfo_offices, $config, $selected_milestone, $milestone_specified);
 			}
 
 			if(!empty($executive_offices)) {

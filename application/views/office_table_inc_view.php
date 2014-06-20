@@ -1,11 +1,11 @@
 
 <?php
 
-function status_table($title, $rows, $config = null) {
+function status_table($title, $rows, $config = null, $selected_milestone = null, $milestone_specified = null) {
 
 ?>
 	<div class="panel panel-default">
-	<div class="panel-heading"><?php echo $title?></div>
+	<div class="panel-heading"><?php echo $title ?></div>
 	<table class="dashboard table table-striped table-hover table-bordered">
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
@@ -22,6 +22,17 @@ function status_table($title, $rows, $config = null) {
 
 
 		</tr>
+
+		<?php
+			if($milestone_specified == "true" && !empty($selected_milestone)) {
+				$milestone_url = '/' . $selected_milestone;
+			} else {
+				$milestone_url = '';
+			}
+		?>
+
+
+
 		<?php foreach ($rows as $office):?>
 
 		<?php
@@ -126,16 +137,16 @@ function status_table($title, $rows, $config = null) {
 		?>
 
 		<tr class="metrics-row">
-			<th><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id;?>"><?php echo $office->name;?></a></th>
-			<td class="content-metric <?php echo $json_status?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id;?>#pdl_datasets"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
-			<td class="content-metric <?php echo $schema_status ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id;?>#pdl_valid_metadata"><span><?php echo $percent_valid?>&nbsp;</span></a> </td>
+			<th><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>"><?php echo $office->name;?></a></th>
+			<td class="content-metric <?php echo $json_status?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_datasets"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
+			<td class="content-metric <?php echo $schema_status ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_valid_metadata"><span><?php echo $percent_valid?>&nbsp;</span></a> </td>
 
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo status_color($office->tracker_fields->pdl_datagov_harvested) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id;?>#tracker_pdl_datagov_harvested"><span><?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo page_status($office->tracker_fields->pdl_datagov_harvested); 		?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_updated)) echo status_color($office->tracker_fields->edi_updated) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id;?>?highlight=edi#tracker_edi_updated"><span><?php if (!empty($office->tracker_fields->edi_updated)) echo page_status($office->tracker_fields->edi_updated); 		?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_superset)) echo status_color($office->tracker_fields->edi_superset) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id;?>?highlight=edi#tracker_edi_superset"><span><?php if (!empty($office->tracker_fields->edi_superset)) echo page_status($office->tracker_fields->edi_superset);	?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_slashdata)) echo status_color($office->tracker_fields->pdl_slashdata) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id;?>#tracker_pdl_slashdata"><span><?php if (!empty($office->tracker_fields->pdl_slashdata)) echo page_status($office->tracker_fields->pdl_slashdata); 	?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo status_color($office->tracker_fields->pe_feedback_specified) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id;?>?highlight=pe#tracker_pe_feedback_specified"><span><?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo page_status($office->tracker_fields->pe_feedback_specified); 				?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo status_color($office->tracker_fields->edi_schedule_delivered) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id;?>?highlight=edi#tracker_edi_schedule_delivered"><span><?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo page_status($office->tracker_fields->edi_schedule_delivered); 		?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo status_color($office->tracker_fields->pdl_datagov_harvested) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#tracker_pdl_datagov_harvested"><span><?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo page_status($office->tracker_fields->pdl_datagov_harvested); 		?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_updated)) echo status_color($office->tracker_fields->edi_updated) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>?highlight=edi#tracker_edi_updated"><span><?php if (!empty($office->tracker_fields->edi_updated)) echo page_status($office->tracker_fields->edi_updated); 		?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_superset)) echo status_color($office->tracker_fields->edi_superset) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>?highlight=edi#tracker_edi_superset"><span><?php if (!empty($office->tracker_fields->edi_superset)) echo page_status($office->tracker_fields->edi_superset);	?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_slashdata)) echo status_color($office->tracker_fields->pdl_slashdata) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#tracker_pdl_slashdata"><span><?php if (!empty($office->tracker_fields->pdl_slashdata)) echo page_status($office->tracker_fields->pdl_slashdata); 	?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo status_color($office->tracker_fields->pe_feedback_specified) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>?highlight=pe#tracker_pe_feedback_specified"><span><?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo page_status($office->tracker_fields->pe_feedback_specified); 				?>&nbsp;</span></a></td>
+    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo status_color($office->tracker_fields->edi_schedule_delivered) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>?highlight=edi#tracker_edi_schedule_delivered"><span><?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo page_status($office->tracker_fields->edi_schedule_delivered); 		?>&nbsp;</span></a></td>
 		</tr>
 		<?php endforeach;?>
 	</table>

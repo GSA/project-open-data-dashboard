@@ -103,7 +103,7 @@
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <?php foreach ($milestones as $milestone_date => $milestone): ?>
-                            <li><a href="?milestone=<?php echo $milestone_date;?>"><?php echo $milestone . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
+                            <li><a href="<?php echo site_url();?>offices/detail/<?php echo $office->id; ?>/<?php echo $milestone_date;?>"><?php echo $milestone . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
