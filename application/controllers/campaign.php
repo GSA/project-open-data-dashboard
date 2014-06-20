@@ -488,7 +488,7 @@ class Campaign extends CI_Controller {
 
     /*
     $id can be all, cfo-act, or a specific id
-    $component can be datajson, datajson-refresh, datapage, digitalstrategy, download, download-refresh
+    $component can be datajson, datajson-refresh, datapage, digitalstrategy, download
     */
 	public function status($id = null, $component = null) {
 
@@ -497,7 +497,7 @@ class Campaign extends CI_Controller {
 		    show_404('status', false);
 		}
 
-		if($component == 'download' || $component == 'download-refresh' ) {
+		if($component == 'all' || $component == 'download' ) {
 			$this->load->helper('file');
 		}
 
@@ -540,7 +540,7 @@ class Campaign extends CI_Controller {
                 ################ datajson ################
                 */
 
-			    if ($component == 'all' || $component == 'datajson' || $component == 'datajson-refresh' || $component == 'download' || $component == 'download-refresh') {
+			    if ($component == 'all' || $component == 'datajson' || $component == 'datajson-refresh' || $component == 'download') {
 
     				$expected_datajson_url = $url . '/data.json';
 
@@ -565,172 +565,154 @@ class Campaign extends CI_Controller {
             		$status['expected_url'] = $expected_datajson_url;
 
 
-            		$reload = true;
 
-            		// Check to see if the file has been updated since last time
-            		if( !empty($status['filetime']) && $component !== 'datajson-refresh') {
-            			if ($old_status = json_decode($update->datajson_status)) {
-            				if ($status['filetime'] == $old_status->filetime) {
-            					$reload = false;
-
-			    				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-			    					echo 'Nothing to update for ' . $update->office_id . ' on ' . $status['url'] . PHP_EOL . PHP_EOL;
-			    				}
-
-            				}
-            			}
-            		}
-
-            		if ($component == 'download-refresh') {
-            			$reload = true;
-            		}
-
-            		if($reload) {
-
-		                $real_url = ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
+	                $real_url = ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
 
 
-		                /*
-                		################ download ################
-                		*/
-            			if ($component == 'download' || $component == 'download-refresh') {
+	                /*
+	        		################ download ################
+	        		*/
+	    			if ($component == 'all' || $component == 'download') {
 
-            				if(!($status['http_code'] == 200)) {
+	    				if(!($status['http_code'] == 200)) {
 
-			    				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-			    					echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
-			    				}
+		    				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+		    					echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
+		    				}
 
-            					continue;
-            				}
+	    					continue;
+	    				}
 
-            				// download and version this data.json file.
+	    				// download and version this data.json file.
 
-            				$download_dir = $this->config->item('download_dir');
-            				$crawl_date = date("Y-m-d");
-            				$directory = $download_dir . '/' . $crawl_date;
-            				$filepath = $directory . '/' . $office->id . '.json';
+	    				$download_dir = $this->config->item('download_dir');
+	    				$crawl_date = date("Y-m-d");
+	    				$directory = $download_dir . '/' . $crawl_date;
+	    				$filepath = $directory . '/' . $office->id . '.json';
 
-            				if(!get_dir_file_info($directory)) {
-
-            					if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-			    					echo 'Creating directory ' . $directory . PHP_EOL;
-			    				}
-
-            					mkdir($directory);
-            				}
-
-
-			    			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-			    				echo 'Attempting to download ' . $real_url . ' to ' . $filepath . PHP_EOL;
-			    			}
-
-
-							$opts = array(
-							  'http'=>array(
-							    'method'=>"GET",
-							    'user_agent'=>"Data.gov data.json crawler"
-							  )
-							);
-
-							$context = stream_context_create($opts);
-
-			    			$copy = fopen($real_url, 'rb', false, $context);
-			    			$paste = fopen($filepath, 'wb');
-
-			    			// If we can't read from this file, skip
-							if ($copy===false) {
-
-								if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-			    					echo 'Could not read from ' . $real_url . PHP_EOL;
-			    				}
-
-			    				continue;
-							}
-
-							// If we can't write to this file, skip
-							if ($paste===false) {
-
-								if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-			    					echo 'Could not read from ' . $real_url . PHP_EOL;
-			    				}
-
-			    				continue;
-							}
-
-
-        					while (!feof($copy)) {
-        					    if (fwrite($paste, fread($copy, 1024)) === FALSE) {
-
-        					    		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-	    									echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
-	    								}
-
-        					       }
-        					}
-        					fclose($copy);
-        					fclose($paste);
-
-
-
-  							if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-			    				echo 'Done' . PHP_EOL . PHP_EOL;
-			    			}
-
-            			} else {
-            				// Save current update status in case things break during json_status
-	    					$update->datajson_status = (!empty($status)) ? json_encode($status) : null;
+	    				if(!get_dir_file_info($directory)) {
 
 	    					if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-	    						echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-	    					}
+		    					echo 'Creating directory ' . $directory . PHP_EOL;
+		    				}
+
+	    					mkdir($directory);
+	    				}
+
+
+		    			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+		    				echo 'Attempting to download ' . $real_url . ' to ' . $filepath . PHP_EOL;
+		    			}
+
+
+						$opts = array(
+						  'http'=>array(
+						    'method'=>"GET",
+						    'user_agent'=>"Data.gov data.json crawler"
+						  )
+						);
+
+						$context = stream_context_create($opts);
+
+		    			$copy = fopen($real_url, 'rb', false, $context);
+		    			$paste = fopen($filepath, 'wb');
+
+		    			// If we can't read from this file, skip
+						if ($copy===false) {
+
+							if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+		    					echo 'Could not read from ' . $real_url . PHP_EOL;
+		    				}
+
+		    				continue;
+						}
+
+						// If we can't write to this file, skip
+						if ($paste===false) {
+
+							if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+		    					echo 'Could not read from ' . $real_url . PHP_EOL;
+		    				}
+
+		    				continue;
+						}
+
+
+						while (!feof($copy)) {
+						    if (fwrite($paste, fread($copy, 1024)) === FALSE) {
+
+						    		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+										echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
+									}
+
+						       }
+						}
+						fclose($copy);
+						fclose($paste);
 
 
 
-	    					$this->campaign->update_status($update);
+							if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+		    				echo 'Done' . PHP_EOL . PHP_EOL;
+		    			}
+
+	    			} 
 
 
-	                    	// Check JSON status
-	                    	$status 				= $this->json_status($status, $real_url);
-	            			
-	            			// Set correct URL
-	            			if(!empty($status['url'])) {
-	            				if(strpos($status['url'], '?refresh=')) {
-	            					$status['url'] = substr($status['url'], 0, strpos($status['url'], '?refresh='));
-	            				} 
-	            			} else {
-	            				$status['url'] = $expected_datajson_url;
-	            			}
+	                /*
+	        		################ datajson ################
+	        		*/
+	    			if ($component == 'all' || $component == 'datajson' || $component == 'datajson-refresh') {
 
-	            			$status['expected_url'] = $expected_datajson_url;
-							$status['last_crawl']	= mktime();
+	    				// Save current update status in case things break during json_status
+						$update->datajson_status = (!empty($status)) ? json_encode($status) : null;
 
-			
-							if(is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
-								$status['error_count'] = count($status['schema_errors']);
-							} else if ($status['schema_errors'] === false) {
-								$status['error_count'] = 0;
-							} else {
-								$status['error_count'] = null;
-							}
-
-							$status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;
-
-	    					$update->datajson_status = (!empty($status)) ? json_encode($status) : null;
-	    					//$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode(array_slice($status['schema_errors'], 0, 10, true)) : null;
-	    					if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);
+						if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+							echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
+						}
 
 
-	    					if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-	    						echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-	    					}
 
-	                    	$this->campaign->update_status($update);
-            			}
+						$this->campaign->update_status($update);
 
 
-            		}
+	                	// Check JSON status
+	                	$status 				= $this->json_status($status, $real_url);
+	        			
+	        			// Set correct URL
+	        			if(!empty($status['url'])) {
+	        				if(strpos($status['url'], '?refresh=')) {
+	        					$status['url'] = substr($status['url'], 0, strpos($status['url'], '?refresh='));
+	        				} 
+	        			} else {
+	        				$status['url'] = $expected_datajson_url;
+	        			}
 
+	        			$status['expected_url'] = $expected_datajson_url;
+						$status['last_crawl']	= mktime();
+
+		
+						if(is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
+							$status['error_count'] = count($status['schema_errors']);
+						} else if ($status['schema_errors'] === false) {
+							$status['error_count'] = 0;
+						} else {
+							$status['error_count'] = null;
+						}
+
+						$status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;
+
+						$update->datajson_status = (!empty($status)) ? json_encode($status) : null;
+						//$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode(array_slice($status['schema_errors'], 0, 10, true)) : null;
+						if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);
+
+
+						if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+							echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
+						}
+
+	                	$this->campaign->update_status($update);
+	    			}
 
 				}
 
