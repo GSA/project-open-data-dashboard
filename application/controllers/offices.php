@@ -26,25 +26,16 @@ class Offices extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index($output=null, $show_all_offices = false)
+	public function index($milestone = null, $output=null, $show_all_offices = false)
 	{
 
 		$this->load->model('campaign_model', 'campaign');
 		$milestones = $this->campaign->milestones_model();	
-		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : null;
+		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $milestone;
 
-		if(empty($selected_milestone)) {
-	        foreach ($milestones as $milestone_date => $milestone) {
-	            if (strtotime($milestone_date) > time()) {
-	                $selected_milestone = $milestone_date;
-	                break;
-	            } 
-	        }
-		}
-
-		reset($milestones);
-
-
+		$milestone 			= $this->milestone_filter($selected_milestone, $milestones);
+		$milestones 		= $milestone['milestones'];
+		$selected_milestone = $milestone['selected_milestone'];
 
 		$view_data = array();
 
@@ -97,6 +88,10 @@ class Offices extends CI_Controller {
 
 		}
 
+		// pass milestones data model
+		$view_data['milestones'] = $milestones;
+		$view_data['selected_milestone'] = $selected_milestone;		
+
 		// pass config variable
 		$view_data['max_remote_size'] = $this->config->item('max_remote_size');
 
@@ -128,37 +123,20 @@ class Offices extends CI_Controller {
 	}
 
 
-	public function detail($id) {
+	public function detail($id, $milestone=null) {
 
 		$this->load->helper('api');
 		$this->load->model('campaign_model', 'campaign');
 		$this->load->library('markdown');
 
 		$milestones = $this->campaign->milestones_model();	
-		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : null;
+		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $milestone;
 
 		$selected_category	= ($this->input->get_post('highlight', TRUE)) ? $this->input->get_post('highlight', TRUE) : null;
-
-		
-		// Sets the first milestone in the future as the current and last available milestone
-	    foreach ($milestones as $milestone_date => $milestone) {
-	        if (strtotime($milestone_date) > time()) {
-	            
-	        	if(empty($current_milestone)) {
-	        		$current_milestone = $milestone_date;	
-	        	} else {
-	        		unset($milestones[$milestone_date]);
-	        	}	            
-	        } 
-	    }
-
-	    // if we didn't explicitly select a milestone, use the current one
-		if(empty($selected_milestone)) {
-			$selected_milestone = $current_milestone;
-		}
-
-
-		reset($milestones);
+	
+		$milestone 			= $this->milestone_filter($selected_milestone, $milestones);
+		$milestones 		= $milestone['milestones'];
+		$selected_milestone = $milestone['selected_milestone'];
 
 		$this->db->select('*');
 		$this->db->where('id', $id);
@@ -245,8 +223,55 @@ class Offices extends CI_Controller {
 
 	}
 
-	public function all() {
-		return $this->index($output=null, $show_all_offices = true);
+	public function routes($route, $parameter1 = null, $parameter2 = null) {
+
+		if($route == 'all') {
+			return $this->index($milestone=null, $output=null, $show_all_offices = true);	
+		}
+
+		if($route == 'detail') {
+			return $this->detail($parameter1, $parameter2);	
+		}
+
+		// check if it's a milestone date
+    	$d = DateTime::createFromFormat('Y-m-d', $route);
+    	if ($d && $d->format('Y-m-d') == $route) {
+    		return $this->index($milestone=$route, $output=null, $show_all_offices = false);	
+    	}
+
+
+		
+	}
+
+
+	public function milestone_filter($selected_milestone, $milestones) {
+
+		// Sets the first milestone in the future as the current and last available milestone
+	    foreach ($milestones as $milestone_date => $milestone) {
+	        if (strtotime($milestone_date) > time()) {
+	            
+	        	if(empty($current_milestone)) {
+	        		$current_milestone = $milestone_date;	
+	        	} else {
+	        		unset($milestones[$milestone_date]);
+	        	}	            
+	        } 
+	    }
+
+	    // if we didn't explicitly select a milestone, use the current one
+		if(empty($selected_milestone)) {
+			$selected_milestone = $current_milestone;
+		}
+
+		reset($milestones);
+
+		$response = array();
+
+		$response['selected_milestone'] = $selected_milestone;
+		$response['milestones'] 		= $milestones;
+
+		return $response;
+
 	}
 
 
