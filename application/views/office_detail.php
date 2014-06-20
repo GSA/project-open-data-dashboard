@@ -1,3 +1,5 @@
+<?php $page_title = $office->name;?>
+
 <?php include 'header_meta_inc_view.php';?>
 
 <?php include 'header_inc_view.php';?>
@@ -658,7 +660,7 @@
         <?php endif; ?>		
 
 
-        <?php if(!empty($office_campaign->expected_datajson_status->filetime)): ?>
+        <?php if(!empty($office_campaign->expected_datajson_status->filetime) && $office_campaign->expected_datajson_status->filetime > 0): ?>
         <tr>
             <th>Last modified</th>
             <td>
@@ -776,7 +778,31 @@
         			<?php echo $office_campaign->datapage_status->content_type?>
         		</span>			
         	</td>
-        </tr>		
+        </tr>	
+
+        <?php if(!empty($office_campaign->datapage_status->filetime) && $office_campaign->datapage_status->filetime > 0): ?>
+        <tr>
+            <th>Last modified</th>
+            <td>
+                <span>
+                    <?php echo date("l, d-M-Y H:i:s T", $office_campaign->datapage_status->filetime)?>
+                </span>         
+            </td>
+        </tr>   
+        <?php endif; ?> 
+
+
+       <?php if(!empty($office_campaign->datapage_status->last_crawl)): ?>
+        <tr>
+            <th>Last crawl</th>
+            <td>
+                <span>
+                    <?php echo date("l, d-M-Y H:i:s T", $office_campaign->datapage_status->last_crawl)?>
+                </span>         
+            </td>
+        </tr>   
+        <?php endif; ?>          
+
 
         </table>
         </div>
@@ -905,6 +931,30 @@
 			</td>
 		</tr>        	
 
+        <?php if(!empty($office_campaign->digitalstrategy_status->filetime) && $office_campaign->digitalstrategy_status->filetime > 0): ?>
+        <tr>
+            <th>Last modified</th>
+            <td>
+                <span>
+                    <?php echo date("l, d-M-Y H:i:s T", $office_campaign->digitalstrategy_status->filetime)?>
+                </span>         
+            </td>
+        </tr>   
+        <?php endif; ?> 
+
+
+       <?php if(!empty($office_campaign->digitalstrategy_status->last_crawl)): ?>
+        <tr>
+            <th>Last crawl</th>
+            <td>
+                <span>
+                    <?php echo date("l, d-M-Y H:i:s T", $office_campaign->digitalstrategy_status->last_crawl)?>
+                </span>         
+            </td>
+        </tr>   
+        <?php endif; ?>  
+
+
         </table>
         </div>
         <?php endif; ?>
@@ -922,6 +972,28 @@
                                     "1.2.7" => "ps_publication_process");
         
 
+
+                if (!empty($digital_strategy->generated)) {
+                    if ($published_date = strtotime($digital_strategy->generated))  {
+                        $published_date = date("l, d-M-Y H:i:s T", $published_date);
+                        echo '<h2><span style="color:#666">Date specified: </span>' . "$published_date</h2>";
+
+
+
+                        
+
+                    }
+                }
+
+                if(!empty($office_campaign->digitalstrategy_status->filetime) && $office_campaign->digitalstrategy_status->filetime > 0) {
+                    echo 'Date of digitalstrategy.json file: ' . date("l, d-M-Y H:i:s T", $office_campaign->digitalstrategy_status->filetime);
+                }
+
+                echo "<hr>";
+                
+            ?>
+
+            <?php
 
                 foreach ($digital_strategy->items as $item) {
                     if (!empty($sections[$item->id])) {
