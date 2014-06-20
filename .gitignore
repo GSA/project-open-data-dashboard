@@ -11,6 +11,8 @@ application/config/config.php
 application/config/database.php
 downloads/*
 
+archive/datajson/201*
+archive/digitalstrategy/201*
 
 application/config/upload.php
 
