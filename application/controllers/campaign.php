@@ -488,7 +488,7 @@ class Campaign extends CI_Controller {
 
     /*
     $id can be all, cfo-act, or a specific id
-    $component can be datajson, datajson-refresh, datapage, digitalstrategy, download
+    $component can be datajson, datapage, digitalstrategy, download
     */
 	public function status($id = null, $component = null, $selected_milestone = null) {
 
@@ -545,7 +545,7 @@ class Campaign extends CI_Controller {
                 ################ datajson ################
                 */
 
-			    if ($component == 'all' || $component == 'datajson' || $component == 'datajson-refresh' || $component == 'download') {
+			    if ($component == 'all' || $component == 'datajson' || $component == 'download') {
 
     				$expected_datajson_url = $url . '/data.json';
 
@@ -596,7 +596,7 @@ class Campaign extends CI_Controller {
 	                /*
 	        		################ datajson ################
 	        		*/
-	    			if ($component == 'all' || $component == 'datajson' || $component == 'datajson-refresh') {
+	    			if ($component == 'all' || $component == 'datajson') {
 
 	    				// Save current update status in case things break during json_status
 						$update->datajson_status = (!empty($status)) ? json_encode($status) : null;
