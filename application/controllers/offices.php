@@ -35,14 +35,13 @@ class Offices extends CI_Controller {
 
 		$milestone 			= $this->campaign->milestone_filter($selected_milestone, $milestones);
 		$milestones 		= $milestone->milestones;
-		$selected_milestone = $milestone->selected_milestone;
 
 		$view_data = array();
 
 		$this->db->select('*');
 		$this->db->from('offices');
 		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
-		$this->db->where('datagov_campaign.milestone', $selected_milestone);
+		$this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
 		$this->db->where('offices.cfo_act_agency', 'true');
 		$this->db->where('offices.no_parent', 'true');
 		$this->db->order_by("offices.name", "asc");
@@ -58,6 +57,7 @@ class Offices extends CI_Controller {
 			$this->db->select('*');
 			$this->db->from('offices');
 			$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
+			$this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
 			$this->db->where('offices.cfo_act_agency', 'false');
 			$this->db->where('offices.reporting_authority_type', 'executive');
 			$this->db->where('offices.no_parent', 'true');
@@ -73,6 +73,7 @@ class Offices extends CI_Controller {
 			$this->db->select('*');
 			$this->db->from('offices');
 			$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
+			$this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
 			$this->db->where('offices.cfo_act_agency', 'false');
 			$this->db->where('offices.reporting_authority_type', 'independent');
 			$this->db->where('offices.no_parent', 'true');
@@ -89,10 +90,7 @@ class Offices extends CI_Controller {
 		}
 
 		// pass milestones data model
-		$view_data['milestones'] = $milestones;
-		$view_data['selected_milestone'] = $selected_milestone;	
-		$view_data['milestone_specified'] = $milestone->specified;
-	
+		$view_data['milestone'] = $milestone;
 
 		// pass config variable
 		$view_data['max_remote_size'] = $this->config->item('max_remote_size');
@@ -137,16 +135,12 @@ class Offices extends CI_Controller {
 		$selected_category	= ($this->input->get_post('highlight', TRUE)) ? $this->input->get_post('highlight', TRUE) : null;
 	
 		$milestone 				= $this->campaign->milestone_filter($selected_milestone, $milestones);
-		$milestones 			= $milestone->milestones;
-		$selected_milestone 	= $milestone->selected_milestone;
 
 
 		$view_data = array();
 
 		// pass milestones data model
-		$view_data['milestones'] = $milestones;
-		$view_data['selected_milestone'] = $selected_milestone;
-		$view_data['milestone_specified'] = $milestone->specified;
+		$view_data['milestone'] = $milestone;
 
 
 		$this->db->select('*');
@@ -158,7 +152,7 @@ class Offices extends CI_Controller {
 
 
 			// Get note data
-			$notes = $this->campaign->get_notes($view_data['office']->id, $selected_milestone);
+			$notes = $this->campaign->get_notes($view_data['office']->id, $milestone->selected_milestone);
 			$view_data['note_model'] = $this->campaign->note_model();
 
 			if ($notes->num_rows() > 0) {
@@ -181,7 +175,7 @@ class Offices extends CI_Controller {
 			}
 
 			// Get crawler data
-			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id, $selected_milestone);
+			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id, $milestone->selected_milestone);
 
 			if(empty($view_data['office_campaign'])) {
 				$view_data['office_campaign'] = $this->campaign->datagov_model();

@@ -284,11 +284,21 @@ class campaign_model extends CI_Model {
 
 		reset($milestones);
 
+		// determine previous milestone
+		while (key($milestones) !== $current_milestone) next($milestones);
+		prev($milestones);
+		$previous_milestone = key($milestones);
+
+		reset($milestones);
+
 		$response = new stdClass();
 
 		$response->selected_milestone 	= $selected_milestone;
-		$response->milestones 			= $milestones;
+		$response->current 				= $current_milestone;
+		$response->previous 			= $previous_milestone;
 		$response->specified			= $specified;
+
+		$response->milestones 			= $milestones;
 
 		return $response;
 

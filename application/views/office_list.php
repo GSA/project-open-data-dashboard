@@ -11,14 +11,24 @@
         <div>
           <h2>Agencies</h2>
 
+           <?php if($milestone->selected_milestone == $milestone->current): ?>
+                <p class="form-flash text-warning bg-warning"><strong>Current Milestone:</strong> The milestone selected is still in progress. The status of each field will be updated as frequently as possible, but won't be final until the milestone has passed</p>
+            <?php endif; ?>
+
+
+           <?php if($milestone->selected_milestone == $milestone->previous): ?>
+                <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The status of each field won't be final until a few weeks after the milestone has passed</p>
+            <?php endif; ?>  
+
+
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                      Selected: <?php echo $milestones[$selected_milestone]  . ' - ' . date("F jS Y", strtotime($selected_milestone)); ?> <span class="caret"></span>
+                      Selected: <?php echo $milestone->milestones[$milestone->selected_milestone]  . ' - ' . date("F jS Y", strtotime($milestone->selected_milestone)); ?> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
-                        <?php foreach ($milestones as $milestone_date => $milestone): ?>
-                            <li><a href="<?php echo site_url();?>offices/<?php echo $milestone_date;?>"><?php echo $milestone . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
+                        <?php foreach ($milestone->milestones as $milestone_date => $milestone_name): ?>
+                            <li><a href="<?php echo site_url();?>offices/<?php echo $milestone_date;?>"><?php echo $milestone_name . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
@@ -29,15 +39,15 @@
 			$config = (!empty($max_remote_size)) ? array('max_remote_size' => $max_remote_size) : null;
 
 			if(!empty($cfo_offices)) {
-				status_table('CFO Act Agencies', $cfo_offices, $config, $selected_milestone, $milestone_specified);
+				status_table('CFO Act Agencies', $cfo_offices, $config, $milestone->selected_milestone, $milestone->specified);
 			}
 
 			if(!empty($executive_offices)) {
-				status_table('Other Offices Reporting to the White House', $executive_offices);
+				status_table('Other Offices Reporting to the White House', $executive_offices, $config, $milestone->selected_milestone, $milestone->specified);
 			}
 
 			if(!empty($independent_offices)) {
-				status_table('Other Independent Offices', $independent_offices);
+				status_table('Other Independent Offices', $independent_offices, $config, $milestone->selected_milestone, $milestone->specified);
 			}
 
 			?>

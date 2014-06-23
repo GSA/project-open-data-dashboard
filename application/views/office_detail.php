@@ -19,7 +19,8 @@
                 <p class="form-flash bg-<?php echo $this->session->flashdata('outcome'); ?>"><?php echo $this->session->flashdata('status'); ?></p>
             <?php endif; ?>
 
-          <h2><?php echo $office->name ?> - <?php echo $milestones[$selected_milestone];?></h2>
+
+              <h2><?php echo $office->name ?> - <?php echo $milestone->milestones[$milestone->selected_milestone];?></h2>
 
         
 			<div><a href="<?php echo $office->url ?>"><?php echo $office->url ?></a></div>
@@ -98,14 +99,26 @@
             <?php endif;?>
                 
 
+
+           <?php if($milestone->selected_milestone == $milestone->current): ?>
+                <p class="form-flash text-warning bg-warning"><strong>Current Milestone:</strong> The milestone selected is still in progress. The status of each field will be updated as frequently as possible, but won't be final until the milestone has passed</p>
+            <?php endif; ?>
+
+
+           <?php if($milestone->selected_milestone == $milestone->previous): ?>
+                <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The status of each field won't be final until a few weeks after the milestone has passed</p>
+            <?php endif; ?>  
+
+
+
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                      Selected: <?php echo $milestones[$selected_milestone]  . ' - ' . date("F jS Y", strtotime($selected_milestone)); ?> <span class="caret"></span>
+                      Selected: <?php echo $milestone->milestones[$milestone->selected_milestone]  . ' - ' . date("F jS Y", strtotime($milestone->selected_milestone)); ?> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
-                        <?php foreach ($milestones as $milestone_date => $milestone): ?>
-                            <li><a href="<?php echo site_url();?>offices/detail/<?php echo $office->id; ?>/<?php echo $milestone_date;?>"><?php echo $milestone . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
+                        <?php foreach ($milestone->milestones as $milestone_date => $milestone_name): ?>
+                            <li><a href="<?php echo site_url();?>offices/detail/<?php echo $office->id; ?>/<?php echo $milestone_date;?>"><?php echo $milestone_name . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
@@ -341,7 +354,7 @@
 
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                     <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">   
-                    <input type="hidden" name="milestone" value="<?php echo $selected_milestone; ?>">                       
+                    <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">                       
                 </form>
             <?php endif; ?>   
 
