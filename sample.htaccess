@@ -1,6 +1,7 @@
 RewriteEngine on
-RewriteRule ^$ /index.php [L]
+RewriteRule ^$ index.php [L]
 RewriteCond $1 !^(index\.php|img|css|js|schema|video_files|robots\.txt|favicon\.ico)
-RewriteRule ^(.*)$ /index.php/$1 [L]
+RewriteRule ^(.*)$ index.php/$1 [L]
 
-SetEnv DMAP_ENV "development"
+# php_value upload_max_filesize 70M  
+# php_value post_max_size 70M
