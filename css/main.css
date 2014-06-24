@@ -181,3 +181,10 @@ form .tracker-sections.nav-tabs {
 .milestone-selector {
 	margin : 2em 0;
 }
+
+@media (min-width: 1600px) {
+	.container.full-width {
+		width : 100%;
+	}
+}
+
