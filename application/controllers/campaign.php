@@ -802,8 +802,9 @@ class Campaign extends CI_Controller {
 
 		$context = stream_context_create($opts);
 
-		$copy = fopen($url, 'rb', false, $context);
-		$paste = fopen($filepath, 'wb');
+		$copy = @fopen($url, 'rb', false, $context);
+		$paste = @fopen($filepath, 'wb');
+
 
 		// If we can't read from this file, skip
 		if ($copy===false) {
@@ -812,33 +813,35 @@ class Campaign extends CI_Controller {
 				echo 'Could not read from ' . $url . PHP_EOL;
 			}
 
-			continue;
+			
 		}
 
 		// If we can't write to this file, skip
 		if ($paste===false) {
 
 			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-				echo 'Could not read from ' . $url . PHP_EOL;
+				echo 'Could not open ' . $filepath . PHP_EOL;
 			}
+
+		}
+
+		if($copy !== false && $paste !== false) {
+			while (!feof($copy)) {
+			    if (fwrite($paste, fread($copy, 1024)) === FALSE) {
+
+			    		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+							echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
+						}
+
+			       }
+			}			
+		} else {
 
 			return false;
 		}
 
-
-		while (!feof($copy)) {
-		    if (fwrite($paste, fread($copy, 1024)) === FALSE) {
-
-		    		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-						echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
-					}
-
-		       }
-		}
 		fclose($copy);
 		fclose($paste);
-
-
 
 		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			echo 'Done' . PHP_EOL . PHP_EOL;
