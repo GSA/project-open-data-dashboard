@@ -1,3 +1,65 @@
+<?php 
+function status_table_full($title, $rows, $tracker, $config = null, $selected_milestone = null, $milestone_specified = null) {
+?>
+
+		<?php
+			if($milestone_specified == "true" && !empty($selected_milestone)) {
+				$milestone_url = '/' . $selected_milestone;
+			} else {
+				$milestone_url = '';
+			}
+		?>
+
+
+	<table class="dashboard table table-striped table-hover table-bordered">
+		<tr class="dashboard-heading">
+				<th class="vertical-heading"><div>Agency</div></th>
+			<?php foreach ($tracker as $tracker_field => $tracker_value):?>
+
+				<?php $field_class = substr($tracker_field, 0, strpos($tracker_field, '_')); ?>
+
+				<th class="vertical-heading <?php echo $field_class ?>"><div><?php echo $tracker_field; ?></div></th>
+			<?php endforeach; ?>
+		</tr>
+
+		<?php foreach ($rows as $office):?>
+
+			<?php
+				if(!empty($office->tracker_fields)) {
+					$office->tracker_fields = json_decode($office->tracker_fields);
+				}
+			?>
+
+			<tr>
+				
+				<th><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>"><?php echo $office->name;?></a></th>				
+				
+
+				<?php reset($tracker); ?>
+
+				<?php foreach ($tracker as $tracker_field_name => $tracker_field_meta):?>
+					
+						<?php if(!empty($office->tracker_fields->$tracker_field_name)): ?>
+							<td>
+								<?php echo $office->tracker_fields->$tracker_field_name ?>
+							</td>
+						<?php else: ?>
+							<td class="empty-field"></td>	
+						<?php endif; ?>
+				<?php endforeach; ?>
+			</tr>
+
+		<?php endforeach; ?>
+
+	</table>
+	
+
+<?php 
+}
+?>
+
+
+
 
 <?php
 

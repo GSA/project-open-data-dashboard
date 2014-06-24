@@ -94,6 +94,46 @@ width : 6em;
 }
 
 
+.dashboard-heading th.vertical-heading {
+	height : 200px;
+	width : 2em !important;
+	vertical-align: bottom;
+
+}
+
+.dashboard-heading th.vertical-heading div {
+-webkit-transform: rotate(-90deg);
+-o-transform: rotate(-90deg);
+transform: rotate(-90deg);
+width : 2em;
+}
+
+.dashboard-heading th.vertical-heading.edi {
+	background-color : #C4F0FF;
+}
+
+.dashboard-heading th.vertical-heading.pdl {
+	background-color : #D7FFC4;
+}
+
+.dashboard-heading th.vertical-heading.pe {
+	background-color : #FFF6C4;
+}
+
+.dashboard-heading th.vertical-heading.ps {
+	background-color : #FFC4DC;
+}
+
+.dashboard-heading th.vertical-heading.hc {
+	background-color : #FFDABF;
+}
+
+
+.empty-field {
+	background-color : #BFBFBF !important;
+}
+
+
 .note-metadata {
 	font-style: italic;
 	color : #ccc;
@@ -184,7 +224,7 @@ form .tracker-sections.nav-tabs {
 
 @media (min-width: 1600px) {
 	.container.full-width {
-		width : 100%;
+		width : 95%;
 	}
 }
 

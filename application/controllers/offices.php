@@ -26,8 +26,9 @@ class Offices extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index($milestone = null, $output=null, $show_all_offices = false)
+	public function index($milestone = null, $output=null, $show_all_offices = false, $show_all_fields = false)
 	{
+
 
 		$this->load->model('campaign_model', 'campaign');
 		$milestones = $this->campaign->milestones_model();	
@@ -89,17 +90,20 @@ class Offices extends CI_Controller {
 
 		}
 
-		// pass milestones data model
+		// pass milestones and tracker data model
 		$view_data['milestone'] = $milestone;
+		$view_data['tracker'] = $this->campaign->tracker_model();
 
-		// pass config variable
+		// pass config variables
 		$view_data['max_remote_size'] = $this->config->item('max_remote_size');
+		$view_data['show_all_fields'] = $show_all_fields;
 
 		if ($output == 'json') {
 			return $view_data;
 		}
 
 		$this->load->view('office_list', $view_data);
+
 	}
 
 
@@ -237,7 +241,20 @@ class Offices extends CI_Controller {
 		// check if it's a milestone date
     	$d = DateTime::createFromFormat('Y-m-d', $route);
     	if ($d && $d->format('Y-m-d') == $route) {
-    		return $this->index($milestone=$route, $output=null, $show_all_offices = false);	
+
+    		if ($parameter1 == 'all'){
+    			$show_all_offices = true;
+    		} else {
+    			$show_all_offices = false;
+    		}
+
+    		if ($parameter1 == 'full' || $parameter2 == 'full'){
+    			$show_all_fields = true;
+    		} else {
+    			$show_all_fields = false;
+    		}    		
+
+    		return $this->index($milestone=$route, $output=null, $show_all_offices, $show_all_fields);	
     	}
 
 

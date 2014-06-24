@@ -1,3 +1,7 @@
+<?php 
+if($show_all_fields) $container_class = "full-width";
+?>
+
 <?php include 'header_meta_inc_view.php';?>
 
 <?php include 'header_inc_view.php';?>
@@ -5,7 +9,7 @@
 <?php include 'office_table_inc_view.php';?>
 
 
-    <div class="container">
+    <div class="container <?php if(!empty($container_class)) echo $container_class; ?>">
       <!-- Example row of columns -->
       <div class="row">
         <div>
@@ -39,7 +43,13 @@
 			$config = (!empty($max_remote_size)) ? array('max_remote_size' => $max_remote_size) : null;
 
 			if(!empty($cfo_offices)) {
-				status_table('CFO Act Agencies', $cfo_offices, $config, $milestone->selected_milestone, $milestone->specified);
+
+        if($show_all_fields) {
+          status_table_full('CFO Act Agencies', $cfo_offices, $tracker, $config, $milestone->selected_milestone, $milestone->specified);
+        } else {
+          status_table('CFO Act Agencies', $cfo_offices, $config, $milestone->selected_milestone, $milestone->specified);
+        }
+				
 			}
 
 			if(!empty($executive_offices)) {
