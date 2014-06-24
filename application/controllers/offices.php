@@ -131,7 +131,7 @@ class Offices extends CI_Controller {
 
 		$this->load->helper('api');
 		$this->load->model('campaign_model', 'campaign');
-		$this->load->library('markdown');
+		$markdown_extra = new Michelf\MarkdownExtra();
 
 		$milestones = $this->campaign->milestones_model();	
 		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $milestone;
@@ -168,8 +168,9 @@ class Offices extends CI_Controller {
 					if(!empty($note_list[$note_field]->current->note)) {
 
 						$note_html = $note_list[$note_field]->current->note;
+						$note_html = $markdown_extra->transform($note_html);
 						$note_html = linkToAnchor($note_html);
-						$note_list[$note_field]->current->note_html =  $this->markdown->parse($note_html);
+						$note_list[$note_field]->current->note_html = $note_html;
 					} else {
 						$note_list[$note_field]->current->note_html = null;
 					}

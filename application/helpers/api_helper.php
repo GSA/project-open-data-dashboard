@@ -184,11 +184,11 @@ if(preg_match_all($reg_exUrl, $text, $url)) {
             $replacement = "<a href=".$match.">{$match}</a>";
             $text = str_replace($match,$replacement,$text);
        }
-       return nl2br($text);
+       return $text;
 } else {
 
        // if no urls in the text just return the text
-       return nl2br($text);
+       return $text;
 
 }
 }
