@@ -32,7 +32,7 @@ class Docs extends CI_Controller {
 
 		$data = array();
 
-		$docs_path = (!empty($this->config->item('docs_path'))) ? $this->config->item('docs_path') : 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/main.md';
+		$docs_path = ($this->config->item('docs_path')) ? $this->config->item('docs_path') : 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/main.md';
 		$docs = @file_get_contents($docs_path);	
 		
 		if($docs) {
