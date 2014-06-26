@@ -218,6 +218,28 @@ form .tracker-sections.nav-tabs {
 	margin : 3em 0 6em 0;
 }
 
+.tracker-field strong {
+	display : inline-block;
+	margin-top : .25em;
+}
+
+.tracker-field strong a {
+	color : #000;	
+}
+
+.tracker-field strong a span {
+	color : #ccc;
+}
+
+.tracker-field strong a:hover {
+	color : #000;
+	text-decoration : none;
+}
+
+.tracker-field strong a:hover span {
+	color : #428bca;
+}
+
 .milestone-selector {
 	margin : 2em 0;
 }

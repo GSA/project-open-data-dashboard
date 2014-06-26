@@ -283,9 +283,14 @@
                                             </td>
                                         <?php endif; ?>
                                         
-                                        <td>                                            
+                                        <td class="tracker-field">                                            
                                             <a name="tracker_<?php echo $tracker_field_name ?>" class="anchor-point"></a>
-                                            <strong><?php echo $tracker_field_meta->label ?></strong>
+                                            <strong>
+                                                <a href="<?php echo site_url('docs') . '#' . $tracker_field_name ?>">
+                                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                                    <?php echo $tracker_field_meta->label ?>
+                                                </a>
+                                            </strong>
                                         </td>                        
                                         <td>
                                             
