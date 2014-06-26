@@ -30,14 +30,15 @@ class Docs extends CI_Controller {
 	public function index()
 	{
 
+		$data = array();
+
 		$docs_path = (!empty($this->config->item('docs_path'))) ? $this->config->item('docs_path') : 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/main.md';
 		$docs = @file_get_contents($docs_path);	
 		
 		if($docs) {
 
 			$markdown_extra = new Michelf\MarkdownExtra();
-			
-			$data = array();
+
 			$markdown_text = $docs;
 			
 			$markdown_text = linkToAnchor($markdown_text);
