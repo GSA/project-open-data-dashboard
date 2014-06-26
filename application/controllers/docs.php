@@ -7,6 +7,8 @@ class Docs extends CI_Controller {
 		parent::__construct();
 
 		$this->load->helper('url');
+		$this->load->helper('api');
+
 	}
 
 
@@ -27,7 +29,27 @@ class Docs extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('docs');
+
+		$docs_path = (!empty($this->config->item('docs_path'))) ? $this->config->item('docs_path') : 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/main.md';
+		$docs = @file_get_contents($docs_path);	
+		
+		if($docs) {
+
+			$markdown_extra = new Michelf\MarkdownExtra();
+			
+			$data = array();
+			$markdown_text = $docs;
+			
+			$markdown_text = linkToAnchor($markdown_text);
+			$markdown_text = $markdown_extra->transform($markdown_text);
+			
+			$data['docs_html'] = $markdown_text;
+
+		} else {
+			$data['docs_html'] = "The documentation file is unavailable";
+		}
+
+		$this->load->view('docs', $data);
 	}
 
 	public function intro()

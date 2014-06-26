@@ -168,8 +168,10 @@ class Offices extends CI_Controller {
 					if(!empty($note_list[$note_field]->current->note)) {
 
 						$note_html = $note_list[$note_field]->current->note;
-						$note_html = $markdown_extra->transform($note_html);
+						
 						$note_html = linkToAnchor($note_html);
+						$note_html = $markdown_extra->transform($note_html);						
+
 						$note_list[$note_field]->current->note_html = $note_html;
 					} else {
 						$note_list[$note_field]->current->note_html = null;
