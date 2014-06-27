@@ -11,6 +11,9 @@ $config['max_remote_size'] = 5000000;
 $config['google_analytics_id'] = ''; // UA-xxxxxxx-xx
 $config['google_analytics_domain'] = ''; // domain.com
 
+// Set local time zone 
+date_default_timezone_set('America/New_York');
+
 // OAuth Settings
 $config['github_oauth_id'] = '############';
 $config['github_oauth_secret'] = '############';
