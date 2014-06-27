@@ -55,9 +55,11 @@ This is a <a href="http://ellislab.com/codeigniter">CodeIgniter</a> PHP applicat
 	* Note that wherever you see `<env>` in the following configuration steps, you should replace that with the environment you're currently using. To begin with, you'll probably want this to be: `development`
 1. Copy `/application/config/config.php.sample` to `/application/config/<env>/config.php`
 1. Edit `/application/config/<env>/config.php` with: 
-	* Your OAuth Client ID and Client Secret for <a href="https://github.com/settings/applications/new">GitHub authentication</a> 
+	* The `base_url` where this application will run. This actually shouldn't required for anything other than the following `github_oauth_redirect` which depends on it, but you can set that manually if you'd like. 
+	* Your Github OAuth Client ID, Client Secret, and redirect URL for <a href="https://github.com/settings/applications/new">GitHub authentication</a> 
 	* The path to where you want to store the archival json files (`archive_dir`) - give this directory adequate permissions for your server to write to
 	* You can pre-approave github users to have admin rights by adding their github username to the array in the `pre_approved_admins` option
+	* Set an encryption key for the `encryption_key` option (around line 253). You can generate a key with a command like `LANG=C tr -dc A-Za-z0-9_ < /dev/urandom | head -c 32 | xargs` or get one from this [generator](http://jeffreybarke.net/tools/codeigniter-encryption-key-generator/)
 1. Copy `/application/config/upload.php.sample` to `/application/config/<env>/upload.php`	
 1. Edit `/application/config/<env>/upload.php` with the `upload_path` where you want to save uploaded CSV files (give this directory adequate permissions for your server to write to)
 1. Create a local database and import the SQL database tables found in /sql/ into this local database:

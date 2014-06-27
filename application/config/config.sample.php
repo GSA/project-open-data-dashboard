@@ -14,14 +14,6 @@ $config['google_analytics_domain'] = ''; // domain.com
 // Set local time zone 
 date_default_timezone_set('America/New_York');
 
-// OAuth Settings
-$config['github_oauth_id'] = '############';
-$config['github_oauth_secret'] = '############';
-
-// You shouldn't need to edit this unless you're not hosting this a the root of your server
-$config['github_oauth_redirect'] =  'http://' . $_SERVER['SERVER_NAME'] . '/auth/session/github';
-
-
 $config['tmp_csv_import'] = '/var/www/project-open-data-dashboard/downloads/import.csv';
 $config['pre_approved_admins'] = array('user1', 'user2');
 
@@ -41,6 +33,25 @@ $config['pre_approved_admins'] = array('user1', 'user2');
 |
 */
 $config['base_url']	= '';
+
+
+/*
+|--------------------------------------------------------------------------
+| Github Settings
+|--------------------------------------------------------------------------
+| You can register new applications at:
+|
+| 	https://github.com/settings/applications/new
+*/
+
+// OAuth Settings
+$config['github_oauth_id'] = '############';
+$config['github_oauth_secret'] = '############';
+
+// You shouldn't need to edit this unless you haven't specified a 'base_url'
+$config['github_oauth_redirect'] =  $config['base_url'] . '/auth/session/github';
+
+
 
 /*
 |--------------------------------------------------------------------------
