@@ -2,6 +2,15 @@
 
 class Auth extends CI_Controller
 {
+
+	function __construct()
+	{
+		parent::__construct();
+
+		$this->load->helper('url');
+	}
+	
+
     public function session($provider)
     {
         $this->load->helper('url_helper');
