@@ -26,16 +26,22 @@ class Offices extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index($milestone = null, $output=null, $show_all_offices = false, $show_all_fields = false)
+	public function index($selected_milestone = null, $output=null, $show_all_offices = false, $show_all_fields = false)
 	{
 
 
 		$this->load->model('campaign_model', 'campaign');
 		$milestones = $this->campaign->milestones_model();	
-		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $milestone;
+
+		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $selected_milestone;
 
 		$milestone 			= $this->campaign->milestone_filter($selected_milestone, $milestones);
 		$milestones 		= $milestone->milestones;
+
+		// Determine selected milestone. Defaults to previous milestone if not specified
+		if(empty($selected_milestone)) {
+			$milestone->selected_milestone	= $milestone->previous;
+		} 
 
 		$view_data = array();
 
