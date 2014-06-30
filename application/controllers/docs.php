@@ -55,7 +55,8 @@ class Docs extends CI_Controller {
 
 	public function intro()
 	{
-		$this->load->view('welcome_message');
+        redirect('offices');
+		//$this->load->view('welcome_message');
 	}
 
 	public function export()
