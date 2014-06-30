@@ -63,7 +63,8 @@ function status_table_full($title, $rows, $tracker, $config = null, $selected_mi
 
 <?php
 
-function status_table($title, $rows, $config = null, $selected_milestone = null, $milestone_specified = null) {
+function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $milestone = null) {
+
 
 ?>
 	<div class="panel panel-default">
@@ -72,24 +73,18 @@ function status_table($title, $rows, $config = null, $selected_milestone = null,
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
 
-			<th class="tilt"><div>Datasets 			</div></th>
+			<th class="tilt"><div>Public Datasets 			</div></th>
 			<th class="tilt"><div>Valid Metadata 	</div></th>
 
-			<th class="tilt"><div>Data.gov Harvest	</div></th>
-			<th class="tilt"><div>EDI to OMB</div></th>
-			<th class="tilt"><div>EDI > PDL</div></th>
-			<th class="tilt"><div>/data	</div></th>
-			<th class="tilt"><div>Feedback	</div></th>
-			<th class="tilt"><div>Schedule	</div></th>
-
+			<?php foreach ($sections_breakdown as $section_title): ?>
+				<th class="tilt"><div><?php echo $section_title;?></div></th>
+			<?php endforeach; reset($sections_breakdown); ?>
 
 		</tr>
 
 		<?php
-			if($milestone_specified == "true" && !empty($selected_milestone)) {
-				$milestone_url = '/' . $selected_milestone;
-			} else {
-				$milestone_url = '';
+			if($milestone && !empty($milestone->selected_milestone)) {
+				$milestone_url = '/' . $milestone->selected_milestone;
 			}
 		?>
 
@@ -203,12 +198,25 @@ function status_table($title, $rows, $config = null, $selected_milestone = null,
 			<td class="content-metric <?php echo $json_status?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_datasets"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
 			<td class="content-metric <?php echo $schema_status ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_valid_metadata"><span><?php echo $percent_valid?>&nbsp;</span></a> </td>
 
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo status_color($office->tracker_fields->pdl_datagov_harvested) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#tracker_pdl_datagov_harvested"><span><?php if (!empty($office->tracker_fields->pdl_datagov_harvested)) echo page_status($office->tracker_fields->pdl_datagov_harvested); 		?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_updated)) echo status_color($office->tracker_fields->edi_updated) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>?highlight=edi#tracker_edi_updated"><span><?php if (!empty($office->tracker_fields->edi_updated)) echo page_status($office->tracker_fields->edi_updated); 		?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_superset)) echo status_color($office->tracker_fields->edi_superset) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>?highlight=edi#tracker_edi_superset"><span><?php if (!empty($office->tracker_fields->edi_superset)) echo page_status($office->tracker_fields->edi_superset);	?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pdl_slashdata)) echo status_color($office->tracker_fields->pdl_slashdata) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#tracker_pdl_slashdata"><span><?php if (!empty($office->tracker_fields->pdl_slashdata)) echo page_status($office->tracker_fields->pdl_slashdata); 	?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo status_color($office->tracker_fields->pe_feedback_specified) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>?highlight=pe#tracker_pe_feedback_specified"><span><?php if (!empty($office->tracker_fields->pe_feedback_specified)) echo page_status($office->tracker_fields->pe_feedback_specified); 				?>&nbsp;</span></a></td>
-    		<td class="boolean-metric <?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo status_color($office->tracker_fields->edi_schedule_delivered) ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>?highlight=edi#tracker_edi_schedule_delivered"><span><?php if (!empty($office->tracker_fields->edi_schedule_delivered)) echo page_status($office->tracker_fields->edi_schedule_delivered); 		?>&nbsp;</span></a></td>
+
+			<?php foreach ($sections_breakdown as $section_name => $section_title): ?>
+
+				<?php 
+					$column = $section_name . '_aggregate_score'; 
+					$column_anchor = 'leading_indicators';
+					$section_selection = ($section_name == 'pdl') ? '' : '?highlight=' . $section_name;
+				?>
+
+				<td class="boolean-metric <?php if (!empty($office->tracker_fields->$column)) echo status_color($office->tracker_fields->$column) ?>">
+					<a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?><?php echo $section_selection . '#' . $column_anchor; ?>">
+						<span>
+							<?php if (!empty($office->tracker_fields->$column)) echo page_status($office->tracker_fields->$column);?>&nbsp;
+						</span>
+					</a>
+				</td>
+
+			<?php endforeach; reset($sections_breakdown); ?>
+
 		</tr>
 		<?php endforeach;?>
 	</table>
@@ -240,9 +248,9 @@ function status_color($status) {
 
 	if(empty($status)) return '';
 
-	if ($status == 'yes') {
+	if ($status == 'yes' || $status == 'green') {
 		return 'success';
-	} else if ($status == 'no') {
+	} else if ($status == 'no' || $status == 'red') {
 		return 'danger';
 	} else {
 		return 'warning';

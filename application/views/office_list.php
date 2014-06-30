@@ -16,7 +16,7 @@ if($show_all_fields) $container_class = "full-width";
           <h2>Agencies</h2>
 
            <?php if($milestone->selected_milestone == $milestone->current): ?>
-                <p class="form-flash text-warning bg-warning"><strong>Current Milestone:</strong> The milestone selected is still in progress. The status of each field will be updated as frequently as possible, but won't be final until the milestone has passed</p>
+                <p class="form-flash text-danger bg-danger"><strong>Current Milestone:</strong> The milestone selected is still in progress. The status of each field will be updated as frequently as possible, but won't be final until the milestone has passed</p>
             <?php endif; ?>
 
 
@@ -47,7 +47,7 @@ if($show_all_fields) $container_class = "full-width";
         if($show_all_fields) {
           status_table_full('CFO Act Agencies', $cfo_offices, $tracker, $config, $milestone->selected_milestone, $milestone->specified);
         } else {
-          status_table('CFO Act Agencies', $cfo_offices, $config, $milestone->selected_milestone, $milestone->specified);
+          status_table('CFO Act Agencies', $cfo_offices, $tracker, $config, $section_breakdown, $milestone);
         }
 				
 			}

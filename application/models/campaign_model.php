@@ -246,6 +246,21 @@ class campaign_model extends CI_Model {
 
 
 
+	public function tracker_sections_model() {
+
+        $section_breakdown = array(
+                                    "edi" => "Enterprise Data Inventory", 
+                                    "pdl" => "Public Data Listing", 
+                                    "pe" => "Public Engagement", 
+                                    "ps" => "Privacy &amp; Security", 
+                                    "hc" => "Human Capital"
+                                );  
+
+        return $section_breakdown;
+
+	}
+
+
 	public function milestones_model() {
 
 		$milestones = array(

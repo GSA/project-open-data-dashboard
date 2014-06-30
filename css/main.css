@@ -80,16 +80,18 @@ background-image: linear-gradient(to bottom, #3C3C3C 0px, #141414 100%);
 }
 
 .dashboard-heading th.tilt {
-	height : 120px;
+	
 	vertical-align: bottom;
-	padding-bottom : 50px;
+	padding: auto;
+	
 }
 
 .dashboard-heading th.tilt div {
 	
 word-wrap : break-word;
 text-align : center;
-width : 6em;
+width : 7em;
+margin : 0 auto;
 
 }
 
