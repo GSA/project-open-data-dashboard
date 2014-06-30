@@ -71,15 +71,6 @@
                                     'pdl_downloadable'
                                     );
 
-            $section_breakdown = array(
-                                        "edi" => "Enterprise Data Inventory", 
-                                        "pdl" => "Public Data Listing", 
-                                        "pe" => "Public Engagement", 
-                                        "ps" => "Privacy &amp; Security", 
-                                        "hc" => "Human Capital"
-                                    );  
-
-
 
             $active_section = (!empty($selected_category)) ? $selected_category : 'pdl';  
 
@@ -101,7 +92,7 @@
 
 
            <?php if($milestone->selected_milestone == $milestone->current): ?>
-                <p class="form-flash text-warning bg-warning"><strong>Current Milestone:</strong> The milestone selected is still in progress. The status of each field will be updated as frequently as possible, but won't be final until the milestone has passed</p>
+                <p class="form-flash text-danger bg-danger"><strong>Current Milestone:</strong> The milestone selected is still in progress. The status of each field will be updated as frequently as possible, but won't be final until the milestone has passed</p>
             <?php endif; ?>
 
 
@@ -178,14 +169,14 @@
                 <?php endif;?>
 
 
-            
-
+            <a name="leading_indicators" class="anchor-point"></a>
+            <h3>Leading Indicators <a class="info-icon" href="<?php echo site_url('docs'); ?>#leading_indicators"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs tracker-sections">
                 
                 <?php foreach ($section_breakdown as $section_abbreviation => $section_title): ?>
-                    <li  <?php if($section_abbreviation == $active_section) echo 'class="active"'; ?>><a href="#<?php echo $section_abbreviation;?>" data-toggle="tab"><?php echo $section_title;?></a></li>
+                    <li  <?php if($section_abbreviation == $active_section) echo 'class="active"'; ?>><a name="<?php echo $section_abbreviation . '_tab';?>" href="#<?php echo $section_abbreviation;?>" data-toggle="tab"><?php echo $section_title;?></a></li>
                 <?php endforeach; reset($section_breakdown);  ?>
             </ul>
 
@@ -198,6 +189,18 @@
 
                             
                            <table class="table table-striped table-hover" id="note-expander-parent">
+
+                                <tr class="table-header">
+                                    <th>Status</th>
+                                    <th>Indicator</th>
+                                    <th>Automated Metrics</th>
+
+                                    <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                                        <th>Notes</th>
+                                    <?php endif; ?>   
+
+                                </th>
+
 
                                 <?php foreach ($tracker_model as $tracker_field_name => $tracker_field_meta) : ?>
 
@@ -288,8 +291,8 @@
                                             <strong>
                                                 <a href="<?php echo site_url('docs') . '#' . $tracker_field_name ?>">
                                                     <span class="glyphicon glyphicon-info-sign"></span>
-                                                    <?php echo $tracker_field_meta->label ?>
                                                 </a>
+                                                    <?php echo $tracker_field_meta->label ?>
                                             </strong>
                                         </td>                        
                                         <td>
@@ -300,14 +303,15 @@
 
                                             <?php endif; ?>
 
-                                        </td>     
-                                        <td>
-                                            <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                                        </td>
+
+                                        <?php if ($this->session->userdata('permissions') == $permission_level) : ?>     
+                                        <td>                                            
                                             <a class="btn btn-xs btn-default collapsed pull-right" href="#note-expander-<?php echo $tracker_field_name ?>" data-parent="note-expander-parent" data-toggle="collapse">
                                                 Notes
-                                            </a>
-                                            <?php endif; ?>
-                                        </td>     
+                                            </a>                                            
+                                        </td>   
+                                        <?php endif; ?>  
                                     </tr>
 
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
@@ -369,21 +373,20 @@
 
 
 
+            
+            <a name="automated_metrics" class="anchor-point"></a>
+            <h3>Automated Metrics <a class="info-icon" href="<?php echo site_url('docs'); ?>#automated_metrics"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
 
-
-
-		
+		     <?php if(empty($office_campaign->datajson_status) && empty($office_campaign->datapage_status) && empty($office_campaign->digitalstrategy_status)): ?>
+                <p>No automated metrics are currently available for this milestone</p>
+             <?php endif; ?> 
 		
 		
 		
 		<?php if(!empty($office_campaign->datajson_status)): ?>
 		
             
-        <a name="pdl_datajson" class="anchor-point"></a>
-                
-        <p>
-            See the <a href="<?php echo site_url('docs'); ?>">documentation</a> for an explanation of this table.
-        </p>    
+        <a name="pdl_datajson" class="anchor-point"></a>              
 
 		<div class="panel panel-default">
 		<div class="panel-heading">data.json <a type="button" class="btn btn-success btn-xs pull-right hidden" href="<?php echo site_url('datagov/status'); ?>/<?php echo $office->id; ?>">Refresh</a></div>

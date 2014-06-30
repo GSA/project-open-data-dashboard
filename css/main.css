@@ -229,7 +229,8 @@ form .tracker-sections.nav-tabs {
 	color : #000;	
 }
 
-.tracker-field strong a span {
+.tracker-field strong a span, 
+ a.info-icon span {
 	color : #ccc;
 }
 
@@ -238,7 +239,9 @@ form .tracker-sections.nav-tabs {
 	text-decoration : none;
 }
 
-.tracker-field strong a:hover span {
+.tracker-field strong a:hover span, 
+.tracker-field strong:hover span, 
+ a.info-icon:hover span {
 	color : #428bca;
 }
 
@@ -250,5 +253,9 @@ form .tracker-sections.nav-tabs {
 	.container.full-width {
 		width : 95%;
 	}
+}
+
+.table-striped > tbody > tr.table-header th {
+	background-color : #E6E6E6;
 }
 
