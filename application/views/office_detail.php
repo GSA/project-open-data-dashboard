@@ -161,16 +161,18 @@
 
                 </div>
 
-                <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                    <div  class="pull-right" style="margin : 1em 0;">                                
-                        <button class="btn btn-default btn-xs" id="accShow">Show All Notes</button>
-                        <button type="submit" class="btn btn-success btn-xs">Update</button> 
-                    </div>  
-                <?php endif;?>
-
 
             <a name="leading_indicators" class="anchor-point"></a>
             <h3>Leading Indicators <a class="info-icon" href="<?php echo site_url('docs'); ?>#leading_indicators"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
+
+
+            <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                <div  class="pull-right" style="margin : 1em 0;">                                
+                    <button class="btn btn-default btn-xs" id="accShow">Show All Notes</button>
+                    <button type="submit" class="btn btn-success btn-xs">Update</button> 
+                </div>  
+            <?php endif;?>
+
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs tracker-sections">
@@ -192,11 +194,16 @@
 
                                 <tr class="table-header">
                                     <th>Status</th>
+
+                                    <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                                        <th></th>
+                                    <?php endif; ?> 
+
                                     <th>Indicator</th>
                                     <th>Automated Metrics</th>
 
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                                        <th>Notes</th>
+                                        <th></th>
                                     <?php endif; ?>   
 
                                 </th>

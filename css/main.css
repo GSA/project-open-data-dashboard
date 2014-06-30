@@ -199,9 +199,14 @@ form .tracker-content .table-striped > tbody > tr > th {
 	background-color: #fff !important;
 }
 
-form .tracker-content .table-striped > tbody > tr:nth-child(4n+1) > td, 
-form .tracker-content .table-striped > tbody > tr:nth-child(4n+1) > th {
+form .tracker-content .table-striped > tbody > tr:nth-child(4n) > td, 
+form .tracker-content .table-striped > tbody > tr:nth-child(4n) > th {
     background-color: #F9F9F9 !important;
+}
+
+.table-striped > tbody > tr.table-header th, 
+form .tracker-content .table-striped > tbody > tr.table-header th {
+	background-color : #E6E6E6 !important;
 }
 
 .tab-content {
@@ -255,7 +260,5 @@ form .tracker-sections.nav-tabs {
 	}
 }
 
-.table-striped > tbody > tr.table-header th {
-	background-color : #E6E6E6;
-}
+
 
