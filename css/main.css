@@ -189,9 +189,13 @@ text-decoration: none;
 }
 
 
-.general-notes {
+.general-notes, .section-notes {
 	border : 1px solid #F0F0F0;
 	margin : 3em 0;
+}
+
+.section-notes {
+	border : 0;
 }
 
 form .tracker-content .table-striped > tbody > tr > td, 

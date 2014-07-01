@@ -281,6 +281,24 @@
                         <div class="tab-pane <?php if($section_abbreviation == $active_section) echo 'active'; ?>" id="<?php echo $section_abbreviation;?>">
 
 
+
+                            <div class="section-notes">
+                                
+                                <?php 
+                                    $note_field = 'note_' . $section_abbreviation . '_aggregate_score';
+                                    $note_data = (!empty($notes[$note_field])) ? $notes[$note_field] : $note_model;
+                                ?>
+
+                                <div><?php echo $note_data->current->note_html; ?></div>
+                                
+                                <?php if (!empty($note_data->current->date) && !empty($note_data->current->author)): ?>
+                                    <div class="note-metadata">
+                                        Lasted edited on <?php echo $note_data->current->date;?> by <?php echo $note_data->current->author;?>
+                                    </div> 
+                                <?php endif; ?>                                
+
+                            </div>
+
                             
                            <table class="table table-striped table-hover" id="note-expander-parent">
 
