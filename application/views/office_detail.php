@@ -190,7 +190,9 @@
                                 <?php endif; ?>
                             </td>
 
-                            <td></td>                           
+                            <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                                <td></td>  
+                            <?php endif; ?>                         
 
                         </tr>
                     
