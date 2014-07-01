@@ -920,6 +920,20 @@ class Campaign extends CI_Controller {
 
 		$datagov_model_fields = $this->campaign->datagov_model();
 		$tracker_model_fields = $this->campaign->tracker_model();
+        $tracker_review_model = $this->campaign->tracker_review_model();
+   
+        // Set author name with best data available
+		$author_full = $this->session->userdata('name_full');
+		$author_name = (!empty($author_full)) ? $author_full : $this->session->userdata('username');
+
+		// Update tracker status metadata
+		$tracker_review_model->last_editor = $author_name;
+		$tracker_review_model->last_updated = date("F j, Y, g:i a T");
+
+		$tracker_review_model->status 				= (!empty($update->status)) ? $update->status : null;
+		$tracker_review_model->reviewer_email 		= (!empty($update->reviewer_email)) ? $update->reviewer_email : null;
+
+		$datagov_model_fields->tracker_status = json_encode($tracker_review_model);
 
 
 
@@ -931,10 +945,6 @@ class Campaign extends CI_Controller {
 			$field_name = "note_$field";
 
 			if(!empty($update->$field_name)) {
-
-				// Set author name with best data available
-				$author_full = $this->session->userdata('name_full');
-				$author_name = (!empty($author_full)) ? $author_full : $this->session->userdata('username');
 
 				$note_data = array("note" => $update->$field_name, "date" =>  date("F j, Y, g:i a T"), "author" => $author_name);
 				$note_data = array("current" => $note_data, "previous" => null);

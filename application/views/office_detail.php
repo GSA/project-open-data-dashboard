@@ -173,7 +173,7 @@
 
                             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                 <td>
-                                    <input type="text" name="reviewer_email" value="<?php if (!empty($office_campaign->review_status->reviewer_email)) echo  $office_campaign->review_status->reviewer_email ?>">
+                                    <input type="text" name="reviewer_email" value="<?php if (!empty($office_campaign->tracker_status->reviewer_email)) echo  $office_campaign->tracker_status->reviewer_email ?>">
                                 </td>
                             <?php endif; ?>
 
@@ -463,6 +463,13 @@
 
 
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+
+
+                    <?php if(!empty($office_campaign->tracker_status)): ?>
+                        <input type="hidden" name="reviewer_email" value="<?php if (!empty($office_campaign->tracker_status->reviewer_email)) echo  $office_campaign->tracker_status->reviewer_email ?>">
+                        <input type="hidden" name="status" value="<?php if (!empty($office_campaign->tracker_status->status)) echo  $office_campaign->tracker_status->status ?>">
+                    <?php endif; ?>
+
                     <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">   
                     <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">                       
                 </form>
