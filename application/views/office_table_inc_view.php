@@ -203,7 +203,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
 				<?php 
 					$column = $section_name . '_aggregate_score'; 
-					$column_anchor = 'leading_indicators';
+					$column_anchor = $section_name . '_tab';
 					$section_selection = ($section_name == 'pdl') ? '' : '?highlight=' . $section_name;
 				?>
 
