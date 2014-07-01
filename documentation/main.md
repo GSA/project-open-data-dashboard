@@ -6,7 +6,141 @@ This is a brief guide to understand how the agency dashboard measures and tracks
 
 The [Agency Dashboard](http://data.civicagency.org/offices) is primarily used to track implementation of the machine readable data.json file described by project open data, but it also tracks implementation of the human readable /data page. Below is an explanation of each part of the listing seen on a specific agency page.
 
-###Automated Fields
+<a name="leading_indicators"></a>
+###Leading Indicators
+
+<a name="edi_aggregate_score"></a>
+####Overall Progress this Milestone
+No documentation added yet 
+
+<a name="edi_updated"></a>
+####Inventory Updated this Quarter
+No documentation added yet 
+
+<a name="edi_datasets"></a>
+####Number of Datasets
+No documentation added yet 
+
+<a name="edi_schedule_delivered"></a>
+####Schedule Delivered
+No documentation added yet 
+
+<a name="edi_bureaus"></a>
+####Bureaus represented
+No documentation added yet 
+
+<a name="edi_programs"></a>
+####Programs represented
+No documentation added yet 
+
+<a name="edi_access_public"></a>
+####Access Level = Public
+No documentation added yet 
+
+<a name="edi_access_restricted"></a>
+####Access Level = Restricted
+No documentation added yet 
+
+<a name="edi_access_nonpublic"></a>
+####Access Level = Non-Public
+No documentation added yet 
+
+<a name="edi_superset"></a>
+####Inventory > Public listing
+No documentation added yet 
+
+<a name="edi_progress_evaluation"></a>
+####Percentage growth in records since last quarter
+No documentation added yet 
+
+<a name="edi_schedule_risk"></a>
+####Schedule Risk for Nov 30, 2014
+No documentation added yet 
+
+<a name="edi_quality_check"></a>
+####Spot Check - Site search, SORNs, PIAs, FOIA
+No documentation added yet 
+
+<a name="pdl_aggregate_score"></a>
+####Overall Progress this Milestone
+No documentation added yet 
+
+<a name="pdl_datasets"></a>
+####Number of Datasets
+No documentation added yet 
+
+<a name="pdl_downloadable"></a>
+####Number of Downloadable Datasets
+No documentation added yet 
+
+<a name="pdl_growth"></a>
+####Percentage growth in records since last quarter
+No documentation added yet 
+
+<a name="pdl_valid_metadata"></a>
+####Valid Metadata
+No documentation added yet 
+
+<a name="pdl_slashdata"></a>
+####/data
+No documentation added yet 
+
+<a name="pdl_datajson"></a>
+####/data.json
+No documentation added yet 
+
+<a name="pdl_datagov_harvested"></a>
+####Harvested by data.gov
+No documentation added yet 
+
+<a name="pe_aggregate_score"></a>
+####Overall Progress this Milestone
+No documentation added yet 
+
+<a name="pe_feedback_specified"></a>
+####Description of feedback mechanism delivered
+No documentation added yet 
+
+<a name="pe_prioritization"></a>
+####Data release is prioritized through public engagement
+No documentation added yet 
+
+<a name="pe_dialogue"></a>
+####Feedback loop is closed, 2 way communication
+No documentation added yet 
+
+<a name="pe_reference"></a>
+####Link to or description of Feedback Mechanism
+No documentation added yet 
+
+<a name="ps_aggregate_score"></a>
+####Overall Progress this Milestone
+No documentation added yet 
+
+<a name="ps_publication_process"></a>
+####Data Publication Process Delivered
+No documentation added yet 
+
+<a name="ps_publication_process_qa"></a>
+####Information that should not to be made public is documented with agency's OGC
+No documentation added yet 
+
+<a name="hc_aggregate_score"></a>
+####Overall Progress this Milestone
+No documentation added yet 
+
+<a name="hc_lead"></a>
+####Open Data Primary Point of Contact
+No documentation added yet 
+
+<a name="hc_contacts"></a>
+####POCs identified for required responsibilities
+No documentation added yet 
+
+
+
+<a name="automated_metrics"></a>
+###Automated Metrics
 These fields are determined by an automated script that runs every night to analyze agency data.json, digitalstrategy.json, and /data files. 
 
 <a name="pdl_expected_url"></a>
