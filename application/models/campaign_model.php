@@ -637,7 +637,8 @@ class campaign_model extends CI_Model {
 				$response['errors'] = false;
 			}
 
-			if ($return_source) {
+			if ($return_source) {				
+				$datajson_decode = filter_json($datajson_decode);			
 				$response['source'] = $datajson_decode;
 			}
 

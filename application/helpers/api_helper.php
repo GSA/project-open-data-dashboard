@@ -168,6 +168,27 @@ function json_text_filter($datajson) {
 }
 
 
+function filter_json( $datajson ) {
+
+
+  foreach ($datajson as $key => $dataset) {
+
+    foreach ($dataset as $field_name => $field_value) {
+
+      if (is_string($field_value)) {
+        $field_value =  filter_var( $field_value, FILTER_SANITIZE_STRING );
+      } 
+
+      $dataset->$field_name = $field_value;
+
+    }
+
+
+  }
+
+    return $datajson; 
+}
+
 
 
 function linkToAnchor($text) {
