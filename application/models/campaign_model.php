@@ -63,6 +63,7 @@ class campaign_model extends CI_Model {
 		$model->digitalstrategy_status			= null;
 
 		$model->tracker_fields					= null;
+		$model->tracker_status					= null;
 
 		$model->datagov_harvest					= null;
 		$model->inventory_posted				= null;
@@ -257,6 +258,21 @@ class campaign_model extends CI_Model {
                                 );  
 
         return $section_breakdown;
+
+	}
+
+
+	public function tracker_review_model() {
+
+		$model = new stdClass();
+
+		$model->status 						= null;
+		$model->reviewer_name				= null;
+		$model->reviewer_email				= null;
+		$model->last_updated				= null;
+		$model->last_editor					= null;
+
+		return $model;
 
 	}
 

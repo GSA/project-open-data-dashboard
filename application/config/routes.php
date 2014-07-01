@@ -48,6 +48,8 @@ $route['validate'] = "campaign/validate";
 $route['changeset'] = "campaign/changeset";
 
 $route['datagov/status-update'] = "campaign/status_update";
+$route['datagov/status-review-update'] = "campaign/status_review_update";
+
 
 $route['datagov/(:any)'] = "campaign/$1";
 $route['datagov/(:any)/'] = "campaign/$1";

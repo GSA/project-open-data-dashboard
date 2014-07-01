@@ -852,6 +852,55 @@ class Campaign extends CI_Controller {
 	}
 
 
+	public function status_review_update() {
+
+		// Kick them out if they're not allowed here.
+		if ($this->session->userdata('permissions') !== 'admin') {
+			$this->load->helper('url');
+            redirect('/');
+            exit;
+ 		}
+
+
+        $update = (object) $this->input->post(NULL, TRUE);
+
+
+        $this->load->model('campaign_model', 'campaign');
+
+		$datagov_model_fields = $this->campaign->datagov_model();
+        $tracker_review_model = $this->campaign->tracker_review_model();
+
+		$datagov_model_fields->office_id = $update->office_id;
+		$datagov_model_fields->milestone = $update->milestone;
+   
+        // Set author name with best data available
+		$author_full = $this->session->userdata('name_full');
+		$author_name = (!empty($author_full)) ? $author_full : $this->session->userdata('username');
+
+		$tracker_review_model->last_editor = $author_name;
+		$tracker_review_model->last_updated = date("F j, Y, g:i a T");
+
+		$tracker_review_model->status 				= $update->status;
+		$tracker_review_model->reviewer_email 		= $update->reviewer_email;
+
+		$datagov_model_fields->tracker_status = json_encode($tracker_review_model);
+
+		// remove blank fields from update
+		foreach ($datagov_model_fields as $field => $data) {
+			if(empty($data)) unset($datagov_model_fields->$field);
+		}
+
+
+    	$this->campaign->update_status($datagov_model_fields);
+
+        $this->session->set_flashdata('outcome', 'success');
+        $this->session->set_flashdata('status', 'Status updated');
+
+		$this->load->helper('url');
+        redirect('offices/detail/' . $datagov_model_fields->office_id . '/' . $datagov_model_fields->milestone);
+
+
+    }
 
 	public function status_update() {
 
@@ -865,7 +914,7 @@ class Campaign extends CI_Controller {
 
         $this->load->model('campaign_model', 'campaign');
 
-		//$datajson 		= ($this->input->post('datajson', TRUE)) ? $this->input->post('datajson', TRUE) : $datajson;
+		//$datajson 		= ($this->input->post('datajson', TRU E)) ? $this->input->post('datajson', TRUE) : $datajson;
 
         $update = (object) $this->input->post(NULL, TRUE);
 
