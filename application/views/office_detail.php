@@ -228,7 +228,7 @@
                                                 $status_class = '';
                                             } 
                                         } else {
-                                            $office_campaign->tracker_fields->$tracker_field_name = '';
+                                            //$office_campaign->tracker_fields->$tracker_field_name = '';
                                             $status_icon = '';            
                                             $status_class = '';
                                         }
@@ -238,9 +238,11 @@
                                     <tr <?php //if(!empty($status_class)) echo "class=\"$status_class\""; ?>>
                                         <td class="col-md-1">
                                             <?php 
-                                                if ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "traffic") {
+                                                if (!empty($status_icon) && ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "traffic")) {
                                                     echo $status_icon;     
-                                                }                         
+                                                } else {
+                                                    echo $office_campaign->tracker_fields->$tracker_field_name;
+                                                }                       
                                             ?>
                                         </td>
 
