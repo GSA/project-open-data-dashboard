@@ -200,7 +200,7 @@ class Offices extends CI_Controller {
 				$tracker_fields = json_decode($view_data['office_campaign']->tracker_fields);
 
 				foreach ($view_data['tracker_model'] as $field_name => $value) {
-					$tracker_fields->$field_name = (!empty($tracker_fields->$field_name)) ? $tracker_fields->$field_name : null;
+					$tracker_fields->$field_name = (isset($tracker_fields->$field_name)) ? $tracker_fields->$field_name : null;
 				}
 
 				$view_data['office_campaign']->tracker_fields = json_encode($tracker_fields);
