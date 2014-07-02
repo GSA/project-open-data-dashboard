@@ -153,6 +153,9 @@ class Offices extends CI_Controller {
 		// pass milestones data model
 		$view_data['milestone'] = $milestone;
 
+		// pass tracker data model
+		$view_data['tracker_model'] = $this->campaign->tracker_model();
+
 
 		$this->db->select('*');
 		$this->db->where('id', $id);
@@ -191,6 +194,20 @@ class Offices extends CI_Controller {
 			// Get crawler data
 			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id, $milestone->selected_milestone);
 
+			// Make sure tracker data uses full tracker model
+			if(!empty($view_data['office_campaign']->tracker_fields)) {
+
+				$tracker_fields = json_decode($view_data['office_campaign']->tracker_fields);
+
+				foreach ($view_data['tracker_model'] as $field_name => $value) {
+					$tracker_fields->$field_name = (!empty($tracker_fields->$field_name)) ? $tracker_fields->$field_name : null;
+				}
+
+				$view_data['office_campaign']->tracker_fields = json_encode($tracker_fields);
+
+			}			
+
+
 			if(empty($view_data['office_campaign'])) {
 				$view_data['office_campaign'] = $this->campaign->datagov_model();
 			}
@@ -225,9 +242,6 @@ class Offices extends CI_Controller {
 
 		// selected tab
 		$view_data['selected_category'] = $selected_category;
-
-		// pass tracker data model
-		$view_data['tracker_model'] = $this->campaign->tracker_model();
 
 		// pass tracker section breakdown model
 		$view_data['section_breakdown'] = $this->campaign->tracker_sections_model();
