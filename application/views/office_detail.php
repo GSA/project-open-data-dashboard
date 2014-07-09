@@ -1137,52 +1137,55 @@
             ?>
 
             <?php
+                if(!empty($digital_strategy->items)) {
 
-                foreach ($digital_strategy->items as $item) {
-                    if (!empty($sections[$item->id])) {
+                    foreach ($digital_strategy->items as $item) {
+                        if (!empty($sections[$item->id])) {
 
-                        echo "<a name=\"{$sections[$item->id]}\" class=\"anchor-point\"></a>";
-                        echo "<h3>{$item->id} {$item->text}</h3>";
-                        
-                        if($item->multiple === false) {
-                            echo "<h4>{$item->fields[0]->label}</h4>";
-                            echo '<br>';
-                            echo '<pre style="white-space: pre-wrap; word-break: keep-all; ">' . $item->fields[0]->value . '</pre>';                           
-                        } else {
+                            echo "<a name=\"{$sections[$item->id]}\" class=\"anchor-point\"></a>";
+                            echo "<h3>{$item->id} {$item->text}</h3>";
                             
-                            $columns = count($item->fields);
-                            $rows   = count($item->fields[0]->value);
-                            
-                            
-
-                            for ($row=0; $row < $rows; $row++) {
+                            if($item->multiple === false) {
+                                echo "<h4>{$item->fields[0]->label}</h4>";
+                                echo '<br>';
+                                echo '<pre style="white-space: pre-wrap; word-break: keep-all; ">' . $item->fields[0]->value . '</pre>';                           
+                            } else {
                                 
-                                echo '<table class="table table-striped table-hover" style="margin-bottom : 4em; border-bottom : 3px solid #ccc">';
+                                $columns = count($item->fields);
+                                $rows   = count($item->fields[0]->value);
                                 
-                                for ($column=0; $column< $columns; $column++) {
-                                    echo '<tr>';
-                                    echo '<th class="col-sm-2 col-md-2 col-lg-2">' . "{$item->fields[$column]->label}</th>";
+                                
+
+                                for ($row=0; $row < $rows; $row++) {
                                     
-                                    echo '<td class="col-sm-10 col-md-10 col-lg-10">';
-                                    if(!empty($item->fields[$column]->value[$row])) {
-                                        echo $item->fields[$column]->value[$row];
+                                    echo '<table class="table table-striped table-hover" style="margin-bottom : 4em; border-bottom : 3px solid #ccc">';
+                                    
+                                    for ($column=0; $column< $columns; $column++) {
+                                        echo '<tr>';
+                                        echo '<th class="col-sm-2 col-md-2 col-lg-2">' . "{$item->fields[$column]->label}</th>";
+                                        
+                                        echo '<td class="col-sm-10 col-md-10 col-lg-10">';
+                                        if(!empty($item->fields[$column]->value[$row])) {
+                                            echo $item->fields[$column]->value[$row];
+                                        }
+                                        echo "</td>";
+                                        
+                                        echo "</tr>";                                    
                                     }
-                                    echo "</td>";
                                     
-                                    echo "</tr>";                                    
+                                    echo '</table>';                                 
+
                                 }
                                 
-                                echo '</table>';                                 
-
                             }
                             
+                            echo '<hr>';
+                                                
                         }
-                        
-                        echo '<hr>';
-                                            
                     }
+
+
                 }
-            
              ?>
              </div>
              </div>
