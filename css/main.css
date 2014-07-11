@@ -131,6 +131,17 @@ width : 2em;
 }
 
 
+.dashboard-meta-heading td {
+	font-style: italic;
+	font-weight: bold;
+	color : #666;
+	background-color: #F0F0F0 !important; /* EDEDED */
+}
+
+.pdl-heading {
+	background-color : #F5F5F5 !important;	
+}
+
 .empty-field {
 	background-color : #BFBFBF !important;
 }
@@ -239,8 +250,16 @@ form .tracker-sections.nav-tabs {
 }
 
 .tracker-field strong a span, 
- a.info-icon span {
+a.info-icon span {
 	color : #ccc;
+}
+
+.dashboard-meta-heading a span {
+	color : #A8A8A8;	
+}
+
+.dashboard-meta-heading a:hover span {
+	color : #428bca;
 }
 
 .tracker-field strong a:hover {

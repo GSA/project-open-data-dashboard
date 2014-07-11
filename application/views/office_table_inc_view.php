@@ -68,17 +68,31 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
 ?>
 	<div class="panel panel-default">
-	<div class="panel-heading"><?php echo $title ?></div>
 	<table class="dashboard table table-striped table-hover table-bordered">
+		<tr class="dashboard-meta-heading">
+			<td><?php echo $title ?></td>
+			<td colspan="5">
+				Leading Indicators Strategy 
+                <a href="<?php echo site_url('docs') . '#leading_indicators_strategy' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>			
+			</td>
+			<td colspan="2" class="pdl-heading">
+				Public Data Listing Metrics
+                <a href="<?php echo site_url('docs') . '#automated_metrics' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>				
+			</td>
+		</tr>
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
-
-			<th class="tilt"><div>Public Datasets 			</div></th>
-			<th class="tilt"><div>Valid Metadata 	</div></th>
 
 			<?php foreach ($sections_breakdown as $section_title): ?>
 				<th class="tilt"><div><?php echo $section_title;?></div></th>
 			<?php endforeach; reset($sections_breakdown); ?>
+
+			<th class="tilt pdl-heading"><div>Public Datasets</div></th>
+			<th class="tilt pdl-heading"><div>Valid Metadata</div></th>
 
 		</tr>
 
@@ -195,9 +209,6 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
 		<tr class="metrics-row">
 			<th><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>"><?php echo $office->name;?></a></th>
-			<td class="content-metric <?php echo $json_status?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_datasets"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
-			<td class="content-metric <?php echo $schema_status ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_valid_metadata"><span><?php echo $percent_valid?>&nbsp;</span></a> </td>
-
 
 			<?php foreach ($sections_breakdown as $section_name => $section_title): ?>
 
@@ -216,6 +227,9 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 				</td>
 
 			<?php endforeach; reset($sections_breakdown); ?>
+
+			<td class="content-metric <?php echo $json_status?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_datasets"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
+			<td class="content-metric <?php echo $schema_status ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_valid_metadata"><span><?php echo $percent_valid?>&nbsp;</span></a> </td>
 
 		</tr>
 		<?php endforeach;?>
