@@ -179,8 +179,8 @@ class Offices extends CI_Controller {
 
 						$note_html = $note_list[$note_field]->current->note;
 						
-						$note_html = linkToAnchor($note_html);
 						$note_html = $markdown_extra->transform($note_html);						
+						$note_html = linkToAnchor($note_html);
 
 						$note_list[$note_field]->current->note_html = $note_html;
 					} else {

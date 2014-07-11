@@ -41,8 +41,8 @@ class Docs extends CI_Controller {
 
 			$markdown_text = $docs;
 			
-			$markdown_text = linkToAnchor($markdown_text);
 			$markdown_text = $markdown_extra->transform($markdown_text);
+			$markdown_text = linkToAnchor($markdown_text);
 			
 			$data['docs_html'] = $markdown_text;
 

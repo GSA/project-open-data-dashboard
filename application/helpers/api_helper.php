@@ -192,26 +192,11 @@ function filter_json( $datajson ) {
 
 
 function linkToAnchor($text) {
-// The Regular Expression filter
-$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
 
-// The Text you want to filter for urls
+$convertedText = preg_replace( '@(?<![.*">])\b(?:(?:https?|ftp|file)://|[a-z]\.)[-A-Z0-9+&#/%=~_|$?!:,.]*[A-Z0-9+&#/%=~_|$]@i', '<a href="\0" target="_blank">\0</a>', $text );
 
-// Check if there is a url in the text
-if(preg_match_all($reg_exUrl, $text, $url)) {
-       // make the urls hyper links
-       $matches = array_unique($url[0]);
-       foreach($matches as $match) {
-            $replacement = "<a href=".$match.">{$match}</a>";
-            $text = str_replace($match,$replacement,$text);
-       }
-       return $text;
-} else {
+return $convertedText;
 
-       // if no urls in the text just return the text
-       return $text;
-
-}
 }
 
 function prettyPrint( $json )
