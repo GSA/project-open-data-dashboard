@@ -44,6 +44,9 @@
           </ul>
         </li>
 
+        <li><a href="<?php echo site_url('docs/about')?>">About</a></li>
+
+
       </ul>
 
       <?php if ($this->session->userdata('username')) : ?>
