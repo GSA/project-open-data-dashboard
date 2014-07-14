@@ -65,6 +65,4 @@ if($show_all_fields) $container_class = "full-width";
         </div>
       </div>
 
-      <hr>
-
 <?php include 'footer.php'; ?>

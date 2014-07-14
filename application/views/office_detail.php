@@ -539,7 +539,12 @@
 		<table class="table table-striped table-hover">		
 
 		<tr>
-			<th>Expected Data.json URL</th>
+			<th>               
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_expected_url' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Expected Data.json URL               
+            </th>
 			<td>
 				<?php if(!empty($office_campaign->datajson_status->expected_url)): ?>
 					<a href="<?php echo $office_campaign->datajson_status->expected_url ?>"><?php echo $office_campaign->datajson_status->expected_url ?></a>
@@ -587,14 +592,24 @@
 		</tr>
 							
 		<tr>
-			<th>Resolved Data.json URL</th>
+			<th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_resolved_url' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Resolved Data.json URL
+            </th>
 			<td>
 				<a href="<?php echo $office_campaign->expected_datajson_status->url ?>"><?php echo $office_campaign->expected_datajson_status->url ?></a>
 			</td>
 		</tr>	
 		
 		<tr>
-			<th>Redirects</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_redirects' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Redirects
+            </th>            
 			<td>
 				<?php if(!empty($office_campaign->expected_datajson_status->redirect_count)): ?>
 				<span class="text-<?php echo ($office_campaign->expected_datajson_status->redirect_count > 3) ? 'danger' : 'warning'?>">
@@ -609,7 +624,12 @@
 		
 		
 		<tr class="<?php echo $status_color;?>">
-			<th>HTTP Status</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_http_status' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                HTTP Status
+            </th>             
 			<td>
 				<span class="text-<?php echo $status_color;?>">
 					<?php echo $office_campaign->expected_datajson_status->http_code?>
@@ -618,7 +638,12 @@
 		</tr>		
 	
 		<tr class="<?php echo $mime_color;?>">
-			<th>Content Type</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_content_type' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Content Type
+            </th>             
 			<td>
 				<span class="text-<?php echo $mime_color;?>">
 					<?php echo $office_campaign->expected_datajson_status->content_type?>
@@ -641,7 +666,12 @@
 		
 		
 		<tr class="<?php echo ($valid_json == true) ? 'success' : 'danger'?>">
-			<th>Valid JSON</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_valid_json' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Valid JSON
+            </th>              
 			<td>
 			<span class="text-<?php echo ($valid_json == true) ? 'success' : 'danger'?>">
 			<?php		
@@ -653,7 +683,12 @@
 
         
         <tr>
-            <th>Datasets</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_datasets' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Datasets
+            </th>             
             <td>      
                 <a name="pdl_datasets" class="anchor-point"></a>          
                 <?php echo $total_records;?>                
@@ -666,7 +701,12 @@
 
             <?php if(!empty($office_campaign->datajson_status->qa->accessURL_present)): ?>
             <tr>
-                <th>Datasets with Downloadable URLs (accessURL)</th>
+                <th>
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_datasets_downloadable' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Datasets with Downloadable URLs (accessURL)
+                </th>                  
                 <td>
                     <a name="pdl_downloadable" class="anchor-point"></a>
                     <?php echo process_percentage($office_campaign->datajson_status->qa->accessURL_present, $total_records); ?>
@@ -677,7 +717,12 @@
 
             <?php if(!empty($office_campaign->datajson_status->qa->accessURL_total)): ?>
             <tr>
-                <th>Total Downloadable URLs (accessURL)</th>
+                <th>
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_count' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Total Downloadable URLs (accessURL)
+                </th>                 
                 <td>
                     <?php echo $office_campaign->datajson_status->qa->accessURL_total; ?>
                 </td>
@@ -687,7 +732,12 @@
 
             <?php if(!empty($office_campaign->datajson_status->qa->bureauCodes)): ?>
             <tr>
-                <th>Bureaus Represented</th>
+                <th>
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_bureau_count' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Bureaus Represented
+                </th>                
                 <td>
                     <a name="pdl_bureaus" class="anchor-point"></a>
                     <?php echo count($office_campaign->datajson_status->qa->bureauCodes); ?>
@@ -697,7 +747,12 @@
 
             <?php if(!empty($office_campaign->datajson_status->qa->programCodes)): ?>
             <tr>
-                <th>Programs Represented</th>
+                <th>
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_program_count' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Programs Represented
+                </th>                 
                 <td>
                     <a name="pdl_programs" class="anchor-point"></a>
                     <?php echo count($office_campaign->datajson_status->qa->programCodes); ?>
@@ -710,7 +765,12 @@
 
 
         <tr class="<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
-            <th>Datasets with Valid Metadata</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_valid_count' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Datasets with Valid Metadata
+            </th>              
             <td>
                 <a name="pdl_valid_metadata" class="anchor-point"></a>
 
@@ -723,7 +783,12 @@
         </tr>   
      
 		<tr class="<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
-			<th>Valid Schema</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_valid_schema' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Valid Schema
+            </th>             
 			<td>
 			<span class="text-<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
 			<?php
@@ -748,7 +813,12 @@
 		if(isset($office_campaign->datajson_status->schema_errors)): ?>
 		
 		<tr class="danger">
-			<th>Schema Errors</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_schema_errors' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Schema Errors
+            </th>  
 			<td>
 			<span>
 			<?php
@@ -816,7 +886,12 @@
 			
         <?php if(!empty($office_campaign->expected_datajson_status->download_content_length)): ?>
         <tr>
-            <th>File Size</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_file_size' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                File Size
+            </th>             
             <td>
                 <span>
                     <?php echo human_filesize($office_campaign->expected_datajson_status->download_content_length)?>
@@ -828,7 +903,12 @@
 
         <?php if(!empty($office_campaign->expected_datajson_status->filetime) && $office_campaign->expected_datajson_status->filetime > 0): ?>
         <tr>
-            <th>Last modified</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_last_modified' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Last modified
+            </th>
             <td>
                 <span>
                     <?php echo date("l, d-M-Y H:i:s T", $office_campaign->expected_datajson_status->filetime)?>
@@ -840,7 +920,12 @@
 
         <?php if(!empty($office_campaign->expected_datajson_status->last_crawl)): ?>
         <tr>
-            <th>Last crawl</th>
+            <th>
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_last_crawl' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Last crawl
+            </th>
             <td>
                 <span>
                     <?php echo date("l, d-M-Y H:i:s T", $office_campaign->expected_datajson_status->last_crawl)?>
@@ -859,7 +944,12 @@
         <a name="pdl_slashdata" class="anchor-point"></a>
 
     	<div class="panel panel-default">
-    	<div class="panel-heading">/data page</div>
+    	<div class="panel-heading">
+            /data page 
+            <a class="info-icon" href="<?php echo site_url('docs') . '#datapage' ?>">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </a>            
+        </div>
 
     	<table class="table table-striped table-hover">		
 
@@ -983,7 +1073,12 @@
 
 
     	<div class="panel panel-default">
-    	<div class="panel-heading">/digitalstrategy.json</div>
+    	<div class="panel-heading">
+            /digitalstrategy.json 
+            <a class="info-icon" href="<?php echo site_url('docs') . '#digitalstrategy' ?>">
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </a>             
+        </div>
 
     	<table class="table table-striped table-hover">		
 
@@ -1122,7 +1217,12 @@
          <?php if($valid_json == true && !empty($digital_strategy)): ?>
 
      	    <div class="panel panel-default">
-     	    <div class="panel-heading">Digital Strategy</div>
+     	    <div class="panel-heading">
+                Digital Strategy 
+                <a class="info-icon" href="<?php echo site_url('docs') . '#digitalstrategy_excerpts' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>                  
+            </div>
      	    <div style="padding : 1em;">
             <?php 
                 $sections = array(  "1.2.4" => "edi_schedule_delivered", 
