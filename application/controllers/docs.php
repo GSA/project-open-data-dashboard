@@ -27,12 +27,13 @@ class Docs extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
+	public function index($page = 'main')
 	{
 
 		$data = array();
 
-		$docs_path = ($this->config->item('docs_path')) ? $this->config->item('docs_path') : 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/main.md';
+		$docs_path = ($this->config->item('docs_path')) ? $this->config->item('docs_path') : 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';	
+		$docs_path = $docs_path	. $page . '.md';
 		$docs = @file_get_contents($docs_path);	
 		
 		if($docs) {
@@ -53,21 +54,22 @@ class Docs extends CI_Controller {
 		$this->load->view('docs', $data);
 	}
 
-	public function intro()
-	{
-        redirect('offices');
-		//$this->load->view('welcome_message');
+
+	public function routes($route) {
+
+		if ($route == 'intro') {
+	        redirect('offices');
+			//$this->load->view('welcome_message');			
+		} else if ($route == 'export') {
+			$this->load->view('export');
+		} else if ($route == 'user') {
+			$this->load->view('user');
+		} else {
+			$this->index($route);
+		}
+
 	}
 
-	public function export()
-	{
-		$this->load->view('export');
-	}
-
-	public function user()
-	{
-		$this->load->view('user');
-	}
 
 
 }

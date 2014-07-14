@@ -2,7 +2,7 @@
 
 $config['download_dir'] = '/var/www/project-open-data-dashboard/downloads';
 $config['archive_dir']  = '/var/www/project-open-data-dashboard/archive';
-$config['docs_path'] = 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/main.md';
+$config['docs_path'] = 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';
 
 $config['import_active'] = true;
 $config['show_all_offices'] = false;

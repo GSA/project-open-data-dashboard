@@ -38,9 +38,9 @@
 |
 */
 
-$route['default_controller'] = "docs/intro";
+$route['default_controller'] = "docs/routes/intro";
 $route['404_override'] = '';
-$route['export'] = "docs/export";
+$route['export'] = "docs/routes/export";
 
 $route['digitalstrategy'] = "campaign/digitalstrategy";
 
@@ -57,10 +57,11 @@ $route['datagov/(:any)/(:any)'] = "campaign/$1/$2";
 $route['datagov/(:any)/(:any)/(:any)'] = "campaign/$1/$2/$3";
 
 $route['offices/(:any)'] = "offices/routes/$1";
+$route['docs/(:any)'] = "docs/routes/$1";
 
 $route['login'] = "auth/session/github";
 $route['logout'] = "auth/logout";
-$route['account'] = "docs/user";
+$route['account'] = "docs/routes/user";
 
 
 /* End of file routes.php */
