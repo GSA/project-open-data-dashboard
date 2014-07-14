@@ -270,7 +270,23 @@
             <ul class="nav nav-tabs tracker-sections">
                 
                 <?php foreach ($section_breakdown as $section_abbreviation => $section_title): ?>
-                    <li  <?php if($section_abbreviation == $active_section) echo 'class="active"'; ?>><a name="<?php echo $section_abbreviation . '_tab';?>" href="#<?php echo $section_abbreviation;?>" data-toggle="tab"><?php echo $section_title;?></a></li>
+
+                    <?php
+                        $aggregate_score = $section_abbreviation . '_aggregate_score';
+
+                        if(!empty($office_campaign->tracker_fields->$aggregate_score)) {
+                            $section_score =  'bg-' . status_color($office_campaign->tracker_fields->$aggregate_score);
+                        } else {
+                            $section_score =  '';
+                        }
+                    ?>
+
+                    <li  <?php if($section_abbreviation == $active_section) echo 'class="active"'; ?>>
+                        <a name="<?php echo $section_abbreviation . '_tab';?>" href="#<?php echo $section_abbreviation;?>" data-toggle="tab">
+                            <?php echo $section_title;?>
+                            <div class="section-score <?php echo $section_score?>"></div>
+                        </a>
+                    </li>
                 <?php endforeach; reset($section_breakdown);  ?>
             </ul>
 

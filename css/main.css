@@ -273,6 +273,11 @@ a.info-icon span {
 	margin : 2em 0;
 }
 
+.section-score {
+	height : .25em;
+}
+
+
 @media (min-width: 1600px) {
 	.container.full-width {
 		width : 95%;
