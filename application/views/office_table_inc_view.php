@@ -276,8 +276,8 @@ function page_status($data_status, $status_color = null) {
 
 	if(empty($data_status)) return '';
 
-	if($data_status == 'yes') $data_status = 'success';
-	if($data_status == 'no') $data_status = 'danger';
+	if($data_status == 'yes' || $data_status == 'green') $data_status = 'success';
+	if($data_status == 'no' || $data_status == 'red') $data_status = 'danger';
 
 	if ($data_status == 'success') {
 	    $icon = '<i class="text-' . $data_status . ' fa fa-check-square"></i>';
