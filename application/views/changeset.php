@@ -10,7 +10,7 @@
           <h2>Changeset Report Generator</h2>
 
 
-            <form action="<?php echo site_url(); ?>/changeset" method="get" role="form">
+            <form action="<?php echo site_url(); ?>changeset" method="get" role="form">
 
                 <div class="form-group">
 
