@@ -184,7 +184,9 @@ No documentation added yet
 
 <a name="automated_metrics"></a>
 ###Automated Metrics
-These fields are determined by an automated script that runs every night to analyze agency data.json, digitalstrategy.json, and /data files. 
+These fields are determined by an automated script that analyzes agency data.json, digitalstrategy.json, and /data files. 
+
+The automated metrics will update every 24 hours until the end of the quarter when a milestone has been reached. At that point those metrics will represent a historical snapshot. To see the most current automated metrics, you'll need to view the current quarter (the next approaching milestone).
 
 <a name="pdl_expected_url"></a>
 ####Expected URL
@@ -231,4 +233,4 @@ This identifies whether the data.json was actually JSON. Even if the HTTP Status
 
 This identifies whether the data.json has all the required fields and has values that fit within the parameters specified by the [data.json schema metadata](http://project-open-data.github.io/schema/). This is validated using the rules codified within a [JSON Schema document](https://github.com/project-open-data/project-open-data.github.io/tree/master/schema/1_0_final) hosted on Project Open Data.
 
-The validator hosted by HHS provides even more detailed analysis: http://hub.healthdata.gov/pod/validate
+The validator hosted by HHS provides even more detailed analysis: http://hub.healthdata.gov/pod/validate 
