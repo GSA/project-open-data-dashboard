@@ -512,9 +512,16 @@ class campaign_model extends CI_Model {
 			// See if it's valid JSON 
 			if(!empty($datajson)) {
 
-				$datajson_processed = json_text_filter($datajson);
+				// See if raw file is valid
+				$raw_valid_json = is_json($datajson);
 
-				$valid_json = is_json($datajson_processed);
+				// See if we can clean up the file to make it valid
+				if(!$raw_valid_json) {
+					$datajson_processed = json_text_filter($datajson);
+					$valid_json 		= is_json($datajson_processed);
+				} else {
+					$valid_json = true;
+				}
 
 				if ($valid_json !== true) {
 					$errors[] = 'The validator was unable to determine if this was valid JSON';
@@ -523,9 +530,11 @@ class campaign_model extends CI_Model {
 
 			if(!empty($errors)) {
 
-				$valid_json = (isset($valid_json)) ? $valid_json : false;
+				$valid_json 	= (isset($valid_json)) ? $valid_json : null;
+				$raw_valid_json = (isset($raw_valid_json)) ? $raw_valid_json : null;
 
 				$response = array(
+								'raw_valid_json' => $raw_valid_json,
 								'valid_json' => $valid_json, 
 								'valid' => false, 
 								'fail' => $errors, 
@@ -540,7 +549,6 @@ class campaign_model extends CI_Model {
 
 				return $response;
 			}
-
 
 		}
 
@@ -626,11 +634,11 @@ class campaign_model extends CI_Model {
 
 			}
 
-
+			$valid_json = (isset($raw_valid_json)) ? $raw_valid_json : $valid_json;
 
 			$response['valid'] = (empty($response['errors'])) ? true : false;
 			$response['total_records'] = count($datajson_decode);
-			$response['valid_json'] = true;
+			$response['valid_json'] = $valid_json;
 
 
 			if(empty($response['errors'])) {

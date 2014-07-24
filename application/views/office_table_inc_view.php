@@ -133,7 +133,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 				$status_color = 'danger';
 			}
 
-			$valid_schema = (!empty($office->datajson_status->valid_schema)) ? $office->datajson_status->valid_schema : false;
+			$valid_schema = (!empty($office->datajson_status->valid_schema)) ? $office->datajson_status->valid_schema : false;			
 			if ($valid_schema !== true && $valid_json === true) {
 				$status_color = 'warning';
 			}
@@ -162,6 +162,10 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
 			if (!empty($config['max_remote_size']) && !empty($office->datajson_status->download_content_length) &&
 				($office->datajson_status->download_content_length > $config['max_remote_size'])) {
+				$schema_status = 'warning';
+			}
+
+			if ($schema_status != 'danger' && $json_status == 'danger') {
 				$schema_status = 'warning';
 			}
 

@@ -34,6 +34,12 @@
                             </tr>
                         <?php endif; ?> 
 
+                       <?php if(isset($validation['valid_json'])) : ?>
+                            <tr <?php if ($validation['valid_json'] === false) echo 'class="danger"' ?>>
+                                <th>Valid JSON</th> <td><?php var_export($validation['valid_json']); ?></td>
+                            </tr>
+                        <?php endif; ?>                          
+
                         <?php if(!empty($validation['source'])) : ?>
                             <tr>
                                 <th>Total datasets</th> <td><?php echo count($validation['source']); ?></td>
