@@ -44,9 +44,38 @@ $('#accShow').on('click', function() {
 
 
 
-var shiftWindow = function() { scrollBy(0, -50) };
-if (location.hash) shiftWindow();
+
+/* Adjust the scroll height of anchors to compensate for the fixed navbar */
+window.disableShift = false;
+var shiftWindow = function() {
+    if (window.disableShift) {
+        window.disableShift = false;
+    } else {
+        /* If we're at the bottom of the page, don't erronously scroll up */
+        var scrolledToBottomOfPage = (
+            (window.innerHeight + window.scrollY) >= document.body.offsetHeight
+        );
+        if (!scrolledToBottomOfPage) {
+            scrollBy(0, -50);
+        };
+    };
+};
+
+if (window.location.hash){
+	setTimeout(shiftWindow, 300);
+} 
+
 window.addEventListener("hashchange", shiftWindow);
+
+
+
+
+
+
+
+
+
+
 
 
 });
