@@ -464,24 +464,12 @@ class campaign_model extends CI_Model {
 		if ($datajson_url) {
 
 			$datajson_header = ($headers) ? $headers : $this->campaign->uri_header($datajson_url);
-			//$datajson = json_encode($datajson_header);
 
 			$errors = array();
-
-			//if($datajson_header['http_code'] !== 200) {
-			//	$errors[] = "The URL for the data.json file is not accessible";
-			//}
 
 			// Max file size
 			$max_remote_size = $this->config->item('max_remote_size');
 
-			// Load the JSON
-			$opts = array(
-						  'http'=>array(
-						    'method'=>"GET",
-						    'user_agent'=>"Data.gov data.json crawler"
-						  )
-						);
 
 			// Only download the data.json if we need to
 			if(empty($datajson_header['download_content_length']) || 
@@ -490,6 +478,13 @@ class campaign_model extends CI_Model {
 				$datajson_header['download_content_length'] > 0 && 
 				$datajson_header['download_content_length'] < $max_remote_size)) {
 
+				// Load the JSON
+				$opts = array(
+							  'http'=>array(
+							    'method'=>"GET",
+							    'user_agent'=>"Data.gov data.json crawler"
+							  )
+							);
 
 				$context = stream_context_create($opts);
 				
@@ -651,6 +646,10 @@ class campaign_model extends CI_Model {
 			$response['total_records'] = count($datajson_decode);
 			$response['valid_json'] = $valid_json;
 
+
+			if(!empty($datajson_header['download_content_length'])) {
+				$response['download_content_length'] = $datajson_header['download_content_length'];
+			}
 
 			if(empty($response['errors'])) {
 				$response['errors'] = false;
