@@ -673,7 +673,7 @@
                 Valid JSON
             </th>              
 			<td>
-			<span class="text-<?php echo ($valid_json == true) ? 'success' : 'danger'?>">
+			<span id="valid_json" class="text-<?php echo ($valid_json == true) ? 'success' : 'danger'?>">
 			<?php		
 				if($valid_json == true) echo 'Valid';
 				if(($valid_json == false && $valid_json !== null) || ($office_campaign->expected_datajson_status->http_code == 200 && $valid_json != true)) echo 'Invalid <span><a href="http://jsonlint.com/">Check a JSON Validator</a></span>';			
@@ -764,7 +764,20 @@
         <?php endif; ?>
 
 
-        <tr class="<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
+        <?php 
+
+        if ($percent_valid == '100%' && $valid_json == true) {
+            $percent_valid_color = 'success';
+        } else if ($percent_valid == '100%' && $valid_json !== true) {
+            $percent_valid_color = 'warning';
+        } else {
+            $percent_valid_color = 'danger';
+        }
+
+        ?>
+
+
+        <tr class="<?php echo $percent_valid_color; ?>">
             <th>
                 <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_valid_count' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
@@ -777,6 +790,9 @@
                 <?php if(!empty($percent_valid)): ?>
                     <span class="text-<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
                         <?php echo $percent_valid;?> <span style="color:#666">(<?php echo $valid_count . ' of ' . $total_records?>)</span>
+                        <?php if($valid_json !== true):?>
+                           - <span class="text-danger">The <a href="./#valid_json">JSON file is invalid</a> and can't be parsed without special processing</span>
+                        <?php endif; ?>
                     </span>
                 <?php endif; ?>
             </td>
