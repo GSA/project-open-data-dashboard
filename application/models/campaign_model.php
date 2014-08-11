@@ -483,19 +483,30 @@ class campaign_model extends CI_Model {
 						  )
 						);
 
-			$context = stream_context_create($opts);
-			
-			$datajson = @file_get_contents($datajson_url, false, $context);
+			// Only download the data.json if we need to
+			if(empty($datajson_header['download_content_length']) || 
+				$datajson_header['download_content_length'] < 0 || 
+				(!empty($datajson_header['download_content_length']) && 
+				$datajson_header['download_content_length'] > 0 && 
+				$datajson_header['download_content_length'] < $max_remote_size)) {
 
-			if ($datajson == false) {
 
-				$datajson = curl_from_json($datajson_url, false, false);
-
-				if(!$datajson) {
-					$errors[] = "File not found or couldn't be downloaded";	
-				}
+				$context = stream_context_create($opts);
 				
-			} 
+				$datajson = @file_get_contents($datajson_url, false, $context);
+
+				if ($datajson == false) {
+
+					$datajson = curl_from_json($datajson_url, false, false);
+
+					if(!$datajson) {
+						$errors[] = "File not found or couldn't be downloaded";	
+					}
+					
+				} 
+
+			}
+
 
 			if(!empty($datajson) && (empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < 0)) {
 				$datajson_header['download_content_length'] = strlen($datajson);
@@ -510,7 +521,7 @@ class campaign_model extends CI_Model {
 			}
 
 			// See if it's valid JSON 
-			if(!empty($datajson)) {
+			if(!empty($datajson) && $datajson_header['download_content_length'] < $max_remote_size) {
 
 				// See if raw file is valid
 				$raw_valid_json = is_json($datajson);
