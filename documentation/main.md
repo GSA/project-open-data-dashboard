@@ -107,7 +107,7 @@ No documentation added yet
 
 <span id="pdl_valid_metadata"></span>
 #####Valid Metadata
-No documentation added yet 
+See the section for [Valid Schema](#datajson_valid_schema)
 
 <span id="pdl_slashdata"></span>
 #####/data
