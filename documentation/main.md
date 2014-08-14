@@ -15,204 +15,204 @@ The leading indicators are scored by OMB staff and they can involve a more subje
 
 The dashboard is oriented around quarterly milestones. You can use  the blue milestone selection menu to navigate between milestones. The OMB scoring as well as the automated metrics are always tied to a specific milestone. The automated metrics will update every 24 hours until the end of the quarter when the milestone has been reached. At that point those automated metrics will represent a historical snapshot. To see the most current automated metrics, you'll need to view the current quarter (the next approaching milestone).
 
-<a name="leading_indicators_strategy"></a>
+<span id="leading_indicators_strategy"></span>
 ###Leading Indicators Strategy
 
 The "Leading Indicators Strategy" refers to the five categories of indicators drawn from the [Cross Agency Priority Goals (CAP Goals) for Open Data](http://www.performance.gov/node/3396?view=public#overview). The strategies are based on the [Enterprise Data Inventory](#enterprise_data_inventory), the [Public Data Listing](#public_data_listing), [Public Engagement](#public_engagement), [Privacy & Security](#privacy_and_security), and [Human Capital](#human_capital) and are all detailed below. 
 
 
-<a name="leading_indicators"></a>
+<span id="leading_indicators"></span>
 ###Leading Indicators
 
 The Leading Indicators Strategies described above are broken down here into their component parts: 
 
 ---
 
-<a name="enterprise_data_inventory"></a>
+<span id="enterprise_data_inventory"></span>
 ####Enterprise Data Inventory
 
-<a name="edi_aggregate_score"></a>
+<span id="edi_aggregate_score"></span>
 #####Overall Progress this Milestone
 No documentation added yet 
 
-<a name="edi_updated"></a>
+<span id="edi_updated"></span>
 #####Inventory Updated this Quarter
 No documentation added yet 
 
-<a name="edi_datasets"></a>
+<span id="edi_datasets"></span>
 #####Number of Datasets
 No documentation added yet 
 
-<a name="edi_schedule_delivered"></a>
+<span id="edi_schedule_delivered"></span>
 #####Schedule Delivered
 No documentation added yet 
 
-<a name="edi_bureaus"></a>
+<span id="edi_bureaus"></span>
 #####Bureaus represented
 No documentation added yet 
 
-<a name="edi_programs"></a>
+<span id="edi_programs"></span>
 #####Programs represented
 No documentation added yet 
 
-<a name="edi_access_public"></a>
+<span id="edi_access_public"></span>
 #####Access Level = Public
 No documentation added yet 
 
-<a name="edi_access_restricted"></a>
+<span id="edi_access_restricted"></span>
 #####Access Level = Restricted
 No documentation added yet 
 
-<a name="edi_access_nonpublic"></a>
+<span id="edi_access_nonpublic"></span>
 #####Access Level = Non-Public
 No documentation added yet 
 
-<a name="edi_superset"></a>
+<span id="edi_superset"></span>
 #####Inventory > Public listing
 No documentation added yet 
 
-<a name="edi_progress_evaluation"></a>
+<span id="edi_progress_evaluation"></span>
 #####Percentage growth in records since last quarter
 No documentation added yet 
 
-<a name="edi_schedule_risk"></a>
+<span id="edi_schedule_risk"></span>
 #####Schedule Risk for Nov 30, 2014
 No documentation added yet 
 
-<a name="edi_quality_check"></a>
+<span id="edi_quality_check"></span>
 #####Spot Check - Site search, SORNs, PIAs, FOIA
 No documentation added yet 
 
 
 ---
 
-<a name="public_data_listing"></a>
+<span id="public_data_listing"></span>
 ####Public Data Listing
 
-<a name="pdl_aggregate_score"></a>
+<span id="pdl_aggregate_score"></span>
 #####Overall Progress this Milestone
 No documentation added yet 
 
-<a name="pdl_datasets"></a>
+<span id="pdl_datasets"></span>
 #####Number of Datasets
 No documentation added yet 
 
-<a name="pdl_downloadable"></a>
+<span id="pdl_downloadable"></span>
 #####Number of Downloadable Datasets
 No documentation added yet 
 
-<a name="pdl_growth"></a>
+<span id="pdl_growth"></span>
 #####Percentage growth in records since last quarter
 No documentation added yet 
 
-<a name="pdl_valid_metadata"></a>
+<span id="pdl_valid_metadata"></span>
 #####Valid Metadata
 No documentation added yet 
 
-<a name="pdl_slashdata"></a>
+<span id="pdl_slashdata"></span>
 #####/data
 No documentation added yet 
 
-<a name="pdl_datajson"></a>
+<span id="pdl_datajson"></span>
 #####/data.json
 No documentation added yet 
 
-<a name="pdl_datagov_harvested"></a>
+<span id="pdl_datagov_harvested"></span>
 #####Harvested by data.gov
 No documentation added yet 
 
 ---
 
-<a name="public_engagement"></a>
+<span id="public_engagement"></span>
 ####Public Engagement
 
-<a name="pe_aggregate_score"></a>
+<span id="pe_aggregate_score"></span>
 #####Overall Progress this Milestone
 No documentation added yet 
 
-<a name="pe_feedback_specified"></a>
+<span id="pe_feedback_specified"></span>
 #####Description of feedback mechanism delivered
 No documentation added yet 
 
-<a name="pe_prioritization"></a>
+<span id="pe_prioritization"></span>
 #####Data release is prioritized through public engagement
 No documentation added yet 
 
-<a name="pe_dialogue"></a>
+<span id="pe_dialogue"></span>
 #####Feedback loop is closed, 2 way communication
 No documentation added yet 
 
-<a name="pe_reference"></a>
+<span id="pe_reference"></span>
 #####Link to or description of Feedback Mechanism
 No documentation added yet 
 
 ---
 
-<a name="privacy_and_security"></a>
+<span id="privacy_and_security"></span>
 ####Privacy & Security
 
-<a name="ps_aggregate_score"></a>
+<span id="ps_aggregate_score"></span>
 #####Overall Progress this Milestone
 No documentation added yet 
 
-<a name="ps_publication_process"></a>
+<span id="ps_publication_process"></span>
 #####Data Publication Process Delivered
 No documentation added yet 
 
-<a name="ps_publication_process_qa"></a>
+<span id="ps_publication_process_qa"></span>
 #####Information that should not to be made public is documented with agency's OGC
 No documentation added yet 
 
 ---
 
-<a name="human_capital"></a>
+<span id="human_capital"></span>
 ####Human Capital
 
-<a name="hc_aggregate_score"></a>
+<span id="hc_aggregate_score"></span>
 #####Overall Progress this Milestone
 No documentation added yet 
 
-<a name="hc_lead"></a>
+<span id="hc_lead"></span>
 #####Open Data Primary Point of Contact
 No documentation added yet 
 
-<a name="hc_contacts"></a>
+<span id="hc_contacts"></span>
 #####POCs identified for required responsibilities
 No documentation added yet 
 
 ---
 
-<a name="automated_metrics"></a>
+<span id="automated_metrics"></span>
 ###Automated Metrics
 These fields are determined by an automated script that analyzes agency data.json, digitalstrategy.json, and /data files. 
 
 The automated metrics will update every 24 hours until the end of the quarter when a milestone has been reached. At that point those metrics will represent a historical snapshot. To see the most current automated metrics, you'll need to view the current quarter (the next approaching milestone).
 
-<a name="pdl_expected_url"></a>
+<span id="pdl_expected_url"></span>
 ####Expected URL
 
 This is the URL where the data.json file is expected to be found. This is based on the main agency URL provided through the [USA.gov Directory API](http://www.usa.gov/About/developer-resources/federal-agency-directory/)
 
-<a name="pdl_resolved_url"></a>
+<span id="pdl_resolved_url"></span>
 ####Resolved URL
 
 This is the URL that is resolved after following any redirects.
 
-<a name="pdl_redirects"></a>
+<span id="pdl_redirects"></span>
 ####Redirects
 
 This is the number of redirects used to reach the final data.json URL. Currently this is only set to follow 5 redirects before stopping.
 
 Ideally this should be 0
 
-<a name="pdl_http_code"></a>
+<span id="pdl_http_code"></span>
 ####HTTP Status
 
 This is the [HTTP status code](http://en.wikipedia.org/wiki/HTTP_status_codes) received when attempting to reach the expected or resolved URL. For more information on properly using HTTP status codes, see: [Knowing Your HTTP Status Codes In Federal Government](http://kinlane.com/2013/11/06/knowing-your-http-status-codes-in-federal-government/)
 
 This should be 200 it the data.json or /data URL was found successfully.
 
-<a name="pdl_http_content_type"></a>
+<span id="pdl_http_content_type"></span>
 ####Content-Type
 
 The [Content-Type](http://en.wikipedia.org/wiki/Content-Type) is how the server announces the type of file it is serving at the requested URL. Usually it won't break anything if this is set incorrectly, but some applications may need to be set to force it to be read as JSON even if it announces it's something else. This is very similiar to how a file extension on a file identifies the file type. Yes, the URL says data.json, but the browser just sees that as an arbitrary URL. The Content-Type is what identifies the actual file type. Setting this incorrectly would be like if you had a file named graph.pdf that was actually a CSV spreadsheet file.
@@ -223,12 +223,12 @@ For data.json this should be: `application/json; charset=utf-8`
 
 For /data this should be: `text/html; charset=utf-8`
 
-<a name="pdl_valid_json"></a>
+<span id="pdl_valid_json"></span>
 ####Valid JSON
 
 This identifies whether the data.json was actually JSON. Even if the HTTP Status is 200 for the data.json URL and the Content-Type announces it's application/json; charset=UTF-8 the response might actually be HTML or improperly formatted JSON. You can check how well formed your JSON is with a tool like [JSONLint](http://jsonlint.com/). When using this tool it is best to enter the URL of the JSON file rather than copying and pasting the JSON. This is because when you copy and paste the raw JSON, your browser may attempt ot automtically fix problems that the server will not know to fix when it retrieves the file directly.
 
-<a name="pdl_valid_schema"></a>
+<span id="pdl_valid_schema"></span>
 ####Valid Schema
 
 This identifies whether the data.json has all the required fields and has values that fit within the parameters specified by the [data.json schema metadata](http://project-open-data.github.io/schema/). This is validated using the rules codified within a [JSON Schema document](https://github.com/project-open-data/project-open-data.github.io/tree/master/schema/1_0_final) hosted on Project Open Data.
