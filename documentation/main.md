@@ -188,31 +188,31 @@ These fields are determined by an automated script that analyzes agency data.jso
 
 The automated metrics will update every 24 hours until the end of the quarter when a milestone has been reached. At that point those metrics will represent a historical snapshot. To see the most current automated metrics, you'll need to view the current quarter (the next approaching milestone).
 
-<span id="pdl_expected_url"></span>
+<span id="datajson_expected_url"></span>
 ####Expected URL
 
 This is the URL where the data.json file is expected to be found. This is based on the main agency URL provided through the [USA.gov Directory API](http://www.usa.gov/About/developer-resources/federal-agency-directory/)
 
-<span id="pdl_resolved_url"></span>
+<span id="datajson_resolved_url"></span>
 ####Resolved URL
 
 This is the URL that is resolved after following any redirects.
 
-<span id="pdl_redirects"></span>
+<span id="datajson_redirects"></span>
 ####Redirects
 
 This is the number of redirects used to reach the final data.json URL. Currently this is only set to follow 5 redirects before stopping.
 
 Ideally this should be 0
 
-<span id="pdl_http_code"></span>
+<span id="datajson_http_status"></span>
 ####HTTP Status
 
 This is the [HTTP status code](http://en.wikipedia.org/wiki/HTTP_status_codes) received when attempting to reach the expected or resolved URL. For more information on properly using HTTP status codes, see: [Knowing Your HTTP Status Codes In Federal Government](http://kinlane.com/2013/11/06/knowing-your-http-status-codes-in-federal-government/)
 
 This should be 200 it the data.json or /data URL was found successfully.
 
-<span id="pdl_http_content_type"></span>
+<span id="datajson_content_type"></span>
 ####Content-Type
 
 The [Content-Type](http://en.wikipedia.org/wiki/Content-Type) is how the server announces the type of file it is serving at the requested URL. Usually it won't break anything if this is set incorrectly, but some applications may need to be set to force it to be read as JSON even if it announces it's something else. This is very similiar to how a file extension on a file identifies the file type. Yes, the URL says data.json, but the browser just sees that as an arbitrary URL. The Content-Type is what identifies the actual file type. Setting this incorrectly would be like if you had a file named graph.pdf that was actually a CSV spreadsheet file.
@@ -223,15 +223,33 @@ For data.json this should be: `application/json; charset=utf-8`
 
 For /data this should be: `text/html; charset=utf-8`
 
-<span id="pdl_valid_json"></span>
 <span id="datajson_valid_json"></span>
 ####Valid JSON
 
 This identifies whether the data.json was actually JSON. Even if the HTTP Status is 200 for the data.json URL and the Content-Type announces it's application/json; charset=UTF-8 the response might actually be HTML or improperly formatted JSON. If the syntax of the file can be parsed as JSON, the validator will attempt to do additional analysis, but the file may in fact still be invalid JSON if it doesn't use the proper text encoding. While it is possible for the validator to convert the file to the correct encoding to do this additional analysis, it's important that the correct encoding be used at the source so that others will be able to parse the JSON without knowing they need to convert it to a valid encoding. JSON must use Unicode text encoding (use UTF-8) and it should not include a byte order mark. It's highly recommend you generate your JSON with a tool designed to produce JSON rather than attempt to produce JSON by hand. You can check how well formed your JSON is with a tool like [JSONLint](http://jsonlint.com/). When using this tool it is best to enter the URL of the JSON file rather than copying and pasting the JSON. This is because when you copy and paste the raw JSON, your browser may attempt ot automtically fix problems that the server will not know to fix when it retrieves the file directly.
 
-<span id="pdl_valid_schema"></span>
+<span id="datajson_valid_count"></span>
+####Datasets with Valid Metadata
+The percentage and specific number of datasets in the data.json file that successfully validate against the schema 
+
+<span id="datajson_valid_schema"></span>
 ####Valid Schema
 
-This identifies whether the data.json has all the required fields and has values that fit within the parameters specified by the [data.json schema metadata](http://project-open-data.github.io/schema/). This is validated using the rules codified within a [JSON Schema document](https://github.com/project-open-data/project-open-data.github.io/tree/master/schema/1_0_final) hosted on Project Open Data.
+This identifies whether the data.json has all the required fields and has values that fit within the parameters specified by the [data.json schema metadata](http://project-open-data.github.io/schema/). 
 
-The validator hosted by HHS provides even more detailed analysis: http://hub.healthdata.gov/pod/validate 
+<span id="datajson_schema_errors"></span>
+#####Schema Errors
+This displays instances where the data.json doesn't validate against the [data.json schema metadata](http://project-open-data.github.io/schema/) based on rules codified within a [JSON Schema document](https://github.com/project-open-data/project-open-data.github.io/tree/master/schema/1_0_final) hosted on Project Open Data. For more detailed and more readable results, you should use the [full data.json validator](http://labs.data.gov/dashboard/validate)
+
+<span id="datajson_file_size"></span>
+#####Data.json File Size
+The size of the data.json file the last time it was checked by the validator (for the selected milestone)
+
+<span id="datajson_last_modified"></span>
+#####Data.json Last Modified
+The last time the data.json file appears to have been updated (for the selected milestone)
+
+<span id="datajson_last_crawl"></span>
+#####Data.json Last Crawl
+The last time this validator analyzed the data.json file
+
