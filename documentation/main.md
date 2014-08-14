@@ -224,9 +224,10 @@ For data.json this should be: `application/json; charset=utf-8`
 For /data this should be: `text/html; charset=utf-8`
 
 <span id="pdl_valid_json"></span>
+<span id="datajson_valid_json"></span>
 ####Valid JSON
 
-This identifies whether the data.json was actually JSON. Even if the HTTP Status is 200 for the data.json URL and the Content-Type announces it's application/json; charset=UTF-8 the response might actually be HTML or improperly formatted JSON. You can check how well formed your JSON is with a tool like [JSONLint](http://jsonlint.com/). When using this tool it is best to enter the URL of the JSON file rather than copying and pasting the JSON. This is because when you copy and paste the raw JSON, your browser may attempt ot automtically fix problems that the server will not know to fix when it retrieves the file directly.
+This identifies whether the data.json was actually JSON. Even if the HTTP Status is 200 for the data.json URL and the Content-Type announces it's application/json; charset=UTF-8 the response might actually be HTML or improperly formatted JSON. If the syntax of the file can be parsed as JSON, the validator will attempt to do additional analysis, but the file may in fact still be invalid JSON if it doesn't use the proper text encoding. While it is possible for the validator to convert the file to the correct encoding to do this additional analysis, it's important that the correct encoding be used at the source so that others will be able to parse the JSON without knowing they need to convert it to a valid encoding. JSON must use Unicode text encoding (use UTF-8) and it should not include a byte order mark. It's highly recommend you generate your JSON with a tool designed to produce JSON rather than attempt to produce JSON by hand. You can check how well formed your JSON is with a tool like [JSONLint](http://jsonlint.com/). When using this tool it is best to enter the URL of the JSON file rather than copying and pasting the JSON. This is because when you copy and paste the raw JSON, your browser may attempt ot automtically fix problems that the server will not know to fix when it retrieves the file directly.
 
 <span id="pdl_valid_schema"></span>
 ####Valid Schema
