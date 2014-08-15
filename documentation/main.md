@@ -2,6 +2,8 @@
 
 This is a guide to document how this website measures and tracks implementation of [Project Open Data](http://project-open-data.github.com/) as well as other tools and resources it provides to help agencies implement their open data programs. 
 
+You can help [edit this documentation on GitHub](https://github.com/GSA/project-open-data-dashboard/edit/master/documentation/main.md). 
+
 ##Agency Dashboard
 
 The [Agency Dashboard](http://labs.data.gov/dashboard/offices) is used to track how agencies are implementing [Project Open Data](http://project-open-data.github.com/) (aka [OMB M-13-13](http://project-open-data.github.io/policy-memo/)). This is done in two ways: 
@@ -228,13 +230,13 @@ For /data this should be: `text/html; charset=utf-8`
 
 This identifies whether the data.json was actually [JSON](http://json.org/). Even if the HTTP Status is 200 for the data.json URL and the Content-Type announces it's application/json; charset=UTF-8 the response might actually be HTML or improperly formatted JSON. If the syntax of the file can be parsed as JSON, the validator will attempt to do additional analysis, but the file may in fact still be invalid JSON if it doesn't use the proper text encoding. While it is possible for the validator to convert the file to the correct encoding to do this additional analysis, it's important that the correct encoding be used at the source so that others will be able to parse the JSON without knowing they need to convert it to a valid encoding. JSON must use Unicode text encoding (use UTF-8) and it should not include a byte order mark. It's highly recommend you generate your JSON with a tool designed to produce JSON rather than attempt to produce JSON by hand. You can check how well formed your JSON is with a tool like [JSONLint](http://jsonlint.com/). When using this tool it is best to enter the URL of the JSON file rather than copying and pasting the JSON. This is because when you copy and paste the raw JSON, your browser may attempt ot automtically fix problems that the server will not know to fix when it retrieves the file directly.
 
-The "Public Datasets" column on the main agency dashboard table will be green if it's a valid JSON file and red or yellow otherwise. If it's not a valid JSON file, the "Valid Metadata" column can't be green - at best it can be yellow. If it's not valid JSON it most likely can't be parsed regardless of how valid the metadata schema is, so this is a pretty serious consideration. This means it's possible to be listed under the "Valid Metadata" column in yellow even if 100% of the records against the schema. 
+The "Public Datasets" column on the main agency dashboard table will be green if it's a valid JSON file and red or yellow otherwise. If it's not a valid JSON file, the "Valid Metadata" column can't be green - at best it can be yellow. If it's not valid JSON it most likely can't be parsed regardless of how valid the metadata schema is, so this is a serious consideration. This also means it's possible to be listed under the "Valid Metadata" column in yellow even if 100% of the records validate against the schema. 
 
 <span id="datajson_valid_count"></span>
 ####Datasets with Valid Metadata
 The percentage and specific number of datasets in the data.json file that successfully validate against the [Project Open Data schema](http://project-open-data.github.io/schema/). 
 
-The "Valid Metadata" column on the main agency dashboard table will be green if 100% of the metadata records validate against the Project Open Data schema and they are from a [valid JSON file](#datajson_valid_json) - it's possible to have 100% valid metadata records but still be shown as yellow if it's not a valid JSON file. Any record that doesn't validate against the schema won't meet the requirements and also won't be included by harvesters like data.gov. 
+The "Valid Metadata" column on the main agency dashboard table will be green if 100% of the metadata records validate against the Project Open Data schema and they are from a [valid JSON file](#datajson_valid_json). It's possible to have 100% valid metadata records but still be shown as yellow if it's not a valid JSON file. Any record that doesn't validate against the schema won't meet the requirements and also won't be included by harvesters like data.gov. 
 
 <span id="datajson_valid_schema"></span>
 ####Valid Schema
