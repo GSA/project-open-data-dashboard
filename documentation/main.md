@@ -232,7 +232,7 @@ The "Public Datasets" column on the main agency dashboard table will be green if
 
 <span id="datajson_valid_count"></span>
 ####Datasets with Valid Metadata
-The percentage and specific number of datasets in the data.json file that successfully validate against the [Project Open Data schema]](http://project-open-data.github.io/schema/). 
+The percentage and specific number of datasets in the data.json file that successfully validate against the [Project Open Data schema](http://project-open-data.github.io/schema/). 
 
 The "Valid Metadata" column on the main agency dashboard table will be green if 100% of the metadata records validate against the Project Open Data schema and they are from a [valid JSON file](#datajson_valid_json) - it's possible to have 100% valid metadata records but still be shown as yellow if it's not a valid JSON file. Any record that doesn't validate against the schema won't meet the requirements and also won't be included by harvesters like data.gov. 
 
