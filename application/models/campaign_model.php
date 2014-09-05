@@ -62,17 +62,8 @@ class campaign_model extends CI_Model {
 		$model->datapage_status					= null;
 		$model->digitalstrategy_status			= null;
 
-		$model->tracker_fields					= null;
+		$model->tracker_fields					= '';
 		$model->tracker_status					= null;
-
-		$model->datagov_harvest					= null;
-		$model->inventory_posted				= null;
-		$model->inventory_superset				= null;
-		$model->datajson_posted					= null;
-		$model->datajson_slashdata				= null;
-		$model->feedback						= null;
-		$model->schedule_posted					= null;
-		$model->publication_process_posted		= null;
 
 		return $model;
 	}
