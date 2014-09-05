@@ -275,7 +275,8 @@ class campaign_model extends CI_Model {
 							"2014-02-28" => "Milestone 2",
 							"2014-05-31" => "Milestone 3",
 							"2014-08-31" => "Milestone 4",
-							"2014-11-30" => "Milestone 5"
+							"2014-11-30" => "Milestone 5",
+							"2015-02-28" => "Milestone 6"
 							);
 
 		return $milestones;
