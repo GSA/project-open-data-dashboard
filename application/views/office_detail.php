@@ -367,7 +367,7 @@
                                                 if (!empty($status_icon) && ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "traffic")) {
                                                     echo $status_icon;     
                                                 } else {
-                                                    echo $office_campaign->tracker_fields->$tracker_field_name;
+                                                    if (!empty($office_campaign->tracker_fields->$tracker_field_name)) echo $office_campaign->tracker_fields->$tracker_field_name;
                                                 }                       
                                             ?>
                                         </td>
