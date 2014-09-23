@@ -54,7 +54,7 @@ class Import extends CI_Controller {
 			echo 'Loading ' . $master_list_url . PHP_EOL;
 		}
 
-		$data = curl_from_json($master_list_url);
+		$data = curl_from_json($master_list_url, true);
 
 		  if(!empty($data['Contact'])) {
 		  	foreach ($data['Contact'] as $department) {
@@ -115,7 +115,7 @@ class Import extends CI_Controller {
 			echo 'Loading ' . $parent_api_url . PHP_EOL;
 		}
 
-		$parent = curl_from_json($parent_api_url);
+		$parent = curl_from_json($parent_api_url, true);
 
 		if(!empty($parent['Contact'][0])) {
 			$parent_id = $parent['Id'];
@@ -162,7 +162,7 @@ class Import extends CI_Controller {
 					echo 'Loading ' . $child_api_url . PHP_EOL;
 				}
 
-				$parent = curl_from_json($child_api_url);
+				$parent = curl_from_json($child_api_url, true);
 
 				if(!empty($parent['Contact'][0])) {
 
@@ -285,8 +285,7 @@ class Import extends CI_Controller {
 		'Department of Veterans Affairs',
 		'Environmental Protection Agency',
 		'National Aeronautics and Space Administration',
-		'Social Security Administration',
-		'National Archives and Records Administration');
+		'Social Security Administration');
 
 		// iterate through array see if agency_name matches any of them
 
