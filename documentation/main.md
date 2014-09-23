@@ -35,55 +35,61 @@ The Leading Indicators Strategies described above are broken down here into thei
 
 <span id="edi_aggregate_score"></span>
 #####Overall Progress this Milestone
-No documentation added yet 
+This element is a collection of the qualitative and quantitative measures and an objective assessment of meeting this milestone is compiled and rated (Green = On Schedule to Complete Milestone, Yellow = Possible Milestone Delivery Problem, Red = Will Miss Milestone) *(Qualitative)* 
 
 <span id="edi_updated"></span>
 #####Inventory Updated this Quarter
-No documentation added yet 
+This element captures whether or not an agency had submitted an updated Enterprise Data Inventory into OMB Max by the milestone deadlines.
 
 <span id="edi_datasets"></span>
 #####Number of Datasets
-No documentation added yet 
+This element accounts for the total number of all datasets listed in the Enterprise Data Inventory. This includes those marked as "Public", "Non-Public" and "Restricted". *(Quantitative)*
 
 <span id="edi_schedule_delivered"></span>
 #####Schedule Delivered
-No documentation added yet 
+This element captures whether or not an agency has successfully submitted a schedule, via the digitalstrategy.json, or via another document on thier agency's website, that indicates a schedule of deliverables against the various outlined milestones for the Open Data Initiative. *(Qualitative)*
 
 <span id="edi_bureaus"></span>
 #####Bureaus represented
-No documentation added yet 
+This number represents the number of bureaus (based on codes from [OMB Circular A-11](http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf) for the Common Government-wide Accounting Classification - CGAC in Appendix C) that have data sets reported in the agency's EDI. *(Quantitative)*
 
 <span id="edi_programs"></span>
 #####Programs represented
-No documentation added yet 
+This is a count of primary agency programs that are represented within the EDI based on the [Federal Program Inventory](http://goals.performance.gov/federalprograminventory). *(Quantitative)*
 
 <span id="edi_access_public"></span>
 #####Access Level = Public
-No documentation added yet 
+This is a count of data assets that are or could be made publicly available to all without restrictions.  *(Quantitative)*
 
 <span id="edi_access_restricted"></span>
 #####Access Level = Restricted
-No documentation added yet 
+This is a count of data assets that are available under certain use restrictions.  *(Quantitative)*
 
 <span id="edi_access_nonpublic"></span>
 #####Access Level = Non-Public
-No documentation added yet 
+This is a count of data assets is not available to members of the public. *(Quantitative)*
 
 <span id="edi_superset"></span>
 #####Inventory > Public listing
-No documentation added yet 
+This is a comparison of the count of data sets (including those marked as "Public", "Non-Public" and "Restricted") in the EDI versus those in the entire public data listing. In is rare for the EDI to be equal to the PDL (which indicates all data sets are publically accessible) and is often greater than the PDL. If the EDI is less than the PDL, this indicates an error in reporting and collection. *(Quantitative)*
 
 <span id="edi_progress_evaluation"></span>
 #####Percentage growth in records since last quarter
-No documentation added yet 
+This is calculated by subtracting the last quater's EDI count of data sets from the current quarter's EDI count of data sets, then divided by last quarter's EDI count of data sets, then multipied by 100 in order to get the percentage `([(Qb - Qa) / Qa] * 100)` *(Quantitative)*
 
 <span id="edi_schedule_risk"></span>
 #####Schedule Risk for Nov 30, 2014
-No documentation added yet 
+This is an objective evaluation (Green = On Schedule, Yellow = Possible Schedule Issues, Red = Schedule Miss/Incomplete) if an agency will be able to make/deliver on their published deigital strategy deliverables for Open Data milestones that were outlined in OMB M-13-13. *(Qualitative)*
 
 <span id="edi_quality_check"></span>
 #####Spot Check - Site search, SORNs, PIAs, FOIA
-No documentation added yet 
+This is a check by OMB eGov for SORNs (**System of Records Notices**), PIAs (**Privacy Imapct Assessments**), FOIA (**Freedom of Information Act**) statements, and through a search for typical data file types, for example (the number in parenthesis indicates how many files matched in the search were returned - the example below is via Google):
+
+`allinanchor:  site:agencydomain.gov filetype:xls`  (5,000)
+
+`allinanchor:  site:agencydomain.gov filetype:csv`  (300)
+
+`allinanchor:  site:agencydomain.gov filetype:xml`  (38,000)
 
 
 ---
@@ -93,35 +99,35 @@ No documentation added yet
 
 <span id="pdl_aggregate_score"></span>
 #####Overall Progress this Milestone
-No documentation added yet 
+This element is a collection of the qualitative and quantitative measures and an objective assessment of meeting this milestone is compiled and rated (Green = On Schedule to Complete Milestone, Yellow = Possible Milestone Delivery Problem, Red = Will Miss Milestone) *(Qualitative)* 
 
 <span id="pdl_datasets"></span>
 #####Number of Datasets
-No documentation added yet 
+This element captures the count of publically listed data sets via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. *(Quantitative)*
 
 <span id="pdl_downloadable"></span>
 #####Number of Downloadable Datasets
-No documentation added yet 
+This element captures the count of downlaodable publically listed data sets via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. This shoudl correspond with "*accessURL*" in the PDL JSON file that is the URL providing direct access to the downloadable distribution of a dataset. *(Quantitative)*
 
 <span id="pdl_growth"></span>
 #####Percentage growth in records since last quarter
-No documentation added yet 
+This is calculated by subtracting the last quater's PDL count of data sets from the current quarter's PDL count of data sets, then divided by last quarter's EDI count of data sets, then multipied by 100 in order to get the percentage `([(Qb - Qa) / Qa] * 100)` *(Quantitative)*
 
 <span id="pdl_valid_metadata"></span>
 #####Valid Metadata
-See the section for [Valid Schema](#datajson_valid_schema)
+See the section for [Valid Schema](#datajson_valid_schema) 
 
 <span id="pdl_slashdata"></span>
 #####/data
-No documentation added yet 
+This element indicates if an agency has published a page for their Open Data activities, often containing links to their data catalog, links to other Open Data related documents, as well as the Digital Strategy. 
 
 <span id="pdl_datajson"></span>
 #####/data.json
-No documentation added yet 
+This element collects whether the agency has successfully published a data.json file, which contains the whole of the Public Data Listing.
 
 <span id="pdl_datagov_harvested"></span>
 #####Harvested by data.gov
-No documentation added yet 
+This element captures if DATA.GOV has harvested the PDL for indexing via regular crawls. This usually requires notifying GSA (who houses the DATA.GOV team) to index the PDL.
 
 ---
 
@@ -130,23 +136,23 @@ No documentation added yet
 
 <span id="pe_aggregate_score"></span>
 #####Overall Progress this Milestone
-No documentation added yet 
+This element is a collection of the qualitative and quantitative measures and an objective assessment of meeting this milestone is compiled and rated (Green = On Schedule to Complete Milestone, Yellow = Possible Milestone Delivery Problem, Red = Will Miss Milestone) *(Qualitative)* 
 
 <span id="pe_feedback_specified"></span>
 #####Description of feedback mechanism delivered
-No documentation added yet 
+This element is a narrative provided by the agency, through the Digital Strategy, on how it plans to enage the public for Open Data initiative activities, including developing two-way forms of communication (e.g., social media, etc.), issue tracking, outreach and other items. These methods sould add-vaule to the open data activities and directly address the public and customer needs. *(Qualitative)*
 
 <span id="pe_prioritization"></span>
 #####Data release is prioritized through public engagement
-No documentation added yet 
+This is a measure, based on information provided to OMB for review, or gathered from the agency Open Data websites and public engagement mechnaisms, that data sets have been identieid by the public and been prioritized for release based on that engagement (such as e-mail, public open data events, IdeaScale/GitHub/Twitter, etc.) activity. This may include those that were requested via FOIA menchanisms or other formal requests. *(Qualitative)*
 
 <span id="pe_dialogue"></span>
 #####Feedback loop is closed, 2 way communication
-No documentation added yet 
+This element is an asessment, based on information provided by the agency and confirmed, through review of published public feedback mechanisms by OMB (including reviewing post-event outcomes - such as those from datajams and datapaloozas), if the input from public engagement is acted upon and produces an output to the open data milestone activities, such as inclusion of data sets, quality improvement, format changes, API development or other outcomes.  *(Qualitative)*
 
 <span id="pe_reference"></span>
 #####Link to or description of Feedback Mechanism
-No documentation added yet 
+This element should contain a link (URL, email address, etc.) of the primary feedback mechanism used for customer engagement. If more than one is regularly used, this should be a small narrative about each mechanism and how it's used to interact with the public for engagement activities.
 
 ---
 
@@ -155,15 +161,15 @@ No documentation added yet
 
 <span id="ps_aggregate_score"></span>
 #####Overall Progress this Milestone
-No documentation added yet 
+This element is a collection of the qualitative and quantitative measures and an objective assessment of meeting this milestone is compiled and rated (Green = On Schedule to Complete Milestone, Yellow = Possible Milestone Delivery Problem, Red = Will Miss Milestone) *(Qualitative)* 
 
 <span id="ps_publication_process"></span>
 #####Data Publication Process Delivered
-No documentation added yet 
+This element captures the state of the Open Data publication process deliverable. The process is often located withing the Digital Strategy for an agency, and is usually contained and updated withing the JSON file. Some agencies have indepdently published this schedule on their websites separate from the Digital Strategy site, which is not recommended.
 
 <span id="ps_publication_process_qa"></span>
 #####Information that should not to be made public is documented with agency's OGC
-No documentation added yet 
+As part of the Data Publication Process (this element can't be "Green" without the previous element existing), the Office of General Counsel (OGC) or the agency's Office of the Solicitor, is listed as part of the process for determining which data sets are to be released publically. *(Qualitative)*
 
 ---
 
@@ -172,15 +178,15 @@ No documentation added yet
 
 <span id="hc_aggregate_score"></span>
 #####Overall Progress this Milestone
-No documentation added yet 
+This element is a collection of the qualitative and quantitative measures and an objective assessment of meeting this milestone is compiled and rated (Green = On Schedule to Complete Milestone, Yellow = Possible Milestone Delivery Problem, Red = Will Miss Milestone) *(Qualitative)* 
 
 <span id="hc_lead"></span>
 #####Open Data Primary Point of Contact
-No documentation added yet 
+This element should contain the name (and/or contact information) for an agency's primary point of contact for Open Data Initiative activities.
 
 <span id="hc_contacts"></span>
 #####POCs identified for required responsibilities
-No documentation added yet 
+This element accounts for the agency identifying and publishing primary points of contacts for Open Data activities. 
 
 ---
 
