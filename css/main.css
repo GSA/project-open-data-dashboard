@@ -6,6 +6,12 @@
 
 body { padding-top: 50px; }
 
+
+.intro-blurb {
+	margin-top : 2em; 
+	font-style: italic
+}
+
 .validation-record {
 	border-bottom : 1px solid #ccc; 
 	margin-bottom : 2em; 
