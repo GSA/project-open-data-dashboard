@@ -10,15 +10,7 @@ class campaign_model extends CI_Model {
 
 	var $protected_field	= null;
 
-	var $validation_counts = array(
-									'http_5xx' => 0,
-									'http_4xx' => 0,
-									'http_3xx' => 0,
-									'http_2xx' => 0,
-									'pdf' => 0,
-									'html' => 0,
-									'format_mismatch' => 0
-									);
+	var $validation_counts = null;
 
 
 
@@ -792,7 +784,7 @@ class campaign_model extends CI_Model {
 		$programCode = array();
 		$bureauCode = array();
 
-
+		$this->validation_counts = $this->validation_count_model();
 
 		$accessLevel_public			= 0;
 		$accessLevel_restricted		= 0;
@@ -935,6 +927,23 @@ class campaign_model extends CI_Model {
 		}						
 
 		return true;
+	}
+
+
+	public function validation_count_model() {
+
+		$count = array(
+			'http_5xx' => 0,
+			'http_4xx' => 0,
+			'http_3xx' => 0,
+			'http_2xx' => 0,
+			'pdf' => 0,
+			'html' => 0,
+			'format_mismatch' => 0
+			);
+
+		return $count;
+
 	}
 
 
