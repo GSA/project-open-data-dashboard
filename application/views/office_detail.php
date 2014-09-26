@@ -750,7 +750,7 @@
                     <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_format_mismatch' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
-                    Correct format
+                    Correct format (accessURL/format)
                 </th>                 
                 <td>
 
@@ -772,7 +772,11 @@
                     PDF for raw data (accessURL)
                 </th>                 
                 <td>
-                    <?php echo $office_campaign->datajson_status->qa->validation_counts->pdf; ?>
+                   <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->pdf, $office_campaign->datajson_status->qa->accessURL_total);?> 
+                     
+                    <span style="color:#666">
+                    <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->pdf . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                    </span>
                 </td>
             </tr> 
 
@@ -784,7 +788,11 @@
                     HTML for raw data (accessURL)
                 </th>                 
                 <td>
-                    <?php echo $office_campaign->datajson_status->qa->validation_counts->html; ?>
+                   <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->html, $office_campaign->datajson_status->qa->accessURL_total);?> 
+                     
+                    <span style="color:#666">
+                    <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->html . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                    </span>
                 </td>
             </tr>             
 
