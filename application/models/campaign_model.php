@@ -10,6 +10,17 @@ class campaign_model extends CI_Model {
 
 	var $protected_field	= null;
 
+	var $validation_counts = array(
+									'http_5xx' => 0,
+									'http_4xx' => 0,
+									'http_3xx' => 0,
+									'http_2xx' => 0,
+									'pdf' => 0,
+									'html' => 0,
+									'format_mismatch' => 0
+									);
+
+
 
 	public function __construct(){
 		parent::__construct();
@@ -781,6 +792,8 @@ class campaign_model extends CI_Model {
 		$programCode = array();
 		$bureauCode = array();
 
+
+
 		$accessLevel_public			= 0;
 		$accessLevel_restricted		= 0;
 		$accessLevel_nonpublic		= 0;
@@ -831,11 +844,16 @@ class campaign_model extends CI_Model {
 			if(!empty($dataset->accessURL) && filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
 				$accessURL_total++;
 				$has_accessURL = true;
+
+				$this->validation_check($dataset->accessURL);
+
 			}
 
 			if(!empty($dataset->webService) && filter_var($dataset->webService, FILTER_VALIDATE_URL)) {
 				$accessURL_total++;
 				$has_accessURL = true;
+
+				$this->validation_check($dataset->webService);
 			}			
 
 			if(!empty($dataset->distribution) && is_array($dataset->distribution)) {
@@ -844,6 +862,7 @@ class campaign_model extends CI_Model {
 					if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
 						$accessURL_total++;
 						$has_accessURL = true;
+						$this->validation_check($distribution->accessURL, $distribution->format);
 					}					
 				}
 
@@ -868,7 +887,7 @@ class campaign_model extends CI_Model {
 
 		$qa['accessURL_present'] 	= $accessURL_present;
 		$qa['accessURL_total'] 		= $accessURL_total;
-
+		$qa['validation_counts']	= $this->validation_counts;
 
 		return $qa;
 
@@ -880,6 +899,42 @@ class campaign_model extends CI_Model {
 			// bureaus
 			// formats
 
+	}
+
+	public function validation_check($url, $format = null) {
+
+
+		$header = curl_header($url);
+
+		if(!empty($header['info']['content_type']) && strpos($header['info']['content_type'], 'application/pdf') !== false){
+			$this->validation_counts['pdf']++;
+		}
+
+		if(!empty($header['info']['content_type']) && strpos($header['info']['content_type'], 'text/html') !== false){
+			$this->validation_counts['html']++;
+		}	
+
+		if(!empty($format) && !empty($header['info']['content_type']) && strpos($header['info']['content_type'], $format) !== false){
+			$this->validation_counts['format_mismatch']++;
+		}
+
+		if(!empty($header['info']['http_code']) && preg_match('/[5]\d{2}\z/', $header['info']['http_code']) ){
+			$this->validation_counts['http_5xx']++;
+		}	
+
+		if(!empty($header['info']['http_code']) && preg_match('/[4]\d{2}\z/', $header['info']['http_code']) ){
+			$this->validation_counts['http_4xx']++;
+		}	
+
+		if(!empty($header['info']['http_code']) && preg_match('/[3]\d{2}\z/', $header['info']['http_code']) ){
+			$this->validation_counts['http_3xx']++;
+		}
+
+		if(!empty($header['info']['http_code']) && preg_match('/[2]\d{2}\z/', $header['info']['http_code']) ){
+			$this->validation_counts['http_2xx']++;
+		}						
+
+		return true;
 	}
 
 

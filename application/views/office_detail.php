@@ -729,6 +729,68 @@
             </tr> 
             <?php endif; ?>            
 
+            
+            <?php if(!empty($office_campaign->datajson_status->qa->validation_counts)): ?>
+
+            <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_4xx > 0) ? 'danger' : 'success'?>">
+                <th id="metrics-datajson-download-urls-4xx">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_4xx' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Broken links (accessURL 4xx)
+                </th>                 
+                <td>
+                    <?php echo $office_campaign->datajson_status->qa->validation_counts->http_4xx; ?>
+                </td>
+            </tr> 
+
+
+            <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->format_mismatch > 0) ? 'danger' : 'success'?>">
+                <th id="metrics-datajson-download-urls-format-mismatch">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_format_mismatch' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Correct format
+                </th>                 
+                <td>
+
+                    <?php 
+                    $correct_format_count = $office_campaign->datajson_status->qa->accessURL_total - $office_campaign->datajson_status->qa->validation_counts->format_mismatch;
+                    echo process_percentage($correct_format_count, $office_campaign->datajson_status->qa->accessURL_total); 
+                    ?> 
+                    <span style="color:#666">
+                    <?php echo '(' . $correct_format_count . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                    </span>
+                </td>
+            </tr>             
+
+            <tr>
+                <th id="metrics-datajson-download-urls-pdf">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_pdf' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    PDF for raw data (accessURL)
+                </th>                 
+                <td>
+                    <?php echo $office_campaign->datajson_status->qa->validation_counts->pdf; ?>
+                </td>
+            </tr> 
+
+            <tr>
+                <th id="metrics-datajson-download-urls-html">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_html' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    HTML for raw data (accessURL)
+                </th>                 
+                <td>
+                    <?php echo $office_campaign->datajson_status->qa->validation_counts->html; ?>
+                </td>
+            </tr>             
+
+
+
+            <?php endif; ?>    
 
             <?php if(!empty($office_campaign->datajson_status->qa->bureauCodes)): ?>
             <tr>
