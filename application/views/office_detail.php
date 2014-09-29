@@ -725,6 +725,10 @@
                 </th>                 
                 <td>
                     <?php echo $office_campaign->datajson_status->qa->accessURL_total; ?>
+
+                    <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
+                        <span class="text-danger">(but only <?php echo $office_campaign->datajson_status->qa->validation_counts->http_2xx; ?> accessible)</span>
+                    <?php endif; ?>
                 </td>
             </tr> 
             <?php endif; ?>            
@@ -759,16 +763,16 @@
                 <td>
 
                     <?php 
-                    $correct_format_count = $office_campaign->datajson_status->qa->accessURL_total - $office_campaign->datajson_status->qa->validation_counts->format_mismatch;
-                    echo process_percentage($correct_format_count, $office_campaign->datajson_status->qa->accessURL_total); 
+                    $correct_format_count = $office_campaign->datajson_status->qa->validation_counts->http_2xx - $office_campaign->datajson_status->qa->validation_counts->format_mismatch;
+                    echo process_percentage($correct_format_count, $office_campaign->datajson_status->qa->validation_counts->http_2xx); 
                     ?> 
                     <span style="color:#666">
-                    <?php echo '(' . $correct_format_count . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                    <?php echo '(' . $correct_format_count . ' of ' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . ')' ?>
                     </span>
                 </td>
             </tr>             
 
-            <tr>
+            <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->pdf == 0) ? 'success' : '' ?>">
                 <th id="metrics-datajson-download-urls-pdf">
                     <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_pdf' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
@@ -776,10 +780,10 @@
                     PDF for raw data (accessURL)
                 </th>                 
                 <td>
-                   <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->pdf, $office_campaign->datajson_status->qa->accessURL_total);?> 
+                   <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->pdf, $office_campaign->datajson_status->qa->validation_counts->http_2xx);?> 
                      
                     <span style="color:#666">
-                    <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->pdf . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                    <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->pdf . ' of ' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . ')' ?>
                     </span>
                 </td>
             </tr> 
@@ -792,10 +796,10 @@
                     HTML for raw data (accessURL)
                 </th>                 
                 <td>
-                   <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->html, $office_campaign->datajson_status->qa->accessURL_total);?> 
+                   <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->html, $office_campaign->datajson_status->qa->validation_counts->http_2xx);?> 
                      
                     <span style="color:#666">
-                    <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->html . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                    <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->html . ' of ' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . ')' ?>
                     </span>
                 </td>
             </tr>             
