@@ -613,7 +613,7 @@ class campaign_model extends CI_Model {
 
 
 
-
+			// Sum QA counts 
 			if(!empty($response['qa'])) {
 
 
@@ -631,6 +631,17 @@ class campaign_model extends CI_Model {
 					if(!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {					
 						$response['qa'][$array_field] = array_sum($response['qa'][$array_field]);					 
 					}	
+				}
+
+				// Sum validation counts
+				if (!empty($response['qa']['validation_counts']) && is_array($response['qa']['validation_counts'])) {
+					foreach ($response['qa']['validation_counts'] as $validation_key => $validation_count) {
+
+						if(is_array($response['qa']['validation_counts'][$validation_key])) {
+							$response['qa']['validation_counts'][$validation_key] = array_sum($response['qa']['validation_counts'][$validation_key]);
+						}
+
+					}
 				}
 
 			}
