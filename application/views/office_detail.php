@@ -740,7 +740,11 @@
                     Broken links (accessURL 4xx)
                 </th>                 
                 <td>
-                    <?php echo $office_campaign->datajson_status->qa->validation_counts->http_4xx; ?>
+                   <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_4xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
+                     
+                    <span style="color:#666">
+                    <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->http_4xx . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                    </span>
                 </td>
             </tr> 
 
