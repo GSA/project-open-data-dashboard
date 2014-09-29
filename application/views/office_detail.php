@@ -753,6 +753,23 @@
             </tr> 
 
 
+            <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_3xx > 0) ? 'warning' : 'success'?>">
+                <th id="metrics-datajson-download-urls-3xx">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_3xx' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Redirected Links (accessURL 3xx)
+                </th>                 
+                <td>
+                   <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_3xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
+                     
+                    <span style="color:#666">
+                    <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->http_3xx . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                    </span>
+                </td>
+            </tr>             
+
+
             <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->format_mismatch > 0) ? 'danger' : 'success'?>">
                 <th id="metrics-datajson-download-urls-format-mismatch">
                     <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_format_mismatch' ?>">
