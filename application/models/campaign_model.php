@@ -133,10 +133,14 @@ class campaign_model extends CI_Model {
 		$model->accessURL_html 							=   clone $field;
 		$model->accessURL_html->label 					=   'HTML Downloads';
 		$model->accessURL_html->total_field 			=   'accessURL_working';
-		
+		$model->accessURL_html->success_basis			= 	'low';
+		$model->accessURL_html->success_weight			=	.35;
+
 		$model->accessURL_pdf 							=   clone $field;
 		$model->accessURL_pdf->label 					=   'PDF Downloads';
 		$model->accessURL_pdf->total_field 				=   'accessURL_working';
+		$model->accessURL_pdf->success_basis			= 	'low';
+		$model->accessURL_pdf->success_weight			=	.15;
 
 		return $model;
 

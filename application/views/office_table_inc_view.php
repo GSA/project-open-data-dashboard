@@ -415,7 +415,7 @@ function page_status($data_status, $status_color = null) {
 	return $icon;
 }
 
-function metric_status_color($metric, $success_basis, $weight = 20) {
+function metric_status_color($metric, $success_basis, $weight) {
 
 	if(!empty($success_basis)) {
 		
@@ -423,6 +423,10 @@ function metric_status_color($metric, $success_basis, $weight = 20) {
 		$metric = pow(100, 1-$weight) * pow($metric, $weight);
 
 		$value = ($metric * .01);
+
+		if ($success_basis == 'low') {
+			$value = 1 - $value;
+		}
 
 		$hue = ($value) * 120;
 		$status_color = "background-color : hsl($hue, 75%, 85%);";
