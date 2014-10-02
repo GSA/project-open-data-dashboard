@@ -329,7 +329,7 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 				?>
 
 
-				<td style="<?php echo metric_status_color($metric, $qa_field->success_basis); ?>">
+				<td style="<?php echo metric_status_color($metric, $qa_field->success_basis, $qa_field->success_weight); ?>">
 					<a href="#">
 						<span>
 							<?php 
@@ -415,12 +415,12 @@ function page_status($data_status, $status_color = null) {
 	return $icon;
 }
 
-function metric_status_color($metric, $success_basis) {
+function metric_status_color($metric, $success_basis, $weight = 20) {
 
 	if(!empty($success_basis)) {
 		
 		// curve the percentage
-		$metric = pow(100, 1-20) * pow($metric, 20);
+		$metric = pow(100, 1-$weight) * pow($metric, $weight);
 
 		$value = ($metric * .01);
 

@@ -81,85 +81,62 @@ class campaign_model extends CI_Model {
 		$field->label 							= null;
 		$field->total_field						= null;
 		$field->success_basis					= null;
+		$field->success_weight					= null;
+		$field->value							= null;
 
 		$model->total_records 							=   clone $field;
 		$model->total_records->label 					=   'Public Datasets';
-		$model->total_records->total_field 				=   null;
-		$model->total_records->success_basis			= 	null;
-		$model->total_records->value					= 	null;
-
 		
 		$model->valid_count 							=   clone $field;
 		$model->valid_count->label 						=   'Valid Metadata';
 		$model->valid_count->total_field 				=   'total_records';
 		$model->valid_count->success_basis				= 	'high';
-		$model->valid_count->value						= 	null;
+		$model->valid_count->success_weight				=	70;
 			
 		$model->programs 								=   clone $field;
 		$model->programs->label 						=   'Programs';
-		$model->programs->total_field 					=   null;
-		$model->programs->success_basis					= 	null;
-		$model->programs->value							= 	null;
-				
+		
 		$model->bureaus 								=   clone $field;
 		$model->bureaus->label 							=   'Bureaus';
-		$model->bureaus->total_field 					=   null;
-		$model->bureaus->success_basis					= 	null;
-		$model->bureaus->value							= 	null;
 
 		$model->accessLevel_public 						=   clone $field;
 		$model->accessLevel_public->label 				=   'Public Datasets';
 		$model->accessLevel_public->total_field 		=   'total_records';
-		$model->accessLevel_public->success_basis		= 	null;
-		$model->accessLevel_public->value				= 	null;
 
 		$model->accessLevel_nonpublic 					=   clone $field;
 		$model->accessLevel_nonpublic->label 			=   'Restricted Datasets';
 		$model->accessLevel_nonpublic->total_field 		=   'total_records';
-		$model->accessLevel_nonpublic->success_basis	= 	null;
-		$model->accessLevel_nonpublic->value			= 	null;
 
 		$model->accessLevel_restricted 					=   clone $field;
 		$model->accessLevel_restricted->label 			=   'Non-public Datasets';
 		$model->accessLevel_restricted->total_field 	=   'total_records';
-		$model->accessLevel_restricted->success_basis	= 	null;
-		$model->accessLevel_restricted->value			= 	null;
 
 		$model->accessURL_present 						=   clone $field;
 		$model->accessURL_present->label 				=   'Datasets with downloads';
 		$model->accessURL_present->total_field 			=   'total_records';
-		$model->accessURL_present->success_basis		= 	null;
-		$model->accessURL_present->value				= 	null;
 	
 		$model->accessURL_total 						=   clone $field;
 		$model->accessURL_total->label 					=   'Total Download URLs';
-		$model->accessURL_total->total_field 			=   null;
-		$model->accessURL_total->success_basis			= 	null;
-		$model->accessURL_total->value					= 	null;
 	
 		$model->accessURL_working 						=   clone $field;
 		$model->accessURL_working->label 				=   'Working Download URLs';
 		$model->accessURL_working->total_field 			=   'accessURL_total';
 		$model->accessURL_working->success_basis		= 	'high';
-		$model->accessURL_working->value				= 	null;
+		$model->accessURL_working->success_weight		=	30;
 	
 		$model->accessURL_format 						=   clone $field;
 		$model->accessURL_format->label 				=   'Correct Format';
 		$model->accessURL_format->total_field 			=   'accessURL_working';
 		$model->accessURL_format->success_basis			= 	'high';
-		$model->accessURL_format->value					= 	null;
+		$model->accessURL_format->success_weight		=	20;
 		
 		$model->accessURL_html 							=   clone $field;
 		$model->accessURL_html->label 					=   'HTML Downloads';
 		$model->accessURL_html->total_field 			=   'accessURL_working';
-		$model->accessURL_html->success_basis			= 	null;
-		$model->accessURL_html->value					= 	null;
 		
 		$model->accessURL_pdf 							=   clone $field;
 		$model->accessURL_pdf->label 					=   'PDF Downloads';
 		$model->accessURL_pdf->total_field 				=   'accessURL_working';
-		$model->accessURL_pdf->success_basis			= 	null;
-		$model->accessURL_pdf->value					= 	null;
 
 		return $model;
 
