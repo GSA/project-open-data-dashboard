@@ -105,12 +105,24 @@ margin : 0 auto;
 
 }
 
+
+
+
+
 .dashboard-heading th.vertical-heading div {
 -webkit-transform: rotate(-90deg);
 -o-transform: rotate(-90deg);
 transform: rotate(-90deg);
 width : 2em;
 }
+
+
+.qa-table .dashboard-heading th.vertical-heading div {
+	white-space : pre;
+}	
+
+
+
 
 .dashboard-heading th.vertical-heading.edi {
 	background-color : #C4F0FF;

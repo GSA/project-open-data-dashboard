@@ -26,7 +26,7 @@ class Offices extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index($selected_milestone = null, $output=null, $show_all_offices = false, $show_all_fields = false)
+	public function index($selected_milestone = null, $output=null, $show_all_offices = false, $show_all_fields = false, $show_qa_fields = false)
 	{
 
 
@@ -103,7 +103,12 @@ class Offices extends CI_Controller {
 
 		// pass config variables
 		$view_data['max_remote_size'] = $this->config->item('max_remote_size');
+
 		$view_data['show_all_fields'] = $show_all_fields;
+		$view_data['show_qa_fields']  = $show_qa_fields;	
+
+		// override section model if we're just showing QA
+		if($show_qa_fields) $view_data['section_breakdown'] = $this->campaign->qa_sections_model();	
 
 		if ($output == 'json') {
 			return $view_data;
@@ -279,9 +284,16 @@ class Offices extends CI_Controller {
     			$show_all_fields = true;
     		} else {
     			$show_all_fields = false;
-    		}    		
+    		}  
 
-    		return $this->index($milestone=$route, $output=null, $show_all_offices, $show_all_fields);	
+    		if ($parameter1 == 'qa' || $parameter2 == 'qa'){
+    			$show_qa_fields = true;
+    		} else {
+    			$show_qa_fields = false;
+    		} 
+
+
+    		return $this->index($milestone=$route, $output=null, $show_all_offices, $show_all_fields, $show_qa_fields);	
     	}
 
 

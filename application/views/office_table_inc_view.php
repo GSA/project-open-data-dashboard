@@ -241,7 +241,114 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 	</div>
 
 <?php
+} 
+?>
+
+
+
+<?php
+function status_table_qa($title, $rows, $tracker, $config = null, $sections_breakdown = null, $milestone = null) {
+
+		$model = $sections_breakdown;
+
+?>
+
+	<table class="dashboard table table-striped table-hover table-bordered qa-table">
+
+		<tr class="dashboard-heading">
+			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
+
+
+			<?php foreach ($model as $qa_field) : ?>
+				<th class="vertical-heading"><div><?php echo $qa_field->label;?></div></th>
+			<?php endforeach; ?>
+
+
+		</tr>
+
+		<?php
+			if($milestone && !empty($milestone->selected_milestone)) {
+				$milestone_url = '/' . $milestone->selected_milestone;
+			}
+		?>
+
+
+
+		<?php foreach ($rows as $office):?>
+
+		<?php
+
+			if(!empty($office->datajson_status)) {
+				$office->datajson_status = json_decode($office->datajson_status);
+			}
+	
+			if(!empty($office->datajson_status->qa->validation_counts)) {
+
+
+
+			$error_count 		= (!empty($office->datajson_status->error_count)) ? $office->datajson_status->error_count : 0;
+			$total_records	 	= (!empty($office->datajson_status->total_records)) ? $office->datajson_status->total_records : '';
+
+			$percent_valid		= (!empty($total_records)) ? process_percentage(($total_records - $error_count), $total_records) : '';
+
+			//var_dump($office->datajson_status->qa); exit;
+
+			$model->total_records->value 			= $office->datajson_status->total_records;
+    		$model->valid_count->value 				= $office->datajson_status->total_records - $office->datajson_status->error_count;
+			$model->programs->value 				= count($office->datajson_status->qa->programCodes);
+			$model->bureaus->value 					= count($office->datajson_status->qa->bureauCodes);
+
+			$model->accessLevel_public->value 		= $office->datajson_status->qa->accessLevel_public;
+			$model->accessLevel_nonpublic->value 	= $office->datajson_status->qa->accessLevel_nonpublic;
+			$model->accessLevel_restricted->value 	= $office->datajson_status->qa->accessLevel_restricted;
+			$model->accessURL_present->value 		= $office->datajson_status->qa->accessURL_present;
+			$model->accessURL_total->value 			= $office->datajson_status->qa->accessURL_total;
+			$model->accessURL_working->value 		= $office->datajson_status->qa->validation_counts->http_2xx;
+			$model->accessURL_format->value 		= $model->accessURL_working->value - $office->datajson_status->qa->validation_counts->format_mismatch;
+			$model->accessURL_html->value 			= $office->datajson_status->qa->validation_counts->html;
+			$model->accessURL_pdf->value 			= $office->datajson_status->qa->validation_counts->pdf;
+
+			reset($model);			
+
+		?>
+
+		<tr>
+			<th><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>"><?php echo $office->name;?></a></th>
+
+			<?php foreach ($model as $qa_field) : ?>
+
+				<td>
+					<a href="#">
+						<span>
+							<?php 
+
+									if(!empty($qa_field->total_field)) {
+										echo process_percentage($qa_field->value, $model->{$qa_field->total_field}->value);
+									} else {
+										echo $qa_field->value; 	
+									}
+									
+							?>
+						</span>
+					</a>
+				</td>
+
+			<?php endforeach; ?>
+
+		</tr>
+		<?php } endforeach;?>
+	</table>
+	
+
+<?php
 }
+?>
+
+
+
+
+
+<?php 
 
 function http_status_color($status_code) {
 

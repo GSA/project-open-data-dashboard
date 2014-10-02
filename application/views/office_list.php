@@ -8,6 +8,19 @@ if($show_all_fields) $container_class = "full-width";
 
 <?php include 'office_table_inc_view.php';?>
 
+<?php 
+
+if($show_all_fields) {
+  $dashboard_type = 'full';
+} else if($show_qa_fields) {
+  $dashboard_type = 'qa';
+} else {
+  $dashboard_type = '';
+}
+
+
+
+?>
 
     <div class="container <?php if(!empty($container_class)) echo $container_class; ?>">
       <!-- Example row of columns -->
@@ -33,7 +46,7 @@ if($show_all_fields) $container_class = "full-width";
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <?php foreach ($milestone->milestones as $milestone_date => $milestone_name): ?>
-                            <li><a href="<?php echo site_url();?>offices/<?php echo $milestone_date;?>"><?php echo $milestone_name . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
+                            <li><a href="<?php echo site_url();?>offices/<?php echo $milestone_date; if(!empty($dashboard_type)) echo '/' . $dashboard_type;?>"><?php echo $milestone_name . ' - ' . date("F jS Y", strtotime($milestone_date));?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
@@ -46,7 +59,9 @@ if($show_all_fields) $container_class = "full-width";
 			if(!empty($cfo_offices)) {
 
         if($show_all_fields) {
-          status_table_full('CFO Act Agencies', $cfo_offices, $tracker, $config, $milestone->selected_milestone, $milestone->specified);
+          status_table_full('CFO Act Agencies', $cfo_offices, $tracker, $config, $milestone->selected_milestone, $milestone->specified);        
+        } elseif ($show_qa_fields) {
+          status_table_qa('CFO Act Agencies', $cfo_offices, $tracker, $config, $section_breakdown, $milestone);
         } else {
           status_table('CFO Act Agencies', $cfo_offices, $tracker, $config, $section_breakdown, $milestone);
         }
