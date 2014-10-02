@@ -923,8 +923,9 @@ class campaign_model extends CI_Model {
 			if(!empty($dataset->accessURL) && filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
 				$accessURL_total++;
 				$has_accessURL = true;
+				$dataset_format = (!empty($dataset->format)) ? $dataset->format : null;
 
-				$this->validation_check($dataset->accessURL);
+				$this->validation_check($dataset->accessURL, $dataset_format);
 
 			}
 
