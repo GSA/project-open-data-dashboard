@@ -317,17 +317,23 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 
 			<?php foreach ($model as $qa_field) : ?>
 
-				<td>
+
+				<?php 
+
+						if(!empty($qa_field->total_field)) {
+							$metric = process_percentage($qa_field->value, $model->{$qa_field->total_field}->value);
+						} else {
+							$metric = $qa_field->value; 	
+						}
+						
+				?>
+
+
+				<td style="<?php echo metric_status_color($metric, $qa_field->success_basis); ?>">
 					<a href="#">
 						<span>
 							<?php 
-
-									if(!empty($qa_field->total_field)) {
-										echo process_percentage($qa_field->value, $model->{$qa_field->total_field}->value);
-									} else {
-										echo $qa_field->value; 	
-									}
-									
+								echo $metric;
 							?>
 						</span>
 					</a>
@@ -409,6 +415,23 @@ function page_status($data_status, $status_color = null) {
 	return $icon;
 }
 
+function metric_status_color($metric, $success_basis) {
+
+	if(!empty($success_basis)) {
+		
+		// curve the percentage
+		$metric = pow(100, 1-20) * pow($metric, 20);
+
+		$value = ($metric * .01);
+
+		$hue = ($value) * 120;
+		$status_color = "background-color : hsl($hue, 75%, 85%);";
+	} else {
+		$status_color = '';
+	}
+
+	return $status_color;
+}
 
 function process_percentage ($numerator, $denominator) {
 
