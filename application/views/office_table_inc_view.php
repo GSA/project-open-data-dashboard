@@ -428,7 +428,7 @@ function metric_status_color($metric, $success_basis, $weight) {
 			$value = 1 - $value;
 		}
 
-		$hue = ($value) * 120;
+		$hue = round(($value) * 120);		
 		$status_color = "background-color : hsl($hue, 75%, 85%);";
 	} else {
 		$status_color = '';
