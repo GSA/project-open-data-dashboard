@@ -1035,7 +1035,7 @@ class campaign_model extends CI_Model {
 			// TODO: log this to a csv
 
 		} else {
-			return valid;
+			return true;
 		}
 
 	}
