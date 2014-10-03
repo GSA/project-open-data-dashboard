@@ -997,16 +997,16 @@ class campaign_model extends CI_Model {
 			$good_link = true;
 		}	
 
-		if($good_link && !empty($format) && !empty($header['info']['content_type']) && strpos($header['info']['content_type'], $format) === false){
+		if($good_link && !empty($format) && !empty($header['info']['content_type']) && stripos($header['info']['content_type'], $format) === false){
 			$this->validation_counts['format_mismatch']++;
 			$good_format = false;
 		}		
 
-		if($good_link && !empty($header['info']['content_type']) && strpos($header['info']['content_type'], 'application/pdf') !== false){
+		if($good_link && !empty($header['info']['content_type']) && stripos($header['info']['content_type'], 'application/pdf') !== false){
 			$this->validation_counts['pdf']++;
 		}
 
-		if($good_link && !empty($header['info']['content_type']) && strpos($header['info']['content_type'], 'text/html') !== false){
+		if($good_link && !empty($header['info']['content_type']) && stripos($header['info']['content_type'], 'text/html') !== false){
 			$this->validation_counts['html']++;
 		}	
 
