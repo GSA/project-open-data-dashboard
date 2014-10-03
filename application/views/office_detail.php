@@ -748,6 +748,18 @@
     
         if(isset($office_campaign->datajson_status->schema_errors)): ?>
         
+         <?php
+             $validation_url = site_url('validate?schema=federal&output=browser&datajson_url=') . urlencode($office_campaign->expected_datajson_status->url);
+         ?>
+
+        <tr class="info" id="schema_validation_results">
+            <td colspan="2">
+                <span class="glyphicon glyphicon-download"></span>  
+                For more complete and readable validation results, see the full <a href="<?php echo $validation_url?>">schema validator results</a> 
+            </td>
+        </tr>         
+
+
         <tr class="danger">
             <th id="metrics-datajson-schema-errors">
                 <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_schema_errors' ?>">
@@ -758,9 +770,6 @@
             <td>
             <span>
             <?php
-                $validation_url = site_url('validate?schema=federal&output=browser&datajson_url=') . urlencode($office_campaign->expected_datajson_status->url);
-
-                echo "<p><strong>For more readable validation results, see the <a href=\"$validation_url\">validator</a></strong></p>\n";
     
                 $datajson_errors = (array) $office_campaign->datajson_status->schema_errors;
 

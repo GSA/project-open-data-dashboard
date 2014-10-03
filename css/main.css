@@ -217,6 +217,7 @@ table.dashboard-list .info td {
 
 table.dashboard-list .info td a {
 	color : #0C64B0; 
+	font-weight : bold;
 }
 
 .general-notes, .section-notes {
