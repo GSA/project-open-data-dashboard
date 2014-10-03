@@ -610,8 +610,8 @@ class Campaign extends CI_Controller {
 						$this->campaign->update_status($update);
 
 	                	// Check JSON status
-	                	$status 				= $this->json_status($status, $real_url);
-	        			
+	                	$status 				= $this->json_status($status, $real_url);	        		
+
 	        			// Set correct URL
 	        			if(!empty($status['url'])) {
 	        				if(strpos($status['url'], '?refresh=')) {
@@ -719,7 +719,10 @@ class Campaign extends CI_Controller {
 
 			}
 
-
+			// Close file connections that are still open 
+			if(is_resource($this->campaign->validation_log)) {
+				fclose($this->campaign->validation_log);
+			}
 
 		}
 
