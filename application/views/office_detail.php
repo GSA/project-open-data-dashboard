@@ -681,10 +681,152 @@
 			</td>
 		</tr>	
 
+
+
+
+        <?php 
+
+        if ($percent_valid == '100%' && $valid_json == true) {
+            $percent_valid_color = 'success';
+        } else if ($percent_valid == '100%' && $valid_json !== true) {
+            $percent_valid_color = 'warning';
+        } else {
+            $percent_valid_color = 'danger';
+        }
+
+        ?>
+
+
+        <tr class="<?php echo $percent_valid_color; ?>">
+            <th id="metrics-datajson-valid-count">
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_valid_count' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Datasets with Valid Metadata
+            </th>              
+            <td>
+                <a name="pdl_valid_metadata" class="anchor-point"></a>
+
+                <?php if(!empty($percent_valid)): ?>
+                    <span class="text-<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
+                        <?php echo $percent_valid;?> <span id="metrics_valid_count" style="color:#666">(<?php echo $valid_count . ' of ' . $total_records?>)</span>
+                        <?php if($valid_json !== true):?>
+                           - <span class="text-danger">The <a href="./#valid_json">JSON file is invalid</a> and can't be parsed without special processing</span>
+                        <?php endif; ?>
+                    </span>
+                <?php endif; ?>
+            </td>
+        </tr>   
+     
+        <tr class="<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
+            <th id="metrics-datajson-valid-schmea">
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_valid_schema' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Valid Schema
+            </th>             
+            <td>
+            <span class="text-<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
+            <?php
+            //var_dump($office_campaign->datajson_status); exit;
+
+            if($office_campaign->datajson_status->download_content_length > $config['max_remote_size']) {
+                echo 'File is too large to validate';
+            } else {
+                if($valid_schema == true) echo 'Valid';
+                if($valid_schema == false && $valid_schema !== null) echo 'Invalid';                            
+            }
+    
+            ?>
+            </span>
+            </td>
+
+        </tr>   
+        
+        <?php 
+        
+    
+        if(isset($office_campaign->datajson_status->schema_errors)): ?>
+        
+        <tr class="danger">
+            <th id="metrics-datajson-schema-errors">
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_schema_errors' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Schema Errors
+            </th>  
+            <td>
+            <span>
+            <?php
+                $validation_url = site_url('validate?schema=federal&output=browser&datajson_url=') . urlencode($office_campaign->expected_datajson_status->url);
+
+                echo "<p><strong>For more readable validation results, see the <a href=\"$validation_url\">validator</a></strong></p>\n";
+    
+                $datajson_errors = (array) $office_campaign->datajson_status->schema_errors;
+
+                $error_count        = (!empty($office_campaign->datajson_status->error_count)) ? $office_campaign->datajson_status->error_count : 0;
+
+                echo 'There are validation errors on ' . $error_count . ' records <br><br>';
+                
+                if($error_count > 10) {
+                    echo 'Only showing errors from the first 10 records: <br><br>';                  
+                }
+                ?>
+             
+
+                <?php foreach ($datajson_errors as $key => $fields) : ?>
+                    
+                    <strong>Errors on record <?php echo $key ?>: </strong> <br>
+
+                    <?php if(!empty($fields->ALL)): ?>
+    
+                            <ul class="validation-full-record">
+                                <?php foreach ($fields->ALL->errors as $error_description) : ?>
+                                    <?php if(strpos($error_description, 'but a null is required')) continue; ?>
+                                    <li><?php echo $error_description ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+    
+                    <?php 
+                        unset($fields->ALL);
+                        endif; 
+                    ?>
+                
+    
+    
+                    <?php
+                        foreach ($fields as $field => $details) {
+                            echo "<code>$field</code><br>";
+    
+                            if(!empty($details->errors)) {
+                                echo "<ul>";
+    
+                                foreach($details->errors as $error) {
+                                    echo "<li>$error</li>";
+                                }
+                            
+                                echo "</ul>";
+    
+                            }
+                            
+                        }
+                    ?>
+
+                 <?php endforeach; ?>
+
+            </span>
+            </td>
+
+        </tr>   
+        <?php endif; ?> 
+
+
+
+
         
         <tr>
-            <th id="metrics-datajson-dataset-count">
-                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_datasets' ?>">
+            <th id="metrics_total_records">
+                <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_total_records' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
                 Datasets
@@ -701,8 +843,8 @@
 
             <?php if(!empty($office_campaign->datajson_status->qa->accessURL_present)): ?>
             <tr>
-                <th id="metrics-datajson-dataset-urls">
-                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_datasets_downloadable' ?>">
+                <th id="metrics_accessURL_present">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_present' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Datasets with Downloadable URLs (accessURL)
@@ -717,8 +859,8 @@
 
             <?php if(!empty($office_campaign->datajson_status->qa->accessURL_total)): ?>
             <tr>
-                <th id="metrics-datajson-download-urls">
-                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_count' ?>">
+                <th id="metrics_accessURL_total">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_total' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Total Downloadable URLs (accessURL)
@@ -727,7 +869,7 @@
                     <?php echo $office_campaign->datajson_status->qa->accessURL_total; ?>
 
                     <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
-                        <span class="text-danger">(but only <?php echo $office_campaign->datajson_status->qa->validation_counts->http_2xx; ?> accessible)</span>
+                        <span id="metrics_accessURL_working" class="text-danger">(but only <?php echo $office_campaign->datajson_status->qa->validation_counts->http_2xx; ?> accessible)</span>
                     <?php endif; ?>
                 </td>
             </tr> 
@@ -800,8 +942,8 @@
 
 
             <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->format_mismatch > 0) ? 'danger' : 'success'?>">
-                <th id="metrics-datajson-download-urls-format-mismatch">
-                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_format_mismatch' ?>">
+                <th id="metrics_accessURL_format">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_format' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Correct format (accessURL/format)
@@ -819,8 +961,8 @@
             </tr>             
 
             <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->pdf == 0) ? 'success' : '' ?>">
-                <th id="metrics-datajson-download-urls-pdf">
-                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_pdf' ?>">
+                <th id="metrics_accessURL_html">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_html' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     PDF for raw data (accessURL)
@@ -835,8 +977,8 @@
             </tr> 
 
             <tr>
-                <th id="metrics-datajson-download-urls-html">
-                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_html' ?>">
+                <th id="metrics_accessURL_pdf">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_pdf' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     HTML for raw data (accessURL)
@@ -856,8 +998,8 @@
 
             <?php if(!empty($office_campaign->datajson_status->qa->bureauCodes)): ?>
             <tr>
-                <th id="metrics-datajson-bureau-count">
-                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_bureau_count' ?>">
+                <th id="metrics_bureaus">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_bureaus' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Bureaus Represented
@@ -871,8 +1013,8 @@
 
             <?php if(!empty($office_campaign->datajson_status->qa->programCodes)): ?>
             <tr>
-                <th id="metrics-datajson-program-count">
-                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_program_count' ?>">
+                <th id="metrics_programs">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_programs' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Programs Represented
@@ -888,141 +1030,6 @@
         <?php endif; ?>
 
 
-        <?php 
-
-        if ($percent_valid == '100%' && $valid_json == true) {
-            $percent_valid_color = 'success';
-        } else if ($percent_valid == '100%' && $valid_json !== true) {
-            $percent_valid_color = 'warning';
-        } else {
-            $percent_valid_color = 'danger';
-        }
-
-        ?>
-
-
-        <tr class="<?php echo $percent_valid_color; ?>">
-            <th id="metrics-datajson-valid-count">
-                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_valid_count' ?>">
-                    <span class="glyphicon glyphicon-info-sign"></span>
-                </a>
-                Datasets with Valid Metadata
-            </th>              
-            <td>
-                <a name="pdl_valid_metadata" class="anchor-point"></a>
-
-                <?php if(!empty($percent_valid)): ?>
-                    <span class="text-<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
-                        <?php echo $percent_valid;?> <span style="color:#666">(<?php echo $valid_count . ' of ' . $total_records?>)</span>
-                        <?php if($valid_json !== true):?>
-                           - <span class="text-danger">The <a href="./#valid_json">JSON file is invalid</a> and can't be parsed without special processing</span>
-                        <?php endif; ?>
-                    </span>
-                <?php endif; ?>
-            </td>
-        </tr>   
-     
-		<tr class="<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
-            <th id="metrics-datajson-valid-schmea">
-                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_valid_schema' ?>">
-                    <span class="glyphicon glyphicon-info-sign"></span>
-                </a>
-                Valid Schema
-            </th>             
-			<td>
-			<span class="text-<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
-			<?php
-			//var_dump($office_campaign->datajson_status); exit;
-
-            if($office_campaign->datajson_status->download_content_length > $config['max_remote_size']) {
-                echo 'File is too large to validate';
-            } else {
-                if($valid_schema == true) echo 'Valid';
-                if($valid_schema == false && $valid_schema !== null) echo 'Invalid';                            
-            }
-	
-			?>
-			</span>
-			</td>
-
-		</tr>	
-		
-		<?php 
-		
-	
-		if(isset($office_campaign->datajson_status->schema_errors)): ?>
-		
-		<tr class="danger">
-            <th id="metrics-datajson-schema-errors">
-                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_schema_errors' ?>">
-                    <span class="glyphicon glyphicon-info-sign"></span>
-                </a>
-                Schema Errors
-            </th>  
-			<td>
-			<span>
-			<?php
-                $validation_url = site_url('validate?schema=federal&output=browser&datajson_url=') . urlencode($office_campaign->expected_datajson_status->url);
-
-                echo "<p><strong>For more readable validation results, see the <a href=\"$validation_url\">validator</a></strong></p>\n";
-	
-                $datajson_errors = (array) $office_campaign->datajson_status->schema_errors;
-
-                $error_count        = (!empty($office_campaign->datajson_status->error_count)) ? $office_campaign->datajson_status->error_count : 0;
-
-                echo 'There are validation errors on ' . $error_count . ' records <br><br>';
-                
-                if($error_count > 10) {
-                    echo 'Only showing errors from the first 10 records: <br><br>';                  
-                }
-                ?>
-             
-
-                <?php foreach ($datajson_errors as $key => $fields) : ?>
-                    
-                    <strong>Errors on record <?php echo $key ?>: </strong> <br>
-
-                    <?php if(!empty($fields->ALL)): ?>
-    
-                            <ul class="validation-full-record">
-                                <?php foreach ($fields->ALL->errors as $error_description) : ?>
-                                    <?php if(strpos($error_description, 'but a null is required')) continue; ?>
-                                    <li><?php echo $error_description ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-    
-                    <?php 
-                        unset($fields->ALL);
-                        endif; 
-                    ?>
-                
-    
-    
-                    <?php
-                        foreach ($fields as $field => $details) {
-                            echo "<code>$field</code><br>";
-    
-                            if(!empty($details->errors)) {
-                                echo "<ul>";
-    
-                                foreach($details->errors as $error) {
-                                    echo "<li>$error</li>";
-                                }
-                            
-                                echo "</ul>";
-    
-                            }
-                            
-                        }
-                    ?>
-
-                 <?php endforeach; ?>
-
-			</span>
-			</td>
-
-		</tr>	
-		<?php endif; ?>	
 			
         <?php if(!empty($office_campaign->expected_datajson_status->download_content_length)): ?>
         <tr>

@@ -315,7 +315,7 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 		<tr>
 			<th><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>"><?php echo $office->name;?></a></th>
 
-			<?php foreach ($model as $qa_field) : ?>
+			<?php foreach ($model as $qa_field_name => $qa_field) : ?>
 
 
 				<?php 
@@ -325,12 +325,12 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 						} else {
 							$metric = $qa_field->value; 	
 						}
-						
+			
 				?>
 
 
 				<td style="<?php echo metric_status_color($metric, $qa_field->success_basis, $qa_field->success_weight); ?>">
-					<a href="#">
+					<a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?><?php echo '#metrics_' . $qa_field_name; ?>">
 						<span>
 							<?php 
 								echo $metric;
