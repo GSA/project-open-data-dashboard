@@ -970,8 +970,8 @@
             </tr>             
 
             <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->pdf == 0) ? 'success' : '' ?>">
-                <th id="metrics_accessURL_html">
-                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_html' ?>">
+                <th id="metrics_accessURL_pdf">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_pdf' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     PDF for raw data (accessURL)
@@ -986,8 +986,8 @@
             </tr> 
 
             <tr>
-                <th id="metrics_accessURL_pdf">
-                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_pdf' ?>">
+                <th id="metrics_accessURL_html">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_html' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     HTML for raw data (accessURL)
