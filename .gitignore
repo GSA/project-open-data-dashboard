@@ -11,6 +11,7 @@ application/config/config.php
 application/config/database.php
 downloads/*
 
+archive/error_log/*
 archive/datajson/201*
 archive/digitalstrategy/201*
 

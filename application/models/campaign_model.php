@@ -3,15 +3,12 @@
 
 class campaign_model extends CI_Model {
 
-
-	//var $pagination	 		= NULL;
 	var $jurisdictions 		= array();
-
-
 	var $protected_field	= null;
-
-	var $validation_counts = null;
-
+	var $validation_counts  = null;
+	var $current_office_id  = null;
+	var $validation_pointer = null;
+	var $validation_log 	= null;
 
 
 	public function __construct(){
@@ -974,14 +971,6 @@ class campaign_model extends CI_Model {
 
 		return $qa;
 
-			// qa
-
-			// access level count
-			// downloadable - overall and per record
-			// programs
-			// bureaus
-			// formats
-
 	}
 
 	public function validation_check($id, $title, $url, $format = null) {
@@ -1032,7 +1021,49 @@ class campaign_model extends CI_Model {
 			$error_report['format_datajson'] = $format;
 			$error_report['crawl_date'] = date(DATE_W3C);
 
-			// TODO: log this to a csv
+			// ######## Log this to a CSV ##########
+
+			// if this is the first record to log, prepare the file
+			if($this->validation_pointer == 0) {
+
+				$download_dir = $this->config->item('archive_dir');
+				$directory = "$download_dir/error_log";
+
+				// create error log directory if needed
+				if(!file_exists($directory)) {
+					mkdir($directory);
+				}
+
+				$backup_path = $directory . '/' . $this->current_office_id . '_backup.csv';
+				$filepath = $directory . '/' . $this->current_office_id . '.csv';
+
+				// check to see if there's already a file
+				if (file_exists($filepath)) {
+					rename($filepath, $backup_path);
+				}
+
+				// Open new file
+				$this->validation_log = fopen($filepath, 'w');
+
+				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+					echo 'Creating new file at ' . $filepath . PHP_EOL;
+				}
+
+				// Set file headings
+				$headings = array_keys($error_report);
+				fputcsv($this->validation_log, $headings);
+
+				// Write first row of data to log
+				fputcsv($this->validation_log, $error_report);
+
+			} else {
+
+				// open existing file pointer
+				fputcsv($this->validation_log, $error_report);
+
+			}
+
+			$this->validation_pointer++;
 
 		} else {
 			return true;

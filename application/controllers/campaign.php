@@ -295,8 +295,6 @@ class Campaign extends CI_Controller {
 		}
 
 
-		// Create a stream opening it with read / write mode
-		$stream = fopen('data://text/plain,' . "", 'w+');
 
 		// use data.json model
 		$json_schema = $this->campaign->datajson_schema();
@@ -527,8 +525,12 @@ class Campaign extends CI_Controller {
 
 			foreach ($offices as $office) {
 
-				// initialize update object
+				// Set current office id
+				$this->campaign->current_office_id = $office->id;
+				$this->campaign->validation_pointer = 0;
 
+
+				// initialize update object
 				$update = $this->campaign->datagov_office($office->id, $milestone->selected_milestone);
 
     			if(!$update){
