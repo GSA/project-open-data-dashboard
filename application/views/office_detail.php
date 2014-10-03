@@ -893,7 +893,7 @@
                 <tr class="info" id="error_log">
                     <td colspan="2">
                         <span class="glyphicon glyphicon-download"></span> 
-                        To see a detailed breakdown of these errors, download the <a href="<?php echo site_url('archive/error_log/' . $error_log)?>">full error log as a CSV</a>
+                        To see a detailed breakdown of these accessURL issues, download the <a href="<?php echo site_url('archive/error_log/' . $error_log)?>">full error log as a CSV</a>
                     </td>
                 </tr>
             <?php endif;?>
