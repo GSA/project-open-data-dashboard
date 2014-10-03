@@ -1004,7 +1004,7 @@ class campaign_model extends CI_Model {
 			$good_link = true;
 		}	
 
-		if($good_link && !empty($format) && !empty($header['info']['content_type']) && strpos($header['info']['content_type'], $format) !== false){
+		if($good_link && !empty($format) && !empty($header['info']['content_type']) && strpos($header['info']['content_type'], $format) === false){
 			$this->validation_counts['format_mismatch']++;
 		}		
 
