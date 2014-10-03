@@ -106,9 +106,6 @@ margin : 0 auto;
 }
 
 
-
-
-
 .dashboard-heading th.vertical-heading div {
 -webkit-transform: rotate(-90deg);
 -o-transform: rotate(-90deg);
@@ -213,6 +210,14 @@ text-indent : 0;
 text-decoration: none;
 }
 
+
+table.dashboard-list .info td {
+	padding : 1.5em .75em;
+}
+
+table.dashboard-list .info td a {
+	color : #0C64B0; 
+}
 
 .general-notes, .section-notes {
 	border : 1px solid #F0F0F0;

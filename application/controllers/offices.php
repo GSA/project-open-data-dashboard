@@ -252,7 +252,7 @@ class Offices extends CI_Controller {
 		$view_data['section_breakdown'] = $this->campaign->tracker_sections_model();
 
 		// pass config variable
-		$view_data['config'] = array('max_remote_size' => $this->config->item('max_remote_size'));
+		$view_data['config'] = array('max_remote_size' => $this->config->item('max_remote_size'), 'archive_dir' => $this->config->item('archive_dir'));
 
 		//var_dump($view_data['office_campaign']); exit;
 

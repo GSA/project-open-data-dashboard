@@ -536,7 +536,7 @@
 		<div id="datajson-heading" class="panel panel-default">
 		<div class="panel-heading">data.json <a type="button" class="btn btn-success btn-xs pull-right hidden" href="<?php echo site_url('datagov/status'); ?>/<?php echo $office->id; ?>">Refresh</a></div>
 		
-		<table class="table table-striped table-hover">		
+		<table class="table table-striped table-hover dashboard-list">		
 
 		<tr>
 			<th id="metrics-datajson-expected-url">               
@@ -734,6 +734,20 @@
             <?php endif; ?>            
 
             
+            <?php 
+                $error_log = $office->id . '.csv';
+                $error_path = $config['archive_dir'] . '/error_log/' . $error_log;
+                if(file_exists($error_path)): 
+            ?>
+                <tr class="info" id="error_log">
+                    <td colspan="2">
+                        <span class="glyphicon glyphicon-download"></span> 
+                        To see a detailed breakdown of these errors, download the <a href="<?php echo site_url('archive/error_log/' . $error_log)?>">full error log as a CSV</a>
+                    </td>
+                </tr>
+            <?php endif;?>
+
+
             <?php if(!empty($office_campaign->datajson_status->qa->validation_counts)): ?>
 
             <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_4xx > 0) ? 'danger' : 'success'?>">
