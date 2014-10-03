@@ -925,7 +925,7 @@ class campaign_model extends CI_Model {
 				$has_accessURL = true;
 				$dataset_format = (!empty($dataset->format)) ? $dataset->format : null;
 
-				$this->validation_check($dataset->accessURL, $dataset_format);
+				$this->validation_check($dataset->identifier, $dataset->title, $dataset->accessURL, $dataset_format);
 
 			}
 
@@ -933,7 +933,8 @@ class campaign_model extends CI_Model {
 				$accessURL_total++;
 				$has_accessURL = true;
 
-				$this->validation_check($dataset->webService);
+				$this->validation_check($dataset->identifier, $dataset->title, $dataset->webService);
+
 			}			
 
 			if(!empty($dataset->distribution) && is_array($dataset->distribution)) {
@@ -942,7 +943,9 @@ class campaign_model extends CI_Model {
 					if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
 						$accessURL_total++;
 						$has_accessURL = true;
-						$this->validation_check($distribution->accessURL, $distribution->format);
+
+						$this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $distribution->format);
+
 					}					
 				}
 
@@ -981,11 +984,12 @@ class campaign_model extends CI_Model {
 
 	}
 
-	public function validation_check($url, $format = null) {
+	public function validation_check($id, $title, $url, $format = null) {
 
 
 		$header = curl_header($url);
-		$good_link = null;
+		$good_link = false;
+		$good_format = true;
 
 		if(!empty($header['info']['http_code']) && preg_match('/[5]\d{2}\z/', $header['info']['http_code']) ){
 			$this->validation_counts['http_5xx']++;
@@ -1006,6 +1010,7 @@ class campaign_model extends CI_Model {
 
 		if($good_link && !empty($format) && !empty($header['info']['content_type']) && strpos($header['info']['content_type'], $format) === false){
 			$this->validation_counts['format_mismatch']++;
+			$good_format = false;
 		}		
 
 		if($good_link && !empty($header['info']['content_type']) && strpos($header['info']['content_type'], 'application/pdf') !== false){
@@ -1016,8 +1021,23 @@ class campaign_model extends CI_Model {
 			$this->validation_counts['html']++;
 		}	
 
+		if($good_link === false OR $good_format === false) {
+			$error_report = $this->error_report_model();
+			$error_report['id'] = $id;
+			$error_report['title'] = $title;
+			$error_report['error_type'] = (!$good_link) ? 'broken_link' : 'format_mismatch' ;
+			$error_report['url'] = $url;
+			$error_report['http_status'] = $header['info']['http_code'];
+			$error_report['format_served'] = $header['info']['content_type'];
+			$error_report['format_datajson'] = $format;
+			$error_report['crawl_date'] = date(DATE_W3C);
 
-		return true;
+			// TODO: log this to a csv
+
+		} else {
+			return valid;
+		}
+
 	}
 
 
@@ -1036,6 +1056,23 @@ class campaign_model extends CI_Model {
 		return $count;
 
 	}
+
+	public function error_report_model() {
+
+		$error = array(
+			'error_type' => null,
+			'id' => null,
+			'title' => null,
+			'url' => null,
+			'http_status' => null,
+			'format_served' => null,
+			'format_datajson' => null,
+			'crawl_date' => null
+			);
+
+		return $error;
+
+	}	
 
 
 
