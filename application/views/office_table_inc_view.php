@@ -418,18 +418,39 @@ function page_status($data_status, $status_color = null) {
 function metric_status_color($metric, $success_basis, $weight) {
 
 	if(!empty($success_basis)) {
+
+		$emphasis = false;
 		
 		// curve the percentage
-		$metric = pow(100, 1-$weight) * pow($metric, $weight);
+		$curve = pow(100, 1-$weight) * pow($metric, $weight);
 
-		$value = ($metric * .01);
+		$value = ($curve * .01);
 
 		if ($success_basis == 'low') {
 			$value = 1 - $value;
+
+			if($metric > 50) {
+				$emphasis = true;			
+			} 
+
+		} else {
+			if($metric < 50) {
+				$emphasis = true;				
+			} 			
 		}
 
+		if($emphasis) {
+			$saturation = '80%';
+			$lightness  = '80%';				
+		} else {
+			$saturation = '75%';
+			$lightness  = '85%';			
+		}
+
+
+
 		$hue = round(($value) * 120);		
-		$status_color = "background-color : hsl($hue, 75%, 85%);";
+		$status_color = "background-color : hsl($hue, $saturation, $lightness);";
 	} else {
 		$status_color = '';
 	}
