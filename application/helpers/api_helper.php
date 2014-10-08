@@ -36,35 +36,130 @@ function curl_from_json($url, $array=false, $decode=true) {
 
 
 function curl_header($url, $follow_redirect = true) {
-	$info = array();
-	
-	$ch = curl_init();
-//	curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-    curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
-    curl_setopt($ch, CURLOPT_URL, $url);
+  $info = array();
+  
+  $ch = curl_init();
 
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);	
+  curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
+  curl_setopt($ch, CURLOPT_URL, $url);
 
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);  
-	
-    curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-    curl_setopt($ch, CURLOPT_FILETIME, true);
-    
-    curl_setopt($ch, CURLOPT_NOBODY, true);
-    
-    curl_setopt($ch, CURLOPT_COOKIESESSION, true);
-    curl_setopt($ch, CURLOPT_COOKIE, "");
-    
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
-    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  
 
-    $info['header'] = curl_exec($ch);
-    $info['info'] = curl_getinfo($ch);
-    curl_close($ch);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 10);  
 
-	return $info;
+  curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+  curl_setopt($ch, CURLOPT_FILETIME, true);
+
+  curl_setopt($ch, CURLOPT_NOBODY, true);
+  curl_setopt($ch, CURLOPT_HEADER, true);
+  
+  curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+  curl_setopt($ch, CURLOPT_COOKIE, "");
+
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
+  curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+
+  $http_heading = curl_exec($ch);
+
+  $info['header'] = http_parse_headers($http_heading);
+  $info['info'] = curl_getinfo($ch);
+  curl_close($ch);
+
+
+  // If the server didn't support HTTP HEAD, use the shim. 
+  if( !empty($info['header']['X-Error-Message']) && trim($info['header']['X-Error-Message']) == 'HEAD is not supported' ) {   
+    return curl_head_shim($url, $follow_redirect);
+  } else {
+    return $info;
+  }
+
 }
+
+
+
+function curl_head_shim($url, $follow_redirect = true) {
+
+  $info = array();
+
+  $ch = curl_init();
+
+  $output = fopen('/dev/null', 'w');
+  $headerfile = fopen('/tmp/curl_header', 'w+');
+
+  curl_setopt($ch, CURLOPT_URL, $url);
+
+  curl_setopt($ch, CURLOPT_FILE, $output);
+
+  curl_setopt($ch, CURLOPT_WRITEHEADER, $headerfile);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 3); 
+  curl_setopt($ch, CURLOPT_HEADER, true); 
+
+  curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
+
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
+  curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+
+  curl_exec($ch);
+
+  fclose($headerfile);
+
+  $http_heading = file_get_contents('/tmp/curl_header');
+
+  $info['info'] = curl_getinfo($ch);
+
+  curl_close($ch);
+
+  $info['header'] = http_parse_headers($http_heading);
+
+  return $info;
+
+}
+
+
+if (!function_exists('http_parse_headers')) {
+
+function http_parse_headers($raw_headers)
+    {
+        $headers = array();
+        $key = ''; // [+]
+
+        foreach(explode("\n", $raw_headers) as $i => $h)
+        {
+            $h = explode(':', $h, 2);
+
+            if (isset($h[1]))
+            {
+                if (!isset($headers[$h[0]]))
+                    $headers[$h[0]] = trim($h[1]);
+                elseif (is_array($headers[$h[0]]))
+                {
+                    // $tmp = array_merge($headers[$h[0]], array(trim($h[1]))); // [-]
+                    // $headers[$h[0]] = $tmp; // [-]
+                    $headers[$h[0]] = array_merge($headers[$h[0]], array(trim($h[1]))); // [+]
+                }
+                else
+                {
+                    // $tmp = array_merge(array($headers[$h[0]]), array(trim($h[1]))); // [-]
+                    // $headers[$h[0]] = $tmp; // [-]
+                    $headers[$h[0]] = array_merge(array($headers[$h[0]]), array(trim($h[1]))); // [+]
+                }
+
+                $key = $h[0]; // [+]
+            }
+            else // [+]
+            { // [+]
+                if (substr($h[0], 0, 1) == "\t") // [+]
+                    $headers[$key] .= "\r\n\t".trim($h[0]); // [+]
+                elseif (!$key) // [+]
+                    $headers[0] = trim($h[0]);trim($h[0]); // [+]
+            } // [+]
+        }
+
+        return $headers;
+    }
+}
+
 
 /**
  * This mashes together two arrays with the same keys
