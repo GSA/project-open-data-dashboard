@@ -901,6 +901,25 @@
 
             <?php if(!empty($office_campaign->datajson_status->qa->validation_counts)): ?>
 
+
+            <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_0)): ?>
+            <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_0 > 0) ? 'danger' : 'success'?>">
+                <th id="metrics-datajson-download-urls-0">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_0' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Server Not Found (accessURL)
+                </th>                 
+                <td>
+                   <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_0, $office_campaign->datajson_status->qa->accessURL_total);?> 
+                     
+                    <span style="color:#666">
+                    <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->http_0 . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                    </span>
+                </td>
+            </tr> 
+            <?php endif;?>
+
             <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_4xx > 0) ? 'danger' : 'success'?>">
                 <th id="metrics-datajson-download-urls-4xx">
                     <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_4xx' ?>">

@@ -997,6 +997,10 @@ class campaign_model extends CI_Model {
 			$good_link = true;
 		}	
 
+		if(empty($header['info']['http_code'])){
+			$this->validation_counts['http_0']++;
+		}			
+
 		if($good_link && !empty($format) && !empty($header['info']['content_type']) && stripos($header['info']['content_type'], $format) === false){
 			$this->validation_counts['format_mismatch']++;
 			$good_format = false;
@@ -1079,6 +1083,7 @@ class campaign_model extends CI_Model {
 			'http_4xx' => 0,
 			'http_3xx' => 0,
 			'http_2xx' => 0,
+			'http_0' => 0,			
 			'pdf' => 0,
 			'html' => 0,
 			'format_mismatch' => 0
