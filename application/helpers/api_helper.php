@@ -45,6 +45,8 @@ function curl_header($url) {
 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);	
+
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);  
 	
     curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
     curl_setopt($ch, CURLOPT_FILETIME, true);
