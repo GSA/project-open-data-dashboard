@@ -35,7 +35,7 @@ function curl_from_json($url, $array=false, $decode=true) {
 }
 
 
-function curl_header($url) {
+function curl_header($url, $follow_redirect = true) {
 	$info = array();
 	
 	$ch = curl_init();
@@ -56,7 +56,7 @@ function curl_header($url) {
     curl_setopt($ch, CURLOPT_COOKIESESSION, true);
     curl_setopt($ch, CURLOPT_COOKIE, "");
     
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
 
     $info['header'] = curl_exec($ch);

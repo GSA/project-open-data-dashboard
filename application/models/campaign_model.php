@@ -975,8 +975,8 @@ class campaign_model extends CI_Model {
 
 	public function validation_check($id, $title, $url, $format = null) {
 
-
-		$header = curl_header($url);
+		
+		$header = curl_header($url, false);
 		$good_link = false;
 		$good_format = true;
 
