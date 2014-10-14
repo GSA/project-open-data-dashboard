@@ -253,6 +253,54 @@ This identifies whether the data.json has all the required fields and has values
 #####Schema Errors
 This displays instances where the data.json doesn't validate against the [Project Open Data schema](http://project-open-data.github.io/schema/) based on rules codified within a [JSON Schema document](https://github.com/project-open-data/project-open-data.github.io/tree/master/schema/1_0_final) hosted on Project Open Data. For more detailed and more readable results, you should use the [Project Open Data validator](http://labs.data.gov/dashboard/validate)
 
+<span id="metrics_total_records"></span>
+##### Datasets
+The total number of datasets listed in the data.json file
+
+<span id="metrics_accessURL_present"></span>
+##### Datasets with Downloadable URLs
+The total number of datasets listed in the data.json file that include an `accessURL` for a downloadable file
+
+<span id="metrics_accessURL_total"></span>
+##### Total Downloadable URLs
+The total number of `accessURL` download links listed for all datasets in the data.json file
+
+<span id="datajson_downloadable_0"></span>
+##### Server Not Found
+The number of `accessURL` download links with a server or domain name that could not be reached. In the error log CSV file this is listed with an `error_type` of "broken_link" and an `http_status` of "0".
+
+<span id="datajson_downloadable_4xx"></span>
+##### Broken links (accessURL 4xx) 
+The number of `accessURL` download links where the server responded indicating the URL could not be found. In the error log CSV file this is listed with an `error_type` of "broken_link" and an `http_status` of anything that starts with "4".
+
+<span id="datajson_downloadable_5xx"></span>
+##### Error Links (accessURL 5xx) 
+The number of `accessURL` download links where the server responded indicating the URL had an error preventing it from properly working. In the error log CSV file this is listed with an `error_type` of "broken_link" and an `http_status` of anything that starts with "5".
+
+<span id="datajson_downloadable_3xx"></span>
+##### Redirected Links (accessURL 3xx) 
+The number of `accessURL` download links where the server responded indicating the URL had moved to a new location. In the error log CSV file this is listed with an `error_type` of "broken_link" and an `http_status` of anything that starts with "3".
+
+<span id="metrics_accessURL_format"></span>
+##### Correct format (accessURL/format) 
+The number of `accessURL` download links where the server responded indicating that the format of the resource did not match what was specified in the data.json metadata. In the error log CSV file this is listed with an `error_type` of "format_mismatch" and the format specified by the server is `format_served` while the one listed in the data.json is `format_datajson`
+
+<span id="metrics_accessURL_pdf"></span>
+##### PDF for raw data (accessURL) 
+The number of `accessURL` download links where the server responded indicating that the format of the resource was a PDF file. The `accessURL` should point to raw machine readable data (like a spreadsheet) rather than documents. Use `references`, `dataDictionary` for documents meant to accompany data.
+
+<span id="metrics_accessURL_html"></span>
+##### HTML for raw data (accessURL) 
+The number of `accessURL` download links where the server responded indicating that the format of the resource was an HTML file. The `accessURL` should point to raw machine readable data (like a spreadsheet) rather than documents. Use `references`, `dataDictionary`, or `landingPage` for documents meant to accompany data.
+
+<span id="metrics_bureaus"></span>
+##### Bureaus Represented 
+The number of bureaus used throughout the data.json metadata as specified with `bureauCode`.
+
+<span id="metrics_programs"></span>
+##### Programs Represented 
+The number of programs used throughout the data.json metadata as specified with `programCode`.
+
 <span id="datajson_file_size"></span>
 #####Data.json File Size
 The size of the data.json file the last time it was checked by the validator (for the selected milestone)
