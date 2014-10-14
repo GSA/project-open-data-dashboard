@@ -301,6 +301,9 @@ a.info-icon span {
 	height : .25em;
 }
 
+p+h4, p+h5 {
+	margin-top : 2em;
+}
 
 @media (min-width: 1600px) {
 	.container.full-width {
