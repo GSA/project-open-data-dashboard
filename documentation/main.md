@@ -197,31 +197,31 @@ These fields are determined by an automated script that analyzes agency data.jso
 The automated metrics will update every 24 hours until the end of the quarter when a milestone has been reached. At that point those metrics will represent a historical snapshot. To see the most current automated metrics, you'll need to view the current quarter (the next approaching milestone).
 
 <span id="datajson_expected_url"></span>
-####Expected URL
+#####Expected URL
 
 This is the URL where the data.json file is expected to be found. This is based on the main agency URL provided through the [USA.gov Directory API](http://www.usa.gov/About/developer-resources/federal-agency-directory/)
 
 <span id="datajson_resolved_url"></span>
-####Resolved URL
+#####Resolved URL
 
 This is the URL that is resolved after following any redirects.
 
 <span id="datajson_redirects"></span>
-####Redirects
+#####Redirects
 
 This is the number of redirects used to reach the final data.json URL. Currently this is only set to follow 5 redirects before stopping.
 
 Ideally this should be 0
 
 <span id="datajson_http_status"></span>
-####HTTP Status
+#####HTTP Status
 
 This is the [HTTP status code](http://en.wikipedia.org/wiki/HTTP_status_codes) received when attempting to reach the expected or resolved URL. For more information on properly using HTTP status codes, see: [Knowing Your HTTP Status Codes In Federal Government](http://kinlane.com/2013/11/06/knowing-your-http-status-codes-in-federal-government/)
 
 This should be 200 it the data.json or /data URL was found successfully.
 
 <span id="datajson_content_type"></span>
-####Content-Type
+#####Content-Type
 
 The [Content-Type](http://en.wikipedia.org/wiki/Content-Type) is how the server announces the type of file it is serving at the requested URL. Usually it won't break anything if this is set incorrectly, but some applications may need to be set to force it to be read as JSON even if it announces it's something else. This is very similiar to how a file extension on a file identifies the file type. Yes, the URL says data.json, but the browser just sees that as an arbitrary URL. The Content-Type is what identifies the actual file type. Setting this incorrectly would be like if you had a file named graph.pdf that was actually a CSV spreadsheet file.
 
@@ -232,20 +232,20 @@ For data.json this should be: `application/json; charset=utf-8`
 For /data this should be: `text/html; charset=utf-8`
 
 <span id="datajson_valid_json"></span>
-####Valid JSON
+#####Valid JSON
 
 This identifies whether the data.json was actually [JSON](http://json.org/). Even if the HTTP Status is 200 for the data.json URL and the Content-Type announces it's application/json; charset=UTF-8 the response might actually be HTML or improperly formatted JSON. If the syntax of the file can be parsed as JSON, the validator will attempt to do additional analysis, but the file may in fact still be invalid JSON if it doesn't use the proper text encoding. While it is possible for the validator to convert the file to the correct encoding to do this additional analysis, it's important that the correct encoding be used at the source so that others will be able to parse the JSON without knowing they need to convert it to a valid encoding. JSON must use Unicode text encoding (use UTF-8) and it should not include a byte order mark. It's highly recommend you generate your JSON with a tool designed to produce JSON rather than attempt to produce JSON by hand. You can check how well formed your JSON is with a tool like [JSONLint](http://jsonlint.com/). When using this tool it is best to enter the URL of the JSON file rather than copying and pasting the JSON. This is because when you copy and paste the raw JSON, your browser may attempt ot automtically fix problems that the server will not know to fix when it retrieves the file directly.
 
 The "Public Datasets" column on the main agency dashboard table will be green if it's a valid JSON file and red or yellow otherwise. If it's not a valid JSON file, the "Valid Metadata" column can't be green - at best it can be yellow. If it's not valid JSON it most likely can't be parsed regardless of how valid the metadata schema is, so this is a serious consideration. This also means it's possible to be listed under the "Valid Metadata" column in yellow even if 100% of the records validate against the schema. 
 
 <span id="datajson_valid_count"></span>
-####Datasets with Valid Metadata
+#####Datasets with Valid Metadata
 The percentage and specific number of datasets in the data.json file that successfully validate against the [Project Open Data schema](http://project-open-data.github.io/schema/). 
 
 The "Valid Metadata" column on the main agency dashboard table will be green if 100% of the metadata records validate against the Project Open Data schema and they are from a [valid JSON file](#datajson_valid_json). It's possible to have 100% valid metadata records but still be shown as yellow if it's not a valid JSON file. Any record that doesn't validate against the schema won't meet the requirements and also won't be included by harvesters like data.gov. 
 
 <span id="datajson_valid_schema"></span>
-####Valid Schema
+#####Valid Schema
 
 This identifies whether the data.json has all the required fields and has values that fit within the parameters specified by the [Project Open Data schema](http://project-open-data.github.io/schema/). 
 
