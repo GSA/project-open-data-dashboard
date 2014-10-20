@@ -309,6 +309,32 @@ class campaign_model extends CI_Model {
 		$model->hc_contacts->label 					= "POCs identified for required responsibilities";
 		$model->hc_contacts->type 					= "traffic";
 
+		// Use & Impact
+
+		$model->ui_aggregate_score					= clone $field;
+		$model->ui_aggregate_score->label 			= "Overall Progress this Milestone";
+		$model->ui_aggregate_score->type 			= "traffic";
+
+		$model->ui_primary_uses						= clone $field;
+		$model->ui_primary_uses->label 				= "Primary uses of agency data";
+		$model->ui_primary_uses->type 				= "select";
+
+		$model->ui_value_impact						= clone $field;
+		$model->ui_value_impact->label 				= "Value or impact of data";
+		$model->ui_value_impact->type 				= "select";
+
+		$model->ui_primary_discovery				= clone $field;
+		$model->ui_primary_discovery->label 		= "Primary data discovery channels";
+		$model->ui_primary_discovery->type 			= "select";
+
+		$model->ui_user_suggest_usability			= clone $field;
+		$model->ui_user_suggest_usability->label 	= "User suggestions on improving data usability";
+		$model->ui_user_suggest_usability->type 	= "select";
+
+		$model->ui_user_suggest_releases			= clone $field;
+		$model->ui_user_suggest_releases->label 	= "User suggestions on additional data releases";
+		$model->ui_user_suggest_releases->type 		= "select";
+
 		return $model;
 }
 
@@ -321,7 +347,8 @@ class campaign_model extends CI_Model {
                                     "pdl" => "Public Data Listing", 
                                     "pe" => "Public Engagement", 
                                     "ps" => "Privacy &amp; Security", 
-                                    "hc" => "Human Capital"
+                                    "hc" => "Human Capital",
+                                    "ui" => "Use &amp; Impact"
                                 );  
 
         return $section_breakdown;
