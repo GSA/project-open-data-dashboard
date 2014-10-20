@@ -760,7 +760,9 @@ class Campaign extends CI_Controller {
         
 		if($status['http_code'] == 200) {
 
-			$validation = $this->campaign->validate_datajson($status['url'], null, null, 'federal', false, true);
+			$qa = ($this->environment == 'terminal' OR $this->environment == 'cron') ? 'all' : true;
+
+			$validation = $this->campaign->validate_datajson($status['url'], null, null, 'federal', false, $qa);
 
 			if(!empty($validation)) {
 				$status['valid_json'] = $validation['valid_json'];
@@ -1015,13 +1017,13 @@ class Campaign extends CI_Controller {
 		$datajson_url 	= ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url') : $datajson_url;
 		$output_type 	= ($this->input->get_post('output')) ? $this->input->get_post('output') : $output;
 
-		if ($this->input->get_post('qa') == 'true') {
-			$qa = true;
-		} else if ($this->input->get_post('qa') == 'false') {
-			$qa = false;
+		if (!empty($this->input->get_post('qa'))) {
+			$qa = $this->input->get_post('qa');
 		} else {
-			$qa = true;
+			$qa = false;
 		}
+
+		if ($qa == 'true') $qa = true;
 
 		if(!empty($_FILES)) {
 

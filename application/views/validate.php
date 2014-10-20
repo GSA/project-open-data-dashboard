@@ -40,6 +40,7 @@
                 <label for="datajson_url">data.json URL</label>
                 <div class="input-group">
                     <input name="datajson_url" id="datajson_url" class="form-control"  placeholder="e.g. http://energy.gov/data.json" >
+                    <input name="qa" value="true" type="hidden">
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-primary">Validate URL</button>
                     </span>
@@ -70,6 +71,7 @@
                 </div>
 
                 <div class="form-group">
+                    <input name="qa" value="true" type="hidden">
                     <input type="hidden" name="output" value="browser">
                     <input type="submit" value="Validate File" class="btn btn-primary">
                 </div>
@@ -99,6 +101,7 @@
                 </div>
 
                 <div class="form-group">
+                    <input name="qa" value="true" type="hidden">
                     <input type="hidden" name="output" value="browser">
                     <input type="submit" value="Validate JSON" class="btn btn-primary">
                 </div>

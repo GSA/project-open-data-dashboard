@@ -678,7 +678,7 @@ class campaign_model extends CI_Model {
 			$response = array();
 			$response['errors'] = array();
 
-			if($quality == true) {
+			if($quality !== false) {
 				$response['qa'] = array();
 			}
 
@@ -700,8 +700,8 @@ class campaign_model extends CI_Model {
 					
 				}
 
-				if($quality == true) {
-					$datajson_qa = $this->campaign->datajson_qa($chunk, $schema);	
+				if($quality !== false) {
+					$datajson_qa = $this->campaign->datajson_qa($chunk, $schema, $quality);	
 
 					if(!empty($datajson_qa)) {
 						$response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);	
@@ -890,7 +890,7 @@ class campaign_model extends CI_Model {
 
 
 
-	public function datajson_qa($json, $schema = null) {
+	public function datajson_qa($json, $schema = null, $quality = true) {
 
 		$programCode = array();
 		$bureauCode = array();
@@ -941,41 +941,44 @@ class campaign_model extends CI_Model {
 				}				
 			}
 
+			if($quality === 'all') {
 
-			$has_accessURL = false;
+				$has_accessURL = false;
 
-			if(!empty($dataset->accessURL) && filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
-				$accessURL_total++;
-				$has_accessURL = true;
-				$dataset_format = (!empty($dataset->format)) ? $dataset->format : null;
+				if(!empty($dataset->accessURL) && filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
+					$accessURL_total++;
+					$has_accessURL = true;
+					$dataset_format = (!empty($dataset->format)) ? $dataset->format : null;
 
-				$this->validation_check($dataset->identifier, $dataset->title, $dataset->accessURL, $dataset_format);
+					$this->validation_check($dataset->identifier, $dataset->title, $dataset->accessURL, $dataset_format);
 
-			}
-
-			if(!empty($dataset->webService) && filter_var($dataset->webService, FILTER_VALIDATE_URL)) {
-				$accessURL_total++;
-				$has_accessURL = true;
-
-				$this->validation_check($dataset->identifier, $dataset->title, $dataset->webService);
-
-			}			
-
-			if(!empty($dataset->distribution) && is_array($dataset->distribution)) {
-				
-				foreach ($dataset->distribution as $distribution) {
-					if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
-						$accessURL_total++;
-						$has_accessURL = true;
-
-						$this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $distribution->format);
-
-					}					
 				}
 
-			}
+				if(!empty($dataset->webService) && filter_var($dataset->webService, FILTER_VALIDATE_URL)) {
+					$accessURL_total++;
+					$has_accessURL = true;
 
-			if($has_accessURL) $accessURL_present++;
+					$this->validation_check($dataset->identifier, $dataset->title, $dataset->webService);
+
+				}			
+
+				if(!empty($dataset->distribution) && is_array($dataset->distribution)) {
+					
+					foreach ($dataset->distribution as $distribution) {
+						if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
+							$accessURL_total++;
+							$has_accessURL = true;
+
+							$this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $distribution->format);
+
+						}					
+					}
+
+				}
+
+				if($has_accessURL) $accessURL_present++;
+
+			}
 
 
 		}
