@@ -71,7 +71,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 	<table class="dashboard table table-striped table-hover table-bordered">
 		<tr class="dashboard-meta-heading">
 			<td><?php echo $title ?></td>
-			<td colspan="5">
+			<td colspan="6">
 				Leading Indicators Strategy 
                 <a href="<?php echo site_url('docs') . '#leading_indicators_strategy' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
