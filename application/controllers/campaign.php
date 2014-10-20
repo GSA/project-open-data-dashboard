@@ -45,13 +45,13 @@ class Campaign extends CI_Controller {
 
 	}
 
-	public function convert() {
+	public function convert($orgs = null, $geospatial = null, $harvest = null, $from_export = null) {
 		$this->load->model('campaign_model', 'campaign');
 
-		$orgs = $this->input->get('orgs', TRUE);
-		$geospatial = $this->input->get('geospatial', TRUE);
-		$harvest = $this->input->get('harvest', TRUE);
-		$from_export = $this->input->get('from_export', TRUE);
+		$orgs 			= (!empty($orgs)) ? $orgs : $this->input->get('orgs', TRUE);
+		$geospatial 	= (!empty($geospatial)) ? $geospatial : $this->input->get('geospatial', TRUE);
+		$harvest 		= (!empty($harvest)) ? $harvest : $this->input->get('harvest', TRUE);
+		$from_export 	= (!empty($from_export)) ? $from_export : $this->input->get('from_export', TRUE);
 
 
 		$row_total = 100;
@@ -89,14 +89,30 @@ class Campaign extends CI_Controller {
 				$convert[] = $this->campaign->datajson_crosswalk($ckan_data, $model);
 			}
 
-		    header('Content-type: application/json');
-		    print json_encode($convert);
-			exit;
+			if($this->environment == 'terminal') {
+				$filepath = 'export.json';
+
+				echo 'Creating file at ' . $filepath . PHP_EOL . PHP_EOL;
+
+				$export_file = fopen($filepath, 'w');
+				fwrite($export_file, json_encode($convert));
+				fclose($export_file);
+			} else {
+
+			    header('Content-type: application/json');
+			    print json_encode($convert);
+				exit;
+			}
 
 		} else {
-	    	header('Content-type: application/json');
-		    print json_encode(array("error" => "no results"));
-			exit;
+
+			if($this->environment == 'terminal') {
+				echo 'No results found for ' . $orgs;
+			} else {
+		    	header('Content-type: application/json');
+			    print json_encode(array("error" => "no results"));
+				exit;
+			}
 		}
 
 	}
