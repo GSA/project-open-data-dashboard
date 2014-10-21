@@ -1017,7 +1017,7 @@ class Campaign extends CI_Controller {
 		$datajson_url 	= ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url') : $datajson_url;
 		$output_type 	= ($this->input->get_post('output')) ? $this->input->get_post('output') : $output;
 
-		if (!empty($this->input->get_post('qa'))) {
+		if ($this->input->get_post('qa')) {
 			$qa = $this->input->get_post('qa');
 		} else {
 			$qa = false;
