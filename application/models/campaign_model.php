@@ -691,7 +691,7 @@ class campaign_model extends CI_Model {
 
 				$chunk = json_encode($chunk);
 				$validator = $this->campaign->jsonschema_validator($chunk, $schema);
-
+			
 				if(!empty($validator['errors']) ) {
 
 					if ($chunk_count) {
@@ -771,7 +771,7 @@ class campaign_model extends CI_Model {
 				$datajson_decode = filter_json($datajson_decode, $dataset_array);			
 				$response['source'] = $datajson_decode;
 			}
-
+			
 			return $response;
 
 		} else {			
@@ -850,12 +850,11 @@ class campaign_model extends CI_Model {
 
 	public function process_validation_errors($errors, $offset = null) {
 
-
 		$output = array();
 
 		foreach ($errors as $error) {
 
-			if(is_numeric($error['property'])) {
+			if(is_numeric($error['property']) OR strpos($error['property'], '.') === false) {
 				$key = $error['property'];
 				$field = 'ALL';
 			} else {

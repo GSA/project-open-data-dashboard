@@ -140,6 +140,8 @@
                  $key_count = array();
                 foreach ($validation['errors'] as $key => $error) {
 
+                    $source_key = (strpos($key, '[') !== false) ? get_between($key, '[', ']') : $key;
+
             ?>
                     <?php if(!empty($key_count)): ?>
                     </div>
@@ -151,8 +153,8 @@
                 <div class="validation-record row">
 
                     <div class="validation-source col-md-6">
-                        <h4>Report for identifier: <?php echo (!empty($validation['source'][$key]->identifier)) ? $validation['source'][$key]->identifier : '' ?></h4>
-                        <pre><code><?php print htmlentities(prettyPrint(str_replace('\/', '/', json_encode($validation['source'][$key])))); ?></code></pre>
+                        <h4>Report for identifier: <?php echo (!empty($validation['source'][$source_key]->identifier)) ? $validation['source'][$source_key]->identifier : '' ?></h4>
+                        <pre><code><?php print htmlentities(prettyPrint(str_replace('\/', '/', json_encode($validation['source'][$source_key])))); ?></code></pre>
                     </div>
 
                     <div class="validation-errors col-md-6">
