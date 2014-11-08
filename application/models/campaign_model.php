@@ -670,10 +670,15 @@ class campaign_model extends CI_Model {
 
 		if ($datajson_processed && $valid_json) {
 
-			$chunk_size = 500;
-
 			$datajson_decode = json_decode($datajson_processed);
-			$datajson_chunks = array_chunk($datajson_decode, $chunk_size);			
+
+			if($schema !== 'federal-v1.1') {
+				$chunk_size = 500;				
+				$datajson_chunks = array_chunk($datajson_decode, $chunk_size);
+			} else {
+				$datajson_chunks = array($datajson_decode);
+			}
+			
 
 			$response = array();
 			$response['errors'] = array();
@@ -761,8 +766,9 @@ class campaign_model extends CI_Model {
 				$response['errors'] = false;
 			}
 
-			if ($return_source) {				
-				$datajson_decode = filter_json($datajson_decode);			
+			if ($return_source) {	
+				$dataset_array = ($schema == 'federal-v1.1') ? true : false;
+				$datajson_decode = filter_json($datajson_decode, $dataset_array);			
 				$response['source'] = $datajson_decode;
 			}
 

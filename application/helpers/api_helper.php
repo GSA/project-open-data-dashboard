@@ -266,8 +266,11 @@ function json_text_filter($datajson) {
 }
 
 
-function filter_json( $datajson ) {
+function filter_json( $datajson, $dataset_array = false ) {
 
+  if ($dataset_array) {
+    $datajson = $datajson->dataset;
+  }
 
   foreach ($datajson as $key => $dataset) {
 

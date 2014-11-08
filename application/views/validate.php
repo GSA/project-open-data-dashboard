@@ -95,6 +95,7 @@
                     <label for="datajson">Schema</label>
                     <select name="schema">
                         <option value="federal" selected="selected">Federal</option>
+                        <option value="federal-v1.1">Federal v1.1</option>                        
                         <option value="non-federal">Non-Federal</option>
                         <option value="">Project Open Data</option> 
                     </select>
