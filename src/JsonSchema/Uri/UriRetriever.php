@@ -276,13 +276,13 @@ class UriRetriever
         preg_match('|^/?(\.\./(?:\./)*)*|', $relativePath, $match);
         $numLevelUp = strlen($match[0]) /3 + 1;
         if ($numLevelUp >= count($basePathSegments)) {
-            throw new UriResolverException(sprintf("Unable to resolve URI '%s' from base '%s'", $relativePath, $basePath));
+            throw new \JsonSchema\Exception\UriResolverException(sprintf("Unable to resolve URI '%s' from base '%s'", $relativePath, $basePath));
         }
 
         $basePathSegments = array_slice($basePathSegments, 0, -$numLevelUp);
         $path = preg_replace('|^/?(\.\./(\./)*)*|', '', $relativePath);
 
-        return implode(DIRECTORY_SEPARATOR, $basePathSegments) . '/' . $path;
+        return implode('/', $basePathSegments) . '/' . $path;
     }
 
     /**
@@ -304,7 +304,7 @@ class UriRetriever
      */
     private static function getPathSegments($path)
     {
-        return explode(DIRECTORY_SEPARATOR, $path);
+        return explode('/', $path);
     }
 
     /**

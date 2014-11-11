@@ -1,17 +1,5 @@
 [
     {
-        "name": "json-schema/JSON-Schema-Test-Suite",
-        "version": "1.1.0",
-        "version_normalized": "1.1.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/json-schema/JSON-Schema-Test-Suite",
-            "reference": "1.1.0"
-        },
-        "type": "library",
-        "installation-source": "source"
-    },
-    {
         "name": "symfony/yaml",
         "version": "v2.3.7",
         "version_normalized": "2.3.7.0",
@@ -493,5 +481,17 @@
         "keywords": [
             "markdown"
         ]
+    },
+    {
+        "name": "json-schema/JSON-Schema-Test-Suite",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/json-schema/JSON-Schema-Test-Suite",
+            "reference": "1.1.0"
+        },
+        "type": "library",
+        "installation-source": "source"
     }
 ]

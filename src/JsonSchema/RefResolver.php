@@ -9,9 +9,8 @@
 
 namespace JsonSchema;
 
-use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Uri\Retrievers\UriRetrieverInterface;
-use JsonSchema\Exception\ResourceNotFoundException;
+use JsonSchema\Uri\UriRetriever;
 
 /**
  * Take in an object that's a JSON schema and take care of all $ref references
@@ -29,6 +28,12 @@ class RefResolver
      * @var integer
      */
     protected static $depth = 0;
+
+    /**
+     * maximum references depth
+     * @var integer
+     */
+    public static $maxDepth = 7;
 
     /**
      * @var UriRetrieverInterface
@@ -90,7 +95,7 @@ class RefResolver
      */
     public function resolve($schema, $sourceUri = null)
     {
-        if (self::$depth > 7) {
+        if (self::$depth > self::$maxDepth) {
             return;
         }
         ++self::$depth;
@@ -116,7 +121,7 @@ class RefResolver
         // These are all potentially arrays that contain schema objects
         // eg.  type can be a value or an array of values/schemas
         // eg.  items can be a schema or an array of schemas
-        foreach (array('disallow', 'extends', 'items', 'type') as $propertyName) {
+        foreach (array('disallow', 'extends', 'items', 'type', 'allOf', 'anyOf', 'oneOf') as $propertyName) {
             $this->resolveArrayOfSchemas($schema, $propertyName, $sourceUri);
         }
 
