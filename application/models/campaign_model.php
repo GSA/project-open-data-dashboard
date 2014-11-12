@@ -854,10 +854,21 @@ class campaign_model extends CI_Model {
 
 		foreach ($errors as $error) {
 
-			if(is_numeric($error['property']) OR strpos($error['property'], '.') === false) {
-				$key = $error['property'];
+            if ( !is_numeric($error['property']) AND  
+                ($error['property'] === '') OR 
+                 ($error['property'] === '@context') OR 
+                 ($error['property'] === '@type') OR 
+                 ($error['property'] === '@id') OR 
+                 ($error['property'] === 'describedBy') OR 
+                 ($error['property'] === 'conformsTo')) {
+                $error['property'] = 'catalog.' . $error['property'];
+            }
+
+			if(is_numeric($error['property']) OR strpos($error['property'], '.') === false OR $error['property'] === 'catalog.') {
+				$key = ($error['property'] === 'catalog.') ? 'catalog' : $error['property'];
 				$field = 'ALL';
-			} else {
+			} 
+            else {
 
 				$key = substr($error['property'], 0, strpos($error['property'], '.'));
 				$full_field = substr($error['property'], strpos($error['property'], '.') + 1);
@@ -1443,56 +1454,56 @@ class campaign_model extends CI_Model {
 
 		$permalink = array();
 
-        //$permalink['@context']								= 'context';
-        //$permalink['@id']									= 'id';
-        //$permalink['@type']									= 'type';
-        //$permalink['conformsTo']							= 'conformsTo';
-        //$permalink['describedBy']							= 'describedBy';
-        //$permalink['dataset']								= 'dataset';
-        $permalink['@type']							= 'dataset-type';
-        $permalink['accessLevel']					= 'accessLevel';
-        $permalink['accrualPeriodicity']			= 'accrualPeriodicity';
-        $permalink['bureauCode']					= 'bureauCode';
-        $permalink['conformsTo']					= 'dataset-conformsTo';
-        $permalink['contactPoint']					= 'contactPoint';
-        $permalink['contactPoint.@type']			= 'dataset-contactPoint-type';
-        $permalink['contactPoint.fn']				= 'contactPoint-fn';
-        $permalink['contactPoint.hasEmail']			= 'contactPoint-hasEmail';
-        $permalink['dataQuality']					= 'dataQuality';
-        $permalink['describedBy']					= 'dataset-describedBy';
-        $permalink['describedByType']				= 'dataset-describedByType';
-        $permalink['description']					= 'description';
-        $permalink['distribution']					= 'distribution';
-        $permalink['distribution.@type']			= 'distribution-type';
-        $permalink['distribution.accessURL']		= 'distribution-accessURL';
-        $permalink['distribution.conformsTo']		= 'distribution-conformsTo';
-        $permalink['distribution.downloadURL']		= 'distribution-downloadURL';
-        $permalink['distribution.describedBy']		= 'distribution-describedBy';
-        $permalink['distribution.describedByType']	= 'distribution-describedByType';
-        $permalink['distribution.description']		= 'distribution-description';
-        $permalink['distribution.format']			= 'distribution-format';
-        $permalink['distribution.mediaType']		= 'distribution-mediaType';
-        $permalink['distribution.title']			= 'distribution-title';
-        $permalink['identifier']					= 'identifier';
-        $permalink['isPartOf']						= 'isPartOf';
-        $permalink['issued']						= 'issued';
-        $permalink['keyword']						= 'keyword';
-        $permalink['landingPage']					= 'landingPage';
-        $permalink['language']						= 'language';
-        $permalink['license']						= 'license';
-        $permalink['modified']						= 'modified';
-        $permalink['primaryITInvestmentUII']		= 'primaryITInvestmentUII';
-        $permalink['programCode']					= 'programCode';
-        $permalink['publisher']						= 'publisher';
-        $permalink['publisher.@type']				= 'publisher-type';
-        $permalink['publisher.name']				= 'publisher-name';
-        $permalink['publisher.subOrganizationOf']	= 'publisher-subOrganizationOf';
-        $permalink['rights']						= 'rights';
-        $permalink['spatial']						= 'spatial';
-        $permalink['systemOfRecords']				= 'systemOfRecords';
-        $permalink['temporal']						= 'temporal';
-        $permalink['theme']							= 'theme';
-        $permalink['title']							= 'title';
+        $permalink['@context']						        = 'context';
+        $permalink['@id']							        = 'id';
+        $permalink['@type']							        = 'type';
+        $permalink['conformsTo']					        = 'conformsTo';
+        $permalink['describedBy']					        = 'describedBy';
+        $permalink['dataset']						        = 'dataset';
+        $permalink['dataset.@type']							= 'dataset-type';
+        $permalink['dataset.accessLevel']					= 'accessLevel';
+        $permalink['dataset.accrualPeriodicity']			= 'accrualPeriodicity';
+        $permalink['dataset.bureauCode']					= 'bureauCode';
+        $permalink['dataset.conformsTo']					= 'dataset-conformsTo';
+        $permalink['dataset.contactPoint']					= 'contactPoint';
+        $permalink['dataset.contactPoint.@type']			= 'dataset-contactPoint-type';
+        $permalink['dataset.contactPoint.fn']				= 'contactPoint-fn';
+        $permalink['dataset.contactPoint.hasEmail']			= 'contactPoint-hasEmail';
+        $permalink['dataset.dataQuality']					= 'dataQuality';
+        $permalink['dataset.describedBy']					= 'dataset-describedBy';
+        $permalink['dataset.describedByType']				= 'dataset-describedByType';
+        $permalink['dataset.description']					= 'description';
+        $permalink['dataset.distribution']					= 'distribution';
+        $permalink['dataset.distribution.@type']			= 'distribution-type';
+        $permalink['dataset.distribution.accessURL']		= 'distribution-accessURL';
+        $permalink['dataset.distribution.conformsTo']		= 'distribution-conformsTo';
+        $permalink['dataset.distribution.downloadURL']		= 'distribution-downloadURL';
+        $permalink['dataset.distribution.describedBy']		= 'distribution-describedBy';
+        $permalink['dataset.distribution.describedByType']	= 'distribution-describedByType';
+        $permalink['dataset.distribution.description']		= 'distribution-description';
+        $permalink['dataset.distribution.format']			= 'distribution-format';
+        $permalink['dataset.distribution.mediaType']		= 'distribution-mediaType';
+        $permalink['dataset.distribution.title']			= 'distribution-title';
+        $permalink['dataset.identifier']					= 'identifier';
+        $permalink['dataset.isPartOf']						= 'isPartOf';
+        $permalink['dataset.issued']						= 'issued';
+        $permalink['dataset.keyword']						= 'keyword';
+        $permalink['dataset.landingPage']					= 'landingPage';
+        $permalink['dataset.language']						= 'language';
+        $permalink['dataset.license']						= 'license';
+        $permalink['dataset.modified']						= 'modified';
+        $permalink['dataset.primaryITInvestmentUII']		= 'primaryITInvestmentUII';
+        $permalink['dataset.programCode']					= 'programCode';
+        $permalink['dataset.publisher']						= 'publisher';
+        $permalink['dataset.publisher.@type']				= 'publisher-type';
+        $permalink['dataset.publisher.name']				= 'publisher-name';
+        $permalink['dataset.publisher.subOrganizationOf']	= 'publisher-subOrganizationOf';
+        $permalink['dataset.rights']						= 'rights';
+        $permalink['dataset.spatial']						= 'spatial';
+        $permalink['dataset.systemOfRecords']				= 'systemOfRecords';
+        $permalink['dataset.temporal']						= 'temporal';
+        $permalink['dataset.theme']							= 'theme';
+        $permalink['dataset.title']							= 'title';
 
         return $permalink;
 

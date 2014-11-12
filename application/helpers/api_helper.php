@@ -266,13 +266,15 @@ function json_text_filter($datajson) {
 }
 
 
-function filter_json( $datajson, $dataset_array = false ) {
+function filter_json( $source_datajson, $dataset_array = false ) {
 
   if ($dataset_array) {
-    $datajson = $datajson->dataset;
+    $datasets = $source_datajson->dataset;
+  } else {
+    $datasets = $source_datajson;
   }
 
-  foreach ($datajson as $key => $dataset) {
+  foreach ($datasets as $key => $dataset) {
 
     foreach ($dataset as $field_name => $field_value) {
 
@@ -284,10 +286,15 @@ function filter_json( $datajson, $dataset_array = false ) {
 
     }
 
-
   }
 
-    return $datajson; 
+  if ($dataset_array) {
+    $source_datajson->dataset = $datasets;
+  } else {
+    $source_datajson = $datasets;
+  }
+
+    return $source_datajson; 
 }
 
 

@@ -137,109 +137,138 @@
             <?php
                 if(!empty($validation['errors'])) {
 
-                 $key_count = array();
-                foreach ($validation['errors'] as $key => $error) {
 
-                    $source_key = (strpos($key, '[') !== false) ? get_between($key, '[', ']') : $key;
+                    if(array_key_exists("catalog", $validation['errors'])) {
+                        $validation['catalog'] = clone $validation['source'];
+                        $validation['catalog']->dataset = "...truncated to display here...";
 
-            ?>
-                    <?php if(!empty($key_count)): ?>
-                    </div>
-                    </div>
+                        $validation['source'] = $validation['source']->dataset; 
+                    }                   
+
+                    $key_count = array();
+
+                    foreach ($validation['errors'] as $key => $error) {                      
+                        $source_key = (strpos($key, '[') !== false) ? get_between($key, '[', ']') : $key;
+
+                        if ($source_key === "catalog") $validation['source'][$source_key] = $validation['catalog'];
+                    ?>
+
+                        <?php if(!empty($key_count)): ?>
+                            </div>
+                          </div>
+                        <?php endif; ?>
+
+                    <?php  if(!isset($key_count[$key])): ?>
+
+                    <?php 
+
+
+                    ?>
+
+                    <div class="validation-record row">
+
+                        <div class="validation-source col-md-6">
+                            
+                            <h4>
+                                <?php if ($source_key === "catalog"): ?>
+                                   Catalog Report
+                                <?php else: ?>
+                                   Report for identifier: <?php echo (!empty($validation['source'][$source_key]->identifier)) ? $validation['source'][$source_key]->identifier : '' ?>
+                                <?php endif; ?>
+                            </h4>
+
+                            <pre><code><?php print htmlentities(prettyPrint(str_replace('\/', '/', json_encode($validation['source'][$source_key])))); ?></code></pre>
+                        </div>
+
+                        <div class="validation-errors col-md-6">
+                            <h4>Errors</h4>
                     <?php endif; ?>
 
-                <?php  if(!isset($key_count[$key])): ?>
+                    <?php if(!empty($error['ALL'])): ?>
 
-                <div class="validation-record row">
+                            <ul class="validation-full-record">
+                            <?php foreach ($error['ALL']['errors'] as $error_description) { ?>
 
-                    <div class="validation-source col-md-6">
-                        <h4>Report for identifier: <?php echo (!empty($validation['source'][$source_key]->identifier)) ? $validation['source'][$source_key]->identifier : '' ?></h4>
-                        <pre><code><?php print htmlentities(prettyPrint(str_replace('\/', '/', json_encode($validation['source'][$source_key])))); ?></code></pre>
-                    </div>
+                                <?php if(strpos($error_description, 'but a null is required')) continue; ?>
 
-                    <div class="validation-errors col-md-6">
-                        <h4>Errors</h4>
-                <?php endif; ?>
+                                <li><?php echo $error_description ?></li>
+                            <?php } ?>
+                            </ul>
 
-                <?php if(!empty($error['ALL'])): ?>
+                    <?php
+                        unset($error['ALL']);
+                    endif;
+                    ?>
 
-                        <ul class="validation-full-record">
-                        <?php foreach ($error['ALL']['errors'] as $error_description) { ?>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Errors</th>
+                                </tr>
+                                <?php foreach ($error as $field => $description) { ?>
+                                    <tr>
+                                        <td>
 
-                            <?php if(strpos($error_description, 'but a null is required')) continue; ?>
+                                        <?php
+                                            $base_url = 'https://project-open-data.cio.gov';
 
-                            <li><?php echo $error_description ?></li>
-                        <?php } ?>
-                        </ul>
+                                            if ($schema == 'federal-v1.1') {
+                                                if($source_key === 'catalog') {
+                                                    $expanded_field = $field;
+                                                } else {
+                                                    $expanded_field = 'dataset.' . $field;
+                                                }
+                                                
+                                               $field_permalink = $base_url . '/v1.1/schema#' . $schema_v1_permalinks[$expanded_field];
+                                            } else {
+                                                $field_permalink = $base_url . '/schema#' . $field;
+                                            }
+                                        ?>
+
+
+                                            <a href="<?php echo $field_permalink; ?>">
+                                                <code class="hljs-attribute"><?php echo $field; ?></code>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                            <?php foreach ($description['errors'] as $error_description) { ?>
+
+                                                <?php
+
+                                                    if(strpos($error_description, 'but a null is required')) continue;
+                                                    if(strpos($error_description, 'regex pattern')) {
+                                                        $error_description = substr($error_description, 0, strpos($error_description, 'pattern') + 8);
+                                                    }
+
+                                                ?>
+
+                                                <li><?php echo $error_description ?></li>
+                                            <?php } ?>
+
+
+                                            <?php if(!empty($description['sub_fields'])):?>
+                                                <li>Sub fields
+                                                    <ul>
+                                                    <?php foreach ($description['sub_fields'] as $sub_field => $sub_field_error) { ?>
+                                                        <li><strong><?php echo $sub_field ?>:</strong> <?php echo $sub_field_error[0] ?></li>
+                                                     <?php } ?>
+                                                    </ul>
+                                                </li>
+                                            <?php endif; ?>
+
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </table>
+
 
                 <?php
-                    unset($error['ALL']);
-                endif;
-                ?>
 
-                        <table class="table table-striped">
-                            <tr>
-                                <th>Field</th>
-                                <th>Errors</th>
-                            </tr>
-                            <?php foreach ($error as $field => $description) { ?>
-                                <tr>
-                                    <td>
+                    $key_count[$key] = true;
 
-                                    <?php
-                                        $base_url = 'https://project-open-data.cio.gov';
-
-                                        if ($schema == 'federal-v1.1') {
-                                           $field_permalink = $base_url . '/v1.1/schema#' . $schema_v1_permalinks[$field];
-                                        } else {
-                                            $field_permalink = $base_url . '/schema#' . $field;
-                                        }
-                                    ?>
-
-
-                                        <a href="<?php echo $field_permalink; ?>">
-                                            <code class="hljs-attribute"><?php echo $field; ?></code>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <ul>
-                                        <?php foreach ($description['errors'] as $error_description) { ?>
-
-                                            <?php
-
-                                                if(strpos($error_description, 'but a null is required')) continue;
-                                                if(strpos($error_description, 'regex pattern')) {
-                                                    $error_description = substr($error_description, 0, strpos($error_description, 'pattern') + 8);
-                                                }
-
-                                            ?>
-
-                                            <li><?php echo $error_description ?></li>
-                                        <?php } ?>
-
-
-                                        <?php if(!empty($description['sub_fields'])):?>
-                                            <li>Sub fields
-                                                <ul>
-                                                <?php foreach ($description['sub_fields'] as $sub_field => $sub_field_error) { ?>
-                                                    <li><strong><?php echo $sub_field ?>:</strong> <?php echo $sub_field_error[0] ?></li>
-                                                 <?php } ?>
-                                                </ul>
-                                            </li>
-                                        <?php endif; ?>
-
-                                        </ul>
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </table>
-
-
-            <?php
-
-                $key_count[$key] = true;
-
-            }
+                }
 
             ?>
                         </div>
