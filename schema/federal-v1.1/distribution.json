@@ -4,6 +4,11 @@
   "title": "Project Open Data Distribution",
   "description": "Validates an entire collection of common core metadata JSON objects. Agencies produce said collections in the form of Data.json files.",
   "type": "object",
+  "dependencies": {
+    "downloadURL": [
+      "mediaType"
+    ]
+  },
   "properties": {
     "@type": {
       "title": "Metadata Context",
