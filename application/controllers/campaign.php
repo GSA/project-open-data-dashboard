@@ -502,7 +502,7 @@ class Campaign extends CI_Controller {
 
     /*
     $id can be all, cfo-act, or a specific id
-    $component can be datajson, datapage, digitalstrategy, download
+    $component can be full-scan, all, datajson, datapage, digitalstrategy, download
     */
 	public function status($id = null, $component = null, $selected_milestone = null) {
 
@@ -511,7 +511,7 @@ class Campaign extends CI_Controller {
 		    show_404('status', false);
 		}
 
-		if($component == 'all' || $component == 'download' ) {
+		if($component == 'full-scan' || $component == 'all' || $component == 'download' ) {
 			$this->load->helper('file');
 		}
 
@@ -563,7 +563,7 @@ class Campaign extends CI_Controller {
                 ################ datajson ################
                 */
 
-			    if ($component == 'all' || $component == 'datajson' || $component == 'download') {
+			    if ($component == 'full-scan' || $component == 'all' || $component == 'datajson' || $component == 'download') {
 
     				$expected_datajson_url = $url . '/data.json';
 
@@ -583,7 +583,6 @@ class Campaign extends CI_Controller {
             		    $status = $this->campaign->uri_header($expected_datajson_url);
             		}
 
-
             		//$status['url']          = $expected_datajson_url;
             		$status['expected_url'] = $expected_datajson_url;
 
@@ -595,7 +594,7 @@ class Campaign extends CI_Controller {
 	                /*
 	        		################ download ################
 	        		*/
-	    			if ($component == 'all' || $component == 'download') {
+	    			if ($component == 'full-scan' || $component == 'all' || $component == 'download') {
 
 	    				if(!($status['http_code'] == 200)) {
 
@@ -614,7 +613,7 @@ class Campaign extends CI_Controller {
 	                /*
 	        		################ datajson ################
 	        		*/
-	    			if ($component == 'all' || $component == 'datajson') {
+	    			if ($component == 'full-scan' || $component == 'all' || $component == 'datajson') {
 
 	    				// Save current update status in case things break during json_status
 						$update->datajson_status = (!empty($status)) ? json_encode($status) : null;
@@ -626,7 +625,7 @@ class Campaign extends CI_Controller {
 						$this->campaign->update_status($update);
 
 	                	// Check JSON status
-	                	$status 				= $this->json_status($status, $real_url);	        		
+	                	$status 				= $this->json_status($status, $real_url, $component);	        		
 
 	        			// Set correct URL
 	        			if(!empty($status['url'])) {
@@ -670,7 +669,7 @@ class Campaign extends CI_Controller {
                 ################ datapage ################
                 */
 
-               if ($component == 'all' || $component == 'datapage') {
+               if ($component == 'full-scan' || $component == 'all' || $component == 'datapage') {
 
 
                     // Get status of html /data page
@@ -699,7 +698,7 @@ class Campaign extends CI_Controller {
                  ################ digitalstrategy ################
                  */
 
-                if ($component == 'all' || $component == 'digitalstrategy' || $component == 'download') {
+                if ($component == 'full-scan' || $component == 'all' || $component == 'digitalstrategy' || $component == 'download') {
 
 
                      // Get status of html /data page
@@ -744,7 +743,7 @@ class Campaign extends CI_Controller {
 
 	}
 
-	public function json_status($status, $real_url = null) {
+	public function json_status($status, $real_url = null, $component = null) {
 
         // if this isn't an array, assume it's a urlencoded URI
         if(is_string($status)) {
@@ -762,7 +761,7 @@ class Campaign extends CI_Controller {
 
 			$qa = ($this->environment == 'terminal' OR $this->environment == 'cron') ? 'all' : true;
 
-			$validation = $this->campaign->validate_datajson($status['url'], null, null, 'federal', false, $qa);
+			$validation = $this->campaign->validate_datajson($status['url'], null, null, 'federal', false, $qa, $component);
 
 			if(!empty($validation)) {
 				$status['valid_json'] = $validation['valid_json'];

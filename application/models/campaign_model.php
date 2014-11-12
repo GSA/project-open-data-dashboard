@@ -553,7 +553,7 @@ class campaign_model extends CI_Model {
 		}
 	}
 
-	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false) {
+	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null) {
 
 
 		if ($datajson_url) {
@@ -706,7 +706,7 @@ class campaign_model extends CI_Model {
 				}
 
 				if($quality !== false) {
-					$datajson_qa = $this->campaign->datajson_qa($chunk, $schema, $quality);	
+					$datajson_qa = $this->campaign->datajson_qa($chunk, $schema, $quality, $component);	
 
 					if(!empty($datajson_qa)) {
 						$response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);	
@@ -895,7 +895,7 @@ class campaign_model extends CI_Model {
 
 
 
-	public function datajson_qa($json, $schema = null, $quality = true) {
+	public function datajson_qa($json, $schema = null, $quality = true, $component = null) {
 
 		$programCode = array();
 		$bureauCode = array();
@@ -946,7 +946,7 @@ class campaign_model extends CI_Model {
 				}				
 			}
 
-			if($quality === 'all') {
+			if($component === 'full-scan') {
 
 				$has_accessURL = false;
 
