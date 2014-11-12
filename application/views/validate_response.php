@@ -184,7 +184,11 @@
                             </tr>
                             <?php foreach ($error as $field => $description) { ?>
                                 <tr>
-                                    <td><a href="http://project-open-data.github.io/schema/#<?php echo $field; ?>"><code class="hljs-attribute"><?php echo $field; ?></code></a></td>
+                                    <td>
+                                        <a href="https://project-open-data.cio.gov/schema/#<?php echo $field; ?>">
+                                            <code class="hljs-attribute"><?php echo $field; ?></code>
+                                        </a>
+                                    </td>
                                     <td>
                                         <ul>
                                         <?php foreach ($description['errors'] as $error_description) { ?>
@@ -192,7 +196,9 @@
                                             <?php
 
                                                 if(strpos($error_description, 'but a null is required')) continue;
-                                                if(strpos($error_description, 'regex pattern')) continue;
+                                                if(strpos($error_description, 'regex pattern')) {
+                                                    $error_description = substr($error_description, 0, strpos($error_description, 'pattern') + 8);
+                                                }
 
                                             ?>
 
