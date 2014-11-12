@@ -1064,6 +1064,10 @@ class Campaign extends CI_Controller {
 											'datajson_url' => $datajson_url
 											);
 
+				if($schema == 'federal-v1.1') {
+					$validate_response['schema_v1_permalinks'] = $this->campaign->schema_v1_permalinks();
+				}
+
 				$this->load->view('validate_response', $validate_response);
 
 			} else {

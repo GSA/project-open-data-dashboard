@@ -185,7 +185,19 @@
                             <?php foreach ($error as $field => $description) { ?>
                                 <tr>
                                     <td>
-                                        <a href="https://project-open-data.cio.gov/schema/#<?php echo $field; ?>">
+
+                                    <?php
+                                        $base_url = 'https://project-open-data.cio.gov';
+
+                                        if ($schema == 'federal-v1.1') {
+                                           $field_permalink = $base_url . '/v1.1/schema#' . $schema_v1_permalinks[$field];
+                                        } else {
+                                            $field_permalink = $base_url . '/schema#' . $field;
+                                        }
+                                    ?>
+
+
+                                        <a href="<?php echo $field_permalink; ?>">
                                             <code class="hljs-attribute"><?php echo $field; ?></code>
                                         </a>
                                     </td>

@@ -1439,6 +1439,66 @@ class campaign_model extends CI_Model {
 	}
 
 
+	function schema_v1_permalinks() {
+
+		$permalink = array();
+
+        //$permalink['@context']								= 'context';
+        //$permalink['@id']									= 'id';
+        //$permalink['@type']									= 'type';
+        //$permalink['conformsTo']							= 'conformsTo';
+        //$permalink['describedBy']							= 'describedBy';
+        //$permalink['dataset']								= 'dataset';
+        $permalink['@type']							= 'dataset-type';
+        $permalink['accessLevel']					= 'accessLevel';
+        $permalink['accrualPeriodicity']			= 'accrualPeriodicity';
+        $permalink['bureauCode']					= 'bureauCode';
+        $permalink['conformsTo']					= 'dataset-conformsTo';
+        $permalink['contactPoint']					= 'contactPoint';
+        $permalink['contactPoint.@type']			= 'dataset-contactPoint-type';
+        $permalink['contactPoint.fn']				= 'contactPoint-fn';
+        $permalink['contactPoint.hasEmail']			= 'contactPoint-hasEmail';
+        $permalink['dataQuality']					= 'dataQuality';
+        $permalink['describedBy']					= 'dataset-describedBy';
+        $permalink['describedByType']				= 'dataset-describedByType';
+        $permalink['description']					= 'description';
+        $permalink['distribution']					= 'distribution';
+        $permalink['distribution.@type']			= 'distribution-type';
+        $permalink['distribution.accessURL']		= 'distribution-accessURL';
+        $permalink['distribution.conformsTo']		= 'distribution-conformsTo';
+        $permalink['distribution.downloadURL']		= 'distribution-downloadURL';
+        $permalink['distribution.describedBy']		= 'distribution-describedBy';
+        $permalink['distribution.describedByType']	= 'distribution-describedByType';
+        $permalink['distribution.description']		= 'distribution-description';
+        $permalink['distribution.format']			= 'distribution-format';
+        $permalink['distribution.mediaType']		= 'distribution-mediaType';
+        $permalink['distribution.title']			= 'distribution-title';
+        $permalink['identifier']					= 'identifier';
+        $permalink['isPartOf']						= 'isPartOf';
+        $permalink['issued']						= 'issued';
+        $permalink['keyword']						= 'keyword';
+        $permalink['landingPage']					= 'landingPage';
+        $permalink['language']						= 'language';
+        $permalink['license']						= 'license';
+        $permalink['modified']						= 'modified';
+        $permalink['primaryITInvestmentUII']		= 'primaryITInvestmentUII';
+        $permalink['programCode']					= 'programCode';
+        $permalink['publisher']						= 'publisher';
+        $permalink['publisher.@type']				= 'publisher-type';
+        $permalink['publisher.name']				= 'publisher-name';
+        $permalink['publisher.subOrganizationOf']	= 'publisher-subOrganizationOf';
+        $permalink['rights']						= 'rights';
+        $permalink['spatial']						= 'spatial';
+        $permalink['systemOfRecords']				= 'systemOfRecords';
+        $permalink['temporal']						= 'temporal';
+        $permalink['theme']							= 'theme';
+        $permalink['title']							= 'title';
+
+        return $permalink;
+
+	}
+
+
 }
 
 ?>
