@@ -21,9 +21,9 @@
                 <div class="form-group">
                     <label for="datajson">Schema</label>
                     <select name="schema">                        
-                        <option value="federal" selected="selected">Federal</option>
-                        <option value="non-federal">Non-Federal</option>
-                        <option value="">Project Open Data</option>                        
+                        <option value="federal-v1.1" selected="selected">Federal v1.1</option>                                                
+                        <option value="federal">Federal v1.0</option> 
+                        <option value="non-federal">Non-Federal v1.0</option>                     
                     </select>
                 </div>
 
@@ -59,9 +59,9 @@
                 <div class="form-group">
                     <label for="datajson">Schema</label>
                     <select name="schema">
-                        <option value="federal" selected="selected">Federal</option>
-                        <option value="non-federal">Non-Federal</option>
-                        <option value="">Project Open Data</option> 
+                        <option value="federal-v1.1" selected="selected">Federal v1.1</option>                                                
+                        <option value="federal">Federal v1.0</option> 
+                        <option value="non-federal">Non-Federal v1.0</option>
                     </select>
                 </div>
 
@@ -94,10 +94,9 @@
                 <div class="form-group">
                     <label for="datajson">Schema</label>
                     <select name="schema">
-                        <option value="federal" selected="selected">Federal</option>
-                        <option value="federal-v1.1">Federal v1.1</option>                        
-                        <option value="non-federal">Non-Federal</option>
-                        <option value="">Project Open Data</option> 
+                        <option value="federal-v1.1" selected="selected">Federal v1.1</option>                                                
+                        <option value="federal">Federal v1.0</option>                       
+                        <option value="non-federal">Non-Federal v1.0</option>
                     </select>
                 </div>
 
