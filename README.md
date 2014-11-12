@@ -1,4 +1,4 @@
-The Project Open Data Dashboard provides a variety of tools and capabilities to help manage the implementation of [Project Open Data](http://project-open-data.github.io/). It is primary used for Federal agencies, but also provides tools and resources for use by other entities like state and local government. 
+The Project Open Data Dashboard provides a variety of tools and capabilities to help manage the implementation of [Project Open Data](https://project-open-data.cio.gov/). It is primary used for Federal agencies, but also provides tools and resources for use by other entities like state and local government. 
 
 The primary place for the user-facing documentation is http://data.civicagency.org/docs
 
@@ -6,7 +6,7 @@ Federal agencies were seeded using the [USA.gov Federal Agency Directory API](ht
 
 Features
 -----
-* **[Dashboard overview](http://data.civicagency.org/offices)** of the status of each federal agency's implementation of [Project Open Data](http://project-open-data.github.io/) for each milestone.
+* **[Dashboard overview](http://data.civicagency.org/offices)** of the status of each federal agency's implementation of [Project Open Data](https://project-open-data.cio.gov/) for each milestone.
 * **Permissioned Content Editing** for the fields in the dasboard that can't be automated. The fields are stored as JSON objects so the data model is very flexible and can be customized without database changes. User accounts are handled via Github.
 * **Automated crawls** for each agency to report metrics from Project Open Data assets (data.json, digitalstrategy.json, /data page, etc). This includes reporting on the number of datasets and validation against the Project Open Data metadata schema. 
 * **A [validator](http://data.civicagency.org/validate)** to validate Project Open Data data.json files via URL, file upload, or text input. This can be used for testing both data.json Public Data Listing files as well as the Enterprise Data Inventory JSON. The validator can be used both by Federal agencies as well as non-federal entities by specifiying the Non-Federal schema. 

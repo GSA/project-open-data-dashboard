@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "http://project-open-data.github.io/schema/1_0_final/single_entry.json#",
+    "id": "https://project-open-data.cio.gov/schema/1_0_final/single_entry.json#",
     "title": "Common Core Metadata Schema",
     "description": "The metadata format for all federal open data. Validates a single JSON object entry (as opposed to entire Data.json catalog).",
     "type": "object",
@@ -212,7 +212,7 @@
         },
         "license": {
             "title":"License",
-            "description":"The license dataset or API is published with. See <a href=\"http://project-open-data.github.io/open-licenses/\">Open Licenses</a> for more information.",
+            "description":"The license dataset or API is published with. See <a href=\"https://project-open-data.cio.gov/open-licenses/\">Open Licenses</a> for more information.",
             "type": "string",
             "minLength": 1
         },

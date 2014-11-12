@@ -6,7 +6,7 @@ You can help [edit this documentation on GitHub](https://github.com/GSA/project-
 
 ##Agency Dashboard
 
-The [Agency Dashboard](http://labs.data.gov/dashboard/offices) is used to track how agencies are implementing [Project Open Data](http://project-open-data.github.com/) (aka [OMB M-13-13](http://project-open-data.github.io/policy-memo/)). This is done in two ways: 
+The [Agency Dashboard](http://labs.data.gov/dashboard/offices) is used to track how agencies are implementing [Project Open Data](http://project-open-data.github.com/) (aka [OMB M-13-13](https://project-open-data.cio.gov/policy-memo/)). This is done in two ways: 
 
 1. Review of the [leading indicators](#leading_indicators) (detailed below) by OMB staff
 2. [Automated metrics](#automated_metrics) that analyze machine readable files (eg, data.json, digitalstrategy.json)
@@ -240,18 +240,18 @@ The "Public Datasets" column on the main agency dashboard table will be green if
 
 <span id="datajson_valid_count"></span>
 #####Datasets with Valid Metadata
-The percentage and specific number of datasets in the data.json file that successfully validate against the [Project Open Data schema](http://project-open-data.github.io/schema/). 
+The percentage and specific number of datasets in the data.json file that successfully validate against the [Project Open Data schema](https://project-open-data.cio.gov/schema/). 
 
 The "Valid Metadata" column on the main agency dashboard table will be green if 100% of the metadata records validate against the Project Open Data schema and they are from a [valid JSON file](#datajson_valid_json). It's possible to have 100% valid metadata records but still be shown as yellow if it's not a valid JSON file. Any record that doesn't validate against the schema won't meet the requirements and also won't be included by harvesters like data.gov. 
 
 <span id="datajson_valid_schema"></span>
 #####Valid Schema
 
-This identifies whether the data.json has all the required fields and has values that fit within the parameters specified by the [Project Open Data schema](http://project-open-data.github.io/schema/). 
+This identifies whether the data.json has all the required fields and has values that fit within the parameters specified by the [Project Open Data schema](https://project-open-data.cio.gov/schema/). 
 
 <span id="datajson_schema_errors"></span>
 #####Schema Errors
-This displays instances where the data.json doesn't validate against the [Project Open Data schema](http://project-open-data.github.io/schema/) based on rules codified within a [JSON Schema document](https://github.com/project-open-data/project-open-data.github.io/tree/master/schema/1_0_final) hosted on Project Open Data. For more detailed and more readable results, you should use the [Project Open Data validator](http://labs.data.gov/dashboard/validate)
+This displays instances where the data.json doesn't validate against the [Project Open Data schema](https://project-open-data.cio.gov/schema/) based on rules codified within a [JSON Schema document](https://github.com/project-open-data/project-open-data.github.io/tree/master/schema/1_0_final) hosted on Project Open Data. For more detailed and more readable results, you should use the [Project Open Data validator](http://labs.data.gov/dashboard/validate)
 
 <span id="metrics_total_records"></span>
 ##### Datasets

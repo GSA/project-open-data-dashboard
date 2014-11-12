@@ -232,7 +232,7 @@
     },
     "license": {
       "title": "License",
-      "description": "The license dataset or API is published with. See <a href=\"http://project-open-data.github.io/open-licenses/\">Open Licenses</a> for more information.",
+      "description": "The license dataset or API is published with. See <a href=\"https://project-open-data.cio.gov/open-licenses/\">Open Licenses</a> for more information.",
       "anyOf": [
         {
           "type": "string",
