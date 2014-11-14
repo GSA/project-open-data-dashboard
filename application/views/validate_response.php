@@ -141,9 +141,11 @@
                     if(array_key_exists("catalog", $validation['errors'])) {
                         $validation['catalog'] = clone $validation['source'];
                         $validation['catalog']->dataset = "...truncated to display here...";
-
-                        $validation['source'] = $validation['source']->dataset; 
                     }                   
+
+                    if(isset($validation['source']->conformsTo)) {
+                        $validation['source'] = $validation['source']->dataset; 
+                    }
 
                     $key_count = array();
 
@@ -232,19 +234,21 @@
                                         </td>
                                         <td>
                                             <ul>
-                                            <?php foreach ($description['errors'] as $error_description) { ?>
+                                            <?php if(!empty($description['errors'])): ?>
+                                                <?php foreach ($description['errors'] as $error_description) { ?>
 
-                                                <?php
+                                                    <?php
 
-                                                    if(strpos($error_description, 'but a null is required')) continue;
-                                                    if(strpos($error_description, 'regex pattern')) {
-                                                        $error_description = substr($error_description, 0, strpos($error_description, 'pattern') + 8);
-                                                    }
+                                                        if(strpos($error_description, 'but a null is required')) continue;
+                                                        if(strpos($error_description, 'regex pattern')) {
+                                                            $error_description = substr($error_description, 0, strpos($error_description, 'pattern') + 8);
+                                                        }
 
-                                                ?>
+                                                    ?>
 
-                                                <li><?php echo $error_description ?></li>
-                                            <?php } ?>
+                                                    <li><?php echo $error_description ?></li>
+                                                <?php } ?>
+                                            <?php endif; ?>
 
 
                                             <?php if(!empty($description['sub_fields'])):?>
