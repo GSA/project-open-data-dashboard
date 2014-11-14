@@ -65,18 +65,20 @@ function status_table_full($title, $rows, $tracker, $config = null, $selected_mi
 
 function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $milestone = null) {
 
-
 ?>
 	<div class="panel panel-default">
 	<table class="dashboard table table-striped table-hover table-bordered">
 		<tr class="dashboard-meta-heading">
 			<td><?php echo $title ?></td>
-			<td colspan="6">
+
+			<?php $colspan = ($milestone->selected_milestone < '2014-11-30') ? '5' : '6'; ?>
+			<td colspan="<?php echo $colspan; ?>">
 				Leading Indicators Strategy 
                 <a href="<?php echo site_url('docs') . '#leading_indicators_strategy' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>			
 			</td>
+			
 			<td colspan="2" class="pdl-heading">
 				Public Data Listing Metrics
                 <a href="<?php echo site_url('docs') . '#automated_metrics' ?>">
@@ -87,7 +89,8 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
 
-			<?php foreach ($sections_breakdown as $section_title): ?>
+			<?php foreach ($sections_breakdown as $section_name => $section_title): ?>
+				<?php if ($milestone->selected_milestone < '2014-11-30' && $section_name == 'ui') continue; ?>
 				<th class="tilt"><div><?php echo $section_title;?></div></th>
 			<?php endforeach; reset($sections_breakdown); ?>
 
@@ -217,6 +220,8 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 			<?php foreach ($sections_breakdown as $section_name => $section_title): ?>
 
 				<?php 
+					if ($milestone->selected_milestone < '2014-11-30' && $section_name == 'ui') continue;
+
 					$column = $section_name . '_aggregate_score'; 
 					$column_anchor = $section_name . '_tab';
 					$section_selection = ($section_name == 'pdl') ? '' : '?highlight=' . $section_name;

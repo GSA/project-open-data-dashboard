@@ -272,6 +272,8 @@
                 <?php foreach ($section_breakdown as $section_abbreviation => $section_title): ?>
 
                     <?php
+                        if ($milestone->selected_milestone < '2014-11-30' && $section_abbreviation == 'ui') continue;
+                        
                         $aggregate_score = $section_abbreviation . '_aggregate_score';
 
                         if(!empty($office_campaign->tracker_fields->$aggregate_score)) {
