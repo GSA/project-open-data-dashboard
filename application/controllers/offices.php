@@ -199,10 +199,15 @@ class Offices extends CI_Controller {
 			// Get crawler data
 			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id, $milestone->selected_milestone);
 
-			// Make sure tracker data uses full tracker model
-			if(!empty($view_data['office_campaign']->tracker_fields)) {
+			// If we have a blank slate, populate the data model
+			if(empty($view_data['office_campaign'])) {
+				$view_data['office_campaign'] = $this->campaign->datagov_model();
+			}
 
-				$tracker_fields = json_decode($view_data['office_campaign']->tracker_fields);
+			// Make sure tracker data uses full tracker model
+			if(isset($view_data['office_campaign']->tracker_fields)) {
+
+				$tracker_fields = ($view_data['office_campaign']->tracker_fields) ? json_decode($view_data['office_campaign']->tracker_fields) : new stdClass();
 
 				foreach ($view_data['tracker_model'] as $field_name => $value) {
 					$tracker_fields->$field_name = (isset($tracker_fields->$field_name)) ? $tracker_fields->$field_name : null;
@@ -210,12 +215,7 @@ class Offices extends CI_Controller {
 
 				$view_data['office_campaign']->tracker_fields = json_encode($tracker_fields);
 
-			}			
-
-
-			if(empty($view_data['office_campaign'])) {
-				$view_data['office_campaign'] = $this->campaign->datagov_model();
-			}
+			} 
 
 
 			if(!empty($view_data['office_campaign']->datajson_status)) {
