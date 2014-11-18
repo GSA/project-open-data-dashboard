@@ -315,25 +315,29 @@ class campaign_model extends CI_Model {
 		$model->ui_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->ui_aggregate_score->type 			= "traffic";
 
+		$model->ui_identified_users					= clone $field;
+		$model->ui_identified_users->label 			= "Identified 5 data users";
+		$model->ui_identified_users->type 			= "select";
+
 		$model->ui_primary_uses						= clone $field;
-		$model->ui_primary_uses->label 				= "Primary uses of agency data";
-		$model->ui_primary_uses->type 				= "select";
+		$model->ui_primary_uses->label 				= "Primary Uses";
+		$model->ui_primary_uses->type 				= "string";
 
 		$model->ui_value_impact						= clone $field;
 		$model->ui_value_impact->label 				= "Value or impact of data";
-		$model->ui_value_impact->type 				= "select";
+		$model->ui_value_impact->type 				= "string";
 
 		$model->ui_primary_discovery				= clone $field;
 		$model->ui_primary_discovery->label 		= "Primary data discovery channels";
-		$model->ui_primary_discovery->type 			= "select";
+		$model->ui_primary_discovery->type 			= "string";
 
 		$model->ui_user_suggest_usability			= clone $field;
 		$model->ui_user_suggest_usability->label 	= "User suggestions on improving data usability";
-		$model->ui_user_suggest_usability->type 	= "select";
+		$model->ui_user_suggest_usability->type 	= "string";
 
 		$model->ui_user_suggest_releases			= clone $field;
 		$model->ui_user_suggest_releases->label 	= "User suggestions on additional data releases";
-		$model->ui_user_suggest_releases->type 		= "select";
+		$model->ui_user_suggest_releases->type 		= "string";
 
 		return $model;
 }
