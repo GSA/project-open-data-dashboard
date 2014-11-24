@@ -71,6 +71,11 @@ class Docs extends CI_Controller {
 	}
 
 
+	public function merge() {
+		$this->load->view('merge');
+	}	
+
+
 
 }
 
