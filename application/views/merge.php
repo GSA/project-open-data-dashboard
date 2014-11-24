@@ -86,30 +86,30 @@ function mergeFiles() {
                 <div id="mergefiles">
                     <input type="hidden" id="NumberOfRows" value="2" />
                     <div class="form-group row">
-                        <div class="col-md-3">
+                        <div class="col-sm-3">
                             <label>1) Upload Data.json</label>
                             <div class="settingsGroup">
                                 <input type="file" onchange="readfile(this.files[0],1)"></input>
                             </div>   
                         </div>
-                        <textarea class="col-md-9" rows="5" id="datafile1"></textarea>                        
+                        <textarea class="col-sm-9" rows="5" id="datafile1"></textarea>                        
                     </div>
                     <div class="form-group row">
-                        <div class="col-md-3">
+                        <div class="col-sm-3">
                             <label>2) Upload Data.json</label>
                             <div class="settingsGroup">
                                 <input type="file" onchange="readfile(this.files[0],2)"></input>
                             </div>   
                         </div>
-                        <textarea class="col-md-9" rows="5" id="datafile2"></textarea>                       
+                        <textarea class="col-sm-9" rows="5" id="datafile2"></textarea>                       
                     </div>                          
                 </div>    
 
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-sm-3">
                         <button class="btn btn-default" name="addRow" onclick="addRows(); return false;">+ Add Another File</button>
                     </div>
-                    <button class="btn btn-success col-md-9"  name="addRow" onclick="mergeFiles(); return false;">Merge Files</button>
+                    <button class="btn btn-success col-sm-9"  name="addRow" onclick="mergeFiles(); return false;">Merge Files</button>
                     </div>    
                 </div>
 
