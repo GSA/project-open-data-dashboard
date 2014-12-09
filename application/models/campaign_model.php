@@ -676,7 +676,7 @@ class campaign_model extends CI_Model {
 
 			$datajson_decode = json_decode($datajson_processed);
 
-			if($schema !== 'federal-v1.1') {
+			if($schema !== 'federal-v1.1' && $schema !== 'non-federal-v1.1' ) {
 				$chunk_size = 500;				
 				$datajson_chunks = array_chunk($datajson_decode, $chunk_size);
 			} else {
@@ -771,7 +771,7 @@ class campaign_model extends CI_Model {
 			}
 
 			if ($return_source) {	
-				$dataset_array = ($schema == 'federal-v1.1') ? true : false;
+				$dataset_array = ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') ? true : false;
 				$datajson_decode = filter_json($datajson_decode, $dataset_array);			
 				$response['source'] = $datajson_decode;
 			}

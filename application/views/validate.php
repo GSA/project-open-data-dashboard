@@ -23,7 +23,9 @@
                     <select name="schema">                        
                         <option value="federal-v1.1" selected="selected">Federal v1.1</option>                                                
                         <option value="federal">Federal v1.0</option> 
-                        <option value="non-federal">Non-Federal v1.0</option>                     
+                        <option value="non-federal-v1.1">Non-Federal v1.1</option>                           
+                        <option value="non-federal">Non-Federal v1.0</option>  
+                        
                     </select>
                 </div>
 
@@ -61,7 +63,9 @@
                     <select name="schema">
                         <option value="federal-v1.1" selected="selected">Federal v1.1</option>                                                
                         <option value="federal">Federal v1.0</option> 
+                        <option value="non-federal-v1.1">Non-Federal v1.1</option>   
                         <option value="non-federal">Non-Federal v1.0</option>
+                        
                     </select>
                 </div>
 
@@ -96,6 +100,7 @@
                     <select name="schema">
                         <option value="federal-v1.1" selected="selected">Federal v1.1</option>                                                
                         <option value="federal">Federal v1.0</option>                       
+                        <option value="non-federal-v1.1">Non-Federal v1.1</option>   
                         <option value="non-federal">Non-Federal v1.0</option>
                     </select>
                 </div>
