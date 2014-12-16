@@ -81,7 +81,7 @@ class Campaign extends CI_Controller {
 		if(!empty($raw_data)) {
 
 			$json_schema = $this->campaign->datajson_schema();
-			$datajson_model = $this->campaign->schema_to_model($json_schema->properties);
+			$datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);
 
 			$convert = array();
 			foreach ($raw_data as $ckan_data) {
@@ -141,7 +141,7 @@ class Campaign extends CI_Controller {
 				$this->load->model('campaign_model', 'campaign');
 
 				$json_schema = $this->campaign->datajson_schema();
-				$datajson_model = $this->campaign->schema_to_model($json_schema->properties);
+				$datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);
 
 				$output = array();
 				$output['headings'] 		= $headings;
@@ -314,7 +314,7 @@ class Campaign extends CI_Controller {
 
 		// use data.json model
 		$json_schema = $this->campaign->datajson_schema();
-		$datajson_model = $this->campaign->schema_to_model($json_schema->properties);
+		$datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);
 
 		$csv_rows = array();
 		foreach ($raw_data as $ckan_data) {
@@ -1241,6 +1241,59 @@ class Campaign extends CI_Controller {
 
 	}
 
+    public function upgrade_schema($schema = 'federal') {
+
+        $this->load->model('campaign_model', 'campaign');
+
+        $schema         = ($this->input->get_post('schema', TRUE)) ? $this->input->get_post('schema', TRUE) : $schema;
+
+        if(!empty($_FILES)) {
+
+            $this->load->library('upload');
+
+            if($this->do_upload('datajson_upload')) {
+
+                $data = $this->upload->data();
+
+                $filename = 'hello.json';
+
+                $datajson = file_get_contents($data['full_path']);
+                unlink($data['full_path']);
+
+                $datajson = json_decode($datajson);
+
+                $json_schema = $this->campaign->datajson_schema('federal-v1.1'); // 
+                $datajson_model = $this->campaign->schema_to_model($json_schema->properties);
+               
+                $convert = array();
+                foreach ($datajson as $dataset) {
+                    $model = clone $datajson_model->dataset[0];
+                    $convert[] = $this->campaign->datajson_schema_crosswalk($dataset, $model);
+                }
+
+                $datajson_model->dataset = $convert;
+
+
+                // provide json for download
+                header("Pragma: public");
+                header("Expires: 0");
+                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                header("Cache-Control: private",false);
+                header('Content-type: application/json');
+                header("Content-Disposition: attachment; filename=\"$filename.json\";" );
+                header("Content-Transfer-Encoding: binary");
+
+                print json_encode($datajson_model);
+                exit;
+
+            }
+        } else {
+            $this->load->view('upgrade_schema');
+        }
+
+
+
+    }
 
 	public function assemble_org_structure() {
 

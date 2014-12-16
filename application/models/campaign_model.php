@@ -1260,16 +1260,21 @@ class campaign_model extends CI_Model {
 
 
 
-	public function datajson_schema() {
+	public function datajson_schema($version = '') {
 
-		$schema = json_decode(file_get_contents(realpath('./schema/catalog.json')));
+		$version_path = (!empty($version)) ? $version . '/' : '';
 
-		if (!empty($schema->items->{'$ref'})) {
+		$path = './schema/' . $version_path . 'catalog.json';
 
-			$schema = json_decode(file_get_contents(realpath('./schema/' . $schema->items->{'$ref'})));
+		// Get the schema and data as objects
+        $retriever = new JsonSchema\Uri\UriRetriever;
+        $schema = $retriever->retrieve('file://' . realpath($path));	
 
-		}
+        $refResolver = new JsonSchema\RefResolver($retriever);
+        $refResolver->resolve($schema, 'file://' . __DIR__ . '/../../schema/' . $version_path);
+
 		return $schema;
+
 
 	}
 
@@ -1278,10 +1283,48 @@ class campaign_model extends CI_Model {
 
 		$model = new stdClass();
 
+		
 		foreach ($schema as $key => $value) {
 
-			if(!empty($value->items) && $value->type == 'array') {
+
+			if(!empty($value->type) && $value->type == 'object') {
+	
+				// This is just hard coded to prevent recursion, but should be replaced with proper recursion detection
+				if($key == 'subOrganizationOf') {
+					$model->$key = null;
+				} else {
+					$model->$key = $this->schema_to_model($value->properties);	
+				}
+
+			} else if(!empty($value->items) && $value->type == 'array') {
+
 				 $model->$key = array();
+	
+				if (!empty($value->items->properties)) {
+					$model->$key = array($this->schema_to_model($value->items->properties));
+				}
+
+
+			} else if(!empty($value->anyOf)) {
+
+				foreach ($value->anyOf as $anyOptions) {
+
+					if (!empty($anyOptions->type) && $anyOptions->type == 'array') {
+
+						$model->$key = array();
+
+						if (!empty($anyOptions->items) && $anyOptions->items->type == 'object') {
+							
+							$model->$key = array($this->schema_to_model($anyOptions->items->properties));
+
+						}
+					}
+				}
+
+				if(!isset($model->$key)) {
+					$model->$key = null;
+				}
+
 			} else {
 				$model->$key = null;
 			}
@@ -1452,6 +1495,70 @@ class campaign_model extends CI_Model {
 
 		return $datajson_model;
 	}
+
+
+public function datajson_schema_crosswalk($raw_data, $datajson_model) {
+
+		$distributions = array();
+
+		if(!empty($raw_data->distribution)) {
+
+			foreach($raw_data->distribution as $resource) {
+				$distribution = clone $datajson_model->distribution[0];
+
+				$distribution->downloadURL 		= $resource->accessURL;
+				$distribution->mediaType		= $resource->format;
+
+				$distributions[] = $distribution;
+			}		
+
+		}
+
+
+
+		//$datajson_model->webService                         = null;
+		// 	    $datajson_model->format                             = null;
+//$datajson_model->accessURL                          = $raw_data->accessURL              
+
+// $raw_data->license
+
+
+	    
+		$datajson_model->accessLevel                        = (!empty($raw_data->accessLevel)) ? $raw_data->accessLevel : null;
+		$datajson_model->rights 			                = (!empty($raw_data->accessLevelComment)) ? $raw_data->accessLevelComment : null;
+		$datajson_model->accrualPeriodicity                 = (!empty($raw_data->accrualPeriodicity)) ? $raw_data->accrualPeriodicity : null;
+		$datajson_model->bureauCode                         = (!empty($raw_data->bureauCode)) ? $raw_data->bureauCode : null;
+		$datajson_model->contactPoint->fn                   = (!empty($raw_data->contactPoint)) ? $raw_data->contactPoint : null;
+		$datajson_model->contactPoint->hasEmail 			= (!empty($raw_data->mbox)) ? 'mailto:' . $raw_data->mbox : null;
+		$datajson_model->describedBy                     	= (!empty($raw_data->dataDictionary)) ? $raw_data->dataDictionary : null;
+		$datajson_model->dataQuality                        = (!empty($raw_data->dataQuality)) ? $raw_data->dataQuality : null;
+		$datajson_model->description                        = (!empty($raw_data->description)) ? $raw_data->description : null;
+		
+		$datajson_model->distribution                       = (!empty($distributions)) ? $distributions : null;
+		
+		$datajson_model->identifier                         = (!empty($raw_data->identifier)) ? $raw_data->identifier : null;
+		$datajson_model->issued                             = (!empty($raw_data->issued)) ? $raw_data->issued : null;
+		$datajson_model->keyword                            = (!empty($raw_data->keyword)) ? $raw_data->keyword : null;
+		$datajson_model->landingPage                        = (!empty($raw_data->landingPage)) ? $raw_data->landingPage : null;
+		$datajson_model->language                           = (!empty($raw_data->language)) ? $raw_data->language : null;	
+		
+		$datajson_model->license                            = (!empty($license)) ? $license : null;
+
+		$datajson_model->modified                           = (!empty($raw_data->modified)) ? $raw_data->modified : null;
+		$datajson_model->primaryITInvestmentUII             = (!empty($raw_data->PrimaryITInvestmentUII)) ? $raw_data->PrimaryITInvestmentUII : null;
+		$datajson_model->programCode                        = (!empty($raw_data->programCode)) ? $raw_data->programCode : null;
+		$datajson_model->publisher->name                    = (!empty($raw_data->publisher)) ? $raw_data->publisher : null;
+		$datajson_model->references                         = (!empty($raw_data->references)) ? $raw_data->references : null;
+		$datajson_model->spatial                            = (!empty($raw_data->spatial)) ? $raw_data->spatial : null;
+		$datajson_model->systemOfRecords                    = (!empty($raw_data->systemOfRecords)) ? $raw_data->systemOfRecords : null;
+		$datajson_model->temporal                           = (!empty($raw_data->temporal)) ? $raw_data->temporal : null;
+		$datajson_model->theme                              = (!empty($raw_data->theme)) ? $raw_data->theme : null;
+		$datajson_model->title                              = (!empty($raw_data->title)) ? $raw_data->title : null;
+		
+
+		return $datajson_model;
+	}
+
 
 
 	function schema_v1_permalinks() {
