@@ -40,9 +40,23 @@
                             </tr>
                         <?php endif; ?>                          
 
-                        <?php if(!empty($validation['source'])) : ?>
+                        <?php 
+
+                            if ($schema == 'federal-v1.1') {
+                                if(!empty($validation['source']->dataset)) {
+                                     $dataset_count = count($validation['source']->dataset);    
+                                }                                
+                            } else {
+                                if(!empty($validation['source'])) {
+                                     $dataset_count = count($validation['source']);    
+                                }
+                                
+                            }
+                        ?>
+
+                        <?php if(!empty($dataset_count)) : ?>
                             <tr>
-                                <th>Total datasets</th> <td><?php echo count($validation['source']); ?></td>
+                                <th>Total datasets</th> <td><?php echo $dataset_count; ?></td>
                             </tr>
                         <?php endif; ?>                       
 
