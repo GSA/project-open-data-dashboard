@@ -112,11 +112,11 @@
             <?php endif; ?>  
 
            <?php if(!empty($office_campaign->tracker_status->status) && $office_campaign->tracker_status->status == 'in-progress'): ?>
-                <p class="form-flash text-warning bg-warning"><strong>OMB Review In Progress:</strong> OMB is currently reviewing the agency for this milestone. This review status indicator will change once the review is complete this.</p>
+                <p class="form-flash text-warning bg-warning"><strong>OMB Review In Progress:</strong> OMB is currently reviewing the agency for this milestone. This review status indicator will change once the review is complete.</p>
             <?php endif; ?>            
 
            <?php if(!empty($office_campaign->tracker_status->status) && $office_campaign->tracker_status->status == 'complete'): ?>
-                <p class="form-flash text-success bg-success"><strong>OMB Review Complete:</strong> OMB has completed the agency review for this milestone. Agencies should contact their OMB desk officer if anything looks incorrect</p>
+                <p class="form-flash text-success bg-success"><strong>OMB Review Complete:</strong> OMB has completed the agency review for this milestone. Agencies should contact their OMB desk officer if anything looks incorrect.</p>
             <?php endif; ?>                 
 
 
