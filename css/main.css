@@ -195,15 +195,18 @@ width : 2em;
 
 .dashboard .metrics-row td.boolean-metric a span {
 	display : inline-block;
-	text-indent : -9999em;
+	opacity : 0.25;
 	overflow : hidden;
 	width : 2em;
 	text-align: center;
 }
 
+.dashboard .metrics-row td.boolean-metric.highlight a span {
+	opacity : 1;
+}
 
 .dashboard .metrics-row td.boolean-metric a:hover span {
-text-indent : 0;
+	opacity : 1;
 }
 
 .dashboard .metrics-row td a:hover {

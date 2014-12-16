@@ -162,6 +162,10 @@ class campaign_model extends CI_Model {
 		$model->edi_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->edi_aggregate_score->type 			= "traffic";
 
+		$model->edi_selected_best_practice			= clone $field;
+		$model->edi_selected_best_practice->label	= "Selected to highlight a best practice";
+		$model->edi_selected_best_practice->type 	= "select";
+
 		$model->edi_updated							= clone $field;
 		$model->edi_updated->label 					= "Inventory Updated this Quarter";
 		$model->edi_updated->type 					= "select";
@@ -221,6 +225,10 @@ class campaign_model extends CI_Model {
 		$model->pdl_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->pdl_aggregate_score->type 			= "traffic";
 
+		$model->pdl_selected_best_practice			= clone $field;
+		$model->pdl_selected_best_practice->label	= "Selected to highlight a best practice";
+		$model->pdl_selected_best_practice->type 	= "select";
+
 		$model->pdl_datasets						= clone $field;
 		$model->pdl_datasets->label 				= "Number of Datasets";
 		$model->pdl_datasets->type 					= "string";
@@ -259,6 +267,10 @@ class campaign_model extends CI_Model {
 		$model->pe_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->pe_aggregate_score->type 			= "traffic";
 
+		$model->pe_selected_best_practice			= clone $field;
+		$model->pe_selected_best_practice->label	= "Selected to highlight a best practice";
+		$model->pe_selected_best_practice->type 	= "select";
+
 		$model->pe_feedback_specified				= clone $field;
 		$model->pe_feedback_specified->label 		= "Description of feedback mechanism delivered";
 		$model->pe_feedback_specified->type 		= "select";
@@ -286,6 +298,10 @@ class campaign_model extends CI_Model {
 		$model->ps_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->ps_aggregate_score->type 			= "traffic";
 
+		$model->ps_selected_best_practice			= clone $field;
+		$model->ps_selected_best_practice->label	= "Selected to highlight a best practice";
+		$model->ps_selected_best_practice->type 	= "select";
+
 		$model->ps_publication_process				= clone $field;
 		$model->ps_publication_process->label 		= "Data Publication Process Delivered";
 		$model->ps_publication_process->type 		= "traffic";
@@ -301,6 +317,10 @@ class campaign_model extends CI_Model {
 		$model->hc_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->hc_aggregate_score->type 			= "traffic";
 
+		$model->hc_selected_best_practice			= clone $field;
+		$model->hc_selected_best_practice->label	= "Selected to highlight a best practice";
+		$model->hc_selected_best_practice->type 	= "select";		
+
 		$model->hc_lead								= clone $field;
 		$model->hc_lead->label 						= "Open Data Primary Point of Contact";
 		$model->hc_lead->type 						= "string";
@@ -314,6 +334,10 @@ class campaign_model extends CI_Model {
 		$model->ui_aggregate_score					= clone $field;
 		$model->ui_aggregate_score->label 			= "Overall Progress this Milestone";
 		$model->ui_aggregate_score->type 			= "traffic";
+
+		$model->ui_selected_best_practice			= clone $field;
+		$model->ui_selected_best_practice->label	= "Selected to highlight a best practice";
+		$model->ui_selected_best_practice->type 	= "select";
 
 		$model->ui_identified_users					= clone $field;
 		$model->ui_identified_users->label 			= "Identified 5 data users";

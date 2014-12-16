@@ -223,14 +223,23 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 					if ($milestone->selected_milestone < '2014-11-30' && $section_name == 'ui') continue;
 
 					$column = $section_name . '_aggregate_score'; 
+					$highlight = $section_name . '_selected_best_practice';
+
+					if(!empty($office->tracker_fields->$highlight) && $office->tracker_fields->$highlight == 'yes') {
+						$cell_icon = 'highlight';
+					} else {
+						$cell_icon = (!empty($office->tracker_fields->$column)) ? $office->tracker_fields->$column : '';
+					}
+
+					
 					$column_anchor = $section_name . '_tab';
 					$section_selection = ($section_name == 'pdl') ? '' : '?highlight=' . $section_name;
 				?>
 
-				<td class="boolean-metric <?php if (!empty($office->tracker_fields->$column)) echo status_color($office->tracker_fields->$column) ?>">
+				<td class="boolean-metric <?php if (!empty($office->tracker_fields->$column)) echo status_color($office->tracker_fields->$column); ?> <?php if($cell_icon) echo $cell_icon; ?>">
 					<a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?><?php echo $section_selection . '#' . $column_anchor; ?>">
 						<span>
-							<?php if (!empty($office->tracker_fields->$column)) echo page_status($office->tracker_fields->$column);?>&nbsp;
+							<?php if (!empty($office->tracker_fields->$column)) echo page_status($cell_icon);?>&nbsp;
 						</span>
 					</a>
 				</td>
@@ -400,6 +409,10 @@ function page_status($data_status, $status_color = null) {
 
 	if($data_status == 'yes' || $data_status == 'green') $data_status = 'success';
 	if($data_status == 'no' || $data_status == 'red') $data_status = 'danger';
+
+	if ($data_status == 'highlight') {
+	    $icon = '<i class="text-success fa fa-star"></i>';
+	}
 
 	if ($data_status == 'success') {
 	    $icon = '<i class="text-' . $data_status . ' fa fa-check-square"></i>';

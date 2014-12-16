@@ -329,6 +329,14 @@
 
                             </div>
 
+                            <?php 
+                                $highlight_field = $section_abbreviation . '_selected_best_practice';
+                            ?>
+
+                           <?php if(!empty($office_campaign->tracker_fields->$highlight_field) && $office_campaign->tracker_fields->$highlight_field == 'yes'): ?>
+                                <p class="form-flash text-success bg-success"><strong>Best Practice:</strong> <?php echo $office->name ?> has been highlighted for demonstrating a best practice on the <?php echo $section_title ?> indicator</p>
+                            <?php endif; ?>                                  
+
                             
                            <table class="table table-striped table-hover" id="note-expander-parent">
 
@@ -356,6 +364,9 @@
                                         // Skip this field if it's not part of current section
                                         if (substr($tracker_field_name, 0, strlen($section_abbreviation)) !== $section_abbreviation) continue;                        
                                         
+                                        // If this is a best practice highlight field, don't show it unless logged in
+                                        if(strpos($tracker_field_name, 'selected_best_practice') !== false && !$this->session->userdata('permissions') == $permission_level) continue;
+
                                         if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
                                             if($office_campaign->tracker_fields->$tracker_field_name == 'yes' || $office_campaign->tracker_fields->$tracker_field_name == 'green') {
                                                 $status_icon = '<i class="text-success fa fa-check-square"></i>';  
