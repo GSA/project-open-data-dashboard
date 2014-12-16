@@ -259,6 +259,9 @@ class campaign_model extends CI_Model {
 		$model->pdl_datagov_harvested->label 		= "Harvested by data.gov";
 		$model->pdl_datagov_harvested->type 		= "select";
 
+		$model->pdl_datagov_view_count				= clone $field;
+		$model->pdl_datagov_view_count->label 		= "Views on data.gov for the quarter";
+		$model->pdl_datagov_view_count->type 		= "string";
 
 
 		// Public Engagement
