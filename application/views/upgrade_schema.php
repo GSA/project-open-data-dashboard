@@ -26,7 +26,7 @@
                 </li>
 
                 <li>
-                    <strong>mbox</strong> - Email addresses will be moved to <code>contactPoint.hasEmail</code> and will be appended with <code>mailto:</code>
+                    <strong>mbox</strong> - Email addresses will be moved to <code>contactPoint.hasEmail</code> and will be prepended with <code>mailto:</code>
                 </li>
                 <li>
                     <strong>format</strong> - Values will be moved to <code>distribution.mediaType</code>
