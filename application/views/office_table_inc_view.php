@@ -206,6 +206,11 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 				$status_color = 'danger';
 			}
 
+			if (empty($percent_valid)) {
+				$schema_status = '';
+				$percent_valid = page_status('unknown');
+			}
+
 
 			if(empty($total_records)) {
 				$json_status = '';
