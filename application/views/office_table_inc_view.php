@@ -148,38 +148,10 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 			$icon = null;
 
 			if (isset($office->datajson_status->valid_json)) {
-			    $json_status = ($office->datajson_status->valid_json == true) ? 'success' : 'danger';
+			    $json_status = ($office->datajson_status->valid_json == true) ? 'success' : 'warning';
 			} else {
-			    $json_status = 'danger';
+			    $json_status = '';
 			}
-
-			if (isset($valid_schema)) {
-			    $schema_status = ($valid_schema === true) ? 'success' : 'danger';
-			} else {
-			    $schema_status = 'danger';
-			}
-
-
-			// var_dump($office->datajson_status); exit;
-
-
-			if (!empty($config['max_remote_size']) && !empty($office->datajson_status->download_content_length) &&
-				($office->datajson_status->download_content_length > $config['max_remote_size'])) {
-				$schema_status = 'warning';
-			}
-
-			if ($schema_status != 'danger' && $json_status == 'danger') {
-				$schema_status = 'warning';
-			}
-
-			//echo $office->datajson_status->download_content_length;
-
-
-			$json_icon       = page_status($json_status);
-			$schema_icon 	 = page_status($schema_status);
-
-			$page_icon       = page_status($html_status);
-
 
 
 			$error_count 		= (!empty($office->datajson_status->error_count)) ? $office->datajson_status->error_count : 0;
@@ -192,11 +164,14 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
 				if ($percent_valid == 1 && $valid_schema === true) {
 					$percent_valid = "100%";
+					$schema_status = 'success';
 				}
 				else if (!empty($error_count) && $valid_schema === false) {
 					$percent_valid = sprintf("%.1f%%", $percent_valid * 100);
+					$schema_status = 'warning';
 				} else {
 					$percent_valid = '';
+					$schema_status = '';
 				}
 
 			}
@@ -207,15 +182,31 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 			}
 
 			if (empty($percent_valid)) {
-				$schema_status = '';
-				$percent_valid = page_status('unknown');
+
+				if(!empty($office->tracker_fields->pdl_valid_metadata)){
+					$percent_valid = $office->tracker_fields->pdl_valid_metadata;				
+					$schema_status = ($percent_valid == '100%') ? 'success' : 'warning';					
+				} else {
+					$schema_status = '';					
+				}
+
 			}
 
 
 			if(empty($total_records)) {
-				$json_status = '';
-				$total_records = page_status('unknown');
+
+				if(!empty($office->tracker_fields->pdl_datasets)){
+					$json_status = 'success';
+					$total_records = $office->tracker_fields->pdl_datasets;
+				} else {
+					$json_status = '';
+					$total_records = page_status('unknown');
+				}
 			}
+
+			$json_icon       = page_status($json_status);
+			$schema_icon 	 = page_status($schema_status);
+			$page_icon       = page_status($html_status);			
 
 
 		?>
@@ -253,7 +244,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 			<?php endforeach; reset($sections_breakdown); ?>
 
 			<td class="content-metric <?php echo $json_status?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_datasets"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
-			<td class="content-metric <?php echo $schema_status ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_valid_metadata"><span><?php echo $percent_valid?>&nbsp;</span></a> </td>
+			<td class="content-metric" style="<?php echo metric_status_color($percent_valid, 'high', 20); ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_valid_metadata"><span><?php echo (!empty($percent_valid)) ? $percent_valid : page_status('unknown');?>&nbsp;</span></a> </td>
 
 		</tr>
 		<?php endforeach;?>
@@ -415,26 +406,27 @@ function page_status($data_status, $status_color = null) {
 
 	if($data_status == 'yes' || $data_status == 'green') $data_status = 'success';
 	if($data_status == 'no' || $data_status == 'red') $data_status = 'danger';
+	if($data_status == 'yellow') $data_status = 'warning';
 
 	if ($data_status == 'highlight') {
 	    $icon = '<i class="text-success fa fa-star"></i>';
 	}
 
 	if ($data_status == 'success') {
-	    $icon = '<i class="text-' . $data_status . ' fa fa-check-square"></i>';
+	    $icon = '<i class="text-success fa fa-check-square"></i>';
 	}
 
 	if ($data_status == 'danger') {
-	    $icon = '<i class="text-' . $data_status . ' fa fa-times-circle"></i>';
+	    $icon = '<i class="text-danger fa fa-times-circle"></i>';
 	}
 
 	if ($data_status == 'warning' || $status_color == 'warning') {
-        $icon = '<i class="text-' . $status_color . ' fa fa-exclamation-triangle"></i>';
+        $icon = '<i class="text-warning fa fa-exclamation-triangle"></i>';
 	}
 
 	if ($data_status == 'unknown') {
 		$status_color = (!empty($status_color)) ? 'text-'. $status_color : '';
-		 $icon = '<i class="' . $status_color . ' fa fa-question-circle"></i>';
+		 $icon = '<i class="unknown-value ' . $status_color . ' fa fa-question-circle"></i>';
 	}	
 
 	if(empty($icon) && !empty($data_status))  $icon = '<i class="text-' . $status_color . ' fa fa-question-circle"></i>';
@@ -445,6 +437,8 @@ function page_status($data_status, $status_color = null) {
 }
 
 function metric_status_color($metric, $success_basis, $weight) {
+
+	if(empty($metric)) return '';
 
 	if(!empty($success_basis)) {
 

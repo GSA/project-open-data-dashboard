@@ -201,10 +201,12 @@ width : 2em;
 	text-align: center;
 }
 
-.dashboard .metrics-row td.boolean-metric.highlight a span {
-	opacity : 1;
+.dashboard .metrics-row td i.unknown-value {
+	opacity : 0.25;
 }
 
+.dashboard .metrics-row td.boolean-metric.highlight a span, 
+.dashboard .metrics-row td a:hover i.unknown-value, 
 .dashboard .metrics-row td.boolean-metric a:hover span {
 	opacity : 1;
 }
