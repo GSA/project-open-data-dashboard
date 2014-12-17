@@ -183,7 +183,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
 
 			$error_count 		= (!empty($office->datajson_status->error_count)) ? $office->datajson_status->error_count : 0;
-			$total_records	 	=	(!empty($office->datajson_status->total_records)) ? $office->datajson_status->total_records : '';
+			$total_records	 	= (!empty($office->datajson_status->total_records)) ? $office->datajson_status->total_records : '';
 
 			$percent_valid 		= '';
 			$percent_valid		=	(!empty($total_records)) ? ($total_records - $error_count)/$total_records : '';
@@ -208,7 +208,8 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
 
 			if(empty($total_records)) {
-				$total_records = $schema_icon;
+				$json_status = '';
+				$total_records = page_status('unknown');
 			}
 
 
@@ -426,7 +427,12 @@ function page_status($data_status, $status_color = null) {
         $icon = '<i class="text-' . $status_color . ' fa fa-exclamation-triangle"></i>';
 	}
 
-	if(empty($icon) && !empty($data_status))  $icon = '<i class="text-' . $status_color . ' fa fa-exclamation-triangle"></i>';
+	if ($data_status == 'unknown') {
+		$status_color = (!empty($status_color)) ? 'text-'. $status_color : '';
+		 $icon = '<i class="' . $status_color . ' fa fa-question-circle"></i>';
+	}	
+
+	if(empty($icon) && !empty($data_status))  $icon = '<i class="text-' . $status_color . ' fa fa-question-circle"></i>';
 
 	if(empty($icon)) $icon = '';
 
