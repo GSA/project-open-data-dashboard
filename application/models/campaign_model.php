@@ -1353,7 +1353,13 @@ class campaign_model extends CI_Model {
 				}
 
 			} else {
-				$model->$key = null;
+				
+				if($key == '@type' && !empty($value->enum)) {
+					$model->$key = $value->enum[0];
+				} else {
+					$model->$key = null;
+				}
+
 			}
 
 		}
@@ -1528,6 +1534,17 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 
 		$distributions = array();
 
+		// Add any accessURL and format to a distribution
+		if(!empty($raw_data->accessURL)) {
+			$distribution = clone $datajson_model->distribution[0];
+
+			$distribution->downloadURL 		= $raw_data->accessURL;
+			$distribution->mediaType		= (!empty($raw_data->format)) ? $raw_data->format : null;
+
+			$distributions[] = $distribution;
+		}
+
+		// Convert distributions
 		if(!empty($raw_data->distribution)) {
 
 			foreach($raw_data->distribution as $resource) {
@@ -1541,19 +1558,102 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 
 		}
 
+		// Convert webService to a distribution
+		if(!empty($raw_data->webService)) {
+			$distribution = clone $datajson_model->distribution[0];
 
+			$distribution->accessURL 		= $raw_data->webService;
+			$distribution->format			= 'API';	
 
-		//$datajson_model->webService                         = null;
-		// 	    $datajson_model->format                             = null;
-//$datajson_model->accessURL                          = $raw_data->accessURL              
+			$distributions[] = $distribution;		
 
-// $raw_data->license
+		}
 
+		// Convert license to a URL
+		if(!empty($raw_data->license)) {
+
+			if(!filter_var($raw_data->license, FILTER_VALIDATE_URL)) {
+				$license = urlencode($raw_data->license); 
+				$license = 'https://project-open-data.cio.gov/unknown-license/#v1-legacy/' . $license;				
+			} else {
+				$license = $raw_data->license;
+			}
+
+		}
+
+		// Convert accrualPeriodicity to a date
+		if(!empty($raw_data->accrualPeriodicity)) {
+
+			switch ($raw_data->accrualPeriodicity) {
+			    case "Decennial":
+			        $accrualPeriodicity = 'R/P10Y';
+			        break;
+			    case "Quadrennial":
+			        $accrualPeriodicity = 'R/P4Y';
+			        break;			        
+			    case "Annual":
+			        $accrualPeriodicity = 'R/P1Y';
+			        break;
+			    case "Bimonthly":
+			        $accrualPeriodicity = 'R/P2M';
+			        break;
+			    case "Semiweekly":
+			        $accrualPeriodicity = 'R/P3.5D';
+			        break;
+			    case "Daily":
+			        $accrualPeriodicity = 'R/P1D';
+			        break;
+			    case "Biweekly":
+			        $accrualPeriodicity = 'R/P2W';
+			        break;
+			    case "Semiannual":
+			        $accrualPeriodicity = 'R/P6M';
+			        break;
+			    case "Biennial":
+			        $accrualPeriodicity = 'R/P2Y';
+			        break;
+			    case "Triennial":
+			        $accrualPeriodicity = 'R/P3Y';
+			        break;
+			    case "Three times a week":
+			        $accrualPeriodicity = 'R/P0.33W';
+			        break;
+			    case "Three times a month":
+			        $accrualPeriodicity = 'R/P0.33M';
+			        break;	
+			    case "Continuously updated":
+			        $accrualPeriodicity = 'R/PT1S';
+			        break;
+			    case "Monthly":
+			        $accrualPeriodicity = 'R/P1M';
+			        break;			
+			    case "Quarterly":
+			        $accrualPeriodicity = 'R/P3M';
+			        break;
+			    case "Semimonthly":
+			        $accrualPeriodicity = 'R/P0.5M';
+			        break;
+			    case "Three times a year":
+			        $accrualPeriodicity = 'R/P4M';
+			        break;
+			    case "Weekly":
+			        $accrualPeriodicity = 'R/P1W';
+			        break;     
+			    case "Completely irregular":
+			        $accrualPeriodicity = 'irregular';
+			        break; 			           			        		        			        			        			        			        			        			        
+			}			
+
+		} else {
+			$accrualPeriodicity = null;
+		}
 
 	    
 		$datajson_model->accessLevel                        = (!empty($raw_data->accessLevel)) ? $raw_data->accessLevel : null;
 		$datajson_model->rights 			                = (!empty($raw_data->accessLevelComment)) ? $raw_data->accessLevelComment : null;
-		$datajson_model->accrualPeriodicity                 = (!empty($raw_data->accrualPeriodicity)) ? $raw_data->accrualPeriodicity : null;
+
+		$datajson_model->accrualPeriodicity                 = $accrualPeriodicity;
+		
 		$datajson_model->bureauCode                         = (!empty($raw_data->bureauCode)) ? $raw_data->bureauCode : null;
 		$datajson_model->contactPoint->fn                   = (!empty($raw_data->contactPoint)) ? $raw_data->contactPoint : null;
 		$datajson_model->contactPoint->hasEmail 			= (!empty($raw_data->mbox)) ? 'mailto:' . $raw_data->mbox : null;

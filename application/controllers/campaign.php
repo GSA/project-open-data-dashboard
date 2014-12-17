@@ -1255,36 +1255,51 @@ class Campaign extends CI_Controller {
 
                 $data = $this->upload->data();
 
-                $filename = 'hello.json';
+                $filename = $data['raw_name'];
+                $filename = $filename . '_v1-1_converted.json';
 
                 $datajson = file_get_contents($data['full_path']);
                 unlink($data['full_path']);
 
-                $datajson = json_decode($datajson);
+                if ($datajson = json_decode($datajson)) {
+                    $json_schema = $this->campaign->datajson_schema('federal-v1.1'); // 
+                    $datajson_model = $this->campaign->schema_to_model($json_schema->properties);
+                   
+                    
 
-                $json_schema = $this->campaign->datajson_schema('federal-v1.1'); // 
-                $datajson_model = $this->campaign->schema_to_model($json_schema->properties);
-               
-                $convert = array();
-                foreach ($datajson as $dataset) {
-                    $model = clone $datajson_model->dataset[0];
-                    $convert[] = $this->campaign->datajson_schema_crosswalk($dataset, $model);
+                    $convert = array();
+                    foreach ($datajson as $dataset) {
+                        $model = clone $datajson_model->dataset[0];
+                        $convert[] = $this->campaign->datajson_schema_crosswalk($dataset, $model);
+                    }
+
+                    $context = '@context';
+
+                    $datajson_model->$context       = 'https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld';
+                    $datajson_model->conformsTo     = 'https://project-open-data.cio.gov/v1.1/schema';
+                    $datajson_model->describedBy    = 'https://project-open-data.cio.gov/v1.1/schema/catalog.json';
+
+                    $datajson_model->dataset = $convert;
+
+
+                    // provide json for download
+                    header("Pragma: public");
+                    header("Expires: 0");
+                    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                    header("Cache-Control: private",false);
+                    header('Content-type: application/json');
+                    header("Content-Disposition: attachment; filename=\"$filename\";" );
+                    header("Content-Transfer-Encoding: binary");
+
+                    print json_encode($datajson_model);
+                    exit;                    
+                } else {
+                    $data = array();
+                    $data['errors'] = 'The file was not valid JSON';
+                    $this->load->view('upgrade_schema', $data);
                 }
 
-                $datajson_model->dataset = $convert;
 
-
-                // provide json for download
-                header("Pragma: public");
-                header("Expires: 0");
-                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-                header("Cache-Control: private",false);
-                header('Content-type: application/json');
-                header("Content-Disposition: attachment; filename=\"$filename.json\";" );
-                header("Content-Transfer-Encoding: binary");
-
-                print json_encode($datajson_model);
-                exit;
 
             }
         } else {
