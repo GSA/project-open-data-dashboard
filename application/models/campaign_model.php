@@ -1541,6 +1541,8 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 			$distribution->downloadURL 		= $raw_data->accessURL;
 			$distribution->mediaType		= (!empty($raw_data->format)) ? $raw_data->format : null;
 
+			$distribution = $this->unset_nulls($distribution);
+
 			$distributions[] = $distribution;
 		}
 
@@ -1553,6 +1555,8 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 				$distribution->downloadURL 		= $resource->accessURL;
 				$distribution->mediaType		= $resource->format;
 
+				$distribution = $this->unset_nulls($distribution);
+
 				$distributions[] = $distribution;
 			}		
 
@@ -1564,6 +1568,8 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 
 			$distribution->accessURL 		= $raw_data->webService;
 			$distribution->format			= 'API';	
+
+			$distribution = $this->unset_nulls($distribution);
 
 			$distributions[] = $distribution;		
 
@@ -1653,7 +1659,7 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 		$datajson_model->rights 			                = (!empty($raw_data->accessLevelComment)) ? $raw_data->accessLevelComment : null;
 
 		$datajson_model->accrualPeriodicity                 = $accrualPeriodicity;
-		
+
 		$datajson_model->bureauCode                         = (!empty($raw_data->bureauCode)) ? $raw_data->bureauCode : null;
 		$datajson_model->contactPoint->fn                   = (!empty($raw_data->contactPoint)) ? $raw_data->contactPoint : null;
 		$datajson_model->contactPoint->hasEmail 			= (!empty($raw_data->mbox)) ? 'mailto:' . $raw_data->mbox : null;
@@ -1683,7 +1689,27 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 		$datajson_model->title                              = (!empty($raw_data->title)) ? $raw_data->title : null;
 		
 
+		$datajson_model = $this->unset_nulls($datajson_model);
+
+
 		return $datajson_model;
+	}
+
+	function unset_nulls($object) {
+
+		foreach($object as $key => $property) {
+			
+			if (is_null($property)) {
+				unset($object->$key);
+			}
+
+			if(is_object($property)) {
+				$object->$key = $this->unset_nulls($property);
+			}
+		}
+
+		return $object;
+
 	}
 
 

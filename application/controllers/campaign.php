@@ -1277,7 +1277,9 @@ class Campaign extends CI_Controller {
                     }
 
                     $context = '@context';
+                    $id      = '@id';
 
+                    unset($datajson_model->$id);
                     $datajson_model->$context       = 'https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld';
                     $datajson_model->conformsTo     = 'https://project-open-data.cio.gov/v1.1/schema';
                     $datajson_model->describedBy    = 'https://project-open-data.cio.gov/v1.1/schema/catalog.json';
