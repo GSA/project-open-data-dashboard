@@ -1015,10 +1015,10 @@ class Campaign extends CI_Controller {
         $this->load->model('campaign_model', 'campaign');
 
 		$datajson 		= ($this->input->post('datajson')) ? $this->input->post('datajson') : $datajson;
-		$schema 		= ($this->input->get_post('schema', TRUE)) ? $this->input->get_post('schema', TRUE) : $schema;
+		$schema 		= ($this->input->get_post('schema')) ? $this->input->get_post('schema', TRUE) : $schema;
 
-		$datajson_url 	= ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url') : $datajson_url;
-		$output_type 	= ($this->input->get_post('output')) ? $this->input->get_post('output') : $output;
+		$datajson_url 	= ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url', TRUE) : $datajson_url;
+		$output_type 	= ($this->input->get_post('output')) ? $this->input->get_post('output', TRUE) : $output;
 
 		if ($this->input->get_post('qa')) {
 			$qa = $this->input->get_post('qa');
