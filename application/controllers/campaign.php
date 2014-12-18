@@ -137,7 +137,10 @@ class Campaign extends CI_Controller {
 				$csv_handle = fopen($data['full_path'], 'r');
 				$headings = fgetcsv($csv_handle);
 
-				// Provide mapping between csv headings and POD schema
+                // Sanitize input
+                $headings = $this->security->xss_clean($headings);
+
+                // Provide mapping between csv headings and POD schema
 				$this->load->model('campaign_model', 'campaign');
 
 				$json_schema = $this->campaign->datajson_schema();
