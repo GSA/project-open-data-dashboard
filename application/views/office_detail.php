@@ -916,7 +916,7 @@
                     <?php 
                         $error_log = $office->id . '.csv';
                         $error_path = $config['archive_dir'] . '/error_log/' . $error_log;
-                        echo $error_path;
+                        
                         if(file_exists($error_path)): 
                     ?>
                         <tr class="info" id="error_log">
