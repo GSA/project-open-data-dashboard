@@ -727,8 +727,7 @@ class campaign_model extends CI_Model {
 				$chunk_size = 500;				
 				$datajson_chunks = array_chunk($datajson_decode, $chunk_size);
 			} else {
-				$chunk_size = 500;	
-				$datajson_chunks = array_chunk($datajson_decode->dataset, $chunk_size, true);
+				$datajson_chunks = array($datajson_decode);
 			}
 			
 

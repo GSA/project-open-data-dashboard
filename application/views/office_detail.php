@@ -786,7 +786,10 @@
         if(isset($office_campaign->datajson_status->schema_errors)): ?>
         
          <?php
-             $validation_url = site_url('validate?schema=federal&output=browser&datajson_url=') . urlencode($office_campaign->expected_datajson_status->url);
+
+             $schema_version = (!empty($office_campaign->datajson_status->schema_version)) ? $office_campaign->datajson_status->schema_version : 'federal';
+
+             $validation_url = site_url('validate?schema=' . $schema_version . '&output=browser&datajson_url=') . urlencode($office_campaign->expected_datajson_status->url);
          ?>
 
         <tr class="info" id="schema_validation_results">
