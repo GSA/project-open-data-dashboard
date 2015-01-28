@@ -771,6 +771,8 @@ class Campaign extends CI_Controller {
 				$status['valid_schema'] = $validation['valid'];
 				$status['total_records'] = (!empty($validation['total_records'])) ? $validation['total_records'] : null;
 
+                $status['schema_version'] = (!empty($validation['schema_version'])) ? $validation['schema_version'] : null;
+
 				if(isset($validation['errors']) && is_array($validation['errors']) && !empty($validation['errors'])) {
 					$status['schema_errors'] = $validation['errors'];
 				} else if (isset($validation['errors']) && $validation['errors'] === false) {

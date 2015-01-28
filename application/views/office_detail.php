@@ -707,7 +707,19 @@
 		</tr>	
 
 
-
+        <?php if (!empty($office_campaign->datajson_status->schema_version)): ?>
+        <tr>
+            <th id="metrics-datajson-schema-version">
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_schema_version' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Detected Data.json Schema
+            </th>
+            <td>
+                <?php echo $office_campaign->datajson_status->schema_version ?>
+            </td>
+        </tr>
+        <?php endif; ?>
 
         <?php 
 

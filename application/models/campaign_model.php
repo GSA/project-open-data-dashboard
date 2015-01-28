@@ -676,7 +676,14 @@ class campaign_model extends CI_Model {
 
 				if($valid_json && $return_source === false) {
 					$catalog = json_decode($datajson_processed);
-					$response['total_records'] = count($catalog);
+
+					if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
+						$response['total_records'] = count($catalog->dataset);
+					} else {
+						$response['total_records'] = count($catalog);
+					}
+
+					
 				}
 
 				return $response;
@@ -703,6 +710,19 @@ class campaign_model extends CI_Model {
 
 			$datajson_decode = json_decode($datajson_processed);
 
+			if(!empty($datajson_decode->conformsTo) 
+				&& $datajson_decode->conformsTo == 'https://project-open-data.cio.gov/v1.1/schema') {
+
+				if ($schema == 'federal') {
+					$schema = 'federal-v1.1';
+				} else if ($schema == 'non-federal') {
+					$schema = 'non-federal-v1.1';
+				} else {
+					$schema = 'federal-v1.1';
+				}
+
+			}
+
 			if($schema !== 'federal-v1.1' && $schema !== 'non-federal-v1.1' ) {
 				$chunk_size = 500;				
 				$datajson_chunks = array_chunk($datajson_decode, $chunk_size);
@@ -717,6 +737,9 @@ class campaign_model extends CI_Model {
 			if($quality !== false) {
 				$response['qa'] = array();
 			}
+
+			// save detected schema version to output
+			$response['schema_version'] = $schema;			
 
 			foreach ($datajson_chunks as $chunk_count => $chunk) {
 
@@ -785,8 +808,14 @@ class campaign_model extends CI_Model {
 			$valid_json = (isset($raw_valid_json)) ? $raw_valid_json : $valid_json;
 
 			$response['valid'] = (empty($response['errors'])) ? true : false;
-			$response['total_records'] = count($datajson_decode);
 			$response['valid_json'] = $valid_json;
+
+
+			if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
+				$response['total_records'] = count($datajson_decode->dataset);
+			} else {
+				$response['total_records'] = count($datajson_decode);
+			}			
 
 
 			if(!empty($datajson_header['download_content_length'])) {
@@ -953,10 +982,14 @@ class campaign_model extends CI_Model {
 
 		$json = json_decode($json);
 
+		if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1') {
+			$json = $json->dataset;
+		}
+
 		foreach ($json as $dataset) {
 
 
-			if($schema == 'federal') {
+			if($schema == 'federal' OR $schema == 'federal-v1.1') {
 
 				if(!empty($dataset->accessLevel)) {
 
@@ -1032,7 +1065,7 @@ class campaign_model extends CI_Model {
 
 		$qa = array();
 
-		if($schema == 'federal') {
+		if($schema == 'federal' OR $schema == 'federal-v1.1') {
 
 			$qa['programCodes'] 				= $programCode;
 			$qa['bureauCodes'] 					= $bureauCode;
