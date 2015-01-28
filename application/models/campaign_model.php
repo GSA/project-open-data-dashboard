@@ -727,7 +727,8 @@ class campaign_model extends CI_Model {
 				$chunk_size = 500;				
 				$datajson_chunks = array_chunk($datajson_decode, $chunk_size);
 			} else {
-				$datajson_chunks = array($datajson_decode);
+				$chunk_size = 500;	
+				$datajson_chunks = array_chunk($datajson_decode->dataset, $chunk_size, true);
 			}
 			
 
@@ -852,13 +853,16 @@ class campaign_model extends CI_Model {
 
 	}
 
-	public function jsonschema_validator($data, $schema = null) {
+	public function jsonschema_validator($data, $schema = null, $chunked = null) {
 
 
 		if($data) {
 
 			$schema_variant = (!empty($schema)) ? "$schema/" : "";
-			$path = './schema/' . $schema_variant . 'catalog.json';
+
+			$schema_module = ($schema == 'federal-v1.1' && $chunked == true) ? 'dataset.json' : 'catalog.json'; 
+
+			$path = './schema/' . $schema_variant . $schema_module;		
 
 			//echo $path; exit;
 
