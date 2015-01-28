@@ -1690,6 +1690,10 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 			$accrualPeriodicity = null;
 		}
 
+		// reset other objects
+		$datajson_model->contactPoint 	= clone $datajson_model->contactPoint;
+		$datajson_model->publisher 		= clone $datajson_model->publisher;
+
 	    
 		$datajson_model->accessLevel                        = (!empty($raw_data->accessLevel)) ? $raw_data->accessLevel : null;
 		$datajson_model->rights 			                = (!empty($raw_data->accessLevelComment)) ? $raw_data->accessLevelComment : null;
