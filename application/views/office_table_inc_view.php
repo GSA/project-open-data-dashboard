@@ -493,7 +493,7 @@ function metric_status_color($metric, $success_basis, $weight) {
 
 function process_percentage ($numerator, $denominator) {
 
-    if (is_numeric($denominator) && is_numeric($numerator)) {
+    if ( (is_numeric($denominator) && !empty($denominator)) && is_numeric($numerator)) {
         $percent_valid = $numerator/$denominator;
     } else {
         $percent_valid = null;
