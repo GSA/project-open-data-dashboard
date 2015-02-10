@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'session', 'OAuth2' ); 
+$autoload['libraries'] = array('database', 'session', 'OAuth2', 'lib_gearman' ); 
 
 
 /*
@@ -80,8 +80,7 @@ $autoload['helper'] = array();
 |
 */
 
-$autoload['config'] = array();
-
+$autoload['config'] = array('gearman');
 
 /*
 | -------------------------------------------------------------------
