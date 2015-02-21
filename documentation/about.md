@@ -5,7 +5,7 @@ This website shows how Federal agencies are performing on the latest Open Data P
 - A [dashboard](../offices) to track the progress of agencies implementing Project Open Data on a quarterly basis
 - Automated analysis of URLs provided within metadata to see if the links work as expected
 - A [validator](../validate) for v1.0 and v1.1 of the Project Open Data Metadata Schema
-- A [converter](../csv_to_json) to transform CSV files into JSON as defined by the Project Open Data Metadata Schema
+- A [converter](../datagov/csv_to_json) to transform CSV files into JSON as defined by the Project Open Data Metadata Schema
 - An [export API](../export) to export from the CKAN API and transform the metadata into JSON as defined by the Project Open Data Metadata Schema
 - A [changeset](../changeset) viewer to compare a data.json file to the metadata currently available in CKAN (eg catalog.data.gov)
 
