@@ -405,7 +405,6 @@
                                                         <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "yes") ? 'selected = "selected"' : '' ?> value="yes">Yes</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "no") ? 'selected = "selected"' : '' ?> value="no">No</option>
-                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "partially") ? 'selected = "selected"' : '' ?> value="partially">Partially</option>
                                                     </select>
                                                 <?php endif; ?>
 
