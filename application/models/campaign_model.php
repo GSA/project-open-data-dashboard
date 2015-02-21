@@ -218,6 +218,11 @@ class campaign_model extends CI_Model {
 		$model->edi_quality_check->label 			= "Spot Check - Site search, SORNs, PIAs, FOIA";
 		$model->edi_quality_check->type 			= "string";
 
+		$model->edi_public_release					= clone $field;
+		$model->edi_public_release->label 			= "May OMB publicly release the agency’s EDI?";
+		$model->edi_public_release->type 			= "select";
+
+
 
 		// Public Data Listing
 
