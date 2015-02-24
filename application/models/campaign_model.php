@@ -737,7 +737,7 @@ class campaign_model extends CI_Model {
 					} else {
 						$schema = 'federal-v1.1';
 					}
-					
+
 				}
 
 			}
@@ -1004,27 +1004,26 @@ class campaign_model extends CI_Model {
 
 		$json = json_decode($json);
 
-		if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1') {
+		if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
 			$json = $json->dataset;
 		}
 
 		foreach ($json as $dataset) {
 
-
-			if($schema == 'federal' OR $schema == 'federal-v1.1') {
-
-				if(!empty($dataset->accessLevel)) {
+			if(!empty($dataset->accessLevel)) {
 
 
-					if ($dataset->accessLevel == 'public') {
-						$accessLevel_public++;
-					} else if ($dataset->accessLevel == 'restricted public') {
-						$accessLevel_restricted++;
-					} else if ($dataset->accessLevel == 'non-public') {
-						$accessLevel_nonpublic++;
-					}
+				if ($dataset->accessLevel == 'public') {
+					$accessLevel_public++;
+				} else if ($dataset->accessLevel == 'restricted public') {
+					$accessLevel_restricted++;
+				} else if ($dataset->accessLevel == 'non-public') {
+					$accessLevel_nonpublic++;
+				}
 
-				} 
+			} 
+
+			if($schema == 'federal' OR $schema == 'federal-v1.1') {				
 
 
 				if(!empty($dataset->programCode) && is_array($dataset->programCode)) {
@@ -1092,10 +1091,11 @@ class campaign_model extends CI_Model {
 			$qa['programCodes'] 				= $programCode;
 			$qa['bureauCodes'] 					= $bureauCode;
 
-			$qa['accessLevel_public']			= $accessLevel_public;
-			$qa['accessLevel_restricted']		= $accessLevel_restricted;
-			$qa['accessLevel_nonpublic']		= $accessLevel_nonpublic;
 		}
+
+		$qa['accessLevel_public']			= $accessLevel_public;
+		$qa['accessLevel_restricted']		= $accessLevel_restricted;
+		$qa['accessLevel_nonpublic']		= $accessLevel_nonpublic;
 
 		$qa['accessURL_present'] 	= $accessURL_present;
 		$qa['accessURL_total'] 		= $accessURL_total;
