@@ -242,15 +242,17 @@ class campaign_model extends CI_Model {
 		$model->pdl_downloadable->label 			= "Number of Downloadable Datasets";
 		$model->pdl_downloadable->type 				= "string";
 
-
 		$model->pdl_growth							= clone $field;
 		$model->pdl_growth->label 					= "Percentage growth in records since last quarter";
 		$model->pdl_growth->type 					= "string";
 
-
 		$model->pdl_valid_metadata					= clone $field;
 		$model->pdl_valid_metadata->label 			= "Valid Metadata";
 		$model->pdl_valid_metadata->type 			= "string";
+
+		$model->pdl_link_check						= clone $field;
+		$model->pdl_link_check->label 				= "Download links are working";
+		$model->pdl_link_check->type 				= "traffic";		
 
 		$model->pdl_slashdata						= clone $field;
 		$model->pdl_slashdata->label 				= "/data";
