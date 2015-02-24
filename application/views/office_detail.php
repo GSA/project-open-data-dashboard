@@ -364,6 +364,9 @@
                                         // Skip this field if it's not part of current section
                                         if (substr($tracker_field_name, 0, strlen($section_abbreviation)) !== $section_abbreviation) continue;                        
                                         
+                                        // Skip this field if it's no longer relevant in later milestones
+                                        if ($tracker_field_name == 'edi_schedule_risk' && $milestone->selected_milestone > '2014-11-30') continue;   
+
                                         // If this is a best practice highlight field, don't show it unless logged in
                                         if(strpos($tracker_field_name, 'selected_best_practice') !== false && !$this->session->userdata('permissions') == $permission_level) continue;
 
