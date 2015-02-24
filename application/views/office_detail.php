@@ -982,7 +982,7 @@
                 </tr> 
                 <?php endif;?>
 
-                <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
+                <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_5xx)): ?>
                 <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_5xx > 0) ? 'danger' : 'success'?>">
                     <th id="metrics-datajson-download-urls-5xx">
                         <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_5xx' ?>">
@@ -1000,7 +1000,7 @@
                 </tr>  
                 <?php endif;?>
 
-                <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
+                <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_3xx)): ?>
                 <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_3xx > 0) ? 'warning' : 'success'?>">
                     <th id="metrics-datajson-download-urls-3xx">
                         <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_3xx' ?>">
@@ -1018,7 +1018,7 @@
                 </tr>             
                 <?php endif;?>
 
-                <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
+                <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_2xx)): ?>
                 <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->format_mismatch > 0) ? 'danger' : 'success'?>">
                     <th id="metrics_accessURL_format">
                         <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_format' ?>">
@@ -1039,7 +1039,7 @@
                 </tr>             
                 <?php endif;?>
 
-                <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
+                <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->pdf)): ?>
                 <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->pdf == 0) ? 'success' : '' ?>">
                     <th id="metrics_accessURL_pdf">
                         <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_pdf' ?>">
@@ -1057,7 +1057,7 @@
                 </tr> 
                 <?php endif;?>
 
-                <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
+                <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->html)): ?>
                 <tr>
                     <th id="metrics_accessURL_html">
                         <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_html' ?>">
