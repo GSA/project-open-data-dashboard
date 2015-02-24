@@ -71,6 +71,7 @@
                                     'pdl_slashdata', 
                                     'pdl_valid_metadata', 
                                     'pdl_datasets', 
+                                    'pdl_link_check', 
                                     'pe_feedback_specified', 
                                     'edi_schedule_delivered', 
                                     'ps_publication_process',
@@ -929,22 +930,27 @@
             
             <?php if(!empty($office_campaign->datajson_status->qa->validation_counts)): ?>
 
-                <?php if($milestone->selected_milestone == $milestone->current): ?>
-                    <?php 
-                        $error_log = $office->id . '.csv';
-                        $error_path = $config['archive_dir'] . '/error_log/' . $error_log;
-                        
-                        if(file_exists($error_path)): 
-                    ?>
-                        <tr class="info" id="error_log">
-                            <td colspan="2">
-                                <span class="glyphicon glyphicon-download"></span> 
-                                To see a detailed breakdown of these accessURL issues, download the <a href="<?php echo site_url('archive/error_log/' . $error_log)?>">full error log as a CSV</a>
-                            </td>
-                        </tr>
-                    <?php endif;?>
-                <?php endif;?>
 
+                <tr class="info" id="pdl_link_check">
+                    <td colspan="2">
+                        <p>The fields below serve as quality assurance to verify that the download links included within the metadata are functioning properly</p>
+
+                        <?php if($milestone->selected_milestone == $milestone->current): ?>
+                            <?php 
+                                $error_log = $office->id . '.csv';
+                                $error_path = $config['archive_dir'] . '/error_log/' . $error_log;
+                                
+                                if(file_exists($error_path)): 
+                            ?>
+                                                           
+                            <span class="glyphicon glyphicon-download"></span> 
+                            To see a detailed breakdown of these issues, download the <a href="<?php echo site_url('archive/error_log/' . $error_log)?>">full error log as a CSV</a>
+                                
+                            <?php endif;?>
+                        <?php endif;?>
+
+                    </td>
+                </tr>
 
                 <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_0)): ?>
                 <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_0 > 0) ? 'danger' : 'success'?>">
@@ -1074,6 +1080,14 @@
                     </td>
                 </tr>             
                 <?php endif;?>
+
+            <?php else: ?>
+
+                <tr class="info" id="pdl_link_check">
+                    <td colspan="2">
+                        This section is meant to provide quality assurance to verify that the download links included within the metadata are functioning properly, but the results of these tests are not currently available. 
+                    </td>
+                </tr>            
 
 
             <?php endif; ?>    
