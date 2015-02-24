@@ -219,7 +219,7 @@ class campaign_model extends CI_Model {
 		$model->edi_quality_check->type 			= "string";
 
 		$model->edi_public_release					= clone $field;
-		$model->edi_public_release->label 			= "May OMB publicly release the agency’s EDI? (agencies are not evaluated on this)";
+		$model->edi_public_release->label 			= "Is the full EDI available on Data.gov? (agencies are not evaluated on this)";
 		$model->edi_public_release->type 			= "select";
 
 
