@@ -42,7 +42,7 @@
 
                         <?php 
 
-                            if ($schema == 'federal-v1.1') {
+                            if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1' ) {
                                 if(!empty($validation['source']->dataset)) {
                                      $dataset_count = count($validation['source']->dataset);    
                                 }                                
