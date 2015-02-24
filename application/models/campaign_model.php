@@ -727,12 +727,17 @@ class campaign_model extends CI_Model {
 			if(!empty($datajson_decode->conformsTo) 
 				&& $datajson_decode->conformsTo == 'https://project-open-data.cio.gov/v1.1/schema') {
 
-				if ($schema == 'federal') {
-					$schema = 'federal-v1.1';
-				} else if ($schema == 'non-federal') {
-					$schema = 'non-federal-v1.1';
-				} else {
-					$schema = 'federal-v1.1';
+
+				if($schema !== 'federal-v1.1' && $schema !== 'non-federal-v1.1' ) {
+
+					if ($schema == 'federal') {
+						$schema = 'federal-v1.1';
+					} else if ($schema == 'non-federal') {
+						$schema = 'non-federal-v1.1';
+					} else {
+						$schema = 'federal-v1.1';
+					}
+					
 				}
 
 			}
