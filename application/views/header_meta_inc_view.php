@@ -16,6 +16,6 @@
         <link rel="stylesheet" href="<?php echo site_url('css/main.css')?>">
         <link rel="shortcut icon" href="<?php echo site_url('favicon.ico')?>" />
 
-        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
-        <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <script src="<?php echo site_url('js/vendor/modernizr.min.js')?>"></script>
+        <link href="<?php echo site_url('css/font-awesome.min.css')?>" rel="stylesheet">
 
