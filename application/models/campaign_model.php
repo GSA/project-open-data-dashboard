@@ -174,6 +174,10 @@ class campaign_model extends CI_Model {
 		$model->edi_datasets->label 				= "Number of Datasets";
 		$model->edi_datasets->type 					= "string";
 
+        $model->edi_apis                            = clone $field;
+        $model->edi_apis->label                     = "Number of APIs";
+        $model->edi_apis->type                      = "string";		
+
 		$model->edi_schedule_delivered				= clone $field;
 		$model->edi_schedule_delivered->label 		= "Schedule Delivered";
 		$model->edi_schedule_delivered->type 		= "select";
@@ -210,17 +214,13 @@ class campaign_model extends CI_Model {
 		$model->edi_schedule_risk->label 			= "Schedule Risk for Nov 30, 2014";
 		$model->edi_schedule_risk->type 			= "traffic";
 
-		// $model->edi_confidence_assessment			= clone $field;
-		// $model->edi_confidence_assessment->label	= "OMB Confidence Assesment";
-		// $model->edi_confidence_assessment->type 	= "string";
+        $model->edi_quality_check                   = clone $field;
+        $model->edi_quality_check->label            = "Spot Check - datasets listed by search engine";
+        $model->edi_quality_check->type             = "string";
 
-		$model->edi_quality_check					= clone $field;
-		$model->edi_quality_check->label 			= "Spot Check - Site search, SORNs, PIAs, FOIA";
-		$model->edi_quality_check->type 			= "string";
-
-		$model->edi_public_release					= clone $field;
-		$model->edi_public_release->label 			= "Is the EDI available on Data.gov? (agencies are not evaluated on this)";
-		$model->edi_public_release->type 			= "select";
+        $model->edi_public_release                  = clone $field;
+        $model->edi_public_release->label           = "Is the EDI available on Data.gov?";
+        $model->edi_public_release->type            = "select";
 
 
 
@@ -237,6 +237,10 @@ class campaign_model extends CI_Model {
 		$model->pdl_datasets						= clone $field;
 		$model->pdl_datasets->label 				= "Number of Datasets";
 		$model->pdl_datasets->type 					= "string";
+
+        $model->pdl_apis                            = clone $field;
+        $model->pdl_apis->label                     = "Number of APIs";
+        $model->pdl_apis->type                      = "string";		
 
 		$model->pdl_downloadable					= clone $field;
 		$model->pdl_downloadable->label 			= "Number of Downloadable Datasets";
@@ -292,10 +296,6 @@ class campaign_model extends CI_Model {
 		$model->pe_dialogue							= clone $field;
 		$model->pe_dialogue->label 					= "Feedback loop is closed, 2 way communication";
 		$model->pe_dialogue->type 					= "traffic";
-
-		//$model->pe_impact							= clone $field;
-		//$model->pe_impact->label 					= "Feedback leads to change in data management and release practices";
-		//$model->pe_impact->type 					= "traffic";
 
 		$model->pe_reference						= clone $field;
 		$model->pe_reference->label 				= "Link to or description of Feedback Mechanism";
@@ -372,6 +372,10 @@ class campaign_model extends CI_Model {
 		$model->ui_user_suggest_releases			= clone $field;
 		$model->ui_user_suggest_releases->label 	= "User suggestions on additional data releases";
 		$model->ui_user_suggest_releases->type 		= "string";
+
+        $model->ui_dap_tracking                     = clone $field;
+        $model->ui_dap_tracking->label              = "Digital Analytics Program on /data";
+        $model->ui_dap_tracking->type               = "select"; 		
 
 		return $model;
 }
