@@ -238,13 +238,13 @@ class campaign_model extends CI_Model {
 		$model->pdl_datasets->label 				= "Number of Datasets";
 		$model->pdl_datasets->type 					= "string";
 
+		$model->pdl_downloadable					= clone $field;
+		$model->pdl_downloadable->label 			= "Number of Datasets with File Downloads";
+		$model->pdl_downloadable->type 				= "string";
+
         $model->pdl_apis                            = clone $field;
         $model->pdl_apis->label                     = "Number of APIs";
-        $model->pdl_apis->type                      = "string";		
-
-		$model->pdl_downloadable					= clone $field;
-		$model->pdl_downloadable->label 			= "Number of Downloadable Datasets";
-		$model->pdl_downloadable->type 				= "string";
+        $model->pdl_apis->type                      = "string";	
 
 		$model->pdl_growth							= clone $field;
 		$model->pdl_growth->label 					= "Percentage growth in records since last quarter";
