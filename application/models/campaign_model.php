@@ -15,7 +15,7 @@ class campaign_model extends CI_Model {
 		parent::__construct();
 
 		$this->load->helper('api');
-
+        $this->load->library('DataJsonParser');
 
 		// Determine the environment we're run from for debugging/output
 		if (php_sapi_name() == 'cli') {
@@ -628,7 +628,7 @@ class campaign_model extends CI_Model {
 
 				$context = stream_context_create($opts);
 				
-				$datajson = @file_get_contents($datajson_url, false, $context);
+				$datajson = @file_get_contents($datajson_url, false, $context, -1, $max_remote_size+1);
 
 				if ($datajson == false) {
 
@@ -652,6 +652,53 @@ class campaign_model extends CI_Model {
 
 				$filesize = human_filesize($datajson_header['download_content_length']);
 				$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";
+				
+				// TODO: Hiding this for now until it's complete
+				if (!empty($errors)) {
+					$this->load->helper('file');
+
+					if ($rawfile = $this->archive_file('datajson-lines', $this->current_office_id, $datajson_url)) {	
+
+				        $outfile = $rawfile . '.lines.json';
+
+				        $stream = fopen($rawfile, 'r'); 
+				        $out_stream = fopen($outfile, 'w+');
+
+				        $listener = new DataJsonParser();
+				        $listener->out_file = $out_stream;
+
+						if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+							echo 'Attempting to convert to JSON lines' . PHP_EOL;
+						}
+
+				        try {
+				            $parser = new JsonStreamingParser_Parser($stream, $listener);
+				            $parser->parse();
+				        } catch (Exception $e) {
+				            fclose($stream);
+				            throw $e;
+				        }
+
+				        // Delete temporary raw source file
+				        unlink($rawfile);
+						$out_stream = fopen($outfile, 'r+');	
+
+						$counter = 0;
+						$buffer = '';
+						while (($buffer .= fgets($out_stream)) && $counter < 50) {
+					        $counter++;
+					    }		        
+
+					    $datajson = substr($buffer, 0, strlen($buffer) - 2) . ']}';
+
+
+					} else {
+						$errors[] = "File not found or couldn't be downloaded";	
+					}
+				}
+			
+
+
 
 			}
 
@@ -699,7 +746,7 @@ class campaign_model extends CI_Model {
 
 					
 				}
-
+				var_dump($response); exit;
 				return $response;
 			}
 
@@ -1241,6 +1288,94 @@ class campaign_model extends CI_Model {
 		return $error;
 
 	}	
+
+
+	public function archive_file($filetype, $office_id, $url) {
+
+		$download_dir = $this->config->item('archive_dir');
+
+		if($filetype == 'datajson-lines') {
+			$directory = "$download_dir/datajson-lines";
+			$filepath = $directory . '/' . $office_id . '.raw';			
+		} else {
+			$crawl_date = date("Y-m-d");
+			$directory = "$download_dir/$filetype/$crawl_date";
+			$filepath = $directory . '/' . $office_id . '.json';			
+		}
+
+
+		if(!get_dir_file_info($directory)) {
+
+			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+				echo 'Creating directory ' . $directory . PHP_EOL;
+			}
+
+			mkdir($directory);
+		}
+
+
+		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+			echo 'Attempting to download ' . $url . ' to ' . $filepath . PHP_EOL;
+		}
+
+
+		$opts = array(
+		  'http'=>array(
+		    'method'=>"GET",
+		    'user_agent'=>"Data.gov data.json crawler"
+		  )
+		);
+
+		$context = stream_context_create($opts);
+
+		$copy = @fopen($url, 'rb', false, $context);
+		$paste = @fopen($filepath, 'wb');
+
+
+		// If we can't read from this file, skip
+		if ($copy===false) {
+
+			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+				echo 'Could not read from ' . $url . PHP_EOL;
+			}
+
+			
+		}
+
+		// If we can't write to this file, skip
+		if ($paste===false) {
+
+			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+				echo 'Could not open ' . $filepath . PHP_EOL;
+			}
+
+		}
+
+		if($copy !== false && $paste !== false) {
+			while (!feof($copy)) {
+			    if (fwrite($paste, fread($copy, 1024)) === FALSE) {
+
+			    		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+							echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
+						}
+
+			       }
+			}			
+		} else {
+
+			return false;
+		}
+
+		fclose($copy);
+		fclose($paste);
+
+		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+			echo 'Done' . PHP_EOL . PHP_EOL;
+		}
+
+		return $filepath;
+
+	}
 
 
 

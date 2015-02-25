@@ -609,7 +609,7 @@ class Campaign extends CI_Controller {
 	    				}
 
 	    				// download and version this data.json file.
-	    				$datajson_archive_status = $this->archive_file('datajson', $office->id, $real_url);
+	    				$datajson_archive_status = $this->campaign->archive_file('datajson', $office->id, $real_url);
 
 	    			}
 
@@ -725,7 +725,7 @@ class Campaign extends CI_Controller {
 
      				// download and version this json file.
      				if ($component == 'all' || $component == 'download') {	    				
-	    				$digitalstrategy_archive_status = $this->archive_file('digitalstrategy', $office->id, $digitalstrategy_status_url);
+	    				$digitalstrategy_archive_status = $this->campaign->archive_file('digitalstrategy', $office->id, $digitalstrategy_status_url);
 					}
 
  			    }
@@ -797,86 +797,6 @@ class Campaign extends CI_Controller {
 	}
 
 
-
-	public function archive_file($filetype, $office_id, $url) {
-
-		$download_dir = $this->config->item('archive_dir');
-		$crawl_date = date("Y-m-d");
-		$directory = "$download_dir/$filetype/$crawl_date";
-		$filepath = $directory . '/' . $office_id . '.json';
-
-		if(!get_dir_file_info($directory)) {
-
-			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-				echo 'Creating directory ' . $directory . PHP_EOL;
-			}
-
-			mkdir($directory);
-		}
-
-
-		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-			echo 'Attempting to download ' . $url . ' to ' . $filepath . PHP_EOL;
-		}
-
-
-		$opts = array(
-		  'http'=>array(
-		    'method'=>"GET",
-		    'user_agent'=>"Data.gov data.json crawler"
-		  )
-		);
-
-		$context = stream_context_create($opts);
-
-		$copy = @fopen($url, 'rb', false, $context);
-		$paste = @fopen($filepath, 'wb');
-
-
-		// If we can't read from this file, skip
-		if ($copy===false) {
-
-			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-				echo 'Could not read from ' . $url . PHP_EOL;
-			}
-
-			
-		}
-
-		// If we can't write to this file, skip
-		if ($paste===false) {
-
-			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-				echo 'Could not open ' . $filepath . PHP_EOL;
-			}
-
-		}
-
-		if($copy !== false && $paste !== false) {
-			while (!feof($copy)) {
-			    if (fwrite($paste, fread($copy, 1024)) === FALSE) {
-
-			    		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-							echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
-						}
-
-			       }
-			}			
-		} else {
-
-			return false;
-		}
-
-		fclose($copy);
-		fclose($paste);
-
-		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-			echo 'Done' . PHP_EOL . PHP_EOL;
-		}
-
-		return true;
-
-	}
 
 
 	public function status_review_update() {
