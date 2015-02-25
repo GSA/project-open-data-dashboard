@@ -10,11 +10,10 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?php echo site_url('css/bootstrap.min.css')?>">
+        <link rel="stylesheet" href="<?php echo site_url('css/bootstrap-theme.min.css')?>">
 
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap-theme.min.css">
-
-        <link rel="stylesheet" href="<?php echo site_url('css/main.css?refresh=now')?>">
+        <link rel="stylesheet" href="<?php echo site_url('css/main.css')?>">
         <link rel="shortcut icon" href="<?php echo site_url('favicon.ico')?>" />
 
         <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
