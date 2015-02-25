@@ -1,26 +1,14 @@
 {
-    "name": "justinrainbow/json-schema",
-    "description": "A library to validate a json schema.",
+    "name": "GSA/project-open-data-dashboard",
+    "description": "A Dashboard to Manage Project Open Data Information",
     "keywords": ["json", "schema"],
-    "homepage": "https://github.com/justinrainbow/json-schema",
-    "type": "library",
-    "license": "BSD-3-Clause",
+    "homepage": "https://github.com/GSA/project-open-data-dashboard/",
+    "type": "project",
+    "license": "",
     "authors": [
         {
-            "name": "Bruno Prieto Reis",
-            "email": "bruno.p.reis@gmail.com"
-        },
-        {
-            "name": "Justin Rainbow",
-            "email": "justin.rainbow@gmail.com"
-        },
-        {
-            "name": "Igor Wiedler",
-            "email": "igor@wiedler.ch"
-        },
-        {
-            "name": "Robert Schönthal",
-            "email": "seroscho@googlemail.com"
+            "name": "Philip Ashlock",
+            "email": "datagov@gsa.gov"
         }
     ],
     "repositories": [{

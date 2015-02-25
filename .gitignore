@@ -19,3 +19,5 @@ archive/digitalstrategy/201*
 application/config/upload.php
 
 index.php
+
+composer.phar
