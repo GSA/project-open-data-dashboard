@@ -251,7 +251,7 @@ class campaign_model extends CI_Model {
 		$model->pdl_link_total->type 				= "string";
 
 		$model->pdl_link_check						= clone $field;
-		$model->pdl_link_check->label 				= "Quality Check: Download links are working";
+		$model->pdl_link_check->label 				= "Quality Check: Links are sufficiently working";
 		$model->pdl_link_check->type 				= "traffic";	
 
 		$model->pdl_link_2xx						= clone $field;
