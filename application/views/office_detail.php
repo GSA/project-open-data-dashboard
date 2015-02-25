@@ -351,6 +351,53 @@
             </script>            
 
             <?php endif; ?>
+
+
+            <?php
+                $pdl_link_total          = !empty($office_campaign->tracker_fields->pdl_link_total) ? $office_campaign->tracker_fields->pdl_link_total : 0;
+                $pdl_link_2xx            = !empty($office_campaign->tracker_fields->pdl_link_2xx)   ? $office_campaign->tracker_fields->pdl_link_2xx : 0;
+                $pdl_link_3xx            = !empty($office_campaign->tracker_fields->pdl_link_3xx)   ? $office_campaign->tracker_fields->pdl_link_3xx : 0;
+                $pdl_link_4xx            = !empty($office_campaign->tracker_fields->pdl_link_4xx)   ? $office_campaign->tracker_fields->pdl_link_4xx : 0;
+                $pdl_link_5xx            = !empty($office_campaign->tracker_fields->pdl_link_5xx)   ? $office_campaign->tracker_fields->pdl_link_5xx : 0;                                                
+
+                $pdl_link_other         = $pdl_link_total - ($pdl_link_2xx + $pdl_link_3xx + $pdl_link_4xx + $pdl_link_5xx);
+
+                if ($pdl_link_total > 0 && $pdl_link_2xx > 0) :
+            ?>
+
+
+            <div class="col-sm-4">
+                <h3 style="text-align:center">Dataset Link Quality</h3>
+                <div id="link-status" style="height: 250px;"></div>
+            </div>
+
+            <script>
+                new Morris.Donut({
+                  element: 'link-status',
+                  data: [
+                    {value: <?php echo round(($pdl_link_2xx/$pdl_link_total) * 100, 1) ;?>, label: 'Working'},
+                    {value: <?php echo round(($pdl_link_3xx/$pdl_link_total) * 100, 1) ;?>, label: 'Redirected'},
+                    {value: <?php echo round(($pdl_link_4xx/$pdl_link_total) * 100, 1) ;?>, label: 'Broken'},
+                    {value: <?php echo round(($pdl_link_5xx/$pdl_link_total) * 100, 1) ;?>, label: 'Errors'},
+                    {value: <?php echo round(($pdl_link_other/$pdl_link_total) * 100, 1) ;?>, label: 'Other'}
+                  ],
+                  backgroundColor: '',
+                  labelColor: '#666',
+                  colors: [
+                    '#5cb85c',
+                    '#5bc0de',
+                    '#a94442',
+                    '#f0ad4e',
+                    '#ccc'
+                  ],
+                  formatter: function (x) { return x + "%"}
+                });
+
+            </script>            
+
+            <?php endif; ?>
+
+
                 
             </div>    
 
