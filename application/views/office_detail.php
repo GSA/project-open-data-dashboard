@@ -276,6 +276,7 @@
                 </div>
 
 
+            <div class="row">
             <?php
                 $edi_public         = !empty($office_campaign->tracker_fields->edi_access_public) ? $office_campaign->tracker_fields->edi_access_public : 0;
                 $edi_restricted     = !empty($office_campaign->tracker_fields->edi_access_restricted) ? $office_campaign->tracker_fields->edi_access_restricted : 0;
@@ -286,7 +287,11 @@
                 if ($edi_total > 0) :
             ?>
 
-            <div id="edi-breakdown" style="width:300px; height: 250px;"></div>
+            <div class="col-sm-4">
+                <h3 style="text-align:center">Inventory Composition</h3>
+                <div id="edi-breakdown" style="height: 250px;"></div>
+            </div>
+
             <script>
                 new Morris.Donut({
                   element: 'edi-breakdown',
@@ -309,7 +314,45 @@
             </script>
 
             <?php endif; ?>
-                    
+
+            <?php
+                $pdl_total          = !empty($office_campaign->tracker_fields->pdl_datasets) ? $office_campaign->tracker_fields->pdl_datasets : 0;
+                $pdl_public         = !empty($office_campaign->tracker_fields->pdl_downloadable) ? $office_campaign->tracker_fields->pdl_downloadable : 0;
+
+                $pdl_unreleased = $pdl_total - $pdl_public;
+
+                if ($pdl_total > 0) :
+            ?>
+
+
+            <div class="col-sm-4">
+                <h3 style="text-align:center">Public Dataset Status</h3>
+                <div id="pdl-breakdown" style="height: 250px;"></div>
+            </div>
+
+            <script>
+                new Morris.Donut({
+                  element: 'pdl-breakdown',
+                  data: [
+                    {value: <?php echo floor(($pdl_public/$pdl_total) * 100) ;?>, label: 'Published'},
+                    {value: <?php echo floor(($pdl_unreleased/$pdl_total) * 100) ;?>, label: 'Unpublished'}
+                  ],
+                  backgroundColor: '',
+                  labelColor: '#666',
+                  colors: [
+                    '#5cb85c',
+                    '#5bc0de',
+                    '#f0ad4e',
+                    '#95D7BB'
+                  ],
+                  formatter: function (x) { return x + "%"}
+                });
+
+            </script>            
+
+            <?php endif; ?>
+                
+            </div>    
 
 
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
