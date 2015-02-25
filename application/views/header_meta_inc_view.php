@@ -19,3 +19,6 @@
         <script src="<?php echo site_url('js/vendor/modernizr.min.js')?>"></script>
         <link href="<?php echo site_url('css/font-awesome.min.css')?>" rel="stylesheet">
 
+        <script src="<?php echo site_url('js/vendor/jquery-1.10.1.min.js')?>"></script>
+        <script src="<?php echo site_url('js/vendor/bootstrap.min.js')?>"></script>
+        <script src="<?php echo site_url('js/main.js')?>"></script>
