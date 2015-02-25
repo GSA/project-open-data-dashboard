@@ -1059,7 +1059,7 @@
             <?php endif; ?>            
 
             
-            <?php if(!empty($office_campaign->datajson_status->qa->validation_counts)): ?>
+            <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_2xx)): ?>
 
 
                 <tr class="info" id="pdl_link_check">
@@ -1081,7 +1081,7 @@
                         <?php endif;?>
 
                     </td>
-                </tr>
+                </tr>                
 
                 <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_0)): ?>
                 <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_0 > 0) ? 'danger' : 'success'?>">
@@ -1216,7 +1216,7 @@
 
                 <tr class="info" id="pdl_link_check">
                     <td colspan="2">
-                        This section is meant to provide quality assurance to verify that the download links included within the metadata are functioning properly, but the results of these tests are not currently available. 
+                        Normally there would be a set of quality assurance fields here to verify that the download links included within the metadata are functioning properly, but the results of those tests are not currently available. 
                     </td>
                 </tr>            
 
