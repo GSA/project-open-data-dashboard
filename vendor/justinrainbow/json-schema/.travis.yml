@@ -1,0 +1,23 @@
+language: php
+
+php:
+  - 5.3.3
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
+ 
+matrix:
+    allow_failures:
+        - php: hhvm
+
+before_script:
+  - sudo apt-get -y install pypy python-sphinx graphviz
+  - composer selfupdate
+  - composer install --prefer-source
+
+script:
+  - cd docs && make linkcheck && cd ..
+  - vendor/bin/phpdoc.php -d src -t docs-api
+  - vendor/bin/phpunit --coverage-text

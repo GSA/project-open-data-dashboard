@@ -8,5 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Michelf' => array($vendorDir . '/michelf/php-markdown'),
-    'JsonSchema' => array($baseDir . '/src'),
+    'JsonStreamingParser' => array($vendorDir . '/salsify/json-streaming-parser/src'),
+    'JsonSchema' => array($baseDir . '/src', $vendorDir . '/justinrainbow/json-schema/src'),
 );
