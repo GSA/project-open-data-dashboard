@@ -239,12 +239,36 @@ class campaign_model extends CI_Model {
 		$model->pdl_datasets->type 					= "string";
 
 		$model->pdl_downloadable					= clone $field;
-		$model->pdl_downloadable->label 			= "Number of Datasets with File Downloads";
+		$model->pdl_downloadable->label 			= "Number of Public Datasets with File Downloads";
 		$model->pdl_downloadable->type 				= "string";
 
         $model->pdl_apis                            = clone $field;
         $model->pdl_apis->label                     = "Number of APIs";
         $model->pdl_apis->type                      = "string";	
+
+		$model->pdl_link_total						= clone $field;
+		$model->pdl_link_total->label 				= "Total number of access and download links";
+		$model->pdl_link_total->type 				= "string";
+
+		$model->pdl_link_check						= clone $field;
+		$model->pdl_link_check->label 				= "Quality Check: Download links are working";
+		$model->pdl_link_check->type 				= "traffic";	
+
+		$model->pdl_link_2xx						= clone $field;
+		$model->pdl_link_2xx->label 				= "Quality Check: Accessible links";
+		$model->pdl_link_2xx->type 					= "string";
+
+		$model->pdl_link_3xx						= clone $field;
+		$model->pdl_link_3xx->label 				= "Quality Check: Redirected links";
+		$model->pdl_link_3xx->type 					= "string";		
+
+		$model->pdl_link_4xx						= clone $field;
+		$model->pdl_link_4xx->label 				= "Quality Check: Error links";
+		$model->pdl_link_4xx->type 					= "string";
+
+		$model->pdl_link_5xx						= clone $field;
+		$model->pdl_link_5xx->label 				= "Quality Check: Broken links";
+		$model->pdl_link_5xx->type 					= "string";
 
 		$model->pdl_growth							= clone $field;
 		$model->pdl_growth->label 					= "Percentage growth in records since last quarter";
@@ -253,10 +277,6 @@ class campaign_model extends CI_Model {
 		$model->pdl_valid_metadata					= clone $field;
 		$model->pdl_valid_metadata->label 			= "Valid Metadata";
 		$model->pdl_valid_metadata->type 			= "string";
-
-		$model->pdl_link_check						= clone $field;
-		$model->pdl_link_check->label 				= "Download links are working";
-		$model->pdl_link_check->type 				= "traffic";		
 
 		$model->pdl_slashdata						= clone $field;
 		$model->pdl_slashdata->label 				= "/data";
