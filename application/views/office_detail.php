@@ -2,6 +2,13 @@
 
 <?php include 'header_meta_inc_view.php';?>
 
+    <script src="<?php echo site_url('js/vendor/raphael-min.js')?>"></script>
+    <script src="<?php echo site_url('js/vendor/g.raphael.js')?>"></script>
+    <script src="<?php echo site_url('js/vendor/g.pie.js')?>"></script>
+    <script src="<?php echo site_url('js/vendor/morris.min.js')?>"></script>
+
+    <link href="<?php echo site_url('css/morris.css')?>" rel="stylesheet">
+
 <?php include 'header_inc_view.php';?>
 
 <?php include 'office_table_inc_view.php';?>
@@ -269,6 +276,40 @@
                 </div>
 
 
+            <?php
+                $edi_public         = !empty($office_campaign->tracker_fields->edi_access_public) ? $office_campaign->tracker_fields->edi_access_public : 0;
+                $edi_restricted     = !empty($office_campaign->tracker_fields->edi_access_restricted) ? $office_campaign->tracker_fields->edi_access_restricted : 0;
+                $edi_nonpublic      = !empty($office_campaign->tracker_fields->edi_access_nonpublic) ? $office_campaign->tracker_fields->edi_access_nonpublic : 0;
+
+                $edi_total = $edi_public + $edi_restricted + $edi_nonpublic;
+
+                if ($edi_total > 0) :
+            ?>
+
+            <div id="edi-breakdown" style="width:300px; height: 250px;"></div>
+            <script>
+                new Morris.Donut({
+                  element: 'edi-breakdown',
+                  data: [
+                    {value: <?php echo floor(($edi_public/$edi_total) * 100) ;?>, label: 'Public'},
+                    {value: <?php echo floor(($edi_restricted/$edi_total) * 100) ;?>, label: 'Restricted'},
+                    {value: <?php echo floor(($edi_nonpublic/$edi_total) * 100) ;?>, label: 'Non-Public'},
+                  ],
+                  backgroundColor: '',
+                  labelColor: '#666',
+                  colors: [
+                    '#5cb85c',
+                    '#5bc0de',
+                    '#f0ad4e',
+                    '#95D7BB'
+                  ],
+                  formatter: function (x) { return x + "%"}
+                });
+
+            </script>
+
+            <?php endif; ?>
+                    
 
 
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
