@@ -774,7 +774,7 @@ class campaign_model extends CI_Model {
 
 					
 				}
-				var_dump($response); exit;
+								
 				return $response;
 			}
 
