@@ -35,7 +35,7 @@ function curl_from_json($url, $array=false, $decode=true) {
 }
 
 
-function curl_header($url, $follow_redirect = true) {
+function curl_header($url, $follow_redirect = true, $tmp_dir = null) {
   $info = array();
   
   $ch = curl_init();
@@ -70,7 +70,7 @@ function curl_header($url, $follow_redirect = true) {
   // If the server didn't support HTTP HEAD, use the shim. 
   if( (!empty($info['header']['X-Error-Message']) && trim($info['header']['X-Error-Message']) == 'HEAD is not supported')
       OR empty($info['header']['Content-Type'])) {   
-    return curl_head_shim($url, $follow_redirect);
+    return curl_head_shim($url, $follow_redirect, $tmp_dir);
   } else {
     return $info;
   }
@@ -79,14 +79,15 @@ function curl_header($url, $follow_redirect = true) {
 
 
 
-function curl_head_shim($url, $follow_redirect = true) {
+function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
 
   $info = array();
 
   $ch = curl_init();
 
   $output = fopen('/dev/null', 'w');
-  $headerfile = fopen('/tmp/curl_header', 'w+');
+  $header_dir = $tmp_dir . '/curl_header';
+  $headerfile = fopen($header_dir, 'w+');
 
   curl_setopt($ch, CURLOPT_URL, $url);
 
@@ -105,7 +106,8 @@ function curl_head_shim($url, $follow_redirect = true) {
 
   fclose($headerfile);
 
-  $http_heading = file_get_contents('/tmp/curl_header');
+  $http_heading = file_get_contents($header_dir);
+  unset($header_dir);
 
   $info['info'] = curl_getinfo($ch);
 

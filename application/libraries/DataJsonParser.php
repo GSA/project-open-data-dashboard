@@ -3,8 +3,6 @@
 class DataJsonParser implements JsonStreamingParser_Listener {
     private $_json;
 
-    private $_array_count;
-
     private $_dataset_stack;
     private $_front_matter;    
     
@@ -14,6 +12,7 @@ class DataJsonParser implements JsonStreamingParser_Listener {
     private $_level;
 
     public $out_file;
+    public $_array_count;
 
     public function file_position($line, $char) {
 
@@ -26,6 +25,7 @@ class DataJsonParser implements JsonStreamingParser_Listener {
     public function start_document() {
         $this->_stack = array();
         $this->_level = 0;
+        $this->_array_count = 0;
         $this->_front_matter = array();
         $this->_dataset_stack = false;
         
@@ -68,7 +68,7 @@ class DataJsonParser implements JsonStreamingParser_Listener {
         // Output the stack when returning to the second level
         if($this->_level == 2 && $this->_key[1] == 'dataset') {
             
-            
+            $this->_array_count++;
             $json_line = '';
 
             // If this is the first line of the file, write the frontmatter

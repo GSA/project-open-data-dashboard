@@ -677,50 +677,54 @@ class campaign_model extends CI_Model {
 				$filesize = human_filesize($datajson_header['download_content_length']);
 				$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";
 				
-				// TODO: Hiding this for now until it's complete
-				if (!empty($errors)) {
-					$this->load->helper('file');
+				// TODO: Hiding this for now until it's complete				
+				if(!empty($errors)):
+				$this->load->helper('file');
 
-					if ($rawfile = $this->archive_file('datajson-lines', $this->current_office_id, $datajson_url)) {	
+				if ($rawfile = $this->archive_file('datajson-lines', $this->current_office_id, $datajson_url)) {	
 
-				        $outfile = $rawfile . '.lines.json';
+			        $outfile = $rawfile . '.lines.json';
 
-				        $stream = fopen($rawfile, 'r'); 
-				        $out_stream = fopen($outfile, 'w+');
+			        $stream = fopen($rawfile, 'r'); 
+			        $out_stream = fopen($outfile, 'w+');
 
-				        $listener = new DataJsonParser();
-				        $listener->out_file = $out_stream;
+			        $listener = new DataJsonParser();
+			        $listener->out_file = $out_stream;
 
-						if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-							echo 'Attempting to convert to JSON lines' . PHP_EOL;
-						}
-
-				        try {
-				            $parser = new JsonStreamingParser_Parser($stream, $listener);
-				            $parser->parse();
-				        } catch (Exception $e) {
-				            fclose($stream);
-				            throw $e;
-				        }
-
-				        // Delete temporary raw source file
-				        unlink($rawfile);
-						$out_stream = fopen($outfile, 'r+');	
-
-						$counter = 0;
-						$buffer = '';
-						while (($buffer .= fgets($out_stream)) && $counter < 50) {
-					        $counter++;
-					    }		        
-
-					    $datajson = substr($buffer, 0, strlen($buffer) - 2) . ']}';
-
-
-					} else {
-						$errors[] = "File not found or couldn't be downloaded";	
+					if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+						echo 'Attempting to convert to JSON lines' . PHP_EOL;
 					}
+
+			        try {
+			            $parser = new JsonStreamingParser_Parser($stream, $listener);
+			            $parser->parse();
+			        } catch (Exception $e) {
+			            fclose($stream);
+			            throw $e;
+			        }
+
+			        // Get the dataset count
+			        $datajson_lines_count = $listener->_array_count;
+
+			        // Delete temporary raw source file
+			        unlink($rawfile);
+					$out_stream = fopen($outfile, 'r+');	
+
+					echo $datajson_lines_count; exit;
+					$counter = 0;
+					$buffer = '';
+					while (($buffer .= fgets($out_stream)) && $counter < 50) {
+				        $counter++;
+				    }		        
+
+				    $datajson = substr($buffer, 0, strlen($buffer) - 2) . ']}';
+
+
+				} else {
+					$errors[] = "File not found or couldn't be downloaded";	
 				}
-			
+				endif;
+		
 
 
 
@@ -1117,7 +1121,10 @@ class campaign_model extends CI_Model {
 
 				$has_accessURL = false;
 
-				if(!empty($dataset->accessURL) && filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
+				if( ($schema == 'federal' OR $schema == 'non-federal')
+					&& !empty($dataset->accessURL) 
+					&& filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
+
 					$accessURL_total++;
 					$has_accessURL = true;
 					$dataset_format = (!empty($dataset->format)) ? $dataset->format : null;
@@ -1126,7 +1133,10 @@ class campaign_model extends CI_Model {
 
 				}
 
-				if(!empty($dataset->webService) && filter_var($dataset->webService, FILTER_VALIDATE_URL)) {
+				if( ($schema == 'federal' OR $schema == 'non-federal') 
+					&& !empty($dataset->webService) 
+					&& filter_var($dataset->webService, FILTER_VALIDATE_URL)) {
+
 					$accessURL_total++;
 					$has_accessURL = true;
 
@@ -1137,13 +1147,25 @@ class campaign_model extends CI_Model {
 				if(!empty($dataset->distribution) && is_array($dataset->distribution)) {
 					
 					foreach ($dataset->distribution as $distribution) {
-						if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
+
+						if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
+							$media_type = (!empty($distribution->mediaType)) ? $distribution->mediaType : null;
+						} else {
+							$media_type = (!empty($distribution->format)) ? $distribution->format : null;
+						}
+
+					   if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
+					   		$this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $media_type);
 							$accessURL_total++;
-							$has_accessURL = true;
+							$has_accessURL = true;					   		
+					   }
 
-							$this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $distribution->format);
-
-						}					
+					   if(!empty($distribution->downloadURL) && filter_var($distribution->downloadURL, FILTER_VALIDATE_URL)) {
+					   		$this->validation_check($dataset->identifier, $dataset->title, $distribution->downloadURL, $media_type);
+							$accessURL_total++;
+							$has_accessURL = true;		
+					   }		
+				
 					}
 
 				}
@@ -1178,8 +1200,9 @@ class campaign_model extends CI_Model {
 
 	public function validation_check($id, $title, $url, $format = null) {
 
-		
-		$header = curl_header($url, false);
+		$tmp_dir = $this->config->item('archive_dir');
+
+		$header = curl_header($url, false, $tmp_dir);
 		$good_link = false;
 		$good_format = true;
 

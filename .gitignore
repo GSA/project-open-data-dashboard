@@ -16,6 +16,7 @@ archive/error_log/*
 archive/datajson/201*
 archive/digitalstrategy/201*
 archive/datajson-lines/*
+archive/curl_header
 
 application/config/upload.php
 
