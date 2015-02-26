@@ -678,7 +678,7 @@ class campaign_model extends CI_Model {
 				$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";
 				
 				// TODO: Hiding this for now until it's complete				
-				if(!empty($errors)):
+				if(empty($errors)):
 				$this->load->helper('file');
 
 				if ($rawfile = $this->archive_file('datajson-lines', $this->current_office_id, $datajson_url)) {	
