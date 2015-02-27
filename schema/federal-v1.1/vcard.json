@@ -25,8 +25,16 @@
     "hasEmail": {
       "title": "Email",
       "description": "Email address for the contact",
-      "pattern": "^mailto:[\\w\\_\\~\\!\\$\\&\\'\\(\\)\\*\\+\\,\\;\\=\\:.-]+@[\\w.-]+\\.[\\w.-]+?$",
-      "type": "string"
+      "anyOf": [
+        {
+          "pattern": "^mailto:[\\w\\_\\~\\!\\$\\&\\'\\(\\)\\*\\+\\,\\;\\=\\:.-]+@[\\w.-]+\\.[\\w.-]+?$",
+          "type": "string"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
+        }
+      ]      
     }
   }
 }

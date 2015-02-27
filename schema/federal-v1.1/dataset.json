@@ -62,6 +62,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -89,6 +93,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -102,6 +110,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -115,6 +127,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -127,6 +143,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -143,13 +163,25 @@
         {
           "type": "array",
           "items": {
-            "$ref": "distribution.json",
-            "minItems": 1,
-            "uniqueItems": true
+            "anyOf": [
+              {
+                "$ref": "distribution.json",
+                "minItems": 1,
+                "uniqueItems": true
+              },
+              {
+                "type": "string",
+                "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
+              }   
+            ]        
           }
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -169,18 +201,30 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
     "keyword": {
       "title": "Tags",
       "description": "Tags (or keywords) help users discover your dataset; please include terms that would be used by technical and non-technical users.",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      },
-      "minItems": 1
+      "anyOf":[
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1          
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
+        }
+      ]
     },
     "landingPage": {
       "title": "Homepage URL",
@@ -192,6 +236,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -208,6 +256,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -221,6 +273,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -239,6 +295,10 @@
         {
           "type": "string",
           "pattern": "^(R\\d*\\/)?([\\+-]?\\d{4}(?!\\d{2}\\b))((-?)((0[1-9]|1[0-2])(\\4([12]\\d|0[1-9]|3[01]))?|W([0-4]\\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\\d|[12]\\d{2}|3([0-5]\\d|6[1-6])))([T\\s]((([01]\\d|2[0-3])((:?)[0-5]\\d)?|24\\:?00)([\\.,]\\d+(?!:))?)?(\\18[0-5]\\d([\\.,]\\d+)?)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?)?)?(\\/)P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -252,6 +312,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -276,14 +340,26 @@
         {
           "type": "array",
           "items": {
-            "type": "string",
-            "format": "uri"
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "type": "string",
+                "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
+              }
+            ]            
           },
           "minItems": 1,
           "uniqueItems": true
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -331,6 +407,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -341,6 +421,9 @@
         {
           "type": "string",
           "minLength": 1
+        },
+        {
+          "type": "null"
         }
       ]
     },
@@ -359,6 +442,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -366,7 +453,7 @@
       "title": "Title",
       "description": "Human-readable name of the asset. Should be in plain English and include sufficient detail to facilitate search and discovery.",
       "type": "string", 
-      "minLength": 1
+      "minLength": 1    
     }
   }
 }

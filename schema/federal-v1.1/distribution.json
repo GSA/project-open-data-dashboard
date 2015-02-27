@@ -28,8 +28,16 @@
     "downloadURL": {
       "title": "Download URL",
       "description": "URL providing direct access to a downloadable file of a dataset",
-      "type": "string",
-      "format": "uri"
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
+        }
+      ]
     },
     "mediaType": {
       "title": "Media Type",
@@ -41,6 +49,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]      
     },
@@ -67,6 +79,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -106,6 +122,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -119,6 +139,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     },
@@ -132,6 +156,10 @@
         },
         {
           "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
         }
       ]
     }
