@@ -12,6 +12,7 @@
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     ga('create', '<?php echo $this->config->item('google_analytics_id')?>', 'auto');
+    ga('set', 'anonymizeIp', true);
     ga('send', 'pageview');
 
   </script>
