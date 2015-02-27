@@ -47,7 +47,7 @@ This element accounts for the total number of all datasets listed in the Enterpr
 
 <span id="edi_schedule_delivered"></span>
 #####Schedule Delivered
-This element captures whether or not an agency has successfully submitted a schedule, via the digitalstrategy.json, or via another document on thier agency's website, that indicates a schedule of deliverables against the various outlined milestones for the Open Data Initiative. *(Qualitative)*
+This element captures whether or not an agency has successfully submitted a schedule, via the digitalstrategy.json, or via another document on their agency's website, that indicates a schedule of deliverables against the various outlined milestones for the Open Data Initiative. *(Qualitative)*
 
 <span id="edi_bureaus"></span>
 #####Bureaus represented
@@ -75,7 +75,7 @@ This is a comparison of the count of data sets (including those marked as "Publi
 
 <span id="edi_progress_evaluation"></span>
 #####Percentage growth in records since last quarter
-This is calculated by subtracting the last quater's EDI count of data sets from the current quarter's EDI count of data sets, then divided by last quarter's EDI count of data sets, then multipied by 100 in order to get the percentage `([(Qb - Qa) / Qa] * 100)` *(Quantitative)*
+This is calculated by subtracting the last quarter's EDI count of data sets from the current quarter's EDI count of data sets, then divided by last quarter's EDI count of data sets, then multiplied by 100 in order to get the percentage `([(Qb - Qa) / Qa] * 100)` *(Quantitative)*
 
 <span id="edi_schedule_risk"></span>
 #####Schedule Risk for Nov 30, 2014
@@ -111,7 +111,7 @@ This element captures the count of downlaodable publically listed data sets via 
 
 <span id="pdl_growth"></span>
 #####Percentage growth in records since last quarter
-This is calculated by subtracting the last quater's PDL count of data sets from the current quarter's PDL count of data sets, then divided by last quarter's EDI count of data sets, then multipied by 100 in order to get the percentage `([(Qb - Qa) / Qa] * 100)` *(Quantitative)*
+This is calculated by subtracting the last quarter's PDL count of data sets from the current quarter's PDL count of data sets, then divided by last quarter's EDI count of data sets, then multiplied by 100 in order to get the percentage `([(Qb - Qa) / Qa] * 100)` *(Quantitative)*
 
 <span id="pdl_valid_metadata"></span>
 #####Valid Metadata
@@ -140,15 +140,15 @@ This element is a collection of the qualitative and quantitative measures and an
 
 <span id="pe_feedback_specified"></span>
 #####Description of feedback mechanism delivered
-This element is a narrative provided by the agency, through the Digital Strategy, on how it plans to enage the public for Open Data initiative activities, including developing two-way forms of communication (e.g., social media, etc.), issue tracking, outreach and other items. These methods sould add-vaule to the open data activities and directly address the public and customer needs. *(Qualitative)*
+This element is a narrative provided by the agency, through the Digital Strategy, on how it plans to engage the public for Open Data initiative activities, including developing two-way forms of communication (e.g., social media, etc.), issue tracking, outreach and other items. These methods should add-value to the open data activities and directly address the public and customer needs. *(Qualitative)*
 
 <span id="pe_prioritization"></span>
 #####Data release is prioritized through public engagement
-This is a measure, based on information provided to OMB for review, or gathered from the agency Open Data websites and public engagement mechnaisms, that data sets have been identieid by the public and been prioritized for release based on that engagement (such as e-mail, public open data events, IdeaScale/GitHub/Twitter, etc.) activity. This may include those that were requested via FOIA menchanisms or other formal requests. *(Qualitative)*
+This is a measure, based on information provided to OMB for review, or gathered from the agency Open Data websites and public engagement mechanisms, that data sets have been identieid by the public and been prioritized for release based on that engagement (such as e-mail, public open data events, IdeaScale/GitHub/Twitter, etc.) activity. This may include those that were requested via FOIA mechanisms or other formal requests. *(Qualitative)*
 
 <span id="pe_dialogue"></span>
 #####Feedback loop is closed, 2 way communication
-This element is an asessment, based on information provided by the agency and confirmed, through review of published public feedback mechanisms by OMB (including reviewing post-event outcomes - such as those from datajams and datapaloozas), if the input from public engagement is acted upon and produces an output to the open data milestone activities, such as inclusion of data sets, quality improvement, format changes, API development or other outcomes.  *(Qualitative)*
+This element is an assessment, based on information provided by the agency and confirmed, through review of published public feedback mechanisms by OMB (including reviewing post-event outcomes - such as those from datajams and datapaloozas), if the input from public engagement is acted upon and produces an output to the open data milestone activities, such as inclusion of data sets, quality improvement, format changes, API development or other outcomes.  *(Qualitative)*
 
 <span id="pe_reference"></span>
 #####Link to or description of Feedback Mechanism
@@ -165,7 +165,7 @@ This element is a collection of the qualitative and quantitative measures and an
 
 <span id="ps_publication_process"></span>
 #####Data Publication Process Delivered
-This element captures the state of the Open Data publication process deliverable. The process is often located withing the Digital Strategy for an agency, and is usually contained and updated withing the JSON file. Some agencies have indepdently published this schedule on their websites separate from the Digital Strategy site, which is not recommended.
+This element captures the state of the Open Data publication process deliverable. The process is often located within the Digital Strategy for an agency, and is usually contained and updated within the JSON file. Some agencies have indepdently published this schedule on their websites separate from the Digital Strategy site, which is not recommended.
 
 <span id="ps_publication_process_qa"></span>
 #####Information that should not to be made public is documented with agency's OGC
@@ -223,7 +223,7 @@ This should be 200 it the data.json or /data URL was found successfully.
 <span id="datajson_content_type"></span>
 #####Content-Type
 
-The [Content-Type](http://en.wikipedia.org/wiki/Content-Type) is how the server announces the type of file it is serving at the requested URL. Usually it won't break anything if this is set incorrectly, but some applications may need to be set to force it to be read as JSON even if it announces it's something else. This is very similiar to how a file extension on a file identifies the file type. Yes, the URL says data.json, but the browser just sees that as an arbitrary URL. The Content-Type is what identifies the actual file type. Setting this incorrectly would be like if you had a file named graph.pdf that was actually a CSV spreadsheet file.
+The [Content-Type](http://en.wikipedia.org/wiki/Content-Type) is how the server announces the type of file it is serving at the requested URL. Usually it won't break anything if this is set incorrectly, but some applications may need to be set to force it to be read as JSON even if it announces it's something else. This is very similar to how a file extension on a file identifies the file type. Yes, the URL says data.json, but the browser just sees that as an arbitrary URL. The Content-Type is what identifies the actual file type. Setting this incorrectly would be like if you had a file named graph.pdf that was actually a CSV spreadsheet file.
 
 The [character encoding](http://en.wikipedia.org/wiki/Character_encoding) should also be specified as part of the Content-Type. This encoding should match the actual encoding of the text in the file. The correct character encoding for [JSON](http://json.org/) is always unicode, preferably [UTF-8](http://en.wikipedia.org/wiki/Utf-8).
 
