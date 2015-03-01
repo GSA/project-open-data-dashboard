@@ -1063,11 +1063,11 @@
                     </a>
                     Total Distribution URLs
                 </th>                 
-                <td>
+                <td id="metrics_accessURL_working">
                     <?php echo $office_campaign->datajson_status->qa->accessURL_total; ?>
 
                     <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
-                        <span id="metrics_accessURL_working" class="text-danger">(but only <?php echo $office_campaign->datajson_status->qa->validation_counts->http_2xx; ?> accessible)</span>
+                        <span class="text-danger">(but only <?php echo $office_campaign->datajson_status->qa->validation_counts->http_2xx; ?> accessible)</span>
                     <?php endif; ?>
                 </td>
             </tr> 
