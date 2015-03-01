@@ -708,17 +708,24 @@ class campaign_model extends CI_Model {
 
 			        // Delete temporary raw source file
 			        unlink($rawfile);
-					$out_stream = fopen($outfile, 'r+');	
 
-					echo $datajson_lines_count; exit;
+			        $out_stream = fopen($outfile, 'r+');	
+
 					$counter = 0;
+					$chunk_cycle = 0;
+					$chunk_size = 50;					
+					$chunk_count = ceil($datajson_lines_count/$chunk_size);
 					$buffer = '';
-					while (($buffer .= fgets($out_stream)) && $counter < 50) {
-				        $counter++;
-				    }		        
 
-				    $datajson = substr($buffer, 0, strlen($buffer) - 2) . ']}';
+					while($chunk_cycle <= $chunk_count) {
+						while (($buffer .= fgets($out_stream)) && $counter < $chunk_size) {
+					        $counter++;
+					    }		
+					    $buffer = substr($buffer, 0, strlen($buffer) - 2) . ']}';
+					    $counter = 0; 		
 
+					    // do stuff here. 				
+					}
 
 				} else {
 					$errors[] = "File not found or couldn't be downloaded";	
