@@ -1085,6 +1085,7 @@ class campaign_model extends CI_Model {
 		$accessLevel_nonpublic		= 0;
 
 		$accessURL_total	= 0;
+		$API_total			= 0;
 		$downloadURL_total	= 0;
 		$accessURL_present 	= 0;
 
@@ -1127,64 +1128,70 @@ class campaign_model extends CI_Model {
 					}
 				}				
 			}
+		
 
-			if($component === 'full-scan') {
 
-				$has_accessURL = false;
+			$has_accessURL = false;
 
-				if( ($schema == 'federal' OR $schema == 'non-federal')
-					&& !empty($dataset->accessURL) 
-					&& filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
+			if( ($schema == 'federal' OR $schema == 'non-federal')
+				&& !empty($dataset->accessURL) 
+				&& filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
 
-					$accessURL_total++;
-					$has_accessURL = true;
-					$dataset_format = (!empty($dataset->format)) ? $dataset->format : null;
+				$accessURL_total++;
+				$has_accessURL = true;
+				$dataset_format = (!empty($dataset->format)) ? $dataset->format : null;
 
-					$this->validation_check($dataset->identifier, $dataset->title, $dataset->accessURL, $dataset_format);
-
-				}
-
-				if( ($schema == 'federal' OR $schema == 'non-federal') 
-					&& !empty($dataset->webService) 
-					&& filter_var($dataset->webService, FILTER_VALIDATE_URL)) {
-
-					$accessURL_total++;
-					$has_accessURL = true;
-
-					$this->validation_check($dataset->identifier, $dataset->title, $dataset->webService);
-
-				}			
-
-				if(!empty($dataset->distribution) && is_array($dataset->distribution)) {
-					
-					foreach ($dataset->distribution as $distribution) {
-
-						if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
-							$media_type = (!empty($distribution->mediaType)) ? $distribution->mediaType : null;
-						} else {
-							$media_type = (!empty($distribution->format)) ? $distribution->format : null;
-						}
-
-					   if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
-					   		$this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $media_type);
-							$accessURL_total++;
-							$has_accessURL = true;					   		
-					   }
-
-					   if(!empty($distribution->downloadURL) && filter_var($distribution->downloadURL, FILTER_VALIDATE_URL)) {
-					   		$this->validation_check($dataset->identifier, $dataset->title, $distribution->downloadURL, $media_type);
-							$accessURL_total++;
-							$downloadURL_total++;
-							$has_accessURL = true;		
-					   }		
-				
-					}
-
-				}
-
-				if($has_accessURL) $accessURL_present++;
+				if($component === 'full-scan') $this->validation_check($dataset->identifier, $dataset->title, $dataset->accessURL, $dataset_format);
 
 			}
+
+			if( ($schema == 'federal' OR $schema == 'non-federal') 
+				&& !empty($dataset->webService) 
+				&& filter_var($dataset->webService, FILTER_VALIDATE_URL)) {
+
+				$accessURL_total++;
+				$API_total++;
+				$has_accessURL = true;
+
+				if($component === 'full-scan') $this->validation_check($dataset->identifier, $dataset->title, $dataset->webService);
+
+			}			
+
+			if(!empty($dataset->distribution) && is_array($dataset->distribution)) {
+				
+				foreach ($dataset->distribution as $distribution) {
+
+					if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
+						$media_type = (!empty($distribution->mediaType)) ? $distribution->mediaType : null;
+					} else {
+						$media_type = (!empty($distribution->format)) ? $distribution->format : null;
+					}
+
+				   if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
+				   		
+				   		if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1' 
+				   			&& !empty($distribution->format) 
+				   			&& strtolower($distribution->format) == 'api' ) {
+				   			$API_total++;
+				   		}
+
+				   		if($component === 'full-scan') $this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $media_type);
+						$accessURL_total++;
+						$has_accessURL = true;					   		
+				   }
+
+				   if(!empty($distribution->downloadURL) && filter_var($distribution->downloadURL, FILTER_VALIDATE_URL)) {
+				   		if($component === 'full-scan') $this->validation_check($dataset->identifier, $dataset->title, $distribution->downloadURL, $media_type);
+						$accessURL_total++;
+						$downloadURL_total++;
+						$has_accessURL = true;		
+				   }		
+			
+				}
+
+			}
+
+			if($has_accessURL) $accessURL_present++;
 
 
 		}
@@ -1204,7 +1211,8 @@ class campaign_model extends CI_Model {
 
 		$qa['accessURL_present'] 	= $accessURL_present;
 		$qa['accessURL_total'] 		= $accessURL_total;
-		$qa['downloadURL_total'] 	= $downloadURL_total;		
+		$qa['downloadURL_total'] 	= $downloadURL_total;	
+		$qa['API_total'] 			= $API_total;	
 		$qa['validation_counts']	= $this->validation_counts;
 
 		return $qa;
