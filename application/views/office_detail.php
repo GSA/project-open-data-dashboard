@@ -1133,7 +1133,7 @@
                         <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_0' ?>">
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
-                        Server Not Found (accessURL)
+                        Server Not Found
                     </th>                 
                     <td>
                        <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_0, $office_campaign->datajson_status->qa->accessURL_total);?> 
@@ -1151,7 +1151,7 @@
                         <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_4xx' ?>">
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
-                        Broken links (accessURL 4xx)
+                        Broken links (HTTP 4xx)
                     </th>                 
                     <td>
                        <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_4xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
@@ -1169,7 +1169,7 @@
                         <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_5xx' ?>">
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
-                        Error Links (accessURL 5xx)
+                        Error Links (HTTP 5xx)
                     </th>                 
                     <td>
                        <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_5xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
@@ -1187,7 +1187,7 @@
                         <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_3xx' ?>">
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
-                        Redirected Links (accessURL 3xx)
+                        Redirected Links (HTTP 3xx)
                     </th>                 
                     <td>
                        <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_3xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
@@ -1205,7 +1205,7 @@
                         <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_format' ?>">
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
-                        Correct format (accessURL/format)
+                        Correct format
                     </th>                 
                     <td>
 
@@ -1226,7 +1226,7 @@
                         <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_pdf' ?>">
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
-                        PDF for raw data (accessURL)
+                        PDF for raw data
                     </th>                 
                     <td>
                        <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->pdf, $office_campaign->datajson_status->qa->validation_counts->http_2xx);?> 
@@ -1244,7 +1244,7 @@
                         <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_html' ?>">
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
-                        HTML for raw data (accessURL)
+                        HTML for raw data
                     </th>                 
                     <td>
                        <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->html, $office_campaign->datajson_status->qa->validation_counts->http_2xx);?> 
