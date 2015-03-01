@@ -1030,7 +1030,7 @@
                     <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_present' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
-                    Datasets with Downloadable URLs (accessURL)
+                    Datasets with Distribution URLs
                 </th>                  
                 <td>
                     <a name="pdl_downloadable" class="anchor-point"></a>
@@ -1040,13 +1040,28 @@
             </tr> 
             <?php endif; ?>
 
+            <?php if(!empty($office_campaign->datajson_status->qa->downloadURL_present)): ?>
+            <tr>
+                <th id="metrics_downloadURL_present">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_downloadURL_present' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Datasets with Downloadable URLs
+                </th>                  
+                <td>
+                    <?php echo process_percentage($office_campaign->datajson_status->qa->downloadURL_present, $total_records); ?>
+                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->downloadURL_present . ' of ' . $total_records; ?>)</span>
+                </td>
+            </tr> 
+            <?php endif; ?>            
+
             <?php if(!empty($office_campaign->datajson_status->qa->accessURL_total)): ?>
             <tr>
                 <th id="metrics_accessURL_total">
                     <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessURL_total' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
-                    Total Downloadable URLs (accessURL)
+                    Total Distribution URLs
                 </th>                 
                 <td>
                     <?php echo $office_campaign->datajson_status->qa->accessURL_total; ?>
@@ -1057,6 +1072,35 @@
                 </td>
             </tr> 
             <?php endif; ?>            
+
+            <?php if(!empty($office_campaign->datajson_status->qa->downloadURL_total)): ?>
+            <tr>
+                <th id="metrics_downloadURL_total">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_downloadURL_total' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Total Download URLs
+                </th>                 
+                <td>
+                    <?php echo $office_campaign->datajson_status->qa->downloadURL_total; ?>
+                </td>
+            </tr> 
+            <?php endif; ?>  
+
+
+            <?php if(!empty($office_campaign->datajson_status->qa->API_total)): ?>
+            <tr>
+                <th id="metrics_API_total">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_API_total' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Total APIs
+                </th>                 
+                <td>
+                    <?php echo $office_campaign->datajson_status->qa->API_total; ?>
+                </td>
+            </tr> 
+            <?php endif; ?>              
 
             
             <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_2xx)): ?>

@@ -1084,10 +1084,11 @@ class campaign_model extends CI_Model {
 		$accessLevel_restricted		= 0;
 		$accessLevel_nonpublic		= 0;
 
-		$accessURL_total	= 0;
-		$API_total			= 0;
-		$downloadURL_total	= 0;
-		$accessURL_present 	= 0;
+		$accessURL_total			= 0;
+		$API_total					= 0;
+		$downloadURL_total			= 0;		
+		$accessURL_present 			= 0;
+		$downloadURL_present		= 0;		
 
 		$json = json_decode($json);
 
@@ -1132,6 +1133,7 @@ class campaign_model extends CI_Model {
 
 
 			$has_accessURL = false;
+			$has_downloadURL = false;
 
 			if( ($schema == 'federal' OR $schema == 'non-federal')
 				&& !empty($dataset->accessURL) 
@@ -1184,7 +1186,8 @@ class campaign_model extends CI_Model {
 				   		if($component === 'full-scan') $this->validation_check($dataset->identifier, $dataset->title, $distribution->downloadURL, $media_type);
 						$accessURL_total++;
 						$downloadURL_total++;
-						$has_accessURL = true;		
+						$has_accessURL = true;	
+						$has_downloadURL = true;	
 				   }		
 			
 				}
@@ -1192,6 +1195,7 @@ class campaign_model extends CI_Model {
 			}
 
 			if($has_accessURL) $accessURL_present++;
+			if($has_downloadURL) $downloadURL_present++;
 
 
 		}
@@ -1210,6 +1214,7 @@ class campaign_model extends CI_Model {
 		$qa['accessLevel_nonpublic']		= $accessLevel_nonpublic;
 
 		$qa['accessURL_present'] 	= $accessURL_present;
+		$qa['downloadURL_present'] 	= $downloadURL_present;		
 		$qa['accessURL_total'] 		= $accessURL_total;
 		$qa['downloadURL_total'] 	= $downloadURL_total;	
 		$qa['API_total'] 			= $API_total;	
