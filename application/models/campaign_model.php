@@ -1214,11 +1214,15 @@ class campaign_model extends CI_Model {
 		$qa['accessLevel_nonpublic']		= $accessLevel_nonpublic;
 
 		$qa['accessURL_present'] 	= $accessURL_present;
-		$qa['downloadURL_present'] 	= $downloadURL_present;		
 		$qa['accessURL_total'] 		= $accessURL_total;
-		$qa['downloadURL_total'] 	= $downloadURL_total;	
 		$qa['API_total'] 			= $API_total;	
 		$qa['validation_counts']	= $this->validation_counts;
+
+		if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
+			$qa['downloadURL_present'] 	= $downloadURL_present;	
+			$qa['downloadURL_total'] 	= $downloadURL_total;				
+		}
+
 
 		return $qa;
 
