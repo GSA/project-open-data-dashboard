@@ -9,6 +9,7 @@ class campaign_model extends CI_Model {
 	var $current_office_id  = null;
 	var $validation_pointer = null;
 	var $validation_log 	= null;
+	var $schema 			= null;
 
 
 	public function __construct(){
@@ -813,7 +814,7 @@ class campaign_model extends CI_Model {
 				if($schema !== 'federal-v1.1' && $schema !== 'non-federal-v1.1' ) {
 
 					if ($schema == 'federal') {
-						$schema = 'federal-v1.1';
+						$schema = 'federal-v1.1';						
 					} else if ($schema == 'non-federal') {
 						$schema = 'non-federal-v1.1';
 					} else {
@@ -821,6 +822,8 @@ class campaign_model extends CI_Model {
 					}
 
 				}
+
+				$this->schema = $schema;
 
 			}
 
@@ -1082,6 +1085,7 @@ class campaign_model extends CI_Model {
 		$accessLevel_nonpublic		= 0;
 
 		$accessURL_total	= 0;
+		$downloadURL_total	= 0;
 		$accessURL_present 	= 0;
 
 		$json = json_decode($json);
@@ -1170,6 +1174,7 @@ class campaign_model extends CI_Model {
 					   if(!empty($distribution->downloadURL) && filter_var($distribution->downloadURL, FILTER_VALIDATE_URL)) {
 					   		$this->validation_check($dataset->identifier, $dataset->title, $distribution->downloadURL, $media_type);
 							$accessURL_total++;
+							$downloadURL_total++;
 							$has_accessURL = true;		
 					   }		
 				
@@ -1199,6 +1204,7 @@ class campaign_model extends CI_Model {
 
 		$qa['accessURL_present'] 	= $accessURL_present;
 		$qa['accessURL_total'] 		= $accessURL_total;
+		$qa['downloadURL_total'] 	= $downloadURL_total;		
 		$qa['validation_counts']	= $this->validation_counts;
 
 		return $qa;
@@ -1243,7 +1249,7 @@ class campaign_model extends CI_Model {
 			$this->validation_counts['pdf']++;
 		}
 
-		if($good_link && !empty($header['info']['content_type']) && stripos($header['info']['content_type'], 'text/html') !== false){
+		if($good_link && !empty($format) && !empty($header['info']['content_type']) && stripos($header['info']['content_type'], 'text/html') !== false){
 			$this->validation_counts['html']++;
 		}	
 
