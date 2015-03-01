@@ -1046,7 +1046,7 @@
                     <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_downloadURL_present' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
-                    Datasets with Downloadable URLs
+                    Datasets with Download URLs
                 </th>                  
                 <td>
                     <?php echo process_percentage($office_campaign->datajson_status->qa->downloadURL_present, $total_records); ?>
