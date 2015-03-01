@@ -583,7 +583,9 @@ class campaign_model extends CI_Model {
 
 	public function uri_header($url, $redirect_count = 0) {
 
-		$status = curl_header($url);
+		$tmp_dir = $tmp_dir = $this->config->item('archive_dir');
+		
+		$status = curl_header($url, true, $tmp_dir);
 		$status = $status['info'];	//content_type and http_code
 
 		if($status['redirect_count'] == 0 && !(empty($redirect_count))) $status['redirect_count'] = 1;
