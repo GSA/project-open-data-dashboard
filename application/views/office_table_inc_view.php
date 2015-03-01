@@ -305,31 +305,31 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 	
 			if(!empty($office->datajson_status->qa->validation_counts)) {
 
+				$error_count 		= (!empty($office->datajson_status->error_count)) ? $office->datajson_status->error_count : 0;
+				$total_records	 	= (!empty($office->datajson_status->total_records)) ? $office->datajson_status->total_records : '';
 
+				$percent_valid		= (!empty($total_records)) ? process_percentage(($total_records - $error_count), $total_records) : '';
 
-			$error_count 		= (!empty($office->datajson_status->error_count)) ? $office->datajson_status->error_count : 0;
-			$total_records	 	= (!empty($office->datajson_status->total_records)) ? $office->datajson_status->total_records : '';
+				//var_dump($office->datajson_status->qa); exit;
 
-			$percent_valid		= (!empty($total_records)) ? process_percentage(($total_records - $error_count), $total_records) : '';
+				$model->total_records->value 			= $office->datajson_status->total_records;
+	    		$model->valid_count->value 				= $office->datajson_status->total_records - $office->datajson_status->error_count;
+				$model->programs->value 				= count($office->datajson_status->qa->programCodes);
+				$model->bureaus->value 					= count($office->datajson_status->qa->bureauCodes);
 
-			//var_dump($office->datajson_status->qa); exit;
+				$model->accessLevel_public->value 		= $office->datajson_status->qa->accessLevel_public;
+				$model->accessLevel_nonpublic->value 	= $office->datajson_status->qa->accessLevel_nonpublic;
+				$model->accessLevel_restricted->value 	= $office->datajson_status->qa->accessLevel_restricted;
+				$model->accessURL_present->value 		= $office->datajson_status->qa->accessURL_present;
+				$model->accessURL_total->value 			= $office->datajson_status->qa->accessURL_total;
+				$model->accessURL_working->value 		= $office->datajson_status->qa->validation_counts->http_2xx;
+				$model->accessURL_format->value 		= $model->accessURL_working->value - $office->datajson_status->qa->validation_counts->format_mismatch;
+				$model->accessURL_html->value 			= $office->datajson_status->qa->validation_counts->html;
+				$model->accessURL_pdf->value 			= $office->datajson_status->qa->validation_counts->pdf;
 
-			$model->total_records->value 			= $office->datajson_status->total_records;
-    		$model->valid_count->value 				= $office->datajson_status->total_records - $office->datajson_status->error_count;
-			$model->programs->value 				= count($office->datajson_status->qa->programCodes);
-			$model->bureaus->value 					= count($office->datajson_status->qa->bureauCodes);
+				reset($model);	
 
-			$model->accessLevel_public->value 		= $office->datajson_status->qa->accessLevel_public;
-			$model->accessLevel_nonpublic->value 	= $office->datajson_status->qa->accessLevel_nonpublic;
-			$model->accessLevel_restricted->value 	= $office->datajson_status->qa->accessLevel_restricted;
-			$model->accessURL_present->value 		= $office->datajson_status->qa->accessURL_present;
-			$model->accessURL_total->value 			= $office->datajson_status->qa->accessURL_total;
-			$model->accessURL_working->value 		= $office->datajson_status->qa->validation_counts->http_2xx;
-			$model->accessURL_format->value 		= $model->accessURL_working->value - $office->datajson_status->qa->validation_counts->format_mismatch;
-			$model->accessURL_html->value 			= $office->datajson_status->qa->validation_counts->html;
-			$model->accessURL_pdf->value 			= $office->datajson_status->qa->validation_counts->pdf;
-
-			reset($model);			
+			}		
 
 		?>
 
@@ -363,7 +363,7 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 			<?php endforeach; ?>
 
 		</tr>
-		<?php } endforeach;?>
+		<?php endforeach;?>
 	</table>
 	
 
