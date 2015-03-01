@@ -270,7 +270,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 <?php
 function status_table_qa($title, $rows, $tracker, $config = null, $sections_breakdown = null, $milestone = null) {
 
-		$model = $sections_breakdown;
+	$model = $sections_breakdown;	
 
 ?>
 
@@ -298,7 +298,7 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 		<?php foreach ($rows as $office):?>
 
 		<?php
-
+			
 			if(!empty($office->datajson_status)) {
 				$office->datajson_status = json_decode($office->datajson_status);
 			}
@@ -329,7 +329,12 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 
 				reset($model);	
 
-			}		
+			} else {
+				foreach ($model as $qa_field_name => $qa_field) {
+					$qa_field->value = '';
+				}
+				reset($model);	 
+			}	
 
 		?>
 
