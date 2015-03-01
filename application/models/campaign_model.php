@@ -459,7 +459,7 @@ class campaign_model extends CI_Model {
 
 		// Sets the first milestone in the future as the current and last available milestone
 	    foreach ($milestones as $milestone_date => $milestone) {
-	        if (strtotime($milestone_date) > time()) {
+	        if (strtotime($milestone_date) >= strtotime(date('Y-m-d'))) {
 	            
 	        	if(empty($current_milestone)) {
 	        		$current_milestone = $milestone_date;	
