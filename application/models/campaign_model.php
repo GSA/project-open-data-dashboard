@@ -1554,11 +1554,6 @@ class campaign_model extends CI_Model {
 			$this->db->where("(crawl_end IS NULL OR crawl_end < '$update->crawl_end')");
 			$this->db->limit(1);
 
-			
-			if ($this->environment == 'terminal') {
-				echo 'Attempting to reset ' . $update->crawl_start . PHP_EOL . PHP_EOL;
-			}
-
 			$query = $this->db->get('datagov_campaign');
 
 			if ($query->num_rows() > 0) {
