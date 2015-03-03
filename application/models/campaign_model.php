@@ -1551,12 +1551,12 @@ class campaign_model extends CI_Model {
 			$this->db->where('office_id', $update->office_id);
 			$this->db->where('milestone', $update->milestone);
 			$this->db->where('crawl_status', 'current');
-			$this->db->where("crawl_start IS NULL");
+			$this->db->where("(crawl_end IS NULL OR crawl_end < '$update->crawl_end')");
 			$this->db->limit(1);
 
 			
 			if ($this->environment == 'terminal') {
-				echo 'Attempting to reset ' . $update->crawl_end . PHP_EOL . PHP_EOL;
+				echo 'Attempting to reset ' . $update->crawl_start . PHP_EOL . PHP_EOL;
 			}
 
 			$query = $this->db->get('datagov_campaign');
