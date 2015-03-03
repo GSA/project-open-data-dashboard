@@ -548,18 +548,89 @@ class Campaign extends CI_Controller {
 				$this->campaign->current_office_id = $office->id;
 				$this->campaign->validation_pointer = 0;
 
-
 				// initialize update object
-				$update = $this->campaign->datagov_office($office->id, $milestone->selected_milestone);
+				$update = $this->campaign->datagov_model();
+				$update->office_id = $office->id;
 
-    			if(!$update){
-    				$update = $this->campaign->datagov_model();
-					$update->office_id = $office->id;
-    			}
+                $update->crawl_status = 'in_progress';
+                $update->crawl_start = gmdate("Y-m-d H:i:s");
 
 				$url =  parse_url($office->url);
 				$url = $url['scheme'] . '://' . $url['host'];
 
+
+
+                /*
+                ################ datapage ################
+                */
+
+               if ($component == 'full-scan' || $component == 'all' || $component == 'datapage') {
+
+
+                    // Get status of html /data page
+                    $page_status_url = $url . '/data';
+
+                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                        echo 'Attempting to request ' . $page_status_url . PHP_EOL;
+                    }
+
+                    $page_status = $this->campaign->uri_header($page_status_url);
+                    $page_status['expected_url'] = $page_status_url;
+                    $page_status['last_crawl']  = mktime();
+
+                    $update->datapage_status = (!empty($page_status)) ? json_encode($page_status) : null;
+
+                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                        echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datapage_status . PHP_EOL . PHP_EOL;
+                    }
+
+                    if ($component == 'datapage') {
+                        $update->crawl_status = 'current';
+                        $update->crawl_end = gmdate("Y-m-d H:i:s");
+                    }
+
+                    $update->status_id = $this->campaign->update_status($update);
+
+                }
+
+
+                 /*
+                 ################ digitalstrategy ################
+                 */
+
+                if ($component == 'full-scan' || $component == 'all' || $component == 'digitalstrategy' || $component == 'download') {
+
+
+                     // Get status of html /data page
+                    $digitalstrategy_status_url = $url . '/digitalstrategy.json';
+
+                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                        echo 'Attempting to request ' . $digitalstrategy_status_url . PHP_EOL;
+                    }
+
+                    $page_status = $this->campaign->uri_header($digitalstrategy_status_url);
+                    $page_status['expected_url'] = $digitalstrategy_status_url;
+                    $page_status['last_crawl']  = mktime();
+
+                    $update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status) : null;
+
+                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                        echo 'Attempting to set ' . $update->office_id . ' with ' . $update->digitalstrategy_status . PHP_EOL . PHP_EOL;
+                    }
+
+                    if ($component == 'digitalstrategy') {
+                        $update->crawl_status = 'current';
+                        $update->crawl_end = gmdate("Y-m-d H:i:s");
+                    }                    
+
+                    $update->status_id = $this->campaign->update_status($update);
+
+                    // download and version this json file.
+                    if ($component == 'all' || $component == 'download') {                      
+                        $digitalstrategy_archive_status = $this->campaign->archive_file('digitalstrategy', $office->id, $digitalstrategy_status_url);
+                    }
+
+                }
 
 
                 /*
@@ -625,7 +696,7 @@ class Campaign extends CI_Controller {
 							echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
 						}
 
-						$this->campaign->update_status($update);
+						$update->status_id = $this->campaign->update_status($update);
 
 	                	// Check JSON status
 	                	$status 				= $this->json_status($status, $real_url, $component);	        		
@@ -661,6 +732,9 @@ class Campaign extends CI_Controller {
 						if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 							echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
 						}
+                        
+                        $update->crawl_status = 'current';
+                        $update->crawl_end = gmdate("Y-m-d H:i:s");
 
 	                	$this->campaign->update_status($update);
 	    			}
@@ -668,67 +742,6 @@ class Campaign extends CI_Controller {
 				}
 
 
-                /*
-                ################ datapage ################
-                */
-
-               if ($component == 'full-scan' || $component == 'all' || $component == 'datapage') {
-
-
-                    // Get status of html /data page
-    				$page_status_url = $url . '/data';
-
-    				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-    					echo 'Attempting to request ' . $page_status_url . PHP_EOL;
-    				}
-
-            		$page_status = $this->campaign->uri_header($page_status_url);
-            		$page_status['expected_url'] = $page_status_url;
-            		$page_status['last_crawl']	= mktime();
-
-    				$update->datapage_status = (!empty($page_status)) ? json_encode($page_status) : null;
-
-    				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-    					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datapage_status . PHP_EOL . PHP_EOL;
-    				}
-
-    				$this->campaign->update_status($update);
-
-			    }
-
-
-                 /*
-                 ################ digitalstrategy ################
-                 */
-
-                if ($component == 'full-scan' || $component == 'all' || $component == 'digitalstrategy' || $component == 'download') {
-
-
-                     // Get status of html /data page
-     				$digitalstrategy_status_url = $url . '/digitalstrategy.json';
-
-     				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-     					echo 'Attempting to request ' . $digitalstrategy_status_url . PHP_EOL;
-     				}
-
-             		$page_status = $this->campaign->uri_header($digitalstrategy_status_url);
-             		$page_status['expected_url'] = $digitalstrategy_status_url;
-             		$page_status['last_crawl']	= mktime();
-
-     				$update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status) : null;
-
-     				if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-     					echo 'Attempting to set ' . $update->office_id . ' with ' . $update->digitalstrategy_status . PHP_EOL . PHP_EOL;
-     				}
-
-     				$this->campaign->update_status($update);
-
-     				// download and version this json file.
-     				if ($component == 'all' || $component == 'download') {	    				
-	    				$digitalstrategy_archive_status = $this->campaign->archive_file('digitalstrategy', $office->id, $digitalstrategy_status_url);
-					}
-
- 			    }
 
         		if(!empty($id) && $this->environment != 'terminal' && $this->environment != 'cron') {
         		    $this->load->helper('url');

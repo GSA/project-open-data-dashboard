@@ -33,12 +33,19 @@ class campaign_model extends CI_Model {
 
 	}
 
-	public function datagov_office($office_id, $milestone = null) {
+	public function datagov_office($office_id, $milestone = null, $crawl_status = null) {
 
 		$this->db->select('*');
 		$this->db->where('office_id', $office_id);
 
+		if(!empty($crawl_status)) {
+			$this->db->where('crawl_status', $crawl_status);
+		} else {
+			$this->db->where("(crawl_status IS NULL OR crawl_status='current' OR crawl_status='final')");	
+		}
+
 		if($milestone) $this->db->where('milestone', $milestone);
+		$this->db->limit(1);
 
 		$query = $this->db->get('datagov_campaign');
 
@@ -55,8 +62,12 @@ class campaign_model extends CI_Model {
 
 		$model = new stdClass();
 
+		$model->status_id						= null;
 		$model->office_id						= null;
 		$model->milestone						= null;
+		$model->crawl_start						= null;
+		$model->crawl_end						= null;
+		$model->crawl_status					= null;
 		$model->contact_name					= null;
 		$model->contact_email					= null;
 		$model->datajson_status					= null;
@@ -584,7 +595,7 @@ class campaign_model extends CI_Model {
 	public function uri_header($url, $redirect_count = 0) {
 
 		$tmp_dir = $tmp_dir = $this->config->item('archive_dir');
-		
+
 		$status = curl_header($url, true, $tmp_dir);
 		$status = $status['info'];	//content_type and http_code
 
@@ -1467,39 +1478,102 @@ class campaign_model extends CI_Model {
 
 		$update->milestone 		= $milestone->selected_milestone;
 
-		$this->db->select('*');
+		$this->db->select('status_id, crawl_status');
 		$this->db->where('office_id', $update->office_id);
 		$this->db->where('milestone', $update->milestone);
+		$this->db->where("(crawl_status IS NULL OR crawl_status = 'final')");
+		$this->db->limit(1);
 
 		$query = $this->db->get('datagov_campaign');
 
-		if ($query->num_rows() > 0) {
-			// update
+		// Check if this is to update tracker fields (crawl_status would be empty)
+		if ($query->num_rows() > 0) {			
 
-			if ($this->environment == 'terminal') {
-				echo 'Updating ' . $update->office_id . PHP_EOL . PHP_EOL;
+			$row = $query->row();
+
+			// if this is to update tracker fields
+			if (empty($update->crawl_status)) {
+				$this->db->where('status_id', $row->status_id);
+				$this->db->where('office_id', $update->office_id);
+				$this->db->where('milestone', $update->milestone);
+
+				$this->db->update('datagov_campaign', $update);				
 			}
 
-			//$current_data = $query->row_array();
-			//$update = array_mash($update, $current_data);
+			// if this is just an old record, change the crawl_status
+			if (empty($row->crawl_status)) {
 
-			$this->db->where('office_id', $update->office_id);
-			$this->db->where('milestone', $update->milestone);
+				if($update->crawl_status == 'in_progress') {
+					$old_status = 'current';
+				}
 
+				if($update->crawl_status == 'current') {
+					$old_status = 'archive';
+				}
+
+				$reset = array( 'crawl_status' => $old_status );
+
+				$this->db->where('status_id', $row->status_id);			
+				$this->db->update('datagov_campaign', $reset); 
+
+			}
+
+		} 
+
+		// Check if this is an in-progress crawl to update
+		if (isset($update->status_id) && !empty($update->crawl_status)) {
+
+			$this->db->where('status_id', $update->status_id);
 			$this->db->update('datagov_campaign', $update);
 
+			$status_id = $update->status_id;
 
-
+		// Otherwise this is an insert
 		} else {
-			// insert
+			
 
+			if(isset($update->status_id)) {
+				unset($update->status_id);	
+			}
+			
 			if ($this->environment == 'terminal') {
 				echo 'Adding ' . $update->office_id . PHP_EOL . PHP_EOL;
 			}
 
 			$this->db->insert('datagov_campaign', $update);
+			$status_id = $this->db->insert_id();
+		}
+
+		// reset previous "current" crawl
+		if ($update->crawl_status == 'current') {
+			
+			$this->db->select('status_id');
+			$this->db->where('office_id', $update->office_id);
+			$this->db->where('milestone', $update->milestone);
+			$this->db->where('crawl_status', 'current');
+			$this->db->where("crawl_start IS NULL");
+			$this->db->limit(1);
+
+			
+			if ($this->environment == 'terminal') {
+				echo 'Attempting to reset ' . $update->crawl_end . PHP_EOL . PHP_EOL;
+			}
+
+			$query = $this->db->get('datagov_campaign');
+
+			if ($query->num_rows() > 0) {
+
+				$row = $query->row();
+				$reset = array( 'crawl_status' => 'archive' );
+
+				$this->db->where('status_id', $row->status_id);			
+				$this->db->update('datagov_campaign', $reset); 
+
+			}
 
 		}
+
+		return $status_id;
 
 	}
 
