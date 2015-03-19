@@ -141,6 +141,12 @@
                                     </tr>
                                 <?php endif; ?>
 
+                                <?php if(!empty($validation['qa']['API_total'])) : ?>
+                                    <tr>
+                                        <th>Total APIs</th><td><?php echo $validation['qa']['API_total']; ?> </td>
+                                    </tr>
+                                <?php endif; ?>                                
+
 
                         </tbody>
                     </table>
