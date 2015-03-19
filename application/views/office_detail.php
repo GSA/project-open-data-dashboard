@@ -1375,7 +1375,7 @@
             
             if(file_exists($archive_path_local)):
                 $archive_path_url = site_url('archive' . $archive_path);
-                $archive_validation = site_url('validate?schema=' . $schema_version . '&output=browser&datajson_url=') . urlencode($archive_path_url );
+                $archive_validation = site_url('validate?schema=' . $schema_version . '&output=browser&qa=true&datajson_url=') . urlencode($archive_path_url );
         ?>
 
 
