@@ -1184,10 +1184,11 @@ class campaign_model extends CI_Model {
 
 				   if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
 				   		
-				   		if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1' 
+				   		if (($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') 
 				   			&& !empty($distribution->format) 
 				   			&& strtolower($distribution->format) == 'api' ) {
 				   			$API_total++;
+
 				   		}
 
 				   		if($component === 'full-scan') $this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $media_type);
@@ -1201,7 +1202,7 @@ class campaign_model extends CI_Model {
 						$downloadURL_total++;
 						$has_accessURL = true;	
 						$has_downloadURL = true;	
-				   }		
+				   }	
 			
 				}
 
