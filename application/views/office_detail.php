@@ -1367,7 +1367,7 @@
 
 
 
-            $archive_file = $office->id . '.csv';
+            $archive_file = $office->id . '.json';
             $origin_date = $milestone->selected_milestone;
             $archive_path = '/datajson/' . $origin_date . '/' . $archive_file;
             $archive_path_local = $config['archive_dir'] .  $archive_path;
