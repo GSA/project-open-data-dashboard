@@ -842,6 +842,7 @@
 
 
         <?php if (!empty($office_campaign->datajson_status->schema_version)): ?>
+
         <tr>
             <th id="metrics-datajson-schema-version">
                 <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_schema_version' ?>">
@@ -916,12 +917,19 @@
         
         <?php 
         
-    
-        if(isset($office_campaign->datajson_status->schema_errors)): ?>
-        
-         <?php
+            if (!empty($office_campaign->datajson_status->schema_version)) {
+                $schema_version = $office_campaign->datajson_status->schema_version;
+            } else {
+                if (strtotime($milestone->selected_milestone) >= strtotime('2015-02-28')) {
+                    $schema_version = 'federal-v1.1';
+                } else {
+                    $schema_version = 'federal';
+                }                
+            }
 
-             $schema_version = (!empty($office_campaign->datajson_status->schema_version)) ? $office_campaign->datajson_status->schema_version : 'federal';
+        if(isset($office_campaign->datajson_status->schema_errors)): ?>
+       
+         <?php
 
              $validation_url = site_url('validate?schema=' . $schema_version . '&output=browser&datajson_url=') . urlencode($office_campaign->expected_datajson_status->url);
          ?>
@@ -1351,6 +1359,40 @@
             </td>
         </tr>   
         <?php endif; ?>         
+
+
+
+
+        <?php 
+
+
+
+            $archive_file = $office->id . '.csv';
+            $origin_date = $milestone->selected_milestone;
+            $archive_path = '/datajson/' . $origin_date . '/' . $archive_file;
+            $archive_path_local = $config['archive_dir'] .  $archive_path;
+            $schema_version = (!empty($schema_version)) ? $schema_version : 'federal-v1.1';
+            
+            if(file_exists($archive_path_local)):
+                $archive_path_url = site_url('archive' . $archive_path);
+                $archive_validation = site_url('validate?schema=' . $schema_version . '&output=browser&datajson_url=') . urlencode($archive_path_url );
+        ?>
+
+
+        <tr>
+            <th id="metrics-datajson-analyze-archive">
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_analyze_archive' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Analyze archive copies
+            </th>
+            <td>
+                <span>
+                    <a href="<?php echo $archive_validation ?>">Analyze archive from <?php echo $origin_date; ?></a>
+                </span>         
+            </td>
+        </tr>   
+        <?php endif; ?>   
 
 		
 		</table>
