@@ -274,13 +274,13 @@ class campaign_model extends CI_Model {
 		$model->pdl_link_3xx->label 				= "Quality Check: Redirected links";
 		$model->pdl_link_3xx->type 					= "string";		
 
-		$model->pdl_link_4xx						= clone $field;
-		$model->pdl_link_4xx->label 				= "Quality Check: Error links";
-		$model->pdl_link_4xx->type 					= "string";
-
 		$model->pdl_link_5xx						= clone $field;
-		$model->pdl_link_5xx->label 				= "Quality Check: Broken links";
+		$model->pdl_link_5xx->label 				= "Quality Check: Error links";
 		$model->pdl_link_5xx->type 					= "string";
+
+		$model->pdl_link_4xx						= clone $field;
+		$model->pdl_link_4xx->label 				= "Quality Check: Broken links";
+		$model->pdl_link_4xx->type 					= "string";
 
 		$model->pdl_growth							= clone $field;
 		$model->pdl_growth->label 					= "Percentage growth in records since last quarter";
