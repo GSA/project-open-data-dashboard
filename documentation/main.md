@@ -26,7 +26,7 @@ The "Leading Indicators Strategy" refers to the five categories of indicators dr
 ###Doughnut Charts
 There are three doughnut charts (a variation on a pie chart) displayed at the top of the Leading Indicators section. Each of these charts will only be displayed if the data is available. 
 
-![img](https://cloud.githubusercontent.com/assets/183402/6377725/509cc86c-bcf4-11e4-9052-615f5e663e5f.png =800x)
+![img](https://cloud.githubusercontent.com/assets/183402/6377725/509cc86c-bcf4-11e4-9052-615f5e663e5f.png)
 
 #####Inventory Composition
 This chart shows the `accessLevel` percentages in the Enterprise Data Inventory (*"public"*, *"restricted public"*, and *"non-public"*).
