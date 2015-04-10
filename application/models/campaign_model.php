@@ -730,25 +730,50 @@ class campaign_model extends CI_Model {
 					$chunk_size = 50;					
 					$chunk_count = ceil($datajson_lines_count/$chunk_size);
 					$buffer = '';
+		
+					$response = array();
+					$response['errors'] = array();					
 
 					while($chunk_cycle <= $chunk_count) {
+						
+						$buffer = '';
+						$counter = 0; 				
+
+						if ($chunk_cycle == 0) {
+							$json_header = fgets($out_stream);
+						}
+
 						while (($buffer .= fgets($out_stream)) && $counter < $chunk_size) {
 					        $counter++;
 					    }		
-					    $buffer = substr($buffer, 0, strlen($buffer) - 2) . ']}';
-					    $counter = 0; 		
 
-					    // do stuff here. 				
+					    $buffer = $json_header . $buffer;
+					    $buffer = substr($buffer, 0, strlen($buffer) - 2) . ']}';
+
+						$validator = $this->campaign->jsonschema_validator($buffer, 'federal-v1.1');
+					
+						if(!empty($validator['errors']) ) {
+
+							if ($chunk_count) {
+								$key_offset = $chunk_size * $chunk_cycle;
+							} else {
+								$key_offset = 0;
+							}
+
+							$response['errors'] = $response['errors'] + $this->process_validation_errors($validator['errors'], $key_offset);
+							
+						}
+					    
+					    $chunk_cycle++;				
 					}
+
+					return $response; 
 
 				} else {
 					$errors[] = "File not found or couldn't be downloaded";	
 				}
 				endif;
 		
-
-
-
 			}
 
 			// See if it's valid JSON 

@@ -100,7 +100,7 @@ class DataJsonParser implements JsonStreamingParser_Listener {
     // Note that value may be a string, integer, boolean, null
     public function value($value) {
         $obj = array_pop($this->_stack);
-        if ($this->_key[$this->_level]) {
+        if (isset($this->_key[$this->_level])) {
             $obj[$this->_key[$this->_level]] = $value;
             
             if($this->_level == 1 && $this->_dataset_stack === false) {
