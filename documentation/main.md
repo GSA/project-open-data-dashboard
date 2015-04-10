@@ -1,6 +1,6 @@
 #Documentation
 
-This is a guide to document how this website measures and tracks implementation of [Project Open Data](http://project-open-data.github.com/) as well as other tools and resources it provides to help agencies implement their open data programs. 
+This is a guide to explain how the [Agency Dashboard](http://labs.data.gov/dashboard/offices) measures and tracks implementation of [Project Open Data](http://project-open-data.github.com/). This website also provides a number of tools and resources to help agencies implement their open data programs and many of those are documented here as well.  
 
 You can help [edit this documentation on GitHub](https://github.com/GSA/project-open-data-dashboard/edit/master/documentation/main.md). 
 
@@ -21,6 +21,29 @@ The dashboard is oriented around quarterly milestones. You can use  the blue mil
 ###Leading Indicators Strategy
 
 The "Leading Indicators Strategy" refers to the five categories of indicators drawn from the [Cross Agency Priority Goals (CAP Goals) for Open Data](http://www.performance.gov/node/3396?view=public#overview). The strategies are based on the [Enterprise Data Inventory](#enterprise_data_inventory), the [Public Data Listing](#public_data_listing), [Public Engagement](#public_engagement), [Privacy & Security](#privacy_and_security), and [Human Capital](#human_capital) and are all detailed below. 
+
+<span id="doughnut_charts"></span>
+###Doughnut Charts
+There are three doughnut charts (a variation on a pie chart) displayed at the top of the Leading Indicators section. Each of these charts will only be displayed if the data is available. 
+
+![image](https://cloud.githubusercontent.com/assets/183402/6377725/509cc86c-bcf4-11e4-9052-615f5e663e5f.png =800x)
+
+#####Inventory Composition
+This chart shows the `accessLevel` percentages in the Enterprise Data Inventory (*"public"*, *"restricted public"*, and *"non-public"*).
+
+#####Public Dataset Status
+This chart shows the percentage of public datasets (`"accessLevel":"public"`) that include a distribution with at least one `downloadURL` provided. A dataset without a distribution or a dataset that only includes a distribution with an indirect `accessURL` does not count as publishing a link to raw data. 
+
+#####Dataset Link Quality
+This chart shows percentages for [HTTP status codes](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes) from the [total number of access and download links](#pdl_link_total). Specifically, this is a breakdown of:  
+
+- [Working Links](#datajson_downloadable_2xx) *(HTTP 2xx)*
+- [Redirected Links](#datajson_downloadable_3xx) *(HTTP 3xx)*
+- [Broken links](#datajson_downloadable_4xx) *(HTTP 4xx)*
+- [Error Links](#datajson_downloadable_5xx) *(HTTP 5xx)*
+- [Unreachable Links (Other)](#datajson_downloadable_0) *(HTTP 0)*
+
+*NOTE: The percentages for Error Links and Broken Links are currently mixed-up (swapped) in this chart. This should be fixed by April 17th 2015*
 
 
 <span id="leading_indicators"></span>
@@ -106,8 +129,40 @@ This element is a collection of the qualitative and quantitative measures and an
 This element captures the count of publically listed data sets via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. *(Quantitative)*
 
 <span id="pdl_downloadable"></span>
-#####Number of Downloadable Datasets
-This element captures the count of downlaodable publically listed data sets via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. This shoudl correspond with "*accessURL*" in the PDL JSON file that is the URL providing direct access to the downloadable distribution of a dataset. *(Quantitative)*
+#####Number of Public Datasets with File Downloads
+This element captures the count of downloadable publicaly listed datasets (`"accessLevel":"public"`) via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. This should correspond with `downloadURL` in the PDL JSON file that is the URL providing direct access to the downloadable distribution of a dataset. In version 1.0 of the POD Schema, this metric was based on the `accessloadURL`, but since v1.1 it has been based on the `downloadURL`. *(Quantitative)*
+
+<span id="pdl_link_total"></span>
+#####Total number of access and download links 
+The total number of `accessURL` and `downloadURL` URLs in distributions for public datasets (`"accessLevel":"public"`). 
+
+#####Quality Check Analysis
+The Quality Check fields show the breakdown of [HTTP status codes](en.wikipedia.org/wiki/List_of_HTTP_status_codes) for `accessURL` and `downloadURL` URLs in distributions. This check uses the [HTTP HEAD](http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) method to analyze results. 
+
+In some cases, the analysis may determine that the HTTP HEAD check did not work properly and it will fall back to HTTP GET. However, some servers do not properly support HTTP HEAD and may return false positive results (e.g. an HTTP GET request that would normally return HTTP 200 may erroneously return an HTTP 500 for the same request using HTTP HEAD). These false positives are the result of web servers that do not correctly implement the HTTP standard since HTTP HEAD support is required. [RFC2616 Section 5.1.1 - Method](http://tools.ietf.org/html/rfc2616#section-5.1.1) states: 
+
+> The methods GET and HEAD MUST be supported by all general-purpose servers.
+
+<span id="datajson_downloadable_2xx"></span>
+#####Working Links (HTTP 2xx)
+The number of `accessURL` and `downloadURL` URLs that respond with an [HTTP 2xx](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes#2xx_Success) status code.
+
+<span id="datajson_downloadable_3xx"></span>
+#####Redirected Links (HTTP 3xx)
+The number of `accessURL` and `downloadURL` URLs that respond with an [HTTP 3xx](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes#3xx_Redirection) status code.
+
+<span id="datajson_downloadable_4xx"></span>
+#####Broken links (HTTP 4xx)
+The number of `accessURL` and `downloadURL` URLs that respond with an [HTTP 4xx](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_Error) status code.
+
+<span id="datajson_downloadable_5xx"></span>
+#####Error Links (HTTP 5xx)
+The number of `accessURL` and `downloadURL` URLs that respond with an [HTTP 5xx](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_Server_Error) status code.
+
+<span id="datajson_downloadable_0"></span>
+#####Unreachable / Server Not Found / Other (HTTP 0)
+The number of `accessURL` and `downloadURL` URLs that do not return an [HTTP status code](en.wikipedia.org/wiki/List_of_HTTP_status_codes) within 5 seconds.
+
 
 <span id="pdl_growth"></span>
 #####Percentage growth in records since last quarter
