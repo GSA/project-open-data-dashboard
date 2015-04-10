@@ -35,7 +35,7 @@ This chart shows the `accessLevel` percentages in the Enterprise Data Inventory 
 This chart shows the percentage of public datasets (`"accessLevel":"public"`) that include a distribution with at least one `downloadURL` provided. A dataset without a distribution or a dataset that only includes a distribution with an indirect `accessURL` does not count as publishing a link to raw data. 
 
 #####Dataset Link Quality
-This chart shows percentages for [HTTP status codes](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes) from the [total number of access and download links](#pdl_link_total). Specifically, this is a breakdown of:  
+This chart shows percentages for [HTTP status codes](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes) from the [total number of access and download links](#pdl_link_total). For more information on how these numbers are determined, see the [Quality Check Analysis](#quality_check_analysis) overview and the section for each status code linked below:
 
 - [Working Links](#datajson_downloadable_2xx) *(HTTP 2xx)*
 - [Redirected Links](#datajson_downloadable_3xx) *(HTTP 3xx)*
@@ -136,6 +136,7 @@ This element captures the count of downloadable publicaly listed datasets (`"acc
 #####Total number of access and download links 
 The total number of `accessURL` and `downloadURL` URLs in distributions for public datasets (`"accessLevel":"public"`). 
 
+<span id="quality_check_analysis"></span>
 #####Quality Check Analysis
 The Quality Check fields show the breakdown of [HTTP status codes](en.wikipedia.org/wiki/List_of_HTTP_status_codes) for `accessURL` and `downloadURL` URLs in distributions. This check uses the [HTTP HEAD](http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods) method to analyze results. 
 
