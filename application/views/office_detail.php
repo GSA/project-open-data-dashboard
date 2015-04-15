@@ -221,6 +221,7 @@
 
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>                
 
+                    <input type="hidden" name="status_id" value="<?php echo $office_campaign->status_id; ?>">  
                     <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">   
                     <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">                       
 
@@ -664,6 +665,7 @@
                     <?php endif; ?>
 
                     <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">   
+                    <input type="hidden" name="status_id" value="<?php echo $office_campaign->status_id; ?>">  
                     <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">                       
                 </form>
             <?php endif; ?>   

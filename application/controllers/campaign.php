@@ -821,17 +821,16 @@ class Campaign extends CI_Controller {
             exit;
  		}
 
-
         $update = (object) $this->input->post(NULL, TRUE);
-
 
         $this->load->model('campaign_model', 'campaign');
 
 		$datagov_model_fields = $this->campaign->datagov_model();
         $tracker_review_model = $this->campaign->tracker_review_model();
 
-		$datagov_model_fields->office_id = $update->office_id;
-		$datagov_model_fields->milestone = $update->milestone;
+		$datagov_model_fields->status_id = (!empty($update->status_id)) ? $update->status_id : null;
+        $datagov_model_fields->office_id = $update->office_id;
+		$datagov_model_fields->milestone = $update->milestone;        
    
         // Set author name with best data available
 		$author_full = $this->session->userdata('name_full');
@@ -849,7 +848,6 @@ class Campaign extends CI_Controller {
 		foreach ($datagov_model_fields as $field => $data) {
 			if(empty($data)) unset($datagov_model_fields->$field);
 		}
-
 
     	$this->campaign->update_status($datagov_model_fields);
 
@@ -918,6 +916,11 @@ class Campaign extends CI_Controller {
 
 			unset($update->$field_name);
 		}
+
+        if(!empty($update->status_id)) {
+            $datagov_model_fields->status_id = $update->status_id;
+            unset($update->status_id);            
+        }
 
 		$datagov_model_fields->office_id = $update->office_id;
 		unset($update->office_id);

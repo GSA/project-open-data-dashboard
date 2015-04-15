@@ -693,6 +693,10 @@ class campaign_model extends CI_Model {
 				
 				// TODO: Hiding this for now until it's complete				
 				if(empty($errors)):
+
+				// Increase the timeout limit
+			    @set_time_limit(600);	
+			
 				$this->load->helper('file');
 
 				if ($rawfile = $this->archive_file('datajson-lines', $this->current_office_id, $datajson_url)) {	
@@ -725,19 +729,33 @@ class campaign_model extends CI_Model {
 
 			        $out_stream = fopen($outfile, 'r+');	
 
-					$counter = 0;
 					$chunk_cycle = 0;
-					$chunk_size = 50;					
-					$chunk_count = ceil($datajson_lines_count/$chunk_size);
+					$chunk_size = 200;					
+					$chunk_count = intval(ceil($datajson_lines_count/$chunk_size));
 					$buffer = '';
 		
 					$response = array();
-					$response['errors'] = array();					
+					$response['errors'] = array();		
 
-					while($chunk_cycle <= $chunk_count) {
-						
+					if($quality !== false) {
+						$response['qa'] = array();
+					}			
+
+					while($chunk_cycle < $chunk_count) {
+					
 						$buffer = '';
+						$datajson_qa = null;
 						$counter = 0; 				
+
+						if ($chunk_cycle > 0) {
+							$key_offset = $chunk_size * $chunk_cycle;
+						} else {
+							$key_offset = 0;
+						}
+
+						$next_offset = $key_offset + $chunk_size;
+						echo "Analyzing chunk $chunk_cycle of $chunk_count ($key_offset to $next_offset of $datajson_lines_count)" . PHP_EOL;
+
 
 						if ($chunk_cycle == 0) {
 							$json_header = fgets($out_stream);
@@ -750,24 +768,86 @@ class campaign_model extends CI_Model {
 					    $buffer = $json_header . $buffer;
 					    $buffer = substr($buffer, 0, strlen($buffer) - 2) . ']}';
 
-						$validator = $this->campaign->jsonschema_validator($buffer, 'federal-v1.1');
-					
+						$validator = $this->campaign->jsonschema_validator($buffer, 'federal-v1.1');				
+
 						if(!empty($validator['errors']) ) {
 
-							if ($chunk_count) {
-								$key_offset = $chunk_size * $chunk_cycle;
-							} else {
-								$key_offset = 0;
-							}
+							$response['errors'] = array_merge($response['errors'], $this->process_validation_errors($validator['errors'], $key_offset));
 
-							$response['errors'] = $response['errors'] + $this->process_validation_errors($validator['errors'], $key_offset);
-							
 						}
-					    
+
+						if($quality !== false) {
+							$datajson_qa = $this->campaign->datajson_qa($buffer, 'federal-v1.1', $quality, $component);	
+
+							if(!empty($datajson_qa)) {
+								$response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);	
+							}	
+
+						}						
+
 					    $chunk_cycle++;				
 					}
 
-					return $response; 
+					
+
+					// ###################################################################
+					// Needs to be refactored into separate function
+					// ###################################################################
+
+
+						// Sum QA counts 
+						if(!empty($response['qa'])) {
+
+
+							if(!empty($response['qa']['bureauCodes'])) {
+								$response['qa']['bureauCodes'] = array_keys($response['qa']['bureauCodes']);
+							}
+
+							if(!empty($response['qa']['programCodes'])) {
+								$response['qa']['programCodes'] = array_keys($response['qa']['programCodes']);
+							}
+
+							$sum_array_fields = array('API_total', 'downloadURL_present', 'downloadURL_total', 'accessURL_present', 'accessURL_total', 'accessLevel_public', 'accessLevel_restricted', 'accessLevel_nonpublic');
+
+							foreach ($sum_array_fields as $array_field) {
+								if(!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {					
+									$response['qa'][$array_field] = array_sum($response['qa'][$array_field]);					 
+								}	
+							}
+
+							// Sum validation counts
+							if (!empty($response['qa']['validation_counts']) && is_array($response['qa']['validation_counts'])) {
+								foreach ($response['qa']['validation_counts'] as $validation_key => $validation_count) {
+
+									if(is_array($response['qa']['validation_counts'][$validation_key])) {
+										$response['qa']['validation_counts'][$validation_key] = array_sum($response['qa']['validation_counts'][$validation_key]);
+									}
+
+								}
+							}
+
+						}
+						
+
+						$response['valid'] = (empty($response['errors'])) ? true : false;
+						$response['valid_json'] = true;
+
+						$response['total_records'] = $datajson_lines_count;		
+
+						if(!empty($datajson_header['download_content_length'])) {
+							$response['download_content_length'] = $datajson_header['download_content_length'];
+						}
+
+						if(empty($response['errors'])) {
+							$response['errors'] = false;
+						}
+						
+						return $response;
+
+
+			// ###################################################################
+
+
 
 				} else {
 					$errors[] = "File not found or couldn't be downloaded";	
@@ -775,6 +855,8 @@ class campaign_model extends CI_Model {
 				endif;
 		
 			}
+
+
 
 			// See if it's valid JSON 
 			if(!empty($datajson) && $datajson_header['download_content_length'] < $max_remote_size) {
@@ -911,7 +993,6 @@ class campaign_model extends CI_Model {
 				}
 								
 			}
-
 
 
 			// Sum QA counts 
@@ -1075,8 +1156,15 @@ class campaign_model extends CI_Model {
 			} 
             else {
 
-				$key = substr($error['property'], 0, strpos($error['property'], '.'));
-				$full_field = substr($error['property'], strpos($error['property'], '.') + 1);
+            	if (strpos($error['property'], 'dataset[') !== false) {
+            		$dataset_key 	= substr($error['property'], 0, strpos($error['property'], '.'));
+					$key 			= get_between($dataset_key, '[', ']');
+					$full_field 	= substr($error['property'], strpos($error['property'], '.') + 1);
+            	} else {
+					$key = substr($error['property'], 0, strpos($error['property'], '.'));
+					$full_field = substr($error['property'], strpos($error['property'], '.') + 1);            		
+            	}
+
 
 				if (strpos($full_field, '[')) {
 					$field 		= substr($full_field, 0, strpos($full_field, '[') );
@@ -1497,12 +1585,25 @@ class campaign_model extends CI_Model {
 
 	public function update_status($update) {
 
+		$existing_status 	= array();
+		$tracker_update 	= false;
+
 		// Determine current milestone
 		$selected_milestone	= (!empty($update->milestone)) ? $update->milestone : null;
 		$milestones 			= $this->milestones_model();	
 		$milestone 				= $this->milestone_filter($selected_milestone, $milestones);
 
 		$update->milestone 		= $milestone->selected_milestone;
+
+		// Check if this is to update tracker fields
+		if (!empty($update->status_id)) {
+			$existing_status['status_id'] = $update->status_id;
+			$this->db->where('status_id', $update->status_id);			
+
+			if (empty($update->crawl_status)){
+				$tracker_update = true;
+			}
+		}
 
 		$this->db->select('status_id, crawl_status');
 		$this->db->where('office_id', $update->office_id);
@@ -1512,14 +1613,24 @@ class campaign_model extends CI_Model {
 
 		$query = $this->db->get('datagov_campaign');
 
-		// Check if this is to update tracker fields (crawl_status would be empty)
-		if ($query->num_rows() > 0) {			
-
+		if ($query->num_rows() > 0) {
 			$row = $query->row();
+			$existing_status['status_id'] = $row->status_id;
 
+			if (!empty($row->crawl_status)) {
+				$existing_status['crawl_status'] =  $row->crawl_status;
+				$update->crawl_status		 	 = 	$row->crawl_status;
+			}
+
+		} 
+
+		// if this is to update tracker fields (crawl_status would be empty)
+		if (!empty($existing_status)) {			
+			
 			// if this is to update tracker fields
 			if (empty($update->crawl_status)) {
-				$this->db->where('status_id', $row->status_id);
+				
+				$this->db->where('status_id', $existing_status['status_id']);
 				$this->db->where('office_id', $update->office_id);
 				$this->db->where('milestone', $update->milestone);
 
@@ -1527,27 +1638,30 @@ class campaign_model extends CI_Model {
 			}
 
 			// if this is just an old record, change the crawl_status
-			if (empty($row->crawl_status)) {
+			if (empty($existing_status['crawl_status'])) {
 
-				if($update->crawl_status == 'in_progress') {
+				if(!empty($update->crawl_status) && $update->crawl_status == 'in_progress') {
 					$old_status = 'current';
 				}
 
-				if($update->crawl_status == 'current') {
+				if(!empty($update->crawl_status) && $update->crawl_status == 'current') {
 					$old_status = 'archive';
 				}
 
-				$reset = array( 'crawl_status' => $old_status );
+				if(!empty($old_status)) {
+					$reset = array( 'crawl_status' => $old_status );
 
-				$this->db->where('status_id', $row->status_id);			
-				$this->db->update('datagov_campaign', $reset); 
+					$this->db->where('status_id', $existing_status['status_id']);			
+					$this->db->update('datagov_campaign', $reset); 
+				}
 
 			}
 
 		} 
 
-		// Check if this is an in-progress crawl to update
-		if (isset($update->status_id) && !empty($update->crawl_status)) {
+
+		// Check if this is an in-progress crawl to update or a mid-quarter tracker update
+		if ($tracker_update OR (isset($update->status_id) && !empty($update->crawl_status))) {
 
 			$this->db->where('status_id', $update->status_id);
 			$this->db->update('datagov_campaign', $update);
@@ -1571,7 +1685,7 @@ class campaign_model extends CI_Model {
 		}
 
 		// reset previous "current" crawl
-		if ($update->crawl_status == 'current') {
+		if (!empty($update->crawl_status) && $update->crawl_status == 'current') {
 			
 			$this->db->select('status_id');
 			$this->db->where('office_id', $update->office_id);
