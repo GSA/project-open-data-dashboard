@@ -1818,8 +1818,7 @@ class campaign_model extends CI_Model {
 
 						$model->$key = array();
 
-						if (!empty($anyOptions->items) && $anyOptions->items->type == 'object') {
-							
+						if (!empty($anyOptions->items) && !empty($anyOptions->items->type) && $anyOptions->items->type == 'object') {							
 							$model->$key = array($this->schema_to_model($anyOptions->items->properties));
 
 						}

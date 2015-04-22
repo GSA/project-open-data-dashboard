@@ -163,17 +163,9 @@
         {
           "type": "array",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "distribution.json",
-                "minItems": 1,
-                "uniqueItems": true
-              },
-              {
-                "type": "string",
-                "pattern": "^(\\[\\[REDACTED).*?(\\]\\])$"
-              }   
-            ]        
+            "$ref": "distribution.json",
+            "minItems": 1,
+            "uniqueItems": true        
           }
         },
         {
