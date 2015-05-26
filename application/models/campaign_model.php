@@ -231,9 +231,12 @@ class campaign_model extends CI_Model {
         $model->edi_quality_check->type             = "string";
 
         $model->edi_public_release                  = clone $field;
-        $model->edi_public_release->label           = "Is the EDI available on Data.gov?";
+        $model->edi_public_release->label           = "PDL includes non-public datasets and no redactions";
         $model->edi_public_release->type            = "select";
 
+        $model->edi_license_present                 = clone $field;
+        $model->edi_license_present->label          = "License specified";
+        $model->edi_license_present->type           = "string";
 
 
 		// Public Data Listing
@@ -305,7 +308,6 @@ class campaign_model extends CI_Model {
 		$model->pdl_datagov_view_count				= clone $field;
 		$model->pdl_datagov_view_count->label 		= "Views on data.gov for the quarter";
 		$model->pdl_datagov_view_count->type 		= "string";
-
 
 		// Public Engagement
 
@@ -688,11 +690,8 @@ class campaign_model extends CI_Model {
 			// See if it exceeds max size
 			if($datajson_header['download_content_length'] > $max_remote_size) {
 
-				$filesize = human_filesize($datajson_header['download_content_length']);
-				$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";
-				
-				// TODO: Hiding this for now until it's complete				
-				if(empty($errors)):
+				//$filesize = human_filesize($datajson_header['download_content_length']);
+				//$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";				
 
 				// Increase the timeout limit
 			    @set_time_limit(600);	
@@ -741,6 +740,8 @@ class campaign_model extends CI_Model {
 						$response['qa'] = array();
 					}			
 
+					echo "Analyzing $datajson_lines_count lines in $chunk_count chunks of $chunk_size lines each" . PHP_EOL;
+
 					while($chunk_cycle < $chunk_count) {
 					
 						$buffer = '';
@@ -754,7 +755,7 @@ class campaign_model extends CI_Model {
 						}
 
 						$next_offset = $key_offset + $chunk_size;
-						echo "Analyzing chunk $chunk_cycle of $chunk_count ($key_offset to $next_offset of $datajson_lines_count)" . PHP_EOL;
+						//echo "Analyzing chunk $chunk_cycle of $chunk_count ($key_offset to $next_offset of $datajson_lines_count)" . PHP_EOL;
 
 
 						if ($chunk_cycle == 0) {
@@ -788,7 +789,8 @@ class campaign_model extends CI_Model {
 					    $chunk_cycle++;				
 					}
 
-					
+			        // Delete json lines file
+			        unlink($outfile);					
 
 					// ###################################################################
 					// Needs to be refactored into separate function
@@ -807,7 +809,17 @@ class campaign_model extends CI_Model {
 								$response['qa']['programCodes'] = array_keys($response['qa']['programCodes']);
 							}
 
-							$sum_array_fields = array('API_total', 'downloadURL_present', 'downloadURL_total', 'accessURL_present', 'accessURL_total', 'accessLevel_public', 'accessLevel_restricted', 'accessLevel_nonpublic');
+							$sum_array_fields = array('API_total', 
+													  'downloadURL_present', 
+													  'downloadURL_total', 
+													  'accessURL_present', 
+													  'accessURL_total', 
+													  'accessLevel_public', 
+													  'accessLevel_restricted', 
+													  'accessLevel_nonpublic',
+													  'license_present',
+													  'redaction_present',
+													  'redaction_no_explanation');
 
 							foreach ($sum_array_fields as $array_field) {
 								if(!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {					
@@ -851,8 +863,7 @@ class campaign_model extends CI_Model {
 
 				} else {
 					$errors[] = "File not found or couldn't be downloaded";	
-				}
-				endif;
+				}				
 		
 			}
 
@@ -1214,7 +1225,10 @@ class campaign_model extends CI_Model {
 		$API_total					= 0;
 		$downloadURL_total			= 0;		
 		$accessURL_present 			= 0;
-		$downloadURL_present		= 0;		
+		$downloadURL_present		= 0;
+		$license_present			= 0;
+		$redaction_present			= 0;	
+		$redaction_no_explanation	= 0;	
 
 		$json = json_decode($json);
 
@@ -1321,6 +1335,23 @@ class campaign_model extends CI_Model {
 
 			}
 
+			// Track presence of redactions and rights info
+			$json_text = json_encode($dataset);
+			if (strpos($json_text, '[[REDACTED-EX') !== false) {
+				$redaction_present++;
+
+				if(empty($dataset->rights)) {
+					$redaction_no_explanation++;	
+				}
+				
+			}
+			unset($json_text);
+
+			// Track presence of license info
+			if(!empty($dataset->license) && filter_var($dataset->license, FILTER_VALIDATE_URL)) {
+				$license_present++;
+			}
+
 			if($has_accessURL) $accessURL_present++;
 			if($has_downloadURL) $downloadURL_present++;
 
@@ -1340,10 +1371,13 @@ class campaign_model extends CI_Model {
 		$qa['accessLevel_restricted']		= $accessLevel_restricted;
 		$qa['accessLevel_nonpublic']		= $accessLevel_nonpublic;
 
-		$qa['accessURL_present'] 	= $accessURL_present;
-		$qa['accessURL_total'] 		= $accessURL_total;
-		$qa['API_total'] 			= $API_total;	
-		$qa['validation_counts']	= $this->validation_counts;
+		$qa['accessURL_present'] 			= $accessURL_present;
+		$qa['accessURL_total'] 				= $accessURL_total;
+		$qa['API_total'] 					= $API_total;	
+		$qa['validation_counts']			= $this->validation_counts;
+		$qa['license_present'] 				= $license_present;
+		$qa['redaction_present'] 			= $redaction_present;
+		$qa['redaction_no_explanation'] 	= $redaction_no_explanation;
 
 		if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
 			$qa['downloadURL_present'] 	= $downloadURL_present;	

@@ -82,7 +82,8 @@
                                     'pe_feedback_specified', 
                                     'edi_schedule_delivered', 
                                     'ps_publication_process',
-                                    'pdl_downloadable'
+                                    'pdl_downloadable',
+                                    'edi_license_present'
                                     );
 
 
@@ -921,9 +922,8 @@
             <td>
             <span class="text-<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
             <?php
-            //var_dump($office_campaign->datajson_status); exit;
 
-            if($office_campaign->datajson_status->download_content_length > $config['max_remote_size']) {
+            if(empty($valid_count) && $office_campaign->datajson_status->download_content_length > $config['max_remote_size']) {
                 echo 'File is too large to validate';
             } else {
                 if($valid_schema == true) echo 'Valid';
@@ -1132,7 +1132,7 @@
             <?php endif; ?>              
 
             
-            <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx)): ?>
+            <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx) && $office_campaign->datajson_status->qa->validation_counts->http_2xx > 0): ?>
 
 
                 <tr class="info" id="pdl_link_check">
@@ -1325,6 +1325,51 @@
                 </td>
             </tr> 
             <?php endif; ?>
+
+            <?php if(isset($office_campaign->datajson_status->qa->license_present)): ?>
+            <tr>
+                <th id="license_present">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#license_present' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    License Specified
+                </th>                 
+                <td id="edi_license_present">
+                    <?php echo process_percentage($office_campaign->datajson_status->qa->license_present, $total_records); ?>
+                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->license_present . ' of ' . $total_records; ?>)</span>                    
+                </td>
+            </tr> 
+            <?php endif; ?>   
+
+            <?php if(isset($office_campaign->datajson_status->qa->redaction_present)): ?>
+            <tr>
+                <th id="redaction_present">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#redaction_present' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Datasets with Redactions
+                </th>                 
+                <td id="edi_redaction_present">
+                    <?php echo process_percentage($office_campaign->datajson_status->qa->redaction_present, $total_records); ?>
+                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->redaction_present . ' of ' . $total_records; ?>)</span>                    
+                </td>
+            </tr> 
+            <?php endif; ?>   
+
+            <?php if(isset($office_campaign->datajson_status->qa->redaction_no_explanation)): ?>
+            <tr>
+                <th id="redaction_no_explanation">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#redaction_no_explanation' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Redactions without explanation (rights field)
+                </th>                 
+                <td id="edi_redaction_no_explanation">
+                    <?php echo process_percentage($office_campaign->datajson_status->qa->redaction_no_explanation, $total_records); ?>
+                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->redaction_no_explanation . ' of ' . $total_records; ?>)</span>                    
+                </td>
+            </tr> 
+            <?php endif; ?>                                 
 
 
         <?php endif; ?>
