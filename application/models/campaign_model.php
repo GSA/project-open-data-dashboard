@@ -694,7 +694,7 @@ class campaign_model extends CI_Model {
 				//$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";				
 
 				// Increase the timeout limit
-			    @set_time_limit(600);	
+			    @set_time_limit(6000);	
 			
 				$this->load->helper('file');
 
