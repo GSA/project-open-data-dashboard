@@ -57,7 +57,7 @@ class Offices extends CI_Controller {
 		$this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
 		$this->db->where('offices.cfo_act_agency', 'true');
 		$this->db->where('offices.no_parent', 'true');
-		$this->db->where("datagov_campaign.crawl_status IS NULL OR datagov_campaign.crawl_status = '$crawl_status_filter'");
+		$this->db->where("(datagov_campaign.crawl_status IS NULL OR datagov_campaign.crawl_status = '$crawl_status_filter')");
 		$this->db->order_by("offices.name", "asc");
 		$query = $this->db->get();
 
