@@ -7,7 +7,7 @@ Federal agencies were seeded using the [USA.gov Federal Agency Directory API](ht
 Features
 -----
 * **[Dashboard overview](http://data.civicagency.org/offices)** of the status of each federal agency's implementation of [Project Open Data](https://project-open-data.cio.gov/) for each milestone.
-* **Permissioned Content Editing** for the fields in the dasboard that can't be automated. The fields are stored as JSON objects so the data model is very flexible and can be customized without database changes. User accounts are handled via Github.
+* **Permissioned Content Editing** for the fields in the dashboard that can't be automated. The fields are stored as JSON objects so the data model is very flexible and can be customized without database changes. User accounts are handled via Github.
 * **Automated crawls** for each agency to report metrics from Project Open Data assets (data.json, digitalstrategy.json, /data page, etc). This includes reporting on the number of datasets and validation against the Project Open Data metadata schema. 
 * **A [validator](http://data.civicagency.org/validate)** to validate Project Open Data data.json files via URL, file upload, or text input. This can be used for testing both data.json Public Data Listing files as well as the Enterprise Data Inventory JSON. The validator can be used both by Federal agencies as well as non-federal entities by specifiying the Non-Federal schema. 
 * **Converters** to transform a [CSV into a data.json](http://data.civicagency.org/datagov/csv_to_json) file or to [export](http://data.civicagency.org/export) existing data from Data.gov
