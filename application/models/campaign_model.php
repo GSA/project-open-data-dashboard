@@ -619,24 +619,6 @@ class campaign_model extends CI_Model {
 	}
 
 
-	public function validate_datajson_old($uri) {
-
-		$this->load->helper('jsonschema');
-
-		$schema = json_decode(file_get_contents(realpath('./schema/catalog.json')));
-
-		if($data = @file_get_contents($uri)) {
-    		$data = json_decode($data);
-
-    		if(!empty($data)) {
-    			return Jsv4::validate($data, $schema);
-    		} else {
-    			return false;
-    		}
-		} else {
-		    return false;
-		}
-	}
 
 	public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null) {
 
