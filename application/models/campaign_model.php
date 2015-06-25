@@ -940,6 +940,18 @@ class campaign_model extends CI_Model {
 
 			}
 
+			if($schema == 'federal-v1.1' && empty($datajson_decode->dataset)) {				
+				$errors[] = "This file does not appear to be using the federal-v1.1 schema";	
+				$response = array(
+								'raw_valid_json' => $raw_valid_json,
+								'valid_json' => $valid_json, 
+								'valid' => false, 
+								'fail' => $errors
+								);
+				return $response;				
+			}
+
+
 			if($schema !== 'federal-v1.1' && $schema !== 'non-federal-v1.1' ) {
 				$chunk_size = 500;				
 				$datajson_chunks = array_chunk($datajson_decode, $chunk_size);
