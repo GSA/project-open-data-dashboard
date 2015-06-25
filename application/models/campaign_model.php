@@ -2058,7 +2058,7 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 		}
 
 		// Convert distributions
-		if(!empty($raw_data->distribution)) {
+		if(!empty($raw_data->distribution) && is_array($raw_data->distribution)) {
 
 			foreach($raw_data->distribution as $resource) {
 				$distribution = clone $datajson_model->distribution[0];
@@ -2158,7 +2158,8 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 			        break;     
 			    case "Completely irregular":
 			        $accrualPeriodicity = 'irregular';
-			        break; 			           			        		        			        			        			        			        			        			        
+			        break; 		
+			    default: $accrualPeriodicity = $raw_data->accrualPeriodicity;
 			}			
 
 		} else {
