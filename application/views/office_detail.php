@@ -1460,6 +1460,32 @@
         </tr>   
         <?php endif; ?>   
 
+
+
+
+
+        <?php if(!empty($nearby_crawls)): ?>
+        <tr>
+            <th id="metrics-datajson-last-crawl">
+                <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_last_crawl' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+                Nearby Daily Crawls
+            </th>
+            <td>
+                <?php foreach ($nearby_crawls as $daily_crawl): 
+                        if(!empty($daily_crawl['crawl_start'])):
+                ?>     
+
+                        <div> <a href="<?php echo site_url('offices/detail/' . $office->id . '/' . $milestone->selected_milestone . '/status/' . $daily_crawl['status_id']); ?>"><?php echo date("l, d-M-Y H:i:s T", strtotime($daily_crawl['crawl_start'])); ?></a>
+
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </td>
+        </tr>   
+        <?php endif; ?>  
+
+
 		
 		</table>
 		</div>

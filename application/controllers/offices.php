@@ -146,7 +146,7 @@ class Offices extends CI_Controller {
 	}
 
 
-	public function detail($id, $milestone=null) {
+	public function detail($id, $milestone=null, $status = null, $status_id = null) {
 
 		$this->load->helper('api');
 		$this->load->model('campaign_model', 'campaign');
@@ -204,7 +204,15 @@ class Offices extends CI_Controller {
 			}
 
 			// Get crawler data
-			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id, $milestone->selected_milestone);
+			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id, $milestone->selected_milestone, null, $status_id);
+
+
+			// Get the IDs of daily crawls before and after this date
+			$crawls_before = $this->campaign->datagov_office_crawls($view_data['office']->id, $milestone->selected_milestone, $view_data['office_campaign']->status_id, '<', '5');
+			$crawls_after  = $this->campaign->datagov_office_crawls($view_data['office']->id, $milestone->selected_milestone, $view_data['office_campaign']->status_id, '>', '5');
+
+			$view_data['nearby_crawls'] = array_merge(array_reverse($crawls_before), $crawls_after);
+			
 
 			// If we have a blank slate, populate the data model
 			if(empty($view_data['office_campaign'])) {
@@ -267,14 +275,14 @@ class Offices extends CI_Controller {
 
 	}
 
-	public function routes($route, $parameter1 = null, $parameter2 = null) {
+	public function routes($route, $parameter1 = null, $parameter2 = null, $parameter3 = null, $parameter4 = null) {
 
 		if($route == 'all') {
 			return $this->index($milestone=null, $output=null, $show_all_offices = true);	
 		}
 
 		if($route == 'detail') {
-			return $this->detail($parameter1, $parameter2);	
+			return $this->detail($parameter1, $parameter2, $parameter3, $parameter4);	
 		}
 
 		// check if it's a milestone date

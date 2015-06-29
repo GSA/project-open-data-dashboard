@@ -33,16 +33,23 @@ class campaign_model extends CI_Model {
 
 	}
 
-	public function datagov_office($office_id, $milestone = null, $crawl_status = null) {
+	public function datagov_office($office_id, $milestone = null, $crawl_status = null, $status_id = null) {
 
 		$this->db->select('*');
 		$this->db->where('office_id', $office_id);
 
-		if(!empty($crawl_status)) {
-			$this->db->where('crawl_status', $crawl_status);
+		// If we got a status_id, query specifically for that
+		if(!empty($status_id)){
+			$this->db->where('status_id', $status_id);
 		} else {
-			$this->db->where("(crawl_status IS NULL OR crawl_status='current' OR crawl_status='final')");	
+		// otherwise see if we need to filter by crawl status	
+			if(!empty($crawl_status)) {
+				$this->db->where('crawl_status', $crawl_status);
+			} else {
+				$this->db->where("(crawl_status IS NULL OR crawl_status='current' OR crawl_status='final')");	
+			}
 		}
+
 
 		if($milestone) $this->db->where('milestone', $milestone);
 		$this->db->limit(1);
@@ -56,6 +63,24 @@ class campaign_model extends CI_Model {
 		}
 
 	}
+
+	public function datagov_office_crawls($office_id, $milestone = null, $status_id, $direction, $limit) {
+
+		$this->db->select('status_id, crawl_start, crawl_end');
+		$this->db->where('office_id', $office_id);
+		$this->db->where('milestone', $milestone);
+		$this->db->where('status_id ' . $direction, $status_id);	
+
+		if ($direction == '<') $order_dir = 'DESC';
+		if ($direction == '>') $order_dir = 'ASC';
+
+		$this->db->order_by('status_id', $order_dir);
+
+		$query = $this->db->get('datagov_campaign', $limit);
+
+		return $query->result_array();
+
+	}	
 
 
 	public function datagov_model() {
