@@ -2189,15 +2189,24 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 		$datajson_model->contactPoint 	= clone $datajson_model->contactPoint;
 		$datajson_model->publisher 		= clone $datajson_model->publisher;
 
+		// Set email address, but check for redactions before prepending mailto:
+		if (!empty($raw_data->mbox)) {
+			if(strpos($raw_data->mbox, '[[REDACTED-EX') === 0) {
+				$hasEmail = $raw_data->mbox;
+			} else {
+				$hasEmail = 'mailto:' . $raw_data->mbox;
+			}
+		} else {
+			$hasEmail = null;
+		}
+
+		$datajson_model->contactPoint->hasEmail 			= $hasEmail;
+		$datajson_model->contactPoint->fn                   = (!empty($raw_data->contactPoint)) ? $raw_data->contactPoint : null;
 	    
 		$datajson_model->accessLevel                        = (!empty($raw_data->accessLevel)) ? $raw_data->accessLevel : null;
 		$datajson_model->rights 			                = (!empty($raw_data->accessLevelComment)) ? $raw_data->accessLevelComment : null;
-
 		$datajson_model->accrualPeriodicity                 = $accrualPeriodicity;
-
-		$datajson_model->bureauCode                         = (!empty($raw_data->bureauCode)) ? $raw_data->bureauCode : null;
-		$datajson_model->contactPoint->fn                   = (!empty($raw_data->contactPoint)) ? $raw_data->contactPoint : null;
-		$datajson_model->contactPoint->hasEmail 			= (!empty($raw_data->mbox)) ? 'mailto:' . $raw_data->mbox : null;
+		$datajson_model->bureauCode                         = (!empty($raw_data->bureauCode)) ? $raw_data->bureauCode : null;	
 		$datajson_model->describedBy                     	= (!empty($raw_data->dataDictionary)) ? $raw_data->dataDictionary : null;
 		$datajson_model->dataQuality                        = (!empty($raw_data->dataQuality)) ? $raw_data->dataQuality : null;
 		$datajson_model->description                        = (!empty($raw_data->description)) ? $raw_data->description : null;
@@ -2221,11 +2230,9 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 		$datajson_model->systemOfRecords                    = (!empty($raw_data->systemOfRecords)) ? $raw_data->systemOfRecords : null;
 		$datajson_model->temporal                           = (!empty($raw_data->temporal)) ? $raw_data->temporal : null;
 		$datajson_model->theme                              = (!empty($raw_data->theme)) ? $raw_data->theme : null;
-		$datajson_model->title                              = (!empty($raw_data->title)) ? $raw_data->title : null;
-		
+		$datajson_model->title                              = (!empty($raw_data->title)) ? $raw_data->title : null;	
 
 		$datajson_model = $this->unset_nulls($datajson_model);
-
 
 		return $datajson_model;
 	}
