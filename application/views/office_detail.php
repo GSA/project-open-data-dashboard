@@ -840,6 +840,7 @@
             $total_records      =  (!empty($office_campaign->datajson_status->total_records)) ? $office_campaign->datajson_status->total_records : '';
 
             $valid_count        = (is_numeric($error_count) && is_numeric($total_records)) ? $total_records - $error_count : null;
+            $valid_count       = ($valid_count < 0) ? 0 : $valid_count;
             
             $percent_valid      = process_percentage($valid_count, $total_records);
 

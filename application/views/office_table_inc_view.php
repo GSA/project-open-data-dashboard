@@ -167,7 +167,11 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 					$schema_status = 'success';
 				}
 				else if (!empty($error_count) && $valid_schema === false) {
-					$percent_valid = sprintf("%.1f%%", $percent_valid * 100);
+					if ($percent_valid < 0) {
+						$percent_valid = '0%';
+					} else {
+						$percent_valid = sprintf("%.1f%%", $percent_valid * 100);
+					}
 					$schema_status = 'warning';
 				} else {
 					$percent_valid = '';
