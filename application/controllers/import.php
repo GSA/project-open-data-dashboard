@@ -367,7 +367,85 @@ class Import extends CI_Controller {
 
 	}
 
+	public function match_agency_slugs() {
 
+		if (php_sapi_name() != 'cli') return;
+
+		$agency_slug_api = 'https://idm.data.gov/fed_agency.json';
+		$agency_slugs = curl_from_json($agency_slug_api, true);
+		$agency_slugs = $agency_slugs["taxonomies"];
+
+		$this->db->select('id, name');
+		$this->db->where('no_parent', 'true');
+		$query = $this->db->get('offices');
+
+		if ($query->num_rows() > 0) {
+		   $parent_offices = $query->result();
+
+			foreach ($parent_offices as $office) {
+				
+				$this->run_match($agency_slugs, $office);
+
+				// Search for child orgs
+				$this->db->select('id, name');
+				$this->db->where('parent_office_id', $office->id);
+				$child_query = $this->db->get('offices');	
+
+				if ($child_query->num_rows() > 0) {
+				   $child_offices = $child_query->result();
+
+					foreach ($child_offices as $child_office) {
+						$this->run_match($agency_slugs, $office, $child_office);
+					}
+				}			
+	
+			}
+
+		}
+
+	}
+
+	public function slug_match($slugs, $parent, $child = null) {
+
+		foreach ($slugs as $slug) {
+			$slug = $slug["taxonomy"];
+			if ($slug["Federal Agency"] == $parent) {
+				if (!empty($child)) {					
+					if ($slug["Sub Agency"] == $child) {
+						return substr($slug["term"], 0, strpos($slug["term"], "-gov"));
+					}
+				} else {
+					if ($slug["Sub Agency"] == "") {
+						return substr($slug["term"], 0, strpos($slug["term"], "-gov"));
+					}
+				}
+			}
+		}
+	}
+
+	public function run_match($agency_slugs, $office, $child_office = null) {
+
+		if(!empty($child_office)){
+			$update_id = $child_office->id;
+			$child_office = $child_office->name;
+			$office_name = $child_office;
+		} else {
+			$update_id = $office->id;
+			$office_name = $office->name;
+		}
+
+		$match = $this->slug_match($agency_slugs, $office->name, $child_office);
+
+		if(!empty($match)) {
+			echo "match, $update_id, $office_name, $match" . PHP_EOL;		
+
+			$this->db->where('id', $update_id);
+			$this->db->update('offices', array("url_slug"=>$match));	
+
+		} else {
+			echo "no-match, $update_id, $office_name, null" . PHP_EOL;
+		}		
+	}
 
 
 }
