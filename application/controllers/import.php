@@ -48,7 +48,7 @@ class Import extends CI_Controller {
 			redirect('docs');
 		}
 
-		$master_list_url = 'http://www.usa.gov/api/USAGovAPI/contacts.json/contacts/tree?include_descendants=true';
+		$master_list_url = 'https://www.usa.gov/api/USAGovAPI/contacts.json/contacts/tree?include_descendants=true';
 
 		if ($this->environment == 'terminal') {
 			echo 'Loading ' . $master_list_url . PHP_EOL;
