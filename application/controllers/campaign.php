@@ -117,9 +117,9 @@ class Campaign extends CI_Controller {
 
 	}
 
-	public function csv_to_json() {
+	public function csv_to_json($schema = null) {
 
-
+        $schema         = ($this->input->post('schema', TRUE)) ? $this->input->post('schema', TRUE) : $schema;
 		$csv_id 		= ($this->input->post('csv_id', TRUE)) ? $this->input->post('csv_id', TRUE) : null;
 
 
@@ -142,15 +142,20 @@ class Campaign extends CI_Controller {
 
                 // Provide mapping between csv headings and POD schema
 				$this->load->model('campaign_model', 'campaign');
+                $json_schema = $this->campaign->datajson_schema($schema);
 
-				$json_schema = $this->campaign->datajson_schema();
-				$datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);
+                if ($schema) {
+                    $datajson_model = $this->campaign->schema_to_model($json_schema->properties->dataset->items->properties);
+                } else {
+                    $datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);    
+                }
 
 				$output = array();
 				$output['headings'] 		= $headings;
 				$output['datajson_model'] 	= $datajson_model;
 				$output['csv_id'] 			= $data['file_name'];
-
+                $output['select_mapping']    = $this->csv_field_mapper($headings, $datajson_model);
+                //var_dump($output['select_mapping']); exit;
 				$this->load->view('csv_mapping', $output);
 
 
@@ -249,6 +254,100 @@ class Campaign extends CI_Controller {
 		}
 
 	}
+
+    public function csv_field_mapper($headings, $datajson_model, $inception = false) {
+
+        $matched = array();
+        $match = false; 
+        $count = 0; 
+        $selected = '';
+
+        ob_start();
+        foreach ($headings as $field) {
+        ?>
+        <div class="form-group">
+            <label class="col-sm-2" for="<?php echo $field; ?>"><?php echo $field; ?></label>
+            <div class="col-sm-3">
+                <select id="<?php echo $field; ?>" type="text" name="mapping[<?php echo $count; ?>]">
+                    <option value="null">Select a corresponding field</option>
+                    <?php //var_dump($datajson_model); ?>
+                    <?php foreach ($datajson_model as $pod_field => $pod_value): ?>
+                        <?php
+                            
+                            if (is_object($pod_value) OR (is_array($pod_value) && count($pod_value) > 0)) {
+                                if(is_array($pod_value)) {
+
+                                    foreach ($pod_value as $pod_value_child) {
+
+                                        foreach ($pod_value_child as $child_field => $child_value) {
+
+                                            if (strtolower(trim($field)) == strtolower(trim("$pod_field.$child_field")) && !$matched[$field]) {
+                                                $selected = 'selected="selected"';
+                                                $match = true;
+                                            } else {
+                                                $selected = '';
+                                            } 
+                                    ?>
+
+                                    <option value="<?php echo "$pod_field.$child_field" ?>" <?php echo $selected ?>><?php echo $pod_field . ' - ' . $child_field ?></option>
+
+                                    <?php
+                                            if ($match) {                                            
+                                                $match = false;
+                                                $selected = '';                                               
+                                                $matched[$field] = true;
+                                            }
+
+                                        }
+                                    }
+
+                                }
+
+                            } else {
+
+                                if (strtolower(trim($field)) == strtolower(trim($pod_field)) && !isset($matched[$field])) {
+                                    $selected = 'selected="selected"';
+                                    $match = true;
+                                } else {
+                                    $selected = '';
+                                }
+
+
+
+                            }
+
+                        ?>
+                        <option value="<?php echo $pod_field ?>" <?php echo $selected ?>><?php echo $pod_field ?></option>
+                        <?php 
+
+                            if ($match) {                                            
+                                $match = false;
+                                $selected = '';                                               
+                                $matched[$field] = true;
+                            }
+
+
+                        ?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <?php
+                    if (!($match OR (isset($matched[$field]) && isset($matched[$field]))))  echo '<span class="text-danger">No match found</span>';
+                    $match = false;
+                    $count++;
+                ?>
+            </div>
+        </div>
+        <?php
+            reset($datajson_model); 
+        }
+
+    return ob_get_clean();
+
+    }
+
+
 
 	public function do_upload($field_name = null) {
 

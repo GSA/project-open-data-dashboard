@@ -10,6 +10,23 @@
           <h2>CSV Converter</h2>
 
             <form action="<?php echo site_url(); ?>datagov/csv_to_json" method="post" role="form" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="schema" id="schema-federal-v1.1" value="federal-v1.1" checked>
+                        Federal schema v1.1
+                      </label>
+                    </div>
+
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="schema" id="schema-federal-v1.0" value="">
+                        Federal schema v1.0
+                      </label>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="datajson">Upload a CSV File</label>
                     <input type="file" name="csv_upload">
