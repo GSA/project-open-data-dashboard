@@ -27,8 +27,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `offices` (
-  `id` int(10) NOT NULL,
-  `name` varchar(256) CHARACTER SET latin1 NOT NULL,
+  `id` int(10) NOT NULL auto_increment,
+  `name` varchar(256) CHARACTER SET latin1,
   `abbreviation` text CHARACTER SET latin1,
   `url` text CHARACTER SET latin1,
   `notes` text CHARACTER SET latin1,

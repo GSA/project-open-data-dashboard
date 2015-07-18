@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `datagov_campaign` (
   `datapage_status` longtext CHARACTER SET latin1,
   `digitalstrategy_status` longtext CHARACTER SET latin1,
   `tracker_fields` longtext CHARACTER SET latin1 NOT NULL,
+  `crawl_status` varchar(256) CHARACTER SET latin1, 
   PRIMARY KEY (`office_id`,`milestone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
