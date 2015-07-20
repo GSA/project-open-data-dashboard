@@ -122,7 +122,6 @@ class Campaign extends CI_Controller {
         $schema         = ($this->input->post('schema', TRUE)) ? $this->input->post('schema', TRUE) : $schema;
 		$csv_id 		= ($this->input->post('csv_id', TRUE)) ? $this->input->post('csv_id', TRUE) : null;
 
-
 		// Initial file upload
 		if(!empty($_FILES)) {
 
@@ -131,7 +130,6 @@ class Campaign extends CI_Controller {
 			if($this->do_upload('csv_upload')) {
 
 				$data = $this->upload->data();
-
 
 				ini_set("auto_detect_line_endings", true);
 				$csv_handle = fopen($data['full_path'], 'r');
@@ -153,11 +151,10 @@ class Campaign extends CI_Controller {
 				$output = array();
 				$output['headings'] 		= $headings;
 				$output['datajson_model'] 	= $datajson_model;
-				$output['csv_id'] 			= $data['file_name'];
-                $output['select_mapping']    = $this->csv_field_mapper($headings, $datajson_model);
-                //var_dump($output['select_mapping']); exit;
+                $output['csv_id'] 			= $data['file_name'];
+                $output['select_mapping']   = $this->csv_field_mapper($headings, $datajson_model);
+                $output['schema']           = $schema;
 				$this->load->view('csv_mapping', $output);
-
 
 			}
 
@@ -167,6 +164,7 @@ class Campaign extends CI_Controller {
 		else if (!empty($csv_id)) {
 
 			$mapping = ($this->input->post('mapping', TRUE)) ? $this->input->post('mapping', TRUE) : null;
+            $schema  =  ($this->input->post('schema', TRUE)) ? $this->input->post('schema', TRUE) : 'federal';
 
 	 		$this->config->load('upload', TRUE);
 	 		$upload_config = $this->config->item('upload');
@@ -184,50 +182,63 @@ class Campaign extends CI_Controller {
 				$column_headers[$key] = trim($this_header);
 			}
 
-			$json = array();
-			foreach ($csv as $row) {
+            $json = array();
 
-				$count = 0;
-				$json_row = array();
-				foreach($row as $key => $value) {
-					if(!empty($column_headers[$key]) && $mapping[$count] !== 'null') {
+            if ($schema == 'federal-v1.1') {
 
+                // Provide mapping between csv headings and POD schema
+                $this->load->model('campaign_model', 'campaign');
+                $json_schema = $this->campaign->datajson_schema($schema);
+                $datajson_model = $this->campaign->schema_to_model($json_schema->properties);    
+                $datajson_model->dataset = array();        
 
-						if(is_json($value)){
-							$value = json_decode($value);
-						} else if ($mapping[$count] == 'keyword' |
-								   $mapping[$count] == 'language' |
-								   $mapping[$count] == 'references' |
-								   $mapping[$count] == 'theme' |
-								   $mapping[$count] == 'programCode' |
-								   $mapping[$count] == 'bureauCode') {
-							$value = str_getcsv($value);
-						} else if ($mapping[$count] == 'dataQuality' && !empty($value)) {
-							$value = (bool) $value;
-						}
+                $dataset_model = clone $this->campaign->schema_to_model($json_schema->properties->dataset->items->properties);
+                $datasets = array();
 
-						if(is_array($value)) {
-							$value = array_map("make_utf8", $value);
-							$value = array_map("trim", $value);
-							$value = array_filter($value); // removes any empty elements in an array
-							$value = array_values($value); // ensures array_filter doesn't create an associative array
-						} else if (is_string($value)) {
-							$value = trim($value);
-							$value = make_utf8($value);
-						}
+                foreach ($csv as $row) {
 
-						$value = (!is_bool($value) && empty($value)) ? null : $value;
+                    $count = 0;
+                    $json_row = clone $dataset_model;
+                    foreach($row as $key => $value) {
+                        if(!empty($column_headers[$key]) && $mapping[$count] !== 'null') {
 
-						$json_row[$mapping[$count]] = $value;
-					}
+                            $value = $this->schema_map_filter($mapping[$count], $value, $schema);
 
-					$count++;
-				}
+                            $json_row->$mapping[$count] = $value;
+                        }
 
-				$json[] = $json_row;
+                        $count++;
+                    }
 
-			}
+                    $datasets[] = $json_row;
 
+                } 
+
+                $datajson_model->dataset = $datasets;
+                $json = $datajson_model;
+
+            } else {
+                
+                foreach ($csv as $row) {
+
+                    $count = 0;
+                    $json_row = array();
+                    foreach($row as $key => $value) {
+                        if(!empty($column_headers[$key]) && $mapping[$count] !== 'null') {
+
+                            $value = $this->schema_map_filter($mapping[$count], $value, $schema);
+
+                            $json_row[$mapping[$count]] = $value;
+                        }
+
+                        $count++;
+                    }
+
+                    $json[] = $json_row;
+
+                }            
+
+            }
 
 			// delete temporary uploaded csv file
 			unlink($full_path);
@@ -243,9 +254,6 @@ class Campaign extends CI_Controller {
 
     		print json_encode($json);
     		exit;
-
-
-
 		}
 
 		// Show upload form
@@ -254,6 +262,37 @@ class Campaign extends CI_Controller {
 		}
 
 	}
+
+    public function schema_map_filter($field, $value, $schema = null) {
+
+        if(is_json($value)){
+            $value = json_decode($value);
+        } else if ($field == 'keyword' |
+                   $field == 'language' |
+                   $field == 'references' |
+                   $field == 'theme' |
+                   $field == 'programCode' |
+                   $field == 'bureauCode') {
+            $value = str_getcsv($value);
+        } else if ($field == 'dataQuality' && !empty($value)) {
+            $value = (bool) $value;
+        }
+
+        if(is_array($value)) {
+            $value = array_map("make_utf8", $value);
+            $value = array_map("trim", $value);
+            $value = array_filter($value); // removes any empty elements in an array
+            $value = array_values($value); // ensures array_filter doesn't create an associative array
+        } else if (is_string($value)) {
+            $value = trim($value);
+            $value = make_utf8($value);
+        }
+
+        $value = (!is_bool($value) && empty($value)) ? null : $value;
+
+        return $value;
+
+    }
 
     public function csv_field_mapper($headings, $datajson_model, $inception = false) {
 

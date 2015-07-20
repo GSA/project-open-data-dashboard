@@ -15,6 +15,7 @@
 
                 <div class="form-group">
 
+                    <input type="hidden" name="schema" value="<?php echo $schema; ?>">
                     <input type="hidden" name="csv_id" value="<?php echo $csv_id; ?>">
                     <input type="submit" value="Convert" class="btn btn-primary">
                 </div>
