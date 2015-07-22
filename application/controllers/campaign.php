@@ -204,15 +204,42 @@ class Campaign extends CI_Controller {
 
                             $value = $this->schema_map_filter($mapping[$count], $value, $schema);
 
-                            $json_row->$mapping[$count] = $value;
+                            if(strpos($mapping[$count], '.') !== false) {
+
+                                $field_path = explode('.', $mapping[$count]);  
+
+                                if (array_key_exists($field_path[0], $json_row) && array_key_exists($field_path[1], $json_row->$field_path[0])) {
+                                    $json_row->$field_path[0]->$field_path[1] = $value;       
+                                }
+
+                                if ($field_path[0] == 'distribution') {
+                                    if (array_key_exists($field_path[1], $json_row->distribution[0])) {
+                                        $json_row->distribution[0]->$field_path[1] = $value;       
+                                    }                                    
+                                }
+                                
+                            }
+
+                            if(array_key_exists($mapping[$count], $json_row)) {
+                                $json_row->$mapping[$count] = $value;    
+                            }
+                            
                         }
 
                         $count++;
                     }
-
+                    $this->campaign->unset_nulls($json_row);
                     $datasets[] = $json_row;
 
                 } 
+
+                $id_field      = '@id';
+                $context_field = '@context';
+                unset($datajson_model->$id_field);
+
+                $datajson_model->$context_field = 'https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld';
+                $datajson_model->conformsTo     = 'https://project-open-data.cio.gov/v1.1/schema';
+                $datajson_model->describedBy    = 'https://project-open-data.cio.gov/v1.1/schema/catalog.json';
 
                 $datajson_model->dataset = $datasets;
                 $json = $datajson_model;
@@ -313,14 +340,33 @@ class Campaign extends CI_Controller {
                     <?php foreach ($datajson_model as $pod_field => $pod_value): ?>
                         <?php
                             
-                            if (is_object($pod_value) OR (is_array($pod_value) && count($pod_value) > 0)) {
-                                if(is_array($pod_value)) {
+                            if (is_object($pod_value) OR (is_array($pod_value) && count($pod_value) > 0)) {                                
 
-                                    foreach ($pod_value as $pod_value_child) {
+                                    foreach ($pod_value as $parent_field => $pod_value_child) {
 
-                                        foreach ($pod_value_child as $child_field => $child_value) {
+                                        if(is_object($pod_value_child)) {
+                                            foreach ($pod_value_child as $child_field => $child_value) {
 
-                                            if (strtolower(trim($field)) == strtolower(trim("$pod_field.$child_field")) && !$matched[$field]) {
+                                                if (strtolower(trim($field)) == strtolower(trim("$pod_field.$child_field")) && !$matched[$field]) {
+                                                    $selected = 'selected="selected"';
+                                                    $match = true;
+                                                } else {
+                                                    $selected = '';
+                                                } 
+                                        ?>
+
+                                        <option value="<?php echo "$pod_field.$child_field" ?>" <?php echo $selected ?>><?php echo $pod_field . ' - ' . $child_field ?></option>
+
+                                        <?php
+                                                if ($match) {                                            
+                                                    $match = false;
+                                                    $selected = '';                                               
+                                                    $matched[$field] = true;
+                                                }
+
+                                            }
+                                        } else {
+                                            if (strtolower(trim($field)) == strtolower(trim("$pod_field.$parent_field")) && !$matched[$field]) {
                                                 $selected = 'selected="selected"';
                                                 $match = true;
                                             } else {
@@ -328,19 +374,20 @@ class Campaign extends CI_Controller {
                                             } 
                                     ?>
 
-                                    <option value="<?php echo "$pod_field.$child_field" ?>" <?php echo $selected ?>><?php echo $pod_field . ' - ' . $child_field ?></option>
+                                    <option value="<?php echo "$pod_field.$parent_field" ?>" <?php echo $selected ?>><?php echo $pod_field . ' - ' . $parent_field ?></option>
 
                                     <?php
                                             if ($match) {                                            
                                                 $match = false;
                                                 $selected = '';                                               
                                                 $matched[$field] = true;
-                                            }
-
+                                            }                                           
                                         }
+
                                     }
 
-                                }
+                                
+
 
                             } else {
 
