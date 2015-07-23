@@ -177,11 +177,6 @@ class Campaign extends CI_Controller {
 			$importer = new CsvImporter($full_path, $parse_header = true, $delimiter = ",");
 			$csv = $importer->get();
 
-			$column_headers = array();
-			foreach($csv[0] as $key => $this_header) {
-				$column_headers[$key] = trim($this_header);
-			}
-
             $json = array();
 
             if ($schema == 'federal-v1.1') {
@@ -200,7 +195,7 @@ class Campaign extends CI_Controller {
                     $count = 0;
                     $json_row = clone $dataset_model;
                     foreach($row as $key => $value) {
-                        if(!empty($column_headers[$key]) && $mapping[$count] !== 'null') {
+                        if($mapping[$count] !== 'null') {
 
                             $value = $this->schema_map_filter($mapping[$count], $value, $schema);
 
@@ -251,7 +246,7 @@ class Campaign extends CI_Controller {
                     $count = 0;
                     $json_row = array();
                     foreach($row as $key => $value) {
-                        if(!empty($column_headers[$key]) && $mapping[$count] !== 'null') {
+                        if($mapping[$count] !== 'null') {
 
                             $value = $this->schema_map_filter($mapping[$count], $value, $schema);
 
