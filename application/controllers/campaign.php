@@ -194,6 +194,7 @@ class Campaign extends CI_Controller {
 
                     $count = 0;
                     $json_row = clone $dataset_model;
+                    $distribution_row = clone $dataset_model->distribution[0];                    
                     foreach($row as $key => $value) {
                         if($mapping[$count] !== 'null') {
 
@@ -208,8 +209,8 @@ class Campaign extends CI_Controller {
                                 }
 
                                 if ($field_path[0] == 'distribution') {
-                                    if (array_key_exists($field_path[1], $json_row->distribution[0])) {
-                                        $json_row->distribution[0]->$field_path[1] = $value;       
+                                    if (array_key_exists($field_path[1], $distribution_row)) {
+                                        $distribution_row->$field_path[1] = $value;       
                                     }                                    
                                 }
                                 
@@ -223,9 +224,10 @@ class Campaign extends CI_Controller {
 
                         $count++;
                     }
-                    $this->campaign->unset_nulls($json_row);
+                    $json_row->distribution = array($distribution_row);
+                    $this->campaign->unset_nulls($json_row);                    
                     $datasets[] = $json_row;
-
+                
                 } 
 
                 $id_field      = '@id';

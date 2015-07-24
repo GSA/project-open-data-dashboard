@@ -2248,6 +2248,21 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 			if(is_object($property)) {
 				$object->$key = $this->unset_nulls($property);
 			}
+
+			if(is_array($property)) {
+
+				if(empty($property)) {
+					unset($object->$key);
+				} else {
+					foreach ($property as $row => $value) {
+						if(is_object($value) OR is_array($value)) {
+							$property[$row] = $this->unset_nulls($value);	
+						}						
+					}
+				}
+
+			}			
+			
 		}
 
 		return $object;
