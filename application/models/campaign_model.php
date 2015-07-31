@@ -95,6 +95,8 @@ class campaign_model extends CI_Model {
         $model->crawl_status = null;
         $model->contact_name = null;
         $model->contact_email = null;
+        $model->bureaudirectory_status = null;
+        $model->governanceboards_status = null;
         $model->datajson_status = null;
         $model->datapage_status = null;
         $model->digitalstrategy_status = null;
