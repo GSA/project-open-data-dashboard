@@ -979,9 +979,9 @@ class campaign_model extends CI_Model {
 
 			if($schema !== 'federal-v1.1' && $schema !== 'non-federal-v1.1' ) {
 				$chunk_size = 500;				
-				$datajson_chunks = array_chunk($datajson_decode, $chunk_size);
+				$datajson_chunks = array_chunk((array) $datajson_decode, $chunk_size);
 			} else {
-				$datajson_chunks = array($datajson_decode);
+				$datajson_chunks = array((array) $datajson_decode);
 			}
 			
 
