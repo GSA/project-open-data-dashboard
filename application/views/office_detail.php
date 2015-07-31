@@ -475,19 +475,18 @@
                            <table class="table table-striped table-hover" id="note-expander-parent">
 
                                 <tr class="table-header">
+                                    <th>Indicator</th>
                                     <th>Status</th>
 
+                                    <!--
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                         <th></th>
                                     <?php endif; ?> 
-
-                                    <th>Indicator</th>
                                     <th>Automated Metrics</th>
-
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                         <th></th>
                                     <?php endif; ?>   
-
+                                    -->
                                 </th>
 
 
@@ -524,28 +523,41 @@
                                     ?>
 
                                     <tr <?php //if(!empty($status_class)) echo "class=\"$status_class\""; ?>>
-                                        <td class="col-md-1">
-                                            <?php 
-                                                $overflow_text = false;
+                                        
+                                        <td class="tracker-field">                                            
+                                            <a name="tracker_<?php echo $tracker_field_name ?>" class="anchor-point"></a>
+                                            <strong>
+                                                <a href="<?php echo site_url('docs') . '#' . $tracker_field_name ?>">
+                                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                                </a>
+                                                    <?php echo $tracker_field_meta->label ?>
+                                            </strong>
+                                        </td>                        
 
-                                                if (!empty($status_icon) && ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "traffic")) {
-                                                    echo $status_icon;     
-                                                } else {
-                                                    if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
-                                                        if(strlen($office_campaign->tracker_fields->$tracker_field_name) < 20) {
-                                                            echo $office_campaign->tracker_fields->$tracker_field_name;
-                                                        } else {
-                                                            $overflow_text = true;
-                                                            echo '<em>See below</em>';
+                                        <?php if ($this->session->userdata('permissions') != $permission_level) : ?>
+                                            <td>
+                                                <?php 
+                                                    $overflow_text = false;
+
+                                                    if (!empty($status_icon) && ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "traffic")) {
+                                                        echo $status_icon;     
+                                                    } else {
+                                                        if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
+                                                            if(strlen($office_campaign->tracker_fields->$tracker_field_name) < 20) {
+                                                                echo $office_campaign->tracker_fields->$tracker_field_name;
+                                                            } else {
+                                                                $overflow_text = true;
+                                                                echo '<em>See below</em>';
+                                                            }
+
                                                         }
-                                                        
-                                                    }
-                                                }                       
-                                            ?>
-                                        </td>
+                                                    }                       
+                                                ?>
+                                            </td>
+                                        <?php endif; ?>
 
                                         <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                                            <td class="col-md-2">
+                                            <td>
 
                                                 <?php if ($tracker_field_meta->type == "select") : ?>
                                                     <select name="<?php echo $tracker_field_name ?>">
@@ -597,22 +609,18 @@
                                                     </select>
                                                 <?php endif; ?>  
 
-
                                                 <?php if ($tracker_field_meta->type == "string") : ?>
                                                     <input type="text" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name;?>" maxlength="<?php echo $tracker_field_meta->maxlength;?>">
                                                 <?php endif; ?>
+                                                    
+                                                <?php if ($tracker_field_meta->type == "textarea") : ?>
+                                                    <textarea name="<?php echo $tracker_field_name ?>" cols="80" rows="5"><?php echo $office_campaign->tracker_fields->$tracker_field_name;?></textarea>
+                                                <?php endif; ?>
+                                                    
                                             </td>
                                         <?php endif; ?>
                                         
-                                        <td class="tracker-field">                                            
-                                            <a name="tracker_<?php echo $tracker_field_name ?>" class="anchor-point"></a>
-                                            <strong>
-                                                <a href="<?php echo site_url('docs') . '#' . $tracker_field_name ?>">
-                                                    <span class="glyphicon glyphicon-info-sign"></span>
-                                                </a>
-                                                    <?php echo $tracker_field_meta->label ?>
-                                            </strong>
-                                        </td>                        
+                                        <!--
                                         <td>
                                             
                                             <?php if (array_search($tracker_field_name, $crawl_details) !== false):?> 
@@ -630,10 +638,11 @@
                                             </a>                                            
                                         </td>   
                                         <?php endif; ?>  
+                                        -->
                                     </tr>
 
 
-                                    <?php if ($overflow_text) : ?>
+                                    <?php if (isset($overflow_text) && $overflow_text): ?>
                                     <tr>
                                         <td colspan="5" class="overflow-row">
                                             <?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>
