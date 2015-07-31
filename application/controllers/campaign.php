@@ -562,7 +562,7 @@ class Campaign extends CI_Controller {
 
     /*
       $id can be all, cfo-act, or a specific id
-      $component can be full-scan, all, datajson, datapage, digitalstrategy, download
+      $component can be full-scan, all, directory, govboards, download ///// old: datajson, datapage, digitalstrategy, download
      */
 
     public function status($id = null, $component = null, $selected_milestone = null) {
@@ -616,9 +616,214 @@ class Campaign extends CI_Controller {
                 $url = parse_url($office->url);
                 $url = $url['scheme'] . '://' . $url['host'];
 
+                /*
+                  ################ bureaudirectory ################
+                 */
 
+                if ($component == 'full-scan' || $component == 'all' || $component == 'bureaudirectory' || $component == 'download') {
+                    
+                    // Get status
+                    $expected_url = $url . '/digitalstrategy/bureaudirectory.json';
+
+                    // attempt to break any caching
+                    $expected_url_refresh = $expected_url . '?refresh=' . time();
+
+                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                        echo 'Attempting to request ' . $expected_url . ' and ' . $expected_url_refresh . PHP_EOL;
+                    }
+
+                    // Try to force refresh the cache, follow redirects and get headers
+                    $json_refresh = true;
+                    $status = $this->campaign->uri_header($expected_url_refresh);
+
+                    if (!$status OR $status['http_code'] != 200) {
+                        $json_refresh = false;
+                        $status = $this->campaign->uri_header($expected_url);
+                    }
+
+                    //$status['url']          = $expected_url;
+                    $status['expected_url'] = $expected_url;
+
+                    $real_url = ($json_refresh) ? $expected_url_refresh : $expected_url;
+
+                    /*
+                      ################ download ################
+                     */
+                    if ($component == 'full-scan' || $component == 'all' || $component == 'download') {
+
+                        if (!($status['http_code'] == 200) && !config_item('simulate_office_data')) {
+                            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                                echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
+                            }
+                            continue;
+                        }
+
+                        // download and version this json file.
+                        $archive_status = $this->campaign->archive_file('bureaudirectory', $office->id, $real_url);
+                    }
+
+                    /*
+                      ################ bureaudirectory ################
+                     */
+                    if ($component == 'full-scan' || $component == 'all' || $component == 'bureaudirectory') {
+
+                        // Save current update status in case things break during json_status
+                        $update->bureaudirectory_status = (!empty($status)) ? json_encode($status) : null;
+
+                        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                            echo 'Attempting to set ' . $update->office_id . ' with ' . $update->bureaudirectory_status . PHP_EOL . PHP_EOL;
+                        }
+
+                        $update->status_id = $this->campaign->update_status($update);
+
+                        // Check JSON status
+                        // TODO: Update this function to validate bureaudirectory schema
+                        $status = $this->json_status($status, $real_url, 'bureaudirectory');
+
+                        // Set correct URL
+                        if (!empty($status['url'])) {
+                            if (strpos($status['url'], '?refresh=')) {
+                                $status['url'] = substr($status['url'], 0, strpos($status['url'], '?refresh='));
+                            }
+                        } else {
+                            $status['url'] = $expected_url;
+                        }
+
+                        $status['expected_url'] = $expected_url;
+                        $status['last_crawl'] = mktime();
+
+
+                        if (is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
+                            $status['error_count'] = count($status['schema_errors']);
+                        } else if ($status['schema_errors'] === false) {
+                            $status['error_count'] = 0;
+                        } else {
+                            $status['error_count'] = null;
+                        }
+
+                        $status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;
+
+                        $update->bureaudirectory_status = (!empty($status)) ? json_encode($status) : null;
+                        if (!empty($status) && !empty($status['schema_errors'])) {
+                            unset($status['schema_errors']);
+                        }
+
+                        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                            echo 'Attempting to set ' . $update->office_id . ' with ' . $update->bureaudirectory_status . PHP_EOL . PHP_EOL;
+                        }
+
+                        $update->crawl_status = 'current';
+                        $update->crawl_end = gmdate("Y-m-d H:i:s");
+
+                        $this->campaign->update_status($update);
+                    }
+                }
 
                 /*
+                  ################ governanceboard ################
+                 */
+
+                if ($component == 'full-scan' || $component == 'all' || $component == 'governanceboard' || $component == 'download') {
+                    
+                    // Get status
+                    $expected_url = $url . '/digitalstrategy/governanceboard.json';
+
+                    // attempt to break any caching
+                    $expected_url_refresh = $expected_url . '?refresh=' . time();
+
+                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                        echo 'Attempting to request ' . $expected_url . ' and ' . $expected_url_refresh . PHP_EOL;
+                    }
+
+                    // Try to force refresh the cache, follow redirects and get headers
+                    $json_refresh = true;
+                    $status = $this->campaign->uri_header($expected_url_refresh);
+
+                    if (!$status OR $status['http_code'] != 200) {
+                        $json_refresh = false;
+                        $status = $this->campaign->uri_header($expected_url);
+                    }
+
+                    //$status['url']          = $expected_url;
+                    $status['expected_url'] = $expected_url;
+
+                    $real_url = ($json_refresh) ? $expected_url_refresh : $expected_url;
+
+                    /*
+                      ################ download ################
+                     */
+                    if ($component == 'full-scan' || $component == 'all' || $component == 'download') {
+
+                        if (!($status['http_code'] == 200) && !config_item('simulate_office_data')) {
+                            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                                echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
+                            }
+                            continue;
+                        }
+
+                        // download and version this json file.
+                        $archive_status = $this->campaign->archive_file('governanceboard', $office->id, $real_url);
+                    }
+
+                    /*
+                      ################ governanceboard ################
+                     */
+                    if ($component == 'full-scan' || $component == 'all' || $component == 'governanceboard') {
+
+                        // Save current update status in case things break during json_status
+                        $update->governanceboard_status = (!empty($status)) ? json_encode($status) : null;
+
+                        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                            echo 'Attempting to set ' . $update->office_id . ' with ' . $update->governanceboard_status . PHP_EOL . PHP_EOL;
+                        }
+
+                        $update->status_id = $this->campaign->update_status($update);
+
+                        // Check JSON status
+                        // TODO: Update this function to validate governanceboard schema
+                        $status = $this->json_status($status, $real_url, 'governanceboard');
+
+                        // Set correct URL
+                        if (!empty($status['url'])) {
+                            if (strpos($status['url'], '?refresh=')) {
+                                $status['url'] = substr($status['url'], 0, strpos($status['url'], '?refresh='));
+                            }
+                        } else {
+                            $status['url'] = $expected_url;
+                        }
+
+                        $status['expected_url'] = $expected_url;
+                        $status['last_crawl'] = mktime();
+
+
+                        if (is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
+                            $status['error_count'] = count($status['schema_errors']);
+                        } else if ($status['schema_errors'] === false) {
+                            $status['error_count'] = 0;
+                        } else {
+                            $status['error_count'] = null;
+                        }
+
+                        $status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;
+
+                        $update->governanceboard_status = (!empty($status)) ? json_encode($status) : null;
+                        if (!empty($status) && !empty($status['schema_errors'])) {
+                            unset($status['schema_errors']);
+                        }
+
+                        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                            echo 'Attempting to set ' . $update->office_id . ' with ' . $update->governanceboard_status . PHP_EOL . PHP_EOL;
+                        }
+
+                        $update->crawl_status = 'current';
+                        $update->crawl_end = gmdate("Y-m-d H:i:s");
+
+                        $this->campaign->update_status($update);
+                    }
+                }
+
+                /*
+                 * TODO: REMOVE, NOT USED BY FITARA
                   ################ datapage ################
                  */
 
@@ -652,6 +857,7 @@ class Campaign extends CI_Controller {
 
 
                 /*
+                 * TODO: REMOVE, NOT USED BY FITARA
                   ################ digitalstrategy ################
                  */
 
@@ -690,6 +896,7 @@ class Campaign extends CI_Controller {
 
 
                 /*
+                 * TODO: REMOVE, NOT USED BY FITARA
                   ################ datajson ################
                  */
 
@@ -817,10 +1024,10 @@ class Campaign extends CI_Controller {
         if (is_string($status)) {
             $this->load->model('campaign_model', 'campaign');
 
-            $expected_datajson_url = urldecode($status);
+            $expected_url = urldecode($status);
 
-            $status = $this->campaign->uri_header($expected_datajson_url);
-            $status['url'] = (!empty($status['url'])) ? $status['url'] : $expected_datajson_url;
+            $status = $this->campaign->uri_header($expected_url);
+            $status['url'] = (!empty($status['url'])) ? $status['url'] : $expected_url;
         }
 
         $status['url'] = (!empty($status['url'])) ? $status['url'] : $real_url;
@@ -829,7 +1036,8 @@ class Campaign extends CI_Controller {
 
             $qa = ($this->environment == 'terminal' OR $this->environment == 'cron') ? 'all' : true;
 
-            $validation = $this->campaign->validate_datajson($status['url'], null, null, 'federal', false, $qa, $component);
+            $validate_component = 'validate_' . $component; 
+            $validation = $this->campaign->$validate_component($status['url'], null, null, 'federal', false, $qa, $component);
 
             if (!empty($validation)) {
                 $status['valid_json'] = $validation['valid_json'];
@@ -851,7 +1059,7 @@ class Campaign extends CI_Controller {
                 $status['download_content_length'] = (!empty($status['download_content_length'])) ? $status['download_content_length'] : null;
                 $status['download_content_length'] = (!empty($validation['download_content_length'])) ? $validation['download_content_length'] : $status['download_content_length'];
             } else {
-                // data.json was not valid json
+                // data was not valid json
                 $status['valid_json'] = false;
             }
         }
