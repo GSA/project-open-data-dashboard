@@ -144,8 +144,8 @@
 
 
 
-            <a name="leading_indicators" class="anchor-point"></a>
-            <h3>Leading Indicators <a class="info-icon" href="<?php echo site_url('docs'); ?>#leading_indicators"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
+            <a name="general_indicators" class="anchor-point"></a>
+            <h3>General Indicators <a class="info-icon" href="<?php echo site_url('docs'); ?>#general_indicators"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
             <p>These indicators are reviewed by the Office of Management and Budget</p>
 
 
@@ -586,8 +586,20 @@
                                                 <?php endif; ?>  
 
 
+                                                <?php if ($tracker_field_meta->type == "status") : ?>
+                                                    <select name="<?php echo $tracker_field_name ?>">
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "not-submitted") ? 'selected = "selected"' : '' ?> value="not-submitted">Not Submitted</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "on-time") ? 'selected = "selected"' : '' ?> value="on-time">Submitted on Time</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "late") ? 'selected = "selected"' : '' ?> value="late">Submitted Late</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "rev-requested") ? 'selected = "selected"' : '' ?> value="rev-requested">Revision Requested</option>
+                                                        <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "approved") ? 'selected = "selected"' : '' ?> value="approved">Approved</option>
+                                                    </select>
+                                                <?php endif; ?>  
+
+
                                                 <?php if ($tracker_field_meta->type == "string") : ?>
-                                                    <input type="text" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name;?>">
+                                                    <input type="text" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name;?>" maxlength="<?php echo $tracker_field_meta->maxlength;?>">
                                                 <?php endif; ?>
                                             </td>
                                         <?php endif; ?>
