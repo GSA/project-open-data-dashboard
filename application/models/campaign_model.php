@@ -96,7 +96,7 @@ class campaign_model extends CI_Model {
         $model->contact_name = null;
         $model->contact_email = null;
         $model->bureaudirectory_status = null;
-        $model->governanceboards_status = null;
+        $model->governanceboard_status = null;
         $model->datajson_status = null;
         $model->datapage_status = null;
         $model->digitalstrategy_status = null;
@@ -189,8 +189,80 @@ class campaign_model extends CI_Model {
         $field->value = null;
         $field->label = null;
         $field->placeholder = null;
+        
+        // Common Baseline
+        
+        $model->cb_overall_common_baseline_status = clone $field;
+        $model->cb_overall_common_baseline_status->label = "Overall Common Baseline Status";
+        $model->cb_overall_common_baseline_status->type = "traffic";
+
+        $model->cb_self_assessment_overall_status = clone $field;
+        $model->cb_self_assessment_overall_status->label = "Self-Assessment Overall Status";
+        $model->cb_self_assessment_overall_status->type = "status";
+
+        $model->cb_self_assessment_overall_status_comment = clone $field;
+        $model->cb_self_assessment_overall_status_comment->label = "Self-Assessment Overall Status Comment";
+        $model->cb_self_assessment_overall_status_comment->type = "string";
+        $model->cb_self_assessment_overall_status_comment->maxlength = 500;
+
+        $model->cb_implementation_plan_overall_status = clone $field;
+        $model->cb_implementation_plan_overall_status->label = "Implementation Plan Overall Status";
+        $model->cb_implementation_plan_overall_status->type = "status";
+
+        $model->cb_implementation_plan_overall_status_comment = clone $field;
+        $model->cb_implementation_plan_overall_status_comment->label = "Implemenation Plan Overall Status Comment";
+        $model->cb_implementation_plan_overall_status_comment->type = "string";
+        $model->cb_implementation_plan_overall_status_comment->maxlength = 500;
+
+        $model->cb_budget_formulation_rating = clone $field;
+        $model->cb_budget_formulation_rating->label = "Budget Formulation Rating";
+        $model->cb_budget_formulation_rating->type = "traffic";
+
+        $model->cb_budget_formulation_rating_comment = clone $field;
+        $model->cb_budget_formulation_rating_comment->label = "Budget Formulation Rating Comment";
+        $model->cb_budget_formulation_rating_comment->type = "string";
+        $model->cb_budget_formulation_rating_comment->maxlength = 500;
+
+        $model->cb_execution_rating = clone $field;
+        $model->cb_execution_rating->label = "Execution Rating";
+        $model->cb_execution_rating->type = "traffic";
+
+        $model->cb_execution_rating_comment = clone $field;
+        $model->cb_execution_rating_comment->label = "Execution Rating Comment";
+        $model->cb_execution_rating_comment->type = "string";
+        $model->cb_execution_rating_comment->maxlength = 500;
+
+        $model->cb_acquisition_rating = clone $field;
+        $model->cb_acquisition_rating->label = "Acquisition Rating";
+        $model->cb_acquisition_rating->type = "traffic";
+
+        $model->cb_acquisition_rating_comment = clone $field;
+        $model->cb_acquisition_rating_comment->label = "Acquisition Rating Comment";
+        $model->cb_acquisition_rating_comment->type = "string";
+        $model->cb_acquisition_rating_comment->maxlength = 500;
+
+        $model->cb_org_workforce_rating = clone $field;
+        $model->cb_org_workforce_rating->label = "Org/Workforce Rating";
+        $model->cb_org_workforce_rating->type = "traffic";
+
+        $model->cb_org_workforce_rating_comment = clone $field;
+        $model->cb_org_workforce_rating_comment->label = "Org/Workforce Rating Comment";
+        $model->cb_org_workforce_rating_comment->type = "string";
+        $model->cb_org_workforce_rating_comment->maxlength = 500;
+
+        $model->cb_cio_assignment_plan_status = clone $field;
+        $model->cb_cio_assignment_plan_status->label = "CIO Assignment Plan Status";
+        $model->cb_cio_assignment_plan_status->type = "status";
+
+        // Published Artifacts
+        
+        
+        
+        // GAO Recommendations
 
 
+        
+        /*
         // Enterprise Data Inventory
 
         $model->edi_aggregate_score = clone $field;
@@ -433,6 +505,7 @@ class campaign_model extends CI_Model {
         $model->ui_dap_tracking = clone $field;
         $model->ui_dap_tracking->label = "Digital Analytics Program on /data";
         $model->ui_dap_tracking->type = "select";
+         */
 
         return $model;
     }
@@ -440,12 +513,17 @@ class campaign_model extends CI_Model {
     public function tracker_sections_model() {
 
         $section_breakdown = array(
+            'cb' => 'Common Baseline',
+            'pa' => 'Published Artifacts',
+            'gr' => 'GAO Recommendations'
+            /*
             "edi" => "Enterprise Data Inventory",
             "pdl" => "Public Data Listing",
             "pe" => "Public Engagement",
             "ps" => "Privacy &amp; Security",
             "hc" => "Human Capital",
             "ui" => "Use &amp; Impact"
+             */
         );
 
         return $section_breakdown;
@@ -467,12 +545,14 @@ class campaign_model extends CI_Model {
     public function milestones_model() {
 
         $milestones = array(
+            /*
             "2013-11-30" => "Milestone 1",
             "2014-02-28" => "Milestone 2",
             "2014-05-31" => "Milestone 3",
             "2014-08-31" => "Milestone 4",
             "2014-11-30" => "Milestone 5",
             "2015-02-28" => "Milestone 6",
+             */
             "2015-05-31" => "Milestone 7",
             "2015-08-31" => "Milestone 8",
             "2015-11-30" => "Milestone 9",
@@ -618,6 +698,12 @@ class campaign_model extends CI_Model {
         }
     }
 
+    public function validate_bureaudirectory($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null) {
+    }
+    
+    public function validate_governanceboard($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null) {
+    }
+    
     public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null) {
 
 
@@ -1471,24 +1557,40 @@ class campaign_model extends CI_Model {
             mkdir($directory);
         }
 
+        // Attempt to get JSON, via URL in normal mode or locally if in simulation mode
+        if (config_item('simulate_office_data')) {
+            
+            echo "Simulating $filetype data for office $office_id" . PHP_EOL;
+            $url = config_item('archive_dir') . DIRECTORY_SEPARATOR . $filetype . DIRECTORY_SEPARATOR . 'example.json';
+            $copy = @fopen($url, 'rb');
+            
+        } else {
+        
+            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                echo 'Attempting to download ' . $url . ' to ' . $filepath . PHP_EOL;
+            }
 
-        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-            echo 'Attempting to download ' . $url . ' to ' . $filepath . PHP_EOL;
+
+            $opts = array(
+                'http' => array(
+                    'method' => "GET",
+                    'user_agent' => "FITARA crawler"
+                )
+            );
+
+            // Support for MAX proxy 
+            if (config_item('proxy_host') && config_item('proxy_port')) {
+                $opts['http']['proxy'] = 'tcp://' . config_item('proxy_host') . ':' . config_item('proxy_port');
+                $opts['http']['request_fulluri'] = true;
+                if (substr($url, 0, 5) === 'https') {
+                    $opts['ssl']['SNI_enabled'] = false;
+                }
+            }
+
+            $context = stream_context_create($opts);
+
+            $copy = @fopen($url, 'rb', false, $context);            
         }
-
-
-        $opts = array(
-            'http' => array(
-                'method' => "GET",
-                'user_agent' => "Data.gov data.json crawler"
-            )
-        );
-
-        $context = stream_context_create($opts);
-
-        $copy = @fopen($url, 'rb', false, $context);
-        $paste = @fopen($filepath, 'wb');
-
 
         // If we can't read from this file, skip
         if ($copy === false) {
@@ -1497,6 +1599,8 @@ class campaign_model extends CI_Model {
                 echo 'Could not read from ' . $url . PHP_EOL;
             }
         }
+
+        $paste = @fopen($filepath, 'wb');
 
         // If we can't write to this file, skip
         if ($paste === false) {
