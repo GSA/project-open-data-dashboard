@@ -55,7 +55,7 @@ class Import extends CI_Controller {
 		}
 
 		$data = curl_from_json($master_list_url, true);
-
+                
 		  if(!empty($data['Contact'])) {
 		  	foreach ($data['Contact'] as $department) {
 
@@ -97,7 +97,7 @@ class Import extends CI_Controller {
 				if ($this->environment == 'terminal') {
 					echo 'Adding ' . $office_model['name'] . PHP_EOL;
 				}
-
+                                
 				$this->db->insert('offices', $office_model);
 
 			}
@@ -109,7 +109,7 @@ class Import extends CI_Controller {
 	function get_parents($parent_list, $id) {
 
 
-		$parent_api_url = 'http://www.usa.gov/api/USAGovAPI/contacts.json/contact/' . $id . '/tree/parent';
+		$parent_api_url = 'https://www.usa.gov/api/USAGovAPI/contacts.json/contact/' . $id . '/tree/parent';
 
 		if ($this->environment == 'terminal') {
 			echo 'Loading ' . $parent_api_url . PHP_EOL;
@@ -134,7 +134,7 @@ class Import extends CI_Controller {
 		} else {
 			$parent_list['independent'][$parent['Id']] = $parent;
 		}
-
+                
 		return $parent_list;
 
 	}
@@ -156,7 +156,7 @@ class Import extends CI_Controller {
 					continue;
 				}
 
-				$child_api_url = 'http://www.usa.gov/api/USAGovAPI/contacts.json/contact/' . $office->id . '/tree/descendant';
+				$child_api_url = 'https://www.usa.gov/api/USAGovAPI/contacts.json/contact/' . $office->id . '/tree/descendant';
 
 				if ($this->environment == 'terminal') {
 					echo 'Loading ' . $child_api_url . PHP_EOL;
