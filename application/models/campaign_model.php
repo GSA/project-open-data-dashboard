@@ -202,7 +202,7 @@ class campaign_model extends CI_Model {
 
         $model->cb_self_assessment_overall_status_comment = clone $field;
         $model->cb_self_assessment_overall_status_comment->label = "Self-Assessment Overall Status Comment";
-        $model->cb_self_assessment_overall_status_comment->type = "string";
+        $model->cb_self_assessment_overall_status_comment->type = "textarea";
         $model->cb_self_assessment_overall_status_comment->maxlength = 500;
 
         $model->cb_implementation_plan_overall_status = clone $field;
@@ -211,7 +211,7 @@ class campaign_model extends CI_Model {
 
         $model->cb_implementation_plan_overall_status_comment = clone $field;
         $model->cb_implementation_plan_overall_status_comment->label = "Implemenation Plan Overall Status Comment";
-        $model->cb_implementation_plan_overall_status_comment->type = "string";
+        $model->cb_implementation_plan_overall_status_comment->type = "textarea";
         $model->cb_implementation_plan_overall_status_comment->maxlength = 500;
 
         $model->cb_budget_formulation_rating = clone $field;
@@ -220,7 +220,7 @@ class campaign_model extends CI_Model {
 
         $model->cb_budget_formulation_rating_comment = clone $field;
         $model->cb_budget_formulation_rating_comment->label = "Budget Formulation Rating Comment";
-        $model->cb_budget_formulation_rating_comment->type = "string";
+        $model->cb_budget_formulation_rating_comment->type = "textarea";
         $model->cb_budget_formulation_rating_comment->maxlength = 500;
 
         $model->cb_execution_rating = clone $field;
@@ -229,7 +229,7 @@ class campaign_model extends CI_Model {
 
         $model->cb_execution_rating_comment = clone $field;
         $model->cb_execution_rating_comment->label = "Execution Rating Comment";
-        $model->cb_execution_rating_comment->type = "string";
+        $model->cb_execution_rating_comment->type = "textarea";
         $model->cb_execution_rating_comment->maxlength = 500;
 
         $model->cb_acquisition_rating = clone $field;
@@ -238,7 +238,7 @@ class campaign_model extends CI_Model {
 
         $model->cb_acquisition_rating_comment = clone $field;
         $model->cb_acquisition_rating_comment->label = "Acquisition Rating Comment";
-        $model->cb_acquisition_rating_comment->type = "string";
+        $model->cb_acquisition_rating_comment->type = "textarea";
         $model->cb_acquisition_rating_comment->maxlength = 500;
 
         $model->cb_org_workforce_rating = clone $field;
@@ -247,7 +247,7 @@ class campaign_model extends CI_Model {
 
         $model->cb_org_workforce_rating_comment = clone $field;
         $model->cb_org_workforce_rating_comment->label = "Org/Workforce Rating Comment";
-        $model->cb_org_workforce_rating_comment->type = "string";
+        $model->cb_org_workforce_rating_comment->type = "textarea";
         $model->cb_org_workforce_rating_comment->maxlength = 500;
 
         $model->cb_cio_assignment_plan_status = clone $field;
@@ -256,7 +256,25 @@ class campaign_model extends CI_Model {
 
         // Published Artifacts
         
-        
+        $model->pa_file_exists = clone $field;
+        $model->pa_file_exists->label = "File exists and conforms to schema?";
+        $model->pa_file_exists->type = "select";
+
+        $model->pa_num_bureau_it_leaders = clone $field;
+        $model->pa_num_bureau_it_leaders->label = "# Bureau IT Leaders";
+        $model->pa_num_bureau_it_leaders->type = "integer";
+
+        $model->pa_num_key_bureau_it_leaders = clone $field;
+        $model->pa_num_key_bureau_it_leaders->label = "# Key Bureau IT Leaders";
+        $model->pa_num_key_bureau_it_leaders->type = "integer";
+
+        $model->pa_num_political_appointees = clone $field;
+        $model->pa_num_political_appointees->label = "# Political Appointees";
+        $model->pa_num_political_appointees->type = "integer";
+
+        $model->pa_link_to_directory = clone $field;
+        $model->pa_link_to_directory->label = "Link to directory";
+        $model->pa_link_to_directory->type = "link";        
         
         // GAO Recommendations
 
