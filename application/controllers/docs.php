@@ -57,18 +57,20 @@ class Docs extends CI_Controller {
         if ($route == 'intro') {
             redirect('offices');
             //$this->load->view('welcome_message');			
-        } else if ($route == 'export') {
+        } /*else if ($route == 'export') {
             $this->load->view('export');
-        } else if ($route == 'user') {
+        }*/ else if ($route == 'user') {
             $this->load->view('user');
         } else {
             $this->index($route);
         }
     }
 
+    /*
     public function merge() {
         $this->load->view('merge');
     }
+     */
 
 }
 

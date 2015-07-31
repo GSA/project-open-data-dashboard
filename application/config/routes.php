@@ -40,9 +40,9 @@
 
 $route['default_controller'] = "docs/routes/intro";
 $route['404_override'] = '';
-$route['export'] = "docs/routes/export";
-$route['merge'] = "docs/merge";
-$route['upgrade-schema'] = "campaign/upgrade_schema";
+//$route['export'] = "docs/routes/export";
+//$route['merge'] = "docs/merge";
+//$route['upgrade-schema'] = "campaign/upgrade_schema";
 
 $route['digitalstrategy'] = "campaign/digitalstrategy";
 
