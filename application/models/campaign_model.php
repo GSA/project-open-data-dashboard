@@ -274,7 +274,7 @@ class campaign_model extends CI_Model {
 
         $model->pa_link_to_directory = clone $field;
         $model->pa_link_to_directory->label = "Link to directory";
-        $model->pa_link_to_directory->type = "link";        
+        $model->pa_link_to_directory->type = "url";        
         
         // GAO Recommendations
 
