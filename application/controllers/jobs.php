@@ -1,25 +1,23 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
 
-class Jobs extends CI_Controller
-{
-    public function __construct()
-    {
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Jobs extends CI_Controller {
+
+    public function __construct() {
         parent::__construct();
         // load gearman library
         $this->load->library('lib_gearman');
     }
 
-
-    public static function run_validate_json($job)
-    {
+    public static function run_validate_json($job) {
         $data = unserialize($job->workload());
         print_r($data);
         sleep(2);
         echo "JSON validation run is done.\n\n";
     }
 
-    public static function run_check_links($job)
-    {
+    public static function run_check_links($job) {
         $data = unserialize($job->workload());
         sleep(10);
         print_r($data);
@@ -27,9 +25,7 @@ class Jobs extends CI_Controller
         echo "Link checking run is done.\n\n";
     }
 
-
-    public function client()
-    {
+    public function client() {
         $this->lib_gearman->gearman_client();
 
         $urls_to_check = array(
@@ -51,11 +47,9 @@ class Jobs extends CI_Controller
         foreach ($url_batched as $url_batch) {
             $this->lib_gearman->do_job_background('check_links', serialize($url_batch));
         }
-
     }
 
-    public function worker()
-    {
+    public function worker() {
         $worker = $this->lib_gearman->gearman_worker();
 
         $this->lib_gearman->add_worker_function('check_links', 'Jobs::run_check_links');
@@ -70,4 +64,5 @@ class Jobs extends CI_Controller
             }
         }
     }
+
 }
