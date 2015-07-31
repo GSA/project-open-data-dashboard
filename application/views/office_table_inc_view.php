@@ -71,6 +71,14 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 		<tr class="dashboard-meta-heading">
 			<td><?php echo $title ?></td>
 
+			<td colspan="3">
+				General Indicators
+                <a href="<?php echo site_url('docs') . '#general_indicators' ?>">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>			
+			</td>
+			
+                        <!--
 			<?php $colspan = ($milestone->selected_milestone < '2014-11-30') ? '5' : '6'; ?>
 			<td colspan="<?php echo $colspan; ?>">
 				Leading Indicators Strategy 
@@ -85,6 +93,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>				
 			</td>
+                        -->
 		</tr>
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
@@ -94,8 +103,10 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 				<th class="tilt"><div><?php echo $section_title;?></div></th>
 			<?php endforeach; reset($sections_breakdown); ?>
 
+                        <!--
 			<th class="tilt pdl-heading"><div>Public Datasets</div></th>
 			<th class="tilt pdl-heading"><div>Valid Metadata</div></th>
+                        -->
 
 		</tr>
 
@@ -256,9 +267,10 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
 			?>
 
-
+                        <!--
 			<td class="content-metric <?php echo $json_status?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_datasets"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
 			<td class="content-metric" style="<?php echo metric_status_color($percent_valid, 'high', 20); ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_valid_metadata"><span><?php echo (!empty($percent_valid)) ? $percent_valid : page_status('unknown'); echo $version_flag; ?>&nbsp;</span></a> </td>
+                        -->
 
 		</tr>
 		<?php endforeach;?>
