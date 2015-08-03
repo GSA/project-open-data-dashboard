@@ -27,7 +27,7 @@ if($show_all_fields) {
       <div class="row">
         <div>
           
-          <p class="intro-blurb">This is a public dashboard showing how Federal agencies are performing on the Open Data Policy. <a href="<?php echo site_url();?>docs">Learn more</a></p>
+          <p class="intro-blurb">This is a public dashboard showing Federal agency progress towards implementing the Federal Information Technology Acquisition Reform Act (FITARA). <a href="https://management.cio.gov/">Learn more</a></p>
 
            <?php if($milestone->selected_milestone == $milestone->current): ?>
                 <p class="form-flash text-danger bg-danger"><strong>Current Milestone:</strong> The milestone selected is still in progress. The status of each field will be updated as frequently as possible, but won't be final until the milestone has passed</p>
