@@ -87,7 +87,7 @@
                                     );
 
 
-            $active_section = (!empty($selected_category)) ? $selected_category : 'pdl';  
+            $active_section = (!empty($selected_category)) ? $selected_category : 'cb';  
 
 
         ?>
