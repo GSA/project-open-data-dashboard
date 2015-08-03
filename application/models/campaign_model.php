@@ -1564,7 +1564,7 @@ class campaign_model extends CI_Model {
         }
 
         // Attempt to get JSON, via URL in normal mode or locally if in simulation mode
-        if (config_item('simulate_office_data')) {
+        if (config_item('simulate_office_data') && in_array($filetype, array('bureaudirectory', 'governanceboard'))) {
             
             echo "Simulating $filetype data for office $office_id" . PHP_EOL;
             $url = config_item('archive_dir') . DIRECTORY_SEPARATOR . $filetype . DIRECTORY_SEPARATOR . 'example.json';
