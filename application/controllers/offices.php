@@ -10,7 +10,7 @@ class Offices extends CI_Controller {
 
         $this->load->helper('url');
     }
-
+    
     /**
      * Index Page for this controller.
      *
@@ -33,6 +33,7 @@ class Offices extends CI_Controller {
         $milestones = $this->campaign->milestones_model();
 
         $selected_milestone = ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $selected_milestone;
+        $selected_milestone = $selected_milestone === null ? $this->get_default_milestone() : $selected_milestone;
 
         $milestone = $this->campaign->milestone_filter($selected_milestone, $milestones);
         $milestones = $milestone->milestones;
@@ -297,6 +298,21 @@ class Offices extends CI_Controller {
 
 
             return $this->index($milestone = $route, $output = null, $show_all_offices, $show_all_fields, $show_qa_fields);
+        }
+    }
+    
+    /**
+     * Get default milestone (the first milestone after today's date)
+     * 
+     * @return string - date in YYYY-MM-DD format
+     */
+    public function get_default_milestone() {
+        $this->load->model('campaign_model', 'campaign');
+        $milestones = $this->campaign->milestones_model();
+        foreach ($milestones as $date => $name) {
+            if (date(strtotime($date)) > date('U')) {
+                return $date;
+            }
         }
     }
 

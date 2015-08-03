@@ -563,21 +563,9 @@ class campaign_model extends CI_Model {
     public function milestones_model() {
 
         $milestones = array(
-            /*
-            "2013-11-30" => "Milestone 1",
-            "2014-02-28" => "Milestone 2",
-            "2014-05-31" => "Milestone 3",
-            "2014-08-31" => "Milestone 4",
-            "2014-11-30" => "Milestone 5",
-            "2015-02-28" => "Milestone 6",
-             */
-            "2015-05-31" => "Milestone 7",
-            "2015-08-31" => "Milestone 8",
-            "2015-11-30" => "Milestone 9",
-            "2016-02-28" => "Milestone 10",
-            "2016-05-31" => "Milestone 11",
-            "2016-08-31" => "Milestone 12",
-            "2016-11-30" => "Milestone 13"
+            "2000-01-01" => "Milestone 0",
+            "2015-08-15" => "Milestone 1",
+            "2015-08-31" => "Milestone 2",
         );
 
         return $milestones;

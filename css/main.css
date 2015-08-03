@@ -8,44 +8,44 @@ body { padding-top: 50px; }
 
 
 .intro-blurb {
-	margin-top : 2em; 
-	font-style: italic
+    margin-top : 2em; 
+    font-style: italic
 }
 
 .validation-record {
-	border-bottom : 1px solid #ccc; 
-	margin-bottom : 2em; 
-	padding-bottom : 2em
+    border-bottom : 1px solid #ccc; 
+    margin-bottom : 2em; 
+    padding-bottom : 2em
 }
 
 .validation-errors ul.validation-full-record {
-	border : 1px solid #DDDDDD; 
-	background-color : #F9F9F9; 
-	margin-bottom : 2em; 
-	padding : 1em;
+    border : 1px solid #DDDDDD; 
+    background-color : #F9F9F9; 
+    margin-bottom : 2em; 
+    padding : 1em;
 }
 
 .validation-errors ul.validation-full-record li {
-	margin : .5em 1em;
+    margin : .5em 1em;
 }
 
 
 
 .validation-source pre code {
-	white-space : pre;
+    white-space : pre;
 }
 
 .form-striped .form-group {
-padding : 1em 0;
+    padding : 1em 0;
 }
 
 .form-striped .form-group:nth-child(odd) {
-background-color : #f9f9f9;
+    background-color : #f9f9f9;
 }
 
 .navbar-inverse .btn-inverse {
     color : #fff;
-background-image: linear-gradient(to bottom, #3C3C3C 0px, #141414 100%);    
+    background-image: linear-gradient(to bottom, #3C3C3C 0px, #141414 100%);    
 }
 
 .hidden-row {
@@ -55,187 +55,187 @@ background-image: linear-gradient(to bottom, #3C3C3C 0px, #141414 100%);
 
 .edit-toggle, 
 .add-padding {
-	padding : 1em;
+    padding : 1em;
 }
 
 .note-heading {
-	padding : 0 .5em;
+    padding : 0 .5em;
 }
 
 .edit-toggle textarea,
 .edit-toggle div {
-	margin : 1em 0;
+    margin : 1em 0;
 }
 
 .panel {
-	margin-bottom : 6em;
+    margin-bottom : 6em;
 }
 
 
 .form-flash {
-	padding : 1em;
-	margin-top : 1em;
+    padding : 1em;
+    margin-top : 1em;
+    margin-bottom: 2em;
 }
 
 .footer .container {
-	margin : 1em auto !important;
+    margin : 1em auto !important;
 }
 
 .dashboard-heading th.tilt {
-	
-	vertical-align: bottom;
-	padding: auto;
-	
+
+    vertical-align: bottom;
+    padding: auto;
+
 }
 
 .dashboard-heading th.tilt div {
-	
-word-wrap : break-word;
-text-align : center;
-margin : 0 auto;
+
+    word-wrap : break-word;
+    text-align : center;
+    margin : 0 auto;
 
 }
 
-
 .dashboard-heading th.vertical-heading {
-	height : 200px;
-	width : 2em !important;
-	vertical-align: bottom;
+    height : 200px;
+    width : 2em !important;
+    vertical-align: bottom;
 
 }
 
 
 .dashboard-heading th.vertical-heading div {
--webkit-transform: rotate(-90deg);
--o-transform: rotate(-90deg);
-transform: rotate(-90deg);
-width : 2em;
+    -webkit-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    width : 2em;
 }
 
 
 .qa-table .dashboard-heading th.vertical-heading div {
-	white-space : pre;
+    white-space : pre;
 }	
 
 
 
 
 .dashboard-heading th.vertical-heading.edi {
-	background-color : #C4F0FF;
+    background-color : #C4F0FF;
 }
 
 .dashboard-heading th.vertical-heading.pdl {
-	background-color : #D7FFC4;
+    background-color : #D7FFC4;
 }
 
 .dashboard-heading th.vertical-heading.pe {
-	background-color : #FFF6C4;
+    background-color : #FFF6C4;
 }
 
 .dashboard-heading th.vertical-heading.ps {
-	background-color : #FFC4DC;
+    background-color : #FFC4DC;
 }
 
 .dashboard-heading th.vertical-heading.hc {
-	background-color : #FFDABF;
+    background-color : #FFDABF;
 }
 
 
 .dashboard-meta-heading td {
-	font-style: italic;
-	font-weight: bold;
-	color : #666;
-	background-color: #F0F0F0 !important; /* EDEDED */
+    font-style: italic;
+    font-weight: bold;
+    color : #666;
+    background-color: #F0F0F0 !important; /* EDEDED */
 }
 
 .pdl-heading {
-	background-color : #F5F5F5 !important;	
+    background-color : #F5F5F5 !important;	
 }
 
 .empty-field {
-	background-color : #BFBFBF !important;
+    background-color : #BFBFBF !important;
 }
 
 
 .note-metadata {
-	font-style: italic;
-	color : #ccc;
+    font-style: italic;
+    color : #ccc;
 }
 
 .dashboard .metrics-row td {
-	padding : 0;
+    padding : 0;
 }
 
 .dashboard .metrics-row td a {
-	padding : 1em;
-	display : inline-block;
-	width : 100%;
-	text-align: center;
+    padding : 1em;
+    display : inline-block;
+    width : 100%;
+    text-align: center;
 }
 
 .dashboard .metrics-row td.content-metric a {
-	color : #000;
+    color : #000;
 }
 
 .dashboard .metrics-row td.content-metric.warning a i {
-	color : yellow;
+    color : yellow;
 }
 
 .dashboard .metrics-row td.content-metric.success a i {
-	color : #3C763D;
+    color : #3C763D;
 }
 
 .dashboard .metrics-row td.content-metric.danger a i {
-	color : #A94442;
+    color : #A94442;
 }
 
 
 
 
 .dashboard .metrics-row td.boolean-metric a span {
-	display : inline-block;
-	opacity : 0.25;
-	overflow : hidden;
-	width : 2em;
-	text-align: center;
+    display : inline-block;
+    opacity : 0.25;
+    overflow : hidden;
+    width : 2em;
+    text-align: center;
 }
 
 .dashboard .metrics-row td i.unknown-value {
-	opacity : 0.25;
+    opacity : 0.25;
 }
 
 .dashboard .metrics-row td.boolean-metric.highlight a span, 
 .dashboard .metrics-row td a:hover i.unknown-value, 
 .dashboard .metrics-row td.boolean-metric a:hover span {
-	opacity : 1;
+    opacity : 1;
 }
 
 .dashboard .metrics-row td a:hover {
-text-decoration: none;
+    text-decoration: none;
 }
 
 
 table.dashboard-list .info td {
-	padding : 1.5em .75em;
+    padding : 1.5em .75em;
 }
 
 table.dashboard-list .info td a {
-	color : #0C64B0; 
-	font-weight : bold;
+    color : #0C64B0; 
+    font-weight : bold;
 }
 
 .general-notes, .section-notes {
-	border : 1px solid #F0F0F0;
-	margin : 3em 0;
+    border : 1px solid #F0F0F0;
+    margin : 3em 0;
 }
 
 .section-notes {
-	border : 0;
+    border : 0;
 }
 
 form .tracker-content .table-striped > tbody > tr > td, 
 form .tracker-content .table-striped > tbody > tr > th {
-	background-color: #fff !important;
+    background-color: #fff !important;
 }
 
 form .tracker-content .table-striped > tbody > tr:nth-child(4n) > td, 
@@ -245,74 +245,75 @@ form .tracker-content .table-striped > tbody > tr:nth-child(4n) > th {
 
 .table-striped > tbody > tr.table-header th, 
 form .tracker-content .table-striped > tbody > tr.table-header th {
-	background-color : #E6E6E6 !important;
+    background-color : #E6E6E6 !important;
 }
 
 .tab-content {
-	margin : 1em 0;
+    margin : 1em 0;
 }
 
 form .tracker-sections.nav-tabs {
-	height : 41px;	
+    height : 41px;	
 }
 
 .tracker-sections {
-	margin-top : 2em;
+    margin-top : 2em;
 }
 
 .tracker-content {
-	margin : 3em 0 6em 0;
+    margin : 3em 0 6em 0;
 }
 
 .tracker-field strong {
-	display : inline-block;
-	margin-top : .25em;
+    display : inline-block;
+    margin-top : .25em;
 }
 
 .tracker-field strong a {
-	color : #000;	
+    color : #000;	
 }
 
 .tracker-field strong a span, 
 a.info-icon span {
-	color : #ccc;
+    color : #ccc;
 }
 
 .dashboard-meta-heading a span {
-	color : #A8A8A8;	
+    color : #A8A8A8;	
 }
 
 .dashboard-meta-heading a:hover span {
-	color : #428bca;
+    color : #428bca;
 }
 
 .tracker-field strong a:hover {
-	color : #000;
-	text-decoration : none;
+    color : #000;
+    text-decoration : none;
 }
 
 .tracker-field strong a:hover span, 
 .tracker-field strong:hover span, 
- a.info-icon:hover span {
-	color : #428bca;
+a.info-icon:hover span {
+    color : #428bca;
 }
 
 .milestone-selector {
-	margin : 2em 0;
+    margin : 2em 0;
+    display: none;
 }
 
 .section-score {
-	height : .25em;
+    height : .25em;
 }
 
 p+h4, p+h5 {
-	margin-top : 2em;
+    margin-top : 2em;
 }
 
 @media (min-width: 1600px) {
-	.container.full-width {
-		width : 95%;
-	}
+    .container.full-width {
+        width : 95%;
+    }
 }
 
 
