@@ -30,7 +30,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<?php echo site_url('')?>">Project Open Data Dashboard</a>
+      <a class="navbar-brand" href="<?php echo site_url('')?>">FITARA Dashboard</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
