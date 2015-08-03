@@ -89,6 +89,10 @@ body { padding-top: 50px; }
 
 }
 
+.dashboard-meta-heading td.section-gr span {
+    visibility: hidden;
+}
+
 .dashboard-heading th.tilt div {
 
     word-wrap : break-word;
@@ -262,6 +266,14 @@ form .tracker-sections.nav-tabs {
 
 .tracker-content {
     margin : 3em 0 6em 0;
+}
+
+.tracker-field-indent1 {
+    padding-left : 3em !important;
+}
+
+.tracker-field-indent2 {
+    padding-left : 6em !important;
 }
 
 .tracker-field strong {

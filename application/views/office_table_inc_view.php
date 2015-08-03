@@ -63,7 +63,7 @@ function status_table_full($title, $rows, $tracker, $config = null, $selected_mi
 
 <?php
 
-function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $milestone = null) {
+function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $subsections_breakdown, $milestone = null) {
 
 ?>
 	<div class="panel panel-default">
@@ -71,12 +71,15 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 		<tr class="dashboard-meta-heading">
 			<td><?php echo $title ?></td>
 
-			<td colspan="3">
-				General Indicators
-                <a href="<?php echo site_url('docs') . '#general_indicators' ?>">
-                    <span class="glyphicon glyphicon-info-sign"></span>
-                </a>			
-			</td>
+                        <?php foreach ($sections_breakdown as $key => $name): ?>
+                            <td colspan="<?php echo count($subsections_breakdown[$key]); ?>" class="section-<?php echo $key; ?>">
+                                <span><?php echo $name; ?>
+                                    <a href="<?php echo site_url('docs') . '#general_indicators' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                </span>
+                            </td>
+                        <?php endforeach; ?>
 			
                         <!--
 			<?php $colspan = ($milestone->selected_milestone < '2014-11-30') ? '5' : '6'; ?>
@@ -98,10 +101,11 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
 
-			<?php foreach ($sections_breakdown as $section_name => $section_title): ?>
-				<?php if ($milestone->selected_milestone < '2014-11-30' && $section_name == 'ui') continue; ?>
-				<th class="tilt"><div><?php echo $section_title;?></div></th>
-			<?php endforeach; reset($sections_breakdown); ?>
+			<?php foreach ($subsections_breakdown as $section_name => $subsections): ?>
+                            <?php foreach ($subsections as $subsection): ?>
+				<th class="tilt"><div><?php echo $subsection->label;?></div></th>
+                            <?php endforeach; ?>
+			<?php endforeach; reset($subsections_breakdown); ?>
 
                         <!--
 			<th class="tilt pdl-heading"><div>Public Datasets</div></th>
@@ -222,6 +226,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 			$json_icon       = page_status($json_status);
 			$schema_icon 	 = page_status($schema_status);
 			$page_icon       = page_status($html_status);			
+                                        error_log(print_r($office, true));
 
 
 		?>
@@ -229,34 +234,48 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 		<tr class="metrics-row">
 			<th><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>"><?php echo $office->name;?></a></th>
 
-			<?php foreach ($sections_breakdown as $section_name => $section_title): ?>
+			<?php foreach ($subsections_breakdown as $section_name => $subsections): ?>
+                            <?php foreach ($subsections as $subsection): ?>
 
 				<?php 
-					if ($milestone->selected_milestone < '2014-11-30' && $section_name == 'ui') continue;
+                                        $status = '';
+                                        
+                                        if ($subsection->label === 'Self-Assessment') {
+                                            $status = $office->tracker_fields->cb_self_assessment;
+                                        } elseif ($subsection->label === 'Implementation Plan') {
+                                            $status = $office->tracker_fields->cb_implementation_plan; 
+                                        } else if ($subsection->label === 'CIO Assignment Plan (Optional)') {
+                                            $status = $office->tracker_fields->cb_cio_assignment_plan;
+                                        } elseif ($subsection->label === 'Bureau IT Leadership') {
+                                            $status = $office->tracker_fields->pa_bureau_it_leadership;
+                                        } elseif ($subsection->label === 'CIO Governance Board List') {
+                                            $status = $office->tracker_fields->pa_cio_governance_board_list; 
+                                        } else if ($subsection->label === 'IT Policy Archive') {
+                                            $status = $office->tracker_fields->pa_num_it_policy_archive;
+                                        }
 
-					$column = $section_name . '_aggregate_score'; 
-					$highlight = $section_name . '_selected_best_practice';
-
-					if(!empty($office->tracker_fields->$highlight) && $office->tracker_fields->$highlight == 'yes') {
-						$cell_icon = 'highlight';
-					} else {
-						$cell_icon = (!empty($office->tracker_fields->$column)) ? $office->tracker_fields->$column : '';
-					}
-
-					
 					$column_anchor = $section_name . '_tab';
-					$section_selection = ($section_name == 'pdl') ? '' : '?highlight=' . $section_name;
+					$subsection_selection = ($section_name == 'pdl') ? '' : '?highlight=' . $section_name;
+                                        $metric_type = $subsection->label === 'Open GAO Recommendations' ? 'number-metric' : 'boolean-metric';
 				?>
 
-				<td class="boolean-metric <?php if (!empty($office->tracker_fields->$column)) echo status_color($office->tracker_fields->$column); ?> <?php if($cell_icon) echo $cell_icon; ?>">
-					<a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?><?php echo $section_selection . '#' . $column_anchor; ?>">
+				<td class="<?php echo $metric_type; ?> <?php if (!empty($status)) echo status_color($status); ?> <?php if($status) echo $status; ?>">
+					<a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?><?php echo $subsection_selection . '#' . $column_anchor; ?>">
 						<span>
-							<?php if (!empty($office->tracker_fields->$column)) echo page_status($cell_icon);?>&nbsp;
+							<?php 
+                                                        if ($subsection->label === 'Open GAO Recommendations') {
+                                                            echo isset($office->tracker_fields->gr_open_gao_recommendations) ? $office->tracker_fields->gr_open_gao_recommendations : '';
+                                                        }
+                                                        elseif (!empty($status)) {
+                                                            echo page_status($status);
+                                                        }
+                                                        ?>&nbsp;
 						</span>
 					</a>
 				</td>
 
-			<?php endforeach; reset($sections_breakdown); ?>
+                            <?php endforeach; ?>
+			<?php endforeach; reset($subsections_breakdown); ?>
 
 			<?php 
 				if ( ($milestone->selected_milestone > '2014-11-30') && !empty($office->datajson_status->schema_version) && ($office->datajson_status->schema_version == 'federal') ) {

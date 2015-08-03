@@ -185,346 +185,112 @@ class campaign_model extends CI_Model {
         $model = new stdClass();
         $field = new stdClass();
 
-        $field->type = null;
+        $field->type = null; // field types include: string, textarea, integer, url, select (yes/no), traffic, status (submission status), placeholder
         $field->value = null;
         $field->label = null;
         $field->placeholder = null;
         
         // Common Baseline
         
-        $model->cb_overall_common_baseline_status = clone $field;
-        $model->cb_overall_common_baseline_status->label = "Overall Common Baseline Status";
-        $model->cb_overall_common_baseline_status->type = "traffic";
+        $model->cb_self_assessment = clone $field;
+        $model->cb_self_assessment->dashboard = true;
+        $model->cb_self_assessment->label = "Self-Assessment";
+        $model->cb_self_assessment->type = "select";
 
-        $model->cb_self_assessment_overall_status = clone $field;
-        $model->cb_self_assessment_overall_status->label = "Self-Assessment Overall Status";
-        $model->cb_self_assessment_overall_status->type = "status";
+        /*
+        $model->cb_sa_overall_status_comment = clone $field;
+        $model->cb_sa_overall_status_comment->label = "Self-Assessment Overall Status Comment";
+        $model->cb_sa_overall_status_comment->type = "textarea";
+        $model->cb_sa_overall_status_comment->maxlength = 500;
+        $model->cb_sa_overall_status_comment->indent = 1;
+        */
 
-        $model->cb_self_assessment_overall_status_comment = clone $field;
-        $model->cb_self_assessment_overall_status_comment->label = "Self-Assessment Overall Status Comment";
-        $model->cb_self_assessment_overall_status_comment->type = "textarea";
-        $model->cb_self_assessment_overall_status_comment->maxlength = 500;
+        $model->cb_implementation_plan = clone $field;
+        $model->cb_implementation_plan->dashboard = true;
+        $model->cb_implementation_plan->label = "Implementation Plan";
+        $model->cb_implementation_plan->type = "select";
 
-        $model->cb_implementation_plan_overall_status = clone $field;
-        $model->cb_implementation_plan_overall_status->label = "Implementation Plan Overall Status";
-        $model->cb_implementation_plan_overall_status->type = "status";
-
-        $model->cb_implementation_plan_overall_status_comment = clone $field;
-        $model->cb_implementation_plan_overall_status_comment->label = "Implemenation Plan Overall Status Comment";
-        $model->cb_implementation_plan_overall_status_comment->type = "textarea";
-        $model->cb_implementation_plan_overall_status_comment->maxlength = 500;
+        /*
+        $model->cb_overall_status_comment = clone $field;
+        $model->cb_overall_status_comment->label = "Implemenation Plan Overall Status Comment";
+        $model->cb_overall_status_comment->type = "textarea";
+        $model->cb_overall_status_comment->maxlength = 500;
+        $model->cb_overall_status_comment->indent = 1;
 
         $model->cb_budget_formulation_rating = clone $field;
         $model->cb_budget_formulation_rating->label = "Budget Formulation Rating";
         $model->cb_budget_formulation_rating->type = "traffic";
+        $model->cb_budget_formulation_rating->indent = 1;
 
         $model->cb_budget_formulation_rating_comment = clone $field;
         $model->cb_budget_formulation_rating_comment->label = "Budget Formulation Rating Comment";
         $model->cb_budget_formulation_rating_comment->type = "textarea";
         $model->cb_budget_formulation_rating_comment->maxlength = 500;
+        $model->cb_budget_formulation_rating_comment->indent = 2;
 
         $model->cb_execution_rating = clone $field;
         $model->cb_execution_rating->label = "Execution Rating";
         $model->cb_execution_rating->type = "traffic";
+        $model->cb_execution_rating->indent = 1;
 
         $model->cb_execution_rating_comment = clone $field;
         $model->cb_execution_rating_comment->label = "Execution Rating Comment";
         $model->cb_execution_rating_comment->type = "textarea";
         $model->cb_execution_rating_comment->maxlength = 500;
+        $model->cb_execution_rating_comment->indent = 2;
 
         $model->cb_acquisition_rating = clone $field;
         $model->cb_acquisition_rating->label = "Acquisition Rating";
         $model->cb_acquisition_rating->type = "traffic";
+        $model->cb_acquisition_rating->indent = 1;
 
         $model->cb_acquisition_rating_comment = clone $field;
         $model->cb_acquisition_rating_comment->label = "Acquisition Rating Comment";
         $model->cb_acquisition_rating_comment->type = "textarea";
         $model->cb_acquisition_rating_comment->maxlength = 500;
+        $model->cb_acquisition_rating_comment->indent = 2;
 
         $model->cb_org_workforce_rating = clone $field;
         $model->cb_org_workforce_rating->label = "Org/Workforce Rating";
         $model->cb_org_workforce_rating->type = "traffic";
+        $model->cb_org_workforce_rating->indent = 1;
 
         $model->cb_org_workforce_rating_comment = clone $field;
         $model->cb_org_workforce_rating_comment->label = "Org/Workforce Rating Comment";
         $model->cb_org_workforce_rating_comment->type = "textarea";
         $model->cb_org_workforce_rating_comment->maxlength = 500;
-
-        $model->cb_cio_assignment_plan_status = clone $field;
-        $model->cb_cio_assignment_plan_status->label = "CIO Assignment Plan Status";
-        $model->cb_cio_assignment_plan_status->type = "status";
+        $model->cb_org_workforce_rating_comment->indent = 2;
+        */
+        
+        $model->cb_cio_assignment_plan = clone $field;
+        $model->cb_cio_assignment_plan->dashboard = true;
+        $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (Optional)";
+        $model->cb_cio_assignment_plan->type = "select";
 
         // Published Artifacts
         
-        $model->pa_file_exists = clone $field;
-        $model->pa_file_exists->label = "File exists and conforms to schema?";
-        $model->pa_file_exists->type = "select";
+        $model->pa_bureau_it_leadership = clone $field;
+        $model->pa_bureau_it_leadership->dashboard = true;
+        $model->pa_bureau_it_leadership->label = "Bureau IT Leadership";
+        $model->pa_bureau_it_leadership->type = "select";
 
-        $model->pa_num_bureau_it_leaders = clone $field;
-        $model->pa_num_bureau_it_leaders->label = "# Bureau IT Leaders";
-        $model->pa_num_bureau_it_leaders->type = "integer";
+        $model->pa_cio_governance_board_list = clone $field;
+        $model->pa_cio_governance_board_list->dashboard = true;
+        $model->pa_cio_governance_board_list->label = "CIO Governance Board List";
+        $model->pa_cio_governance_board_list->type = "select";
 
-        $model->pa_num_key_bureau_it_leaders = clone $field;
-        $model->pa_num_key_bureau_it_leaders->label = "# Key Bureau IT Leaders";
-        $model->pa_num_key_bureau_it_leaders->type = "integer";
-
-        $model->pa_num_political_appointees = clone $field;
-        $model->pa_num_political_appointees->label = "# Political Appointees";
-        $model->pa_num_political_appointees->type = "integer";
-
-        $model->pa_link_to_directory = clone $field;
-        $model->pa_link_to_directory->label = "Link to directory";
-        $model->pa_link_to_directory->type = "url";        
+        $model->pa_num_it_policy_archive = clone $field;
+        $model->pa_num_it_policy_archive->dashboard = true;
+        $model->pa_num_it_policy_archive->label = "IT Policy Archive";
+        $model->pa_num_it_policy_archive->type = "select";
         
         // GAO Recommendations
-
-
         
-        /*
-        // Enterprise Data Inventory
-
-        $model->edi_aggregate_score = clone $field;
-        $model->edi_aggregate_score->label = "Overall Progress this Milestone";
-        $model->edi_aggregate_score->type = "traffic";
-
-        $model->edi_selected_best_practice = clone $field;
-        $model->edi_selected_best_practice->label = "Selected to highlight a best practice";
-        $model->edi_selected_best_practice->type = "select";
-
-        $model->edi_updated = clone $field;
-        $model->edi_updated->label = "Inventory Updated this Quarter";
-        $model->edi_updated->type = "select";
-
-        $model->edi_datasets = clone $field;
-        $model->edi_datasets->label = "Number of Datasets";
-        $model->edi_datasets->type = "string";
-
-        $model->edi_apis = clone $field;
-        $model->edi_apis->label = "Number of APIs";
-        $model->edi_apis->type = "string";
-
-        $model->edi_schedule_delivered = clone $field;
-        $model->edi_schedule_delivered->label = "Schedule Delivered";
-        $model->edi_schedule_delivered->type = "select";
-
-        $model->edi_bureaus = clone $field;
-        $model->edi_bureaus->label = "Bureaus represented";
-        $model->edi_bureaus->type = "string";
-
-        $model->edi_programs = clone $field;
-        $model->edi_programs->label = "Programs represented";
-        $model->edi_programs->type = "string";
-
-        $model->edi_access_public = clone $field;
-        $model->edi_access_public->label = "Access Level = Public";
-        $model->edi_access_public->type = "string";
-
-        $model->edi_access_restricted = clone $field;
-        $model->edi_access_restricted->label = "Access Level = Restricted";
-        $model->edi_access_restricted->type = "string";
-
-        $model->edi_access_nonpublic = clone $field;
-        $model->edi_access_nonpublic->label = "Access Level = Non-Public";
-        $model->edi_access_nonpublic->type = "string";
-
-        $model->edi_superset = clone $field;
-        $model->edi_superset->label = "Inventory > Public listing";
-        $model->edi_superset->type = "select";
-
-        $model->edi_progress_evaluation = clone $field;
-        $model->edi_progress_evaluation->label = "Percentage growth in records since last quarter";
-        $model->edi_progress_evaluation->type = "string";
-
-        $model->edi_schedule_risk = clone $field;
-        $model->edi_schedule_risk->label = "Schedule Risk for Nov 30, 2014";
-        $model->edi_schedule_risk->type = "traffic";
-
-        $model->edi_quality_check = clone $field;
-        $model->edi_quality_check->label = "Spot Check - datasets listed by search engine";
-        $model->edi_quality_check->type = "string";
-
-        $model->edi_public_release = clone $field;
-        $model->edi_public_release->label = "PDL includes non-public datasets and no redactions";
-        $model->edi_public_release->type = "select";
-
-        $model->edi_license_present = clone $field;
-        $model->edi_license_present->label = "License specified";
-        $model->edi_license_present->type = "string";
-
-
-        // Public Data Listing
-
-        $model->pdl_aggregate_score = clone $field;
-        $model->pdl_aggregate_score->label = "Overall Progress this Milestone";
-        $model->pdl_aggregate_score->type = "traffic";
-
-        $model->pdl_selected_best_practice = clone $field;
-        $model->pdl_selected_best_practice->label = "Selected to highlight a best practice";
-        $model->pdl_selected_best_practice->type = "select";
-
-        $model->pdl_datasets = clone $field;
-        $model->pdl_datasets->label = "Number of Datasets";
-        $model->pdl_datasets->type = "string";
-
-        $model->pdl_downloadable = clone $field;
-        $model->pdl_downloadable->label = "Number of Public Datasets with File Downloads";
-        $model->pdl_downloadable->type = "string";
-
-        $model->pdl_apis = clone $field;
-        $model->pdl_apis->label = "Number of APIs";
-        $model->pdl_apis->type = "string";
-
-        $model->pdl_link_total = clone $field;
-        $model->pdl_link_total->label = "Total number of access and download links";
-        $model->pdl_link_total->type = "string";
-
-        $model->pdl_link_check = clone $field;
-        $model->pdl_link_check->label = "Quality Check: Links are sufficiently working";
-        $model->pdl_link_check->type = "traffic";
-
-        $model->pdl_link_2xx = clone $field;
-        $model->pdl_link_2xx->label = "Quality Check: Accessible links";
-        $model->pdl_link_2xx->type = "string";
-
-        $model->pdl_link_3xx = clone $field;
-        $model->pdl_link_3xx->label = "Quality Check: Redirected links";
-        $model->pdl_link_3xx->type = "string";
-
-        $model->pdl_link_5xx = clone $field;
-        $model->pdl_link_5xx->label = "Quality Check: Error links";
-        $model->pdl_link_5xx->type = "string";
-
-        $model->pdl_link_4xx = clone $field;
-        $model->pdl_link_4xx->label = "Quality Check: Broken links";
-        $model->pdl_link_4xx->type = "string";
-
-        $model->pdl_growth = clone $field;
-        $model->pdl_growth->label = "Percentage growth in records since last quarter";
-        $model->pdl_growth->type = "string";
-
-        $model->pdl_valid_metadata = clone $field;
-        $model->pdl_valid_metadata->label = "Valid Metadata";
-        $model->pdl_valid_metadata->type = "string";
-
-        $model->pdl_slashdata = clone $field;
-        $model->pdl_slashdata->label = "/data";
-        $model->pdl_slashdata->type = "select";
-
-        $model->pdl_datajson = clone $field;
-        $model->pdl_datajson->label = "/data.json";
-        $model->pdl_datajson->type = "select";
-
-        $model->pdl_datagov_harvested = clone $field;
-        $model->pdl_datagov_harvested->label = "Harvested by data.gov";
-        $model->pdl_datagov_harvested->type = "select";
-
-        $model->pdl_datagov_view_count = clone $field;
-        $model->pdl_datagov_view_count->label = "Views on data.gov for the quarter";
-        $model->pdl_datagov_view_count->type = "string";
-
-        // Public Engagement
-
-        $model->pe_aggregate_score = clone $field;
-        $model->pe_aggregate_score->label = "Overall Progress this Milestone";
-        $model->pe_aggregate_score->type = "traffic";
-
-        $model->pe_selected_best_practice = clone $field;
-        $model->pe_selected_best_practice->label = "Selected to highlight a best practice";
-        $model->pe_selected_best_practice->type = "select";
-
-        $model->pe_feedback_specified = clone $field;
-        $model->pe_feedback_specified->label = "Description of feedback mechanism delivered";
-        $model->pe_feedback_specified->type = "select";
-
-        $model->pe_prioritization = clone $field;
-        $model->pe_prioritization->label = "Data release is prioritized through public engagement";
-        $model->pe_prioritization->type = "traffic";
-
-        $model->pe_dialogue = clone $field;
-        $model->pe_dialogue->label = "Feedback loop is closed, 2 way communication";
-        $model->pe_dialogue->type = "traffic";
-
-        $model->pe_reference = clone $field;
-        $model->pe_reference->label = "Link to or description of Feedback Mechanism";
-        $model->pe_reference->type = "string";
-
-
-        // Privacy & Security
-
-        $model->ps_aggregate_score = clone $field;
-        $model->ps_aggregate_score->label = "Overall Progress this Milestone";
-        $model->ps_aggregate_score->type = "traffic";
-
-        $model->ps_selected_best_practice = clone $field;
-        $model->ps_selected_best_practice->label = "Selected to highlight a best practice";
-        $model->ps_selected_best_practice->type = "select";
-
-        $model->ps_publication_process = clone $field;
-        $model->ps_publication_process->label = "Data Publication Process Delivered";
-        $model->ps_publication_process->type = "traffic";
-
-        $model->ps_publication_process_qa = clone $field;
-        $model->ps_publication_process_qa->label = "Information that should not to be made public is documented with agency's OGC";
-        $model->ps_publication_process_qa->type = "traffic";
-
-
-        // Human Capital
-
-        $model->hc_aggregate_score = clone $field;
-        $model->hc_aggregate_score->label = "Overall Progress this Milestone";
-        $model->hc_aggregate_score->type = "traffic";
-
-        $model->hc_selected_best_practice = clone $field;
-        $model->hc_selected_best_practice->label = "Selected to highlight a best practice";
-        $model->hc_selected_best_practice->type = "select";
-
-        $model->hc_lead = clone $field;
-        $model->hc_lead->label = "Open Data Primary Point of Contact";
-        $model->hc_lead->type = "string";
-
-        $model->hc_contacts = clone $field;
-        $model->hc_contacts->label = "POCs identified for required responsibilities";
-        $model->hc_contacts->type = "traffic";
-
-        // Use & Impact
-
-        $model->ui_aggregate_score = clone $field;
-        $model->ui_aggregate_score->label = "Overall Progress this Milestone";
-        $model->ui_aggregate_score->type = "traffic";
-
-        $model->ui_selected_best_practice = clone $field;
-        $model->ui_selected_best_practice->label = "Selected to highlight a best practice";
-        $model->ui_selected_best_practice->type = "select";
-
-        $model->ui_identified_users = clone $field;
-        $model->ui_identified_users->label = "Identified 5 data users";
-        $model->ui_identified_users->type = "select";
-
-        $model->ui_primary_uses = clone $field;
-        $model->ui_primary_uses->label = "Primary Uses";
-        $model->ui_primary_uses->type = "string";
-
-        $model->ui_value_impact = clone $field;
-        $model->ui_value_impact->label = "Value or impact of data";
-        $model->ui_value_impact->type = "string";
-
-        $model->ui_primary_discovery = clone $field;
-        $model->ui_primary_discovery->label = "Primary data discovery channels";
-        $model->ui_primary_discovery->type = "string";
-
-        $model->ui_user_suggest_usability = clone $field;
-        $model->ui_user_suggest_usability->label = "User suggestions on improving data usability";
-        $model->ui_user_suggest_usability->type = "string";
-
-        $model->ui_user_suggest_releases = clone $field;
-        $model->ui_user_suggest_releases->label = "User suggestions on additional data releases";
-        $model->ui_user_suggest_releases->type = "string";
-
-        $model->ui_dap_tracking = clone $field;
-        $model->ui_dap_tracking->label = "Digital Analytics Program on /data";
-        $model->ui_dap_tracking->type = "select";
-         */
-
+        $model->gr_open_gao_recommendations = clone $field;
+        $model->gr_open_gao_recommendations->dashboard = true;
+        $model->gr_open_gao_recommendations->label = "Open GAO Recommendations";
+        $model->gr_open_gao_recommendations->type = "integer";
+        
         return $model;
     }
 
@@ -534,17 +300,29 @@ class campaign_model extends CI_Model {
             'cb' => 'Common Baseline',
             'pa' => 'Published Artifacts',
             'gr' => 'GAO Recommendations'
-            /*
-            "edi" => "Enterprise Data Inventory",
-            "pdl" => "Public Data Listing",
-            "pe" => "Public Engagement",
-            "ps" => "Privacy &amp; Security",
-            "hc" => "Human Capital",
-            "ui" => "Use &amp; Impact"
-             */
         );
 
         return $section_breakdown;
+    }
+
+    public function tracker_subsections_model() {
+
+        $section_breakdown = $this->tracker_sections_model();
+        
+        $sections = array_keys($section_breakdown);
+        
+        $subsection_breakdown = array();
+        
+        $tracker = $this->tracker_model();
+        
+        foreach ($tracker as $key => $item) {
+            $section = substr($key, 0, 2);
+            if (isset($item->dashboard) && $item->dashboard === true) {
+                $subsection_breakdown[$section][] = $item;
+            }
+        }
+        
+        return $subsection_breakdown;
     }
 
     public function tracker_review_model() {

@@ -63,7 +63,7 @@ if($show_all_fields) {
         } elseif ($show_qa_fields) {
           status_table_qa('CFO Act Agencies', $cfo_offices, $tracker, $config, $section_breakdown, $milestone);
         } else {
-          status_table('CFO Act Agencies', $cfo_offices, $tracker, $config, $section_breakdown, $milestone);
+          status_table('CFO Act Agencies', $cfo_offices, $tracker, $config, $section_breakdown, $subsection_breakdown, $milestone);
         }
 				
 			}
