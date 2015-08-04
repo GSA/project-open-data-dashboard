@@ -1,6 +1,6 @@
-The Project Open Data Dashboard provides a variety of tools and capabilities to help manage the implementation of [Project Open Data](https://project-open-data.cio.gov/). It is primary used for Federal agencies, but also provides tools and resources for use by other entities like state and local government. 
+The FITARA Dashboard provides a variety of tools and capabilities to help manage the implementation of [Project Open Data](https://project-open-data.cio.gov/). It is primary used for Federal agencies, but also provides tools and resources for use by other entities like state and local government. 
 
-The primary place for the user-facing documentation is http://data.civicagency.org/docs
+The primary place for the user-facing documentation is http://foo.org/docs
 
 Federal agencies were seeded using the [USA.gov Federal Agency Directory API](http://www.usa.gov/About/developer-resources/federal-agency-directory/) and the IDs provided by that resource are used as the primary IDs on this dashboard. 
 
@@ -22,26 +22,25 @@ From the root of the application, you can update the status of agencies using a 
 
 `$ php index.php campaign status [id] [component]`
 
-If you wanted to update all components (data.json, digitalstrategy.json, /data) for all agencies, you'd run this command:
+If you wanted to update all components (bureaudirectory.json, governanceboards.json) for all agencies, you'd run this command:
 
 `$ php index.php campaign status all all`
 
-If you just wanted to update the data.json status for CFO Act agencies you'd run:
+If you just wanted to update the bureaudirectory.json status for CFO Act agencies you'd run:
 
-`$ php index.php campaign status cfo-act datajson`
+`$ php index.php campaign status cfo-act bd`
 
-If you just wanted to update the digitalstrategy.json status for the Department of Agriculture you'd run:
+If you just wanted to update the governanceboards.json status for the Department of Agriculture you'd run:
 
-`$ php index.php campaign status 49015 digitalstrategy`
+`$ php index.php campaign status 49015 gb`
 
 The options for [id] are: `all`,`cfo-act`, or the ID provided by the [USA.gov Federal Agency Directory API](http://www.usa.gov/About/developer-resources/federal-agency-directory/)
 
-The options for [component] are: `all`, `datajson`, `datapage`, `digitalstrategy`, `download`. 
+The options for [component] are: `all`, `bd`, `gb`, `download`. 
 
-* The `datajson` component captures the basic charactersitics of a request to an agency's data.json file (like whether it returns an HTTP 200) and then attempts to parse the file, validate against the schema, and provide other reporting metrics like the number of datasets listed. 
-* The `digitalstrategy` component captures the basic charactersitics of a request to an agency's digitalstrategy.json file (like whether it returns an HTTP 200) 
-* The `datapage` component captures the basic charactersitics of a request to an agency's /data page (like whether it returns an HTTP 200)
-* The `download` component downloads an archive of the data.json and digitalstrategy.json files
+* The `bureaudirectory` component captures foo. 
+* The `governanceboard` component captures bar. 
+* The `download` component downloads an archive of the bureaudirectory.json and governanceboard.json files
 * As you'd expect, `all` does all of these things at once. 
 
 Installation
@@ -64,7 +63,7 @@ This is a <a href="http://ellislab.com/codeigniter">CodeIgniter</a> PHP applicat
 1. Edit `/application/config/<env>/upload.php` with the `upload_path` where you want to save uploaded CSV files (give this directory adequate permissions for your server to write to)
 1. Create a local database and import the SQL database tables found in /sql/ into this local database:
 	* `mysql> CREATE DATABASE pod_dashboard;`
-    * `$> mysql -u root -p pod_dashboard < datagov_campaign.sql`
+    * `$> mysql -u root -p pod_dashboard < ciogov_campaign.sql`
     * `$> mysql -u root -p pod_dashboard < offices.sql`
     * `$> mysql -u root -p pod_dashboard < notes.sql`
     * `$> mysql -u root -p pod_dashboard < users_auth.sql`
