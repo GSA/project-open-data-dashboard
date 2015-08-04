@@ -6,6 +6,9 @@
 
 body { padding-top: 50px; }
 
+.glyphicon-info-sign {
+    display: none;
+}
 
 .intro-blurb {
     margin-top : 2em; 

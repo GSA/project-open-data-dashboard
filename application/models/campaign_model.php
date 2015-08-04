@@ -265,26 +265,78 @@ class campaign_model extends CI_Model {
 
         // Published Artifacts
         
+        $model->pa_overall_status = clone $field;
+        $model->pa_overall_status->dashboard = true;
+        $model->pa_overall_status->label = "Overall Published Artifacts Status";
+        $model->pa_overall_status->type = "traffic";
+
         $model->pa_bureau_it_leadership = clone $field;
         $model->pa_bureau_it_leadership->dashboard = true;
-        $model->pa_bureau_it_leadership->label = "Bureau IT Leadership";
+        $model->pa_bureau_it_leadership->label = "Bureau IT Leadership file exists and conforms to schema?";
         $model->pa_bureau_it_leadership->type = "select";
 
-        $model->pa_cio_governance_board_list = clone $field;
-        $model->pa_cio_governance_board_list->dashboard = true;
-        $model->pa_cio_governance_board_list->label = "CIO Governance Board List";
-        $model->pa_cio_governance_board_list->type = "select";
+        $model->pa_bureau_it_leaders = clone $field;
+        $model->pa_bureau_it_leaders->indent = 1;
+        $model->pa_bureau_it_leaders->label = "# Bureau IT Leaders";
+        $model->pa_bureau_it_leaders->type = "integer";
 
-        $model->pa_num_it_policy_archive = clone $field;
-        $model->pa_num_it_policy_archive->dashboard = true;
-        $model->pa_num_it_policy_archive->label = "IT Policy Archive";
-        $model->pa_num_it_policy_archive->type = "select";
+        $model->pa_key_bureau_it_leaders = clone $field;
+        $model->pa_key_bureau_it_leaders->indent = 1;
+        $model->pa_key_bureau_it_leaders->label = "# Key Bureau IT Leaders";
+        $model->pa_key_bureau_it_leaders->type = "integer";
+
+        $model->pa_political_appointees = clone $field;
+        $model->pa_political_appointees->indent = 1;
+        $model->pa_political_appointees->label = "# Political Appointees";
+        $model->pa_political_appointees->type = "string";
+
+        $model->pa_bureau_it_leadership_link = clone $field;
+        $model->pa_bureau_it_leadership_link->indent = 1;
+        $model->pa_bureau_it_leadership_link->label = "Link to Bureau IT Leadership directory";
+        $model->pa_bureau_it_leadership_link->type = "url";
+
+        $model->pa_cio_governance_board = clone $field;
+        $model->pa_cio_governance_board->dashboard = true;
+        $model->pa_cio_governance_board->label = "CIO Governance Board file exists and conforms to schema?";
+        $model->pa_cio_governance_board->type = "select";
+
+        $model->pa_mapped_to_program_inventory = clone $field;
+        $model->pa_mapped_to_program_inventory->indent = 1;
+        $model->pa_mapped_to_program_inventory->label = "% Mapped to Federal Program Inventory";
+        $model->pa_mapped_to_program_inventory->type = "percent";
+
+        $model->pa_cio_governance_board_link = clone $field;
+        $model->pa_cio_governance_board_link->indent = 1;
+        $model->pa_cio_governance_board_link->label = "Link to CIO Governance Board directory";
+        $model->pa_cio_governance_board_link->type = "url";
+
+        $model->pa_it_policy_archive = clone $field;
+        $model->pa_it_policy_archive->dashboard = true;
+        $model->pa_it_policy_archive->label = "IT Policy Archive file exists with expected file extension?";
+        $model->pa_it_policy_archive->type = "select";
         
+        $model->pa_it_policy_archive_files = clone $field;
+        $model->pa_it_policy_archive_files->indent = 1;
+        $model->pa_it_policy_archive_files->label = "# Files in policy archive";
+        $model->pa_it_policy_archive_files->type = "integer";
+        
+        $model->pa_it_policy_archive_filenames = clone $field;
+        $model->pa_it_policy_archive_filenames->indent = 1;
+        $model->pa_it_policy_archive_filenames->label = "File names in policy archive";
+        $model->pa_it_policy_archive_filenames->type = "textarea";
+        $model->pa_it_policy_archive_filenames->cols = 30;
+        $model->pa_it_policy_archive_filenames->rows = 3;
+        
+        $model->pa_it_policy_archive_link = clone $field;
+        $model->pa_it_policy_archive_link->indent = 1;
+        $model->pa_it_policy_archive_link->label = "Link to CIO Governance Board directory";
+        $model->pa_it_policy_archive_link->type = "url";
+
         // GAO Recommendations
         
         $model->gr_open_gao_recommendations = clone $field;
         $model->gr_open_gao_recommendations->dashboard = true;
-        $model->gr_open_gao_recommendations->label = "Open GAO Recommendations";
+        $model->gr_open_gao_recommendations->label = "# Open GAO Recommendations";
         $model->gr_open_gao_recommendations->type = "integer";
         
         return $model;

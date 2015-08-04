@@ -217,16 +217,20 @@
                                                         <input type="number" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>" min="0" step="1">
                                                     <?php endif; ?>
 
+                                                    <?php if ($tracker_field_meta->type == "percent") : ?>
+                                                        <input type="number" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>" min="0" step="1">%
+                                                    <?php endif; ?>
+
                                                     <?php if ($tracker_field_meta->type == "url") : ?>
                                                         <input type="url" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>">
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "string") : ?>
-                                                        <input type="text" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>" maxlength="<?php echo $tracker_field_meta->maxlength; ?>">
+                                                        <input type="text" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "textarea") : ?>
-                                                        <textarea name="<?php echo $tracker_field_name ?>" cols="80" rows="5" maxlength="<?php echo $tracker_field_meta->maxlength; ?>"><?php echo $office_campaign->tracker_fields->$tracker_field_name; ?></textarea>
+                                                        <textarea name="<?php echo $tracker_field_name ?>" cols="<?php echo isset($tracker_field_meta->cols) ? $tracker_field_meta->cols : 80; ?>" rows="<?php echo isset($tracker_field_meta->rows) ? $tracker_field_meta->rows : 5; ?>" maxlength="<?php echo isset($tracker_field_meta->maxlength) ? $tracker_field_meta->maxlength : 9999; ?>"><?php echo $office_campaign->tracker_fields->$tracker_field_name; ?></textarea>
                                                     <?php endif; ?>
 
                                                 </td>
