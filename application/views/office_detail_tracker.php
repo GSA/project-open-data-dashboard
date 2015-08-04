@@ -123,7 +123,7 @@
                                                     <a href="<?php echo site_url('docs') . '#' . $tracker_field_name ?>">
                                                         <span class="glyphicon glyphicon-info-sign"></span>
                                                     </a>
-                                                    <?php echo $tracker_field_meta->label ?>
+                                                    <?php echo isset($tracker_field_meta->description) ? $tracker_field_meta->description : $tracker_field_meta->label ?>
                                                 </strong>
                                             </td>                        
 

@@ -266,13 +266,13 @@ class campaign_model extends CI_Model {
         // Published Artifacts
         
         $model->pa_overall_status = clone $field;
-        $model->pa_overall_status->dashboard = true;
         $model->pa_overall_status->label = "Overall Published Artifacts Status";
         $model->pa_overall_status->type = "traffic";
 
         $model->pa_bureau_it_leadership = clone $field;
         $model->pa_bureau_it_leadership->dashboard = true;
-        $model->pa_bureau_it_leadership->label = "Bureau IT Leadership file exists and conforms to schema?";
+        $model->pa_bureau_it_leadership->label = "Bureau IT Leadership";
+        $model->pa_bureau_it_leadership->description = "Bureau IT Leadership file exists and conforms to schema?";
         $model->pa_bureau_it_leadership->type = "select";
 
         $model->pa_bureau_it_leaders = clone $field;
@@ -297,7 +297,8 @@ class campaign_model extends CI_Model {
 
         $model->pa_cio_governance_board = clone $field;
         $model->pa_cio_governance_board->dashboard = true;
-        $model->pa_cio_governance_board->label = "CIO Governance Board file exists and conforms to schema?";
+        $model->pa_cio_governance_board->label = "CIO Governance Board List";
+        $model->pa_cio_governance_board->description = "CIO Governance Board file exists and conforms to schema?";
         $model->pa_cio_governance_board->type = "select";
 
         $model->pa_mapped_to_program_inventory = clone $field;
@@ -312,7 +313,8 @@ class campaign_model extends CI_Model {
 
         $model->pa_it_policy_archive = clone $field;
         $model->pa_it_policy_archive->dashboard = true;
-        $model->pa_it_policy_archive->label = "IT Policy Archive file exists with expected file extension?";
+        $model->pa_it_policy_archive->label = "IT Policy Archive";
+        $model->pa_it_policy_archive->description = "IT Policy Archive file exists with expected file extension?";
         $model->pa_it_policy_archive->type = "select";
         
         $model->pa_it_policy_archive_files = clone $field;
@@ -329,14 +331,15 @@ class campaign_model extends CI_Model {
         
         $model->pa_it_policy_archive_link = clone $field;
         $model->pa_it_policy_archive_link->indent = 1;
-        $model->pa_it_policy_archive_link->label = "Link to CIO Governance Board directory";
+        $model->pa_it_policy_archive_link->label = "Link to policy archive directory";
         $model->pa_it_policy_archive_link->type = "url";
 
         // GAO Recommendations
         
         $model->gr_open_gao_recommendations = clone $field;
         $model->gr_open_gao_recommendations->dashboard = true;
-        $model->gr_open_gao_recommendations->label = "# Open GAO Recommendations";
+        $model->gr_open_gao_recommendations->label = "GAO Recommendations";
+        $model->gr_open_gao_recommendations->description = "# Open GAO Recommendations";
         $model->gr_open_gao_recommendations->type = "integer";
         
         return $model;
