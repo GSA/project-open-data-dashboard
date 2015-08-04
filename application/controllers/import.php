@@ -195,9 +195,9 @@ class Import extends CI_Controller {
 
         $url = (!empty($office['Web_Url'][0]['Url'])) ? $office['Web_Url'][0]['Url'] : null;
 
-        //if(!empty($url)) {
-        //	$url = substr($url, 0, strpos($url, '.gov') + 4);
-        //}
+        if(!empty($url)) {
+            $url = substr($url, 0, strpos($url, '.gov') + 4);
+        }
 
         $office_model['abbreviation'] = $abbreviation;
         $office_model['url'] = $url;
