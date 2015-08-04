@@ -58,16 +58,15 @@
             }
             
             $crawl_details = array(
-                'pdl_bureaudirectory',
-                'pdl_slashdata',
-                'pdl_valid_metadata',
-                'pdl_datasets',
-                'pdl_link_check',
-                'pe_feedback_specified',
-                'edi_schedule_delivered',
-                'ps_publication_process',
-                'pdl_downloadable',
-                'edi_license_present'
+                'pa_bureau_it_leadership',
+                'pa_bureau_it_leaders',
+                'pa_key_bureau_it_leaders',
+                'pa_political_appointees',
+                'pa_cio_governance_board',
+                'pa_mapped_to_program_inventory',
+                'pa_it_policy_archive',
+                'pa_it_policy_archive_files',
+                'pa_it_policy_archive_filenames'
             );
 
             $active_section = (!empty($selected_category)) ? $selected_category : 'cb';
