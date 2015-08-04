@@ -227,12 +227,6 @@ class Offices extends CI_Controller {
                 $view_data['office_campaign']->tracker_fields = json_encode($tracker_fields);
             }
 
-
-            if (!empty($view_data['office_campaign']->datajson_status)) {
-                $view_data['office_campaign']->expected_datajson_url = (!empty($view_data['office_campaign']->datajson_status['url'])) ? $view_data['office_campaign']->datajson_status['url'] : '';
-                $view_data['office_campaign']->expected_datajson_status = (object) json_decode($view_data['office_campaign']->datajson_status);
-            }
-
             if ($this->config->item('show_all_offices')) {
 
                 // Get sub offices

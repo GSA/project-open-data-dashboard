@@ -1,0 +1,131 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://omb.max.gov/schemas/BureauITLeadership",
+    "version" : 1.0,
+    "type": "object",
+    "title": "Bureau IT Leadership Directory Schema version 1.0",
+    "description": "Schema definition for describing bureau IT leaders for an agency.",
+    "name": "/",
+    "properties": {
+        "leaders": {
+            "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders",
+            "type": "array",
+            "title": "Leaders schema.",
+            "description": "A directory of the bureau IT leaders for this agency",
+            "name": "leaders",
+            "items": {
+                "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0",
+                "type": "object",
+                "title": "0 schema.",
+                "description": "Information about a particular leader.",
+                "name": "0",
+                "properties": {
+                    "bureauCode": {
+                        "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0/bureauCode",
+                        "type": "string",
+                        "title": "BureauCode schema.",
+                        "description": "2 digit integer bureau code",
+                        "name": "bureauCode",
+                        "pattern": "^[0-9]{2}$"
+                    },
+                    "firstName": {
+                        "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0/firstName",
+                        "type": "string",
+                        "title": "FirstName schema.",
+                        "description": "Leader first name.",
+                        "name": "firstName",
+                        "minLength" : 1,
+                        "maxLength" : 50
+                    },
+                    "lastName": {
+                        "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0/lastName",
+                        "type": "string",
+                        "title": "LastName schema.",
+                        "description": "Leader last name.",
+                        "name": "lastName",
+                        "minLength": 1,
+                        "maxLength": 50
+                    },
+                    "employmentType": {
+                        "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0/employmentType",
+                        "type": "string",
+                        "title": "EmploymentType schema.",
+                        "description": "Employment type.  One of GS, SES, SL, ST, or Other.",
+                        "name": "employmentType",
+                        "enum" : ["GS", "SES", "SL", "ST", "Other"]
+                    },
+                    "employmentTypeOther": {
+                        "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0/employmentTypeOther",
+                        "type": "string",
+                        "title": "EmploymentTypeOther schema.",
+                        "description": "When employtmentType Other was chosen, this field contains a description of the employment type.",
+                        "name": "employmentTypeOther",
+                        "minLength": 1,
+                        "maxLength": 500
+                    },
+                    "typeOfAppointment": {
+                        "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0/typeOfAppointment",
+                        "type": "string",
+                        "title": "TypeOfAppointment schema.",
+                        "description": "The type of appointment for this leader.  Must be either career or political.",
+                        "name": "typeOfAppointment",
+                        "enum": ["career", "political"]
+
+                    },
+                    "otherResponsibilities": {
+                        "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0/otherResponsibilities",
+                        "type": "string",
+                        "title": "OtherResponsibilities schema.",
+                        "description": "Description of other responsibilities of this leader.",
+                        "name": "otherResponsibilities",
+                        "minLength": 1,
+                        "maxLength": 500
+                    },
+                    "evaluationRatingOfficialTitle": {
+                        "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0/evaluationRatingOfficialTitle",
+                        "type": "string",
+                        "title": "EvaluationRatingOfficialTitle schema.",
+                        "description": "The title of the leader's evaluation rating official.",
+                        "name": "evaluationRatingOfficialTitle",
+                        "minLength": 1,
+                        "maxLength": 500
+                    },
+                    "evaluationReviewingOfficialTitle": {
+                        "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0/evaluationReviewingOfficialTitle",
+                        "type": "string",
+                        "title": "EvaluationReviewingOfficialTitle schema.",
+                        "description": "The title of the leader's evaluation reviwing official..",
+                        "name": "evaluationReviewingOfficialTitle",
+                        "minLength": 1,
+                        "maxLength": 500
+                    },
+                    "keyBureauCIO": {
+                        "id": "https://omb.max.gov/schemas/BureauITLeadership/leaders/0/keyBureauCIO",
+                        "type": "string",
+                        "title": "KeyBureauCIO schema.",
+                        "description": "Set this field to Yes if this leader a key bureau CIO.",
+                        "name": "keyBureauCIO",
+                        "enum": ["Yes", "No"]
+                    }
+                },
+                "required": [
+                    "bureauCode",
+                    "firstName",
+                    "lastName",
+                    "employmentType",
+                    "typeOfAppointment",
+                    "evaluationRatingOfficialTitle",
+                    "keyBureauCIO"
+                ]
+            },
+            "required": [
+                "0"
+            ],
+            "minItems": 1,
+            "additionalItems": false
+        }
+    },
+    "required": [
+        "leaders"
+    ]
+}

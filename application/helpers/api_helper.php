@@ -236,7 +236,7 @@ function is_json($string) {
 }
 
 
-function json_text_filter($datajson) {
+function json_text_filter($json) {
 
   // Clean up the data a bit
 
@@ -245,12 +245,12 @@ function json_text_filter($datajson) {
   http://forum.jquery.com/topic/json-with-newlines-in-strings-should-be-valid#14737000000866332
   http://stackoverflow.com/posts/17846592/revisions
   */
-  $datajson = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($datajson));
+  $json = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($json));
   //$data = str_replace(array("\r", "\n", "\\n", "\r\n"), " ", $data);
   //$data = preg_replace('!\s+!', ' ', $data);
   //$data = str_replace(' "', '"', $data);
 
-  $datajson = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($datajson));
+  $json = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($json));
 
 
   /*
@@ -260,20 +260,20 @@ function json_text_filter($datajson) {
   http://stackoverflow.com/questions/3255993/how-do-i-remove-i-from-the-beginning-of-a-file
   */
   // $bom = pack('H*','EFBBBF');
-  // $datajson = preg_replace("/^$bom/", '', $datajson);
-  $datajson = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $datajson);
+  // $json = preg_replace("/^$bom/", '', $json);
+  $json = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $json);
 
-  return $datajson;
+  return $json;
 
 }
 
 
-function filter_json( $source_datajson, $dataset_array = false ) {
+function filter_json( $source_json, $dataset_array = false ) {
 
   if ($dataset_array) {
-    $datasets = $source_datajson->dataset;
+    $datasets = $source_json->dataset;
   } else {
-    $datasets = $source_datajson;
+    $datasets = $source_json;
   }
 
   foreach ($datasets as $key => $dataset) {
@@ -291,12 +291,12 @@ function filter_json( $source_datajson, $dataset_array = false ) {
   }
 
   if ($dataset_array) {
-    $source_datajson->dataset = $datasets;
+    $source_json->dataset = $datasets;
   } else {
-    $source_datajson = $datasets;
+    $source_json = $datasets;
   }
 
-    return $source_datajson; 
+    return $source_json; 
 }
 
 

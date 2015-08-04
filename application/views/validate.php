@@ -9,23 +9,18 @@
         <div class="col-lg-12">
           <h2>Validator</h2>
 
-            <p>There are three ways you can validate data.json, either by validating a public URL, uploading a json file, or pasting the raw JSON into the form.
+            <p>There are three ways you can validate FITARA JSON, either by validating a public URL, uploading a json file, or pasting the raw JSON into the form.
 
-
-
-            <h3 style="margin-top : 3em;">Validate data.json URL</h3>
+            <h3 style="margin-top : 3em;">Validate FITARA JSON URL</h3>
 
             <form action="<?php echo site_url(); ?>validate" method="get" role="form">
 
 
                 <div class="form-group">
-                    <label for="datajson">Schema</label>
+                    <label for="schema">Schema</label>
                     <select name="schema">                        
-                        <option value="federal-v1.1" selected="selected">Federal v1.1</option>                                                
-                        <option value="federal">Federal v1.0</option> 
-                        <option value="non-federal-v1.1">Non-Federal v1.1</option>                           
-                        <option value="non-federal">Non-Federal v1.0</option>  
-                        
+                        <option value="bureaudirectory" selected="selected">Bureau IT Leadership</option>                                                
+                        <option value="governanceboard">Governance Board</option> 
                     </select>
                 </div>
 
@@ -39,10 +34,10 @@
                     </label>
                 </div>
 
-                <label for="datajson_url">data.json URL</label>
+                <label for="url">JSON URL</label>
                 <div class="input-group">
-                    <input name="datajson_url" id="datajson_url" class="form-control"  placeholder="e.g. http://energy.gov/data.json" >
-                    <input name="qa" value="true" type="hidden">
+                    <input name="url" id="url" class="form-control"  placeholder="e.g. http://energy.gov/digitalstrategy/bureaudirectory.json" >
+                    <!--<input name="qa" value="true" type="hidden">-->
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-primary">Validate URL</button>
                     </span>
@@ -53,29 +48,26 @@
             <hr>
 
 
-            <h3 style="margin-top : 3em;">Validate data.json file upload</h3>
+            <h3 style="margin-top : 3em;">Validate JSON file upload</h3>
 
             <form action="<?php echo site_url(); ?>validate" method="post" enctype="multipart/form-data" role="form">
 
 
                 <div class="form-group">
-                    <label for="datajson">Schema</label>
+                    <label for="schema">Schema</label>
                     <select name="schema">
-                        <option value="federal-v1.1" selected="selected">Federal v1.1</option>                                                
-                        <option value="federal">Federal v1.0</option> 
-                        <option value="non-federal-v1.1">Non-Federal v1.1</option>   
-                        <option value="non-federal">Non-Federal v1.0</option>
-                        
+                        <option value="bureaudirectory" selected="selected">Bureau IT Leadership</option>                                                
+                        <option value="governanceboard">Governance Board</option> 
                     </select>
                 </div>
 
                  <div class="form-group">
-                    <label for="datajson_upload">Upload a data.json file</label>
-                    <input type="file" name="datajson_upload">
+                    <label for="json_upload">Upload a JSON file</label>
+                    <input type="file" name="json_upload">
                 </div>
 
                 <div class="form-group">
-                    <input name="qa" value="true" type="hidden">
+                    <!--<input name="qa" value="true" type="hidden">-->
                     <input type="hidden" name="output" value="browser">
                     <input type="submit" value="Validate File" class="btn btn-primary">
                 </div>
@@ -85,28 +77,24 @@
 
             <hr>
 
-
-
             <h3 style="margin-top : 3em;">Validate raw JSON</h3>
 
             <form action="<?php echo site_url(); ?>validate" method="post" role="form">
                 <div class="form-group">
-                    <label for="datajson">data.json JSON</label>
-                    <textarea class="form-control" id="datajson" name="datajson" style="height : 30em; width: 100%"></textarea>
+                    <label for="json">JSON</label>
+                    <textarea class="form-control" id="json" name="json" style="height : 30em; width: 100%"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="datajson">Schema</label>
+                    <label for="schema">Schema</label>
                     <select name="schema">
-                        <option value="federal-v1.1" selected="selected">Federal v1.1</option>                                                
-                        <option value="federal">Federal v1.0</option>                       
-                        <option value="non-federal-v1.1">Non-Federal v1.1</option>   
-                        <option value="non-federal">Non-Federal v1.0</option>
+                        <option value="bureaudirectory" selected="selected">Bureau IT Leadership</option>                                                
+                        <option value="governanceboard">Governance Board</option> 
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <input name="qa" value="true" type="hidden">
+                    <!--<input name="qa" value="true" type="hidden">-->
                     <input type="hidden" name="output" value="browser">
                     <input type="submit" value="Validate JSON" class="btn btn-primary">
                 </div>

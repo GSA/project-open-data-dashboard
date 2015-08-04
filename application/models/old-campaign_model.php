@@ -103,6 +103,79 @@ class campaign_model extends CI_Model {
         return $model;
     }
 
+    public function qa_sections_model() {
+
+
+        $model = new stdClass();
+        $field = new stdClass();
+
+        $field->label = null;
+        $field->total_field = null;
+        $field->success_basis = null;
+        $field->success_weight = null;
+        $field->value = null;
+
+        $model->total_records = clone $field;
+        $model->total_records->label = 'Public Datasets';
+
+        $model->valid_count = clone $field;
+        $model->valid_count->label = 'Valid Metadata';
+        $model->valid_count->total_field = 'total_records';
+        $model->valid_count->success_basis = 'high';
+        $model->valid_count->success_weight = 70;
+
+        $model->programs = clone $field;
+        $model->programs->label = 'Programs';
+
+        $model->bureaus = clone $field;
+        $model->bureaus->label = 'Bureaus';
+
+        $model->accessLevel_public = clone $field;
+        $model->accessLevel_public->label = 'Public Datasets';
+        $model->accessLevel_public->total_field = 'total_records';
+
+        $model->accessLevel_nonpublic = clone $field;
+        $model->accessLevel_nonpublic->label = 'Restricted Datasets';
+        $model->accessLevel_nonpublic->total_field = 'total_records';
+
+        $model->accessLevel_restricted = clone $field;
+        $model->accessLevel_restricted->label = 'Non-public Datasets';
+        $model->accessLevel_restricted->total_field = 'total_records';
+
+        $model->accessURL_present = clone $field;
+        $model->accessURL_present->label = 'Datasets with downloads';
+        $model->accessURL_present->total_field = 'total_records';
+
+        $model->accessURL_total = clone $field;
+        $model->accessURL_total->label = 'Total Download URLs';
+
+        $model->accessURL_working = clone $field;
+        $model->accessURL_working->label = 'Working Download URLs';
+        $model->accessURL_working->total_field = 'accessURL_total';
+        $model->accessURL_working->success_basis = 'high';
+        $model->accessURL_working->success_weight = 30;
+
+        $model->accessURL_format = clone $field;
+        $model->accessURL_format->label = 'Correct Format';
+        $model->accessURL_format->total_field = 'accessURL_working';
+        $model->accessURL_format->success_basis = 'high';
+        $model->accessURL_format->success_weight = 20;
+
+        $model->accessURL_html = clone $field;
+        $model->accessURL_html->label = 'HTML Downloads';
+        $model->accessURL_html->total_field = 'accessURL_working';
+        $model->accessURL_html->success_basis = 'low';
+        $model->accessURL_html->success_weight = .35;
+
+        $model->accessURL_pdf = clone $field;
+        $model->accessURL_pdf->label = 'PDF Downloads';
+        $model->accessURL_pdf->total_field = 'accessURL_working';
+        $model->accessURL_pdf->success_basis = 'low';
+        $model->accessURL_pdf->success_weight = .15;
+
+        return $model;
+    }
+
     public function tracker_model() {
 
         $model = new stdClass();
@@ -387,13 +460,13 @@ class campaign_model extends CI_Model {
         return $note;
     }
 
-    public function json_crawl() {
+    public function datajson_crawl() {
 
         $model = new stdClass();
 
         $model->id = null;
         $model->office_id = null;
-        $model->url = null;
+        $model->datajson_url = null;
         $model->crawl_cycle = null;
         $model->crawl_status = null;
         $model->start = null;
@@ -408,7 +481,7 @@ class campaign_model extends CI_Model {
 
         $model->id = null;
         $model->office_id = null;
-        $model->url = null;
+        $model->datajson_url = null;
         $model->identifier = null;
         $model->json_body = null;
         $model->schema_valid = null;
@@ -460,12 +533,18 @@ class campaign_model extends CI_Model {
         }
     }
 
-    public function validate_json($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null) {
+    public function validate_bureaudirectory($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null) {
+    }
+    
+    public function validate_governanceboard($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null) {
+    }
+    
+    public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null) {
 
 
-        if ($url) {
+        if ($datajson_url) {
 
-            $json_header = ($headers) ? $headers : $this->campaign->uri_header($url);
+            $datajson_header = ($headers) ? $headers : $this->campaign->uri_header($datajson_url);
 
             $errors = array();
 
@@ -474,11 +553,11 @@ class campaign_model extends CI_Model {
 
 
             // Only download the data.json if we need to
-            if (empty($json_header['download_content_length']) ||
-                    $json_header['download_content_length'] < 0 ||
-                    (!empty($json_header['download_content_length']) &&
-                    $json_header['download_content_length'] > 0 &&
-                    $json_header['download_content_length'] < $max_remote_size)) {
+            if (empty($datajson_header['download_content_length']) ||
+                    $datajson_header['download_content_length'] < 0 ||
+                    (!empty($datajson_header['download_content_length']) &&
+                    $datajson_header['download_content_length'] > 0 &&
+                    $datajson_header['download_content_length'] < $max_remote_size)) {
 
                 // Load the JSON
                 $opts = array(
@@ -490,42 +569,41 @@ class campaign_model extends CI_Model {
 
                 $context = stream_context_create($opts);
 
-                $json = @file_get_contents($url, false, $context, -1, $max_remote_size + 1);
+                $datajson = @file_get_contents($datajson_url, false, $context, -1, $max_remote_size + 1);
 
-                if ($json == false) {
+                if ($datajson == false) {
 
-                    $json = curl_from_json($url, false, false);
+                    $datajson = curl_from_json($datajson_url, false, false);
 
-                    if (!$json) {
+                    if (!$datajson) {
                         $errors[] = "File not found or couldn't be downloaded";
                     }
                 }
             }
 
 
-            if (!empty($json) && (empty($json_header['download_content_length']) || $json_header['download_content_length'] < 0)) {
-                $json_header['download_content_length'] = strlen($json);
+            if (!empty($datajson) && (empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < 0)) {
+                $datajson_header['download_content_length'] = strlen($datajson);
             }
 
             // See if it exceeds max size
-            if ($json_header['download_content_length'] > $max_remote_size) {
+            if ($datajson_header['download_content_length'] > $max_remote_size) {
 
-                //$filesize = human_filesize($json_header['download_content_length']);
+                //$filesize = human_filesize($datajson_header['download_content_length']);
                 //$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";				
                 // Increase the timeout limit
                 @set_time_limit(6000);
 
                 $this->load->helper('file');
 
-                if ($rawfile = $this->archive_file('json-lines', $this->current_office_id, $json_url)) {
+                if ($rawfile = $this->archive_file('datajson-lines', $this->current_office_id, $datajson_url)) {
 
                     $outfile = $rawfile . '.lines.json';
 
                     $stream = fopen($rawfile, 'r');
                     $out_stream = fopen($outfile, 'w+');
 
-                    //$listener = new DataJsonParser();
-                    $listener = new JsonStreamingParser_Parser_Listener();
+                    $listener = new DataJsonParser();
                     $listener->out_file = $out_stream;
 
                     if ($this->environment == 'terminal' OR $this->environment == 'cron') {
@@ -541,7 +619,7 @@ class campaign_model extends CI_Model {
                     }
 
                     // Get the dataset count
-                    $json_lines_count = $listener->_array_count;
+                    $datajson_lines_count = $listener->_array_count;
 
                     // Delete temporary raw source file
                     unlink($rawfile);
@@ -550,7 +628,7 @@ class campaign_model extends CI_Model {
 
                     $chunk_cycle = 0;
                     $chunk_size = 200;
-                    $chunk_count = intval(ceil($json_lines_count / $chunk_size));
+                    $chunk_count = intval(ceil($datajson_lines_count / $chunk_size));
                     $buffer = '';
 
                     $response = array();
@@ -560,11 +638,12 @@ class campaign_model extends CI_Model {
                         $response['qa'] = array();
                     }
 
-                    echo "Analyzing $json_lines_count lines in $chunk_count chunks of $chunk_size lines each" . PHP_EOL;
+                    echo "Analyzing $datajson_lines_count lines in $chunk_count chunks of $chunk_size lines each" . PHP_EOL;
 
                     while ($chunk_cycle < $chunk_count) {
 
                         $buffer = '';
+                        $datajson_qa = null;
                         $counter = 0;
 
                         if ($chunk_cycle > 0) {
@@ -574,7 +653,7 @@ class campaign_model extends CI_Model {
                         }
 
                         $next_offset = $key_offset + $chunk_size;
-                        //echo "Analyzing chunk $chunk_cycle of $chunk_count ($key_offset to $next_offset of $json_lines_count)" . PHP_EOL;
+                        //echo "Analyzing chunk $chunk_cycle of $chunk_count ($key_offset to $next_offset of $datajson_lines_count)" . PHP_EOL;
 
 
                         if ($chunk_cycle == 0) {
@@ -595,19 +674,72 @@ class campaign_model extends CI_Model {
                             $response['errors'] = array_merge($response['errors'], $this->process_validation_errors($validator['errors'], $key_offset));
                         }
 
+                        if ($quality !== false) {
+                            $datajson_qa = $this->campaign->datajson_qa($buffer, 'federal-v1.1', $quality, $component);
+
+                            if (!empty($datajson_qa)) {
+                                $response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);
+                            }
+                        }
+
                         $chunk_cycle++;
                     }
 
                     // Delete json lines file
                     unlink($outfile);
 
+                    // ###################################################################
+                    // Needs to be refactored into separate function
+                    // ###################################################################
+                    // Sum QA counts 
+                    if (!empty($response['qa'])) {
+
+
+                        if (!empty($response['qa']['bureauCodes'])) {
+                            $response['qa']['bureauCodes'] = array_keys($response['qa']['bureauCodes']);
+                        }
+
+                        if (!empty($response['qa']['programCodes'])) {
+                            $response['qa']['programCodes'] = array_keys($response['qa']['programCodes']);
+                        }
+
+                        $sum_array_fields = array('API_total',
+                            'downloadURL_present',
+                            'downloadURL_total',
+                            'accessURL_present',
+                            'accessURL_total',
+                            'accessLevel_public',
+                            'accessLevel_restricted',
+                            'accessLevel_nonpublic',
+                            'license_present',
+                            'redaction_present',
+                            'redaction_no_explanation');
+
+                        foreach ($sum_array_fields as $array_field) {
+                            if (!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {
+                                $response['qa'][$array_field] = array_sum($response['qa'][$array_field]);
+                            }
+                        }
+
+                        // Sum validation counts
+                        if (!empty($response['qa']['validation_counts']) && is_array($response['qa']['validation_counts'])) {
+                            foreach ($response['qa']['validation_counts'] as $validation_key => $validation_count) {
+
+                                if (is_array($response['qa']['validation_counts'][$validation_key])) {
+                                    $response['qa']['validation_counts'][$validation_key] = array_sum($response['qa']['validation_counts'][$validation_key]);
+                                }
+                            }
+                        }
+                    }
+
+
                     $response['valid'] = (empty($response['errors'])) ? true : false;
                     $response['valid_json'] = true;
 
-                    $response['total_records'] = $json_lines_count;
+                    $response['total_records'] = $datajson_lines_count;
 
-                    if (!empty($json_header['download_content_length'])) {
-                        $response['download_content_length'] = $json_header['download_content_length'];
+                    if (!empty($datajson_header['download_content_length'])) {
+                        $response['download_content_length'] = $datajson_header['download_content_length'];
                     }
 
                     if (empty($response['errors'])) {
@@ -616,6 +748,8 @@ class campaign_model extends CI_Model {
 
                     return $response;
 
+
+                    // ###################################################################
                 } else {
                     $errors[] = "File not found or couldn't be downloaded";
                 }
@@ -624,15 +758,15 @@ class campaign_model extends CI_Model {
 
 
             // See if it's valid JSON 
-            if (!empty($json) && $json_header['download_content_length'] < $max_remote_size) {
+            if (!empty($datajson) && $datajson_header['download_content_length'] < $max_remote_size) {
 
                 // See if raw file is valid
-                $raw_valid_json = is_json($json);
+                $raw_valid_json = is_json($datajson);
 
                 // See if we can clean up the file to make it valid
                 if (!$raw_valid_json) {
-                    $json_processed = json_text_filter($json);
-                    $valid_json = is_json($json_processed);
+                    $datajson_processed = json_text_filter($datajson);
+                    $valid_json = is_json($datajson_processed);
                 } else {
                     $valid_json = true;
                 }
@@ -652,12 +786,12 @@ class campaign_model extends CI_Model {
                     'valid_json' => $valid_json,
                     'valid' => false,
                     'fail' => $errors,
-                    'download_content_length' => $json_header['download_content_length']
+                    'download_content_length' => $datajson_header['download_content_length']
                 );
 
 
                 if ($valid_json && $return_source === false) {
-                    $catalog = json_decode($json_processed);
+                    $catalog = json_decode($datajson_processed);
 
                     if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
                         $response['total_records'] = count($catalog->dataset);
@@ -672,24 +806,24 @@ class campaign_model extends CI_Model {
 
 
         // filter string for json conversion if we haven't already
-        if ($json && empty($json_processed)) {
-            $json_processed = json_text_filter($json);
+        if ($datajson && empty($datajson_processed)) {
+            $datajson_processed = json_text_filter($datajson);
         }
 
 
         // verify it's valid json
-        if ($json_processed) {
+        if ($datajson_processed) {
             if (!isset($valid_json)) {
-                $valid_json = is_json($json_processed);
+                $valid_json = is_json($datajson_processed);
             }
         }
 
 
-        if ($json_processed && $valid_json) {
+        if ($datajson_processed && $valid_json) {
 
-            $json_decode = json_decode($json_processed);
+            $datajson_decode = json_decode($datajson_processed);
 
-            if (!empty($json_decode->conformsTo) && $json_decode->conformsTo == 'https://project-open-data.cio.gov/v1.1/schema') {
+            if (!empty($datajson_decode->conformsTo) && $datajson_decode->conformsTo == 'https://project-open-data.cio.gov/v1.1/schema') {
 
 
                 if ($schema !== 'federal-v1.1' && $schema !== 'non-federal-v1.1') {
@@ -706,7 +840,7 @@ class campaign_model extends CI_Model {
                 $this->schema = $schema;
             }
 
-            if ($schema == 'federal-v1.1' && empty($json_decode->dataset)) {
+            if ($schema == 'federal-v1.1' && empty($datajson_decode->dataset)) {
                 $errors[] = "This file does not appear to be using the federal-v1.1 schema";
                 $response = array(
                     'raw_valid_json' => $raw_valid_json,
@@ -720,19 +854,25 @@ class campaign_model extends CI_Model {
 
             if ($schema !== 'federal-v1.1' && $schema !== 'non-federal-v1.1') {
                 $chunk_size = 500;
-                $json_chunks = array_chunk((array) $json_decode, $chunk_size);
+                $datajson_chunks = array_chunk((array) $datajson_decode, $chunk_size);
             } else {
-                $json_chunks = array((array) $json_decode);
+                $datajson_chunks = array((array) $datajson_decode);
             }
 
 
             $response = array();
             $response['errors'] = array();
 
+            /*
+            if ($quality !== false) {
+                $response['qa'] = array();
+            }
+            */
+
             // save detected schema version to output
             $response['schema_version'] = $schema;
 
-            foreach ($json_chunks as $chunk_count => $chunk) {
+            foreach ($datajson_chunks as $chunk_count => $chunk) {
 
                 $chunk = json_encode($chunk);
                 $validator = $this->campaign->jsonschema_validator($chunk, $schema);
@@ -749,8 +889,48 @@ class campaign_model extends CI_Model {
                     $response['errors'] = $response['errors'] + $this->process_validation_errors($validator['errors'], $key_offset);
                 }
 
+                /*
+                if ($quality !== false) {
+                    $datajson_qa = $this->campaign->datajson_qa($chunk, $schema, $quality, $component);
+
+                    if (!empty($datajson_qa)) {
+                        $response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);
+                    }
+                }
+                */
             }
 
+
+            // Sum QA counts 
+            if (!empty($response['qa'])) {
+
+
+                if (!empty($response['qa']['bureauCodes'])) {
+                    $response['qa']['bureauCodes'] = array_keys($response['qa']['bureauCodes']);
+                }
+
+                if (!empty($response['qa']['programCodes'])) {
+                    $response['qa']['programCodes'] = array_keys($response['qa']['programCodes']);
+                }
+
+                $sum_array_fields = array('accessURL_present', 'accessURL_total', 'accessLevel_public', 'accessLevel_restricted', 'accessLevel_nonpublic');
+
+                foreach ($sum_array_fields as $array_field) {
+                    if (!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {
+                        $response['qa'][$array_field] = array_sum($response['qa'][$array_field]);
+                    }
+                }
+
+                // Sum validation counts
+                if (!empty($response['qa']['validation_counts']) && is_array($response['qa']['validation_counts'])) {
+                    foreach ($response['qa']['validation_counts'] as $validation_key => $validation_count) {
+
+                        if (is_array($response['qa']['validation_counts'][$validation_key])) {
+                            $response['qa']['validation_counts'][$validation_key] = array_sum($response['qa']['validation_counts'][$validation_key]);
+                        }
+                    }
+                }
+            }
 
             $valid_json = (isset($raw_valid_json)) ? $raw_valid_json : $valid_json;
 
@@ -759,14 +939,14 @@ class campaign_model extends CI_Model {
 
 
             if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
-                $response['total_records'] = count($json_decode->dataset);
+                $response['total_records'] = count($datajson_decode->dataset);
             } else {
-                $response['total_records'] = count($json_decode);
+                $response['total_records'] = count($datajson_decode);
             }
 
 
-            if (!empty($json_header['download_content_length'])) {
-                $response['download_content_length'] = $json_header['download_content_length'];
+            if (!empty($datajson_header['download_content_length'])) {
+                $response['download_content_length'] = $datajson_header['download_content_length'];
             }
 
             if (empty($response['errors'])) {
@@ -775,8 +955,8 @@ class campaign_model extends CI_Model {
 
             if ($return_source) {
                 $dataset_array = ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') ? true : false;
-                $json_decode = filter_json($json_decode, $dataset_array);
-                $response['source'] = $json_decode;
+                $datajson_decode = filter_json($datajson_decode, $dataset_array);
+                $response['source'] = $datajson_decode;
             }
 
             return $response;
@@ -787,8 +967,8 @@ class campaign_model extends CI_Model {
                 'valid' => false,
                 'fail' => $errors
             );
-            if (!empty($json_header['download_content_length'])) {
-                $response['download_content_length'] = $json_header['download_content_length'];
+            if (!empty($datajson_header['download_content_length'])) {
+                $response['download_content_length'] = $datajson_header['download_content_length'];
             }
 
             return $response;
@@ -896,6 +1076,175 @@ class campaign_model extends CI_Model {
         return $output;
     }
 
+    /*
+    public function datajson_qa($json, $schema = null, $quality = true, $component = null) {
+
+        $programCode = array();
+        $bureauCode = array();
+
+        $this->validation_counts = $this->validation_count_model();
+
+        $accessLevel_public = 0;
+        $accessLevel_restricted = 0;
+        $accessLevel_nonpublic = 0;
+
+        $accessURL_total = 0;
+        $API_total = 0;
+        $downloadURL_total = 0;
+        $accessURL_present = 0;
+        $downloadURL_present = 0;
+        $license_present = 0;
+        $redaction_present = 0;
+        $redaction_no_explanation = 0;
+
+        $json = json_decode($json);
+
+        if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
+            $json = $json->dataset;
+        }
+
+        foreach ($json as $dataset) {
+
+            if (!empty($dataset->accessLevel)) {
+
+
+                if ($dataset->accessLevel == 'public') {
+                    $accessLevel_public++;
+                } else if ($dataset->accessLevel == 'restricted public') {
+                    $accessLevel_restricted++;
+                } else if ($dataset->accessLevel == 'non-public') {
+                    $accessLevel_nonpublic++;
+                }
+            }
+
+            if ($schema == 'federal' OR $schema == 'federal-v1.1') {
+
+
+                if (!empty($dataset->programCode) && is_array($dataset->programCode)) {
+
+                    foreach ($dataset->programCode as $program) {
+                        $programCode[$program] = true;
+                    }
+                }
+
+                if (!empty($dataset->bureauCode) && is_array($dataset->bureauCode)) {
+
+                    foreach ($dataset->bureauCode as $bureau) {
+                        $bureauCode[$bureau] = true;
+                    }
+                }
+            }
+
+
+
+            $has_accessURL = false;
+            $has_downloadURL = false;
+
+            if (($schema == 'federal' OR $schema == 'non-federal') && !empty($dataset->accessURL) && filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
+
+                $accessURL_total++;
+                $has_accessURL = true;
+                $dataset_format = (!empty($dataset->format)) ? $dataset->format : null;
+
+                if ($component === 'full-scan')
+                    $this->validation_check($dataset->identifier, $dataset->title, $dataset->accessURL, $dataset_format);
+            }
+
+            if (($schema == 'federal' OR $schema == 'non-federal') && !empty($dataset->webService) && filter_var($dataset->webService, FILTER_VALIDATE_URL)) {
+
+                $accessURL_total++;
+                $API_total++;
+                $has_accessURL = true;
+
+                if ($component === 'full-scan')
+                    $this->validation_check($dataset->identifier, $dataset->title, $dataset->webService);
+            }
+
+            if (!empty($dataset->distribution) && is_array($dataset->distribution)) {
+
+                foreach ($dataset->distribution as $distribution) {
+
+                    if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
+                        $media_type = (!empty($distribution->mediaType)) ? $distribution->mediaType : null;
+                    } else {
+                        $media_type = (!empty($distribution->format)) ? $distribution->format : null;
+                    }
+
+                    if (!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
+
+                        if (($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') && !empty($distribution->format) && strtolower($distribution->format) == 'api') {
+                            $API_total++;
+                        }
+
+                        if ($component === 'full-scan')
+                            $this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $media_type);
+                        $accessURL_total++;
+                        $has_accessURL = true;
+                    }
+
+                    if (!empty($distribution->downloadURL) && filter_var($distribution->downloadURL, FILTER_VALIDATE_URL)) {
+                        if ($component === 'full-scan')
+                            $this->validation_check($dataset->identifier, $dataset->title, $distribution->downloadURL, $media_type);
+                        $accessURL_total++;
+                        $downloadURL_total++;
+                        $has_accessURL = true;
+                        $has_downloadURL = true;
+                    }
+                }
+            }
+
+            // Track presence of redactions and rights info
+            $json_text = json_encode($dataset);
+            if (strpos($json_text, '[[REDACTED-EX') !== false) {
+                $redaction_present++;
+
+                if (empty($dataset->rights)) {
+                    $redaction_no_explanation++;
+                }
+            }
+            unset($json_text);
+
+            // Track presence of license info
+            if (!empty($dataset->license) && filter_var($dataset->license, FILTER_VALIDATE_URL)) {
+                $license_present++;
+            }
+
+            if ($has_accessURL)
+                $accessURL_present++;
+            if ($has_downloadURL)
+                $downloadURL_present++;
+        }
+
+        $qa = array();
+
+        if ($schema == 'federal' OR $schema == 'federal-v1.1') {
+
+            $qa['programCodes'] = $programCode;
+            $qa['bureauCodes'] = $bureauCode;
+        }
+
+        $qa['accessLevel_public'] = $accessLevel_public;
+        $qa['accessLevel_restricted'] = $accessLevel_restricted;
+        $qa['accessLevel_nonpublic'] = $accessLevel_nonpublic;
+
+        $qa['accessURL_present'] = $accessURL_present;
+        $qa['accessURL_total'] = $accessURL_total;
+        $qa['API_total'] = $API_total;
+        $qa['validation_counts'] = $this->validation_counts;
+        $qa['license_present'] = $license_present;
+        $qa['redaction_present'] = $redaction_present;
+        $qa['redaction_no_explanation'] = $redaction_no_explanation;
+
+        if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
+            $qa['downloadURL_present'] = $downloadURL_present;
+            $qa['downloadURL_total'] = $downloadURL_total;
+        }
+
+
+        return $qa;
+    }
+    */
+
     public function validation_check($id, $title, $url, $format = null) {
 
         $tmp_dir = $this->config->item('archive_dir');
@@ -946,7 +1295,7 @@ class campaign_model extends CI_Model {
             $error_report['url'] = $url;
             $error_report['http_status'] = $header['info']['http_code'];
             $error_report['format_served'] = $header['info']['content_type'];
-            $error_report['format_json'] = $format;
+            $error_report['format_datajson'] = $format;
             $error_report['crawl_date'] = date(DATE_W3C);
 
             // ######## Log this to a CSV ##########
@@ -1019,7 +1368,7 @@ class campaign_model extends CI_Model {
             'url' => null,
             'http_status' => null,
             'format_served' => null,
-            'format_json' => null,
+            'format_datajson' => null,
             'crawl_date' => null
         );
 
@@ -1030,8 +1379,8 @@ class campaign_model extends CI_Model {
 
         $download_dir = $this->config->item('archive_dir');
 
-        if ($filetype == 'json-lines') {
-            $directory = "$download_dir/json-lines";
+        if ($filetype == 'datajson-lines') {
+            $directory = "$download_dir/datajson-lines";
             $filepath = $directory . '/' . $office_id . '.raw';
         } else {
             $crawl_date = date("Y-m-d");
@@ -1291,7 +1640,7 @@ class campaign_model extends CI_Model {
         return $query;
     }
 
-    public function json_schema($version = '') {
+    public function datajson_schema($version = '') {
 
         $version_path = (!empty($version)) ? $version . '/' : '';
 
@@ -1359,6 +1708,409 @@ class campaign_model extends CI_Model {
 
         return $model;
     }
+
+    /*
+    public function get_ciogov_json($orgs, $geospatial = false, $rows = 100, $offset = 0, $raw = false, $allow_harvest_sources = 'true') {
+
+        $allow_harvest_sources = (empty($allow_harvest_sources)) ? 'true' : $allow_harvest_sources;
+
+        if ($geospatial == 'both') {
+            $filter = "%20";
+        } else if ($geospatial == 'true') {
+            $filter = 'metadata_type:geospatial%20AND%20';
+        } else {
+            $filter = '-metadata_type:geospatial%20AND%20';
+        }
+
+        if ($allow_harvest_sources !== 'true') {
+            $filter .= "AND%20-harvest_source_id:[''%20TO%20*]";
+        }
+
+        if (strpos($orgs, 'http://') !== false) {
+
+            $uri = $orgs;
+            $from_export = true;
+        } else {
+
+            $orgs = rawurlencode($orgs);
+            $query = $filter . "-type:harvest%20AND%20organization:(" . $orgs . ")&rows=" . $rows . '&start=' . $offset;
+            $uri = 'http://catalog.data.gov/api/3/action/package_search?q=' . $query;
+            $from_export = false;
+        }
+
+        $ciogov_json = curl_from_json($uri, false);
+
+        if ($from_export) {
+
+            $object_shim = new stdClass();
+            $object_shim->result = new stdClass();
+            $object_shim->result->count = count($ciogov_json);
+            $object_shim->result->results = $ciogov_json;
+
+            $ciogov_json = $object_shim;
+        }
+
+        if (empty($ciogov_json))
+            return false;
+
+        if ($raw == true) {
+            return $ciogov_json;
+        } else {
+            return $ciogov_json->result->results;
+        }
+    }
+
+    public function datajson_crosswalk($raw_data, $datajson_model) {
+
+        $distributions = array();
+        foreach ($raw_data->resources as $resource) {
+            $distribution = new stdClass();
+
+            $distribution->accessURL = $resource->url;
+            $distribution->format = $resource->format;
+
+            $distributions[] = $distribution;
+        }
+
+        if (!empty($raw_data->tags)) {
+            $tags = array();
+            foreach ($raw_data->tags as $tag) {
+                $tags[] = $tag->name;
+            }
+        } else {
+            $tags = null;
+        }
+
+        if (!empty($raw_data->extras)) {
+
+            foreach ($raw_data->extras as $extra) {
+
+                if ($extra->key == 'tags') {
+                    $extra_tags = $extra->value;
+                    $datajson_model->keyword = (!empty($extra_tags)) ? array_map('trim', explode(",", $extra_tags)) : null;
+                }
+
+                if ($extra->key == 'data-dictiionary' OR $extra->key == 'data-dictionary') {
+                    $datajson_model->dataDictionary = $extra->value;
+                }
+
+                if ($extra->key == 'person') {
+                    $datajson_model->contactPoint = $extra->value;
+                }
+
+                if ($extra->key == 'contact-email') {
+                    $datajson_model->mbox = $extra->value;
+                }
+
+                if ($extra->key == 'frequency-of-update') {
+                    $datajson_model->accrualPeriodicity = $extra->value;
+                }
+
+                if ($extra->key == 'issued') {
+                    $datajson_model->issued = date(DATE_ISO8601, strtotime($extra->value));
+                }
+
+                if ($extra->key == 'theme') {
+                    $datajson_model->theme = $extra->value;
+                }
+
+                if ($extra->key == 'access-level') {
+                    $datajson_model->accessLevel = $extra->value;
+                }
+
+                if ($extra->key == 'license' OR $extra->key == 'licence') {
+                    $license = trim($extra->value);
+
+                    if (!empty($license)) {
+                        $datajson_model->license = $license;
+                    }
+                }
+            }
+        }
+
+
+
+
+        $datajson_model->accessURL = null;
+//		$datajson_model->accessLevel                        = $datajson_model->accessLevel;
+        $datajson_model->accessLevelComment = null;
+//		$datajson_model->accrualPeriodicity                 = $datajson_model->accrualPeriodicity;
+        $datajson_model->bureauCode = null;
+        $datajson_model->contactPoint = (!empty($datajson_model->contactPoint)) ? $datajson_model->contactPoint : $raw_data->maintainer;
+//		$datajson_model->dataDictionary                     = $datajson_model->dataDictionary;
+        $datajson_model->dataQuality = null;
+        $datajson_model->description = $raw_data->notes;
+        $datajson_model->distribution = $distributions;
+        $datajson_model->format = null;
+        $datajson_model->identifier = $raw_data->id;
+//		$datajson_model->issued                             = $datajson_model->issued;
+        $datajson_model->keyword = (!empty($datajson_model->keyword)) ? $datajson_model->keyword : $tags;
+        $datajson_model->landingPage = null;
+        $datajson_model->language = null;
+//		$datajson_model->license                            = $datajson_model->license;
+        $datajson_model->mbox = (!empty($datajson_model->mbox)) ? $datajson_model->mbox : $raw_data->maintainer_email;
+        $datajson_model->modified = date(DATE_ISO8601, strtotime($raw_data->metadata_modified));
+        $datajson_model->PrimaryITInvestmentUII = null;
+        $datajson_model->programCode = null;
+        $datajson_model->publisher = $raw_data->organization->title;
+        $datajson_model->references = null;
+        $datajson_model->spatial = null;
+        $datajson_model->systemOfRecords = null;
+        $datajson_model->temporal = null;
+//		$datajson_model->theme                              = $datajson_model->theme;
+        $datajson_model->title = $raw_data->title;
+        $datajson_model->webService = null;
+
+        return $datajson_model;
+    }
+
+    public function datajson_schema_crosswalk($raw_data, $datajson_model) {
+
+        $distributions = array();
+
+        // Add any accessURL and format to a distribution
+        if (!empty($raw_data->accessURL)) {
+            $distribution = clone $datajson_model->distribution[0];
+
+            $distribution->downloadURL = $raw_data->accessURL;
+            $distribution->mediaType = (!empty($raw_data->format)) ? $raw_data->format : null;
+
+            $distribution = $this->unset_nulls($distribution);
+
+            $distributions[] = $distribution;
+        }
+
+        // Convert distributions
+        if (!empty($raw_data->distribution) && is_array($raw_data->distribution)) {
+
+            foreach ($raw_data->distribution as $resource) {
+                $distribution = clone $datajson_model->distribution[0];
+
+                $distribution->downloadURL = $resource->accessURL;
+                $distribution->mediaType = $resource->format;
+
+                $distribution = $this->unset_nulls($distribution);
+
+                $distributions[] = $distribution;
+            }
+        }
+
+        // Convert webService to a distribution
+        if (!empty($raw_data->webService)) {
+            $distribution = clone $datajson_model->distribution[0];
+
+            $distribution->accessURL = $raw_data->webService;
+            $distribution->format = 'API';
+
+            $distribution = $this->unset_nulls($distribution);
+
+            $distributions[] = $distribution;
+        }
+
+        // Convert license to a URL
+        if (!empty($raw_data->license)) {
+
+            if (!filter_var($raw_data->license, FILTER_VALIDATE_URL)) {
+                $license = urlencode($raw_data->license);
+                $license = 'https://project-open-data.cio.gov/unknown-license/#v1-legacy/' . $license;
+            } else {
+                $license = $raw_data->license;
+            }
+        }
+
+        // Convert accrualPeriodicity to a date
+        if (!empty($raw_data->accrualPeriodicity)) {
+
+            switch ($raw_data->accrualPeriodicity) {
+                case "Decennial":
+                    $accrualPeriodicity = 'R/P10Y';
+                    break;
+                case "Quadrennial":
+                    $accrualPeriodicity = 'R/P4Y';
+                    break;
+                case "Annual":
+                    $accrualPeriodicity = 'R/P1Y';
+                    break;
+                case "Bimonthly":
+                    $accrualPeriodicity = 'R/P2M';
+                    break;
+                case "Semiweekly":
+                    $accrualPeriodicity = 'R/P3.5D';
+                    break;
+                case "Daily":
+                    $accrualPeriodicity = 'R/P1D';
+                    break;
+                case "Biweekly":
+                    $accrualPeriodicity = 'R/P2W';
+                    break;
+                case "Semiannual":
+                    $accrualPeriodicity = 'R/P6M';
+                    break;
+                case "Biennial":
+                    $accrualPeriodicity = 'R/P2Y';
+                    break;
+                case "Triennial":
+                    $accrualPeriodicity = 'R/P3Y';
+                    break;
+                case "Three times a week":
+                    $accrualPeriodicity = 'R/P0.33W';
+                    break;
+                case "Three times a month":
+                    $accrualPeriodicity = 'R/P0.33M';
+                    break;
+                case "Continuously updated":
+                    $accrualPeriodicity = 'R/PT1S';
+                    break;
+                case "Monthly":
+                    $accrualPeriodicity = 'R/P1M';
+                    break;
+                case "Quarterly":
+                    $accrualPeriodicity = 'R/P3M';
+                    break;
+                case "Semimonthly":
+                    $accrualPeriodicity = 'R/P0.5M';
+                    break;
+                case "Three times a year":
+                    $accrualPeriodicity = 'R/P4M';
+                    break;
+                case "Weekly":
+                    $accrualPeriodicity = 'R/P1W';
+                    break;
+                case "Completely irregular":
+                    $accrualPeriodicity = 'irregular';
+                    break;
+                default: $accrualPeriodicity = $raw_data->accrualPeriodicity;
+            }
+        } else {
+            $accrualPeriodicity = null;
+        }
+
+        // reset other objects
+        $datajson_model->contactPoint = clone $datajson_model->contactPoint;
+        $datajson_model->publisher = clone $datajson_model->publisher;
+
+        // Set email address, but check for redactions before prepending mailto:
+        if (!empty($raw_data->mbox)) {
+            if (strpos($raw_data->mbox, '[[REDACTED-EX') === 0) {
+                $hasEmail = $raw_data->mbox;
+            } else {
+                $hasEmail = 'mailto:' . $raw_data->mbox;
+            }
+        } else {
+            $hasEmail = null;
+        }
+
+        $datajson_model->contactPoint->hasEmail = $hasEmail;
+        $datajson_model->contactPoint->fn = (!empty($raw_data->contactPoint)) ? $raw_data->contactPoint : null;
+
+        $datajson_model->accessLevel = (!empty($raw_data->accessLevel)) ? $raw_data->accessLevel : null;
+        $datajson_model->rights = (!empty($raw_data->accessLevelComment)) ? $raw_data->accessLevelComment : null;
+        $datajson_model->accrualPeriodicity = $accrualPeriodicity;
+        $datajson_model->bureauCode = (!empty($raw_data->bureauCode)) ? $raw_data->bureauCode : null;
+        $datajson_model->describedBy = (!empty($raw_data->dataDictionary)) ? $raw_data->dataDictionary : null;
+        $datajson_model->dataQuality = (!empty($raw_data->dataQuality)) ? $raw_data->dataQuality : null;
+        $datajson_model->description = (!empty($raw_data->description)) ? $raw_data->description : null;
+
+        $datajson_model->distribution = (!empty($distributions)) ? $distributions : null;
+
+        $datajson_model->identifier = (!empty($raw_data->identifier)) ? $raw_data->identifier : null;
+        $datajson_model->issued = (!empty($raw_data->issued)) ? $raw_data->issued : null;
+        $datajson_model->keyword = (!empty($raw_data->keyword)) ? $raw_data->keyword : null;
+        $datajson_model->landingPage = (!empty($raw_data->landingPage)) ? $raw_data->landingPage : null;
+        $datajson_model->language = (!empty($raw_data->language)) ? $raw_data->language : null;
+
+        $datajson_model->license = (!empty($license)) ? $license : null;
+
+        $datajson_model->modified = (!empty($raw_data->modified)) ? $raw_data->modified : null;
+        $datajson_model->primaryITInvestmentUII = (!empty($raw_data->PrimaryITInvestmentUII)) ? $raw_data->PrimaryITInvestmentUII : null;
+        $datajson_model->programCode = (!empty($raw_data->programCode)) ? $raw_data->programCode : null;
+        $datajson_model->publisher->name = (!empty($raw_data->publisher)) ? $raw_data->publisher : null;
+        $datajson_model->references = (!empty($raw_data->references)) ? $raw_data->references : null;
+        $datajson_model->spatial = (!empty($raw_data->spatial)) ? $raw_data->spatial : null;
+        $datajson_model->systemOfRecords = (!empty($raw_data->systemOfRecords)) ? $raw_data->systemOfRecords : null;
+        $datajson_model->temporal = (!empty($raw_data->temporal)) ? $raw_data->temporal : null;
+        $datajson_model->theme = (!empty($raw_data->theme)) ? $raw_data->theme : null;
+        $datajson_model->title = (!empty($raw_data->title)) ? $raw_data->title : null;
+
+        $datajson_model = $this->unset_nulls($datajson_model);
+
+        return $datajson_model;
+    }
+
+    function unset_nulls($object) {
+
+        foreach ($object as $key => $property) {
+
+            if (is_null($property)) {
+                unset($object->$key);
+            }
+
+            if (is_object($property)) {
+                $object->$key = $this->unset_nulls($property);
+            }
+        }
+
+        return $object;
+    }
+
+    function schema_v1_permalinks() {
+
+        $permalink = array();
+
+        $permalink['@context'] = 'context';
+        $permalink['@id'] = 'id';
+        $permalink['@type'] = 'type';
+        $permalink['conformsTo'] = 'conformsTo';
+        $permalink['describedBy'] = 'describedBy';
+        $permalink['dataset'] = 'dataset';
+        $permalink['dataset.@type'] = 'dataset-type';
+        $permalink['dataset.accessLevel'] = 'accessLevel';
+        $permalink['dataset.accrualPeriodicity'] = 'accrualPeriodicity';
+        $permalink['dataset.bureauCode'] = 'bureauCode';
+        $permalink['dataset.conformsTo'] = 'dataset-conformsTo';
+        $permalink['dataset.contactPoint'] = 'contactPoint';
+        $permalink['dataset.contactPoint.@type'] = 'dataset-contactPoint-type';
+        $permalink['dataset.contactPoint.fn'] = 'contactPoint-fn';
+        $permalink['dataset.contactPoint.hasEmail'] = 'contactPoint-hasEmail';
+        $permalink['dataset.dataQuality'] = 'dataQuality';
+        $permalink['dataset.describedBy'] = 'dataset-describedBy';
+        $permalink['dataset.describedByType'] = 'dataset-describedByType';
+        $permalink['dataset.description'] = 'description';
+        $permalink['dataset.distribution'] = 'distribution';
+        $permalink['dataset.distribution.@type'] = 'distribution-type';
+        $permalink['dataset.distribution.accessURL'] = 'distribution-accessURL';
+        $permalink['dataset.distribution.conformsTo'] = 'distribution-conformsTo';
+        $permalink['dataset.distribution.downloadURL'] = 'distribution-downloadURL';
+        $permalink['dataset.distribution.describedBy'] = 'distribution-describedBy';
+        $permalink['dataset.distribution.describedByType'] = 'distribution-describedByType';
+        $permalink['dataset.distribution.description'] = 'distribution-description';
+        $permalink['dataset.distribution.format'] = 'distribution-format';
+        $permalink['dataset.distribution.mediaType'] = 'distribution-mediaType';
+        $permalink['dataset.distribution.title'] = 'distribution-title';
+        $permalink['dataset.identifier'] = 'identifier';
+        $permalink['dataset.isPartOf'] = 'isPartOf';
+        $permalink['dataset.issued'] = 'issued';
+        $permalink['dataset.keyword'] = 'keyword';
+        $permalink['dataset.landingPage'] = 'landingPage';
+        $permalink['dataset.language'] = 'language';
+        $permalink['dataset.license'] = 'license';
+        $permalink['dataset.modified'] = 'modified';
+        $permalink['dataset.primaryITInvestmentUII'] = 'primaryITInvestmentUII';
+        $permalink['dataset.programCode'] = 'programCode';
+        $permalink['dataset.publisher'] = 'publisher';
+        $permalink['dataset.publisher.@type'] = 'publisher-type';
+        $permalink['dataset.publisher.name'] = 'publisher-name';
+        $permalink['dataset.publisher.subOrganizationOf'] = 'publisher-subOrganizationOf';
+        $permalink['dataset.rights'] = 'rights';
+        $permalink['dataset.spatial'] = 'spatial';
+        $permalink['dataset.systemOfRecords'] = 'systemOfRecords';
+        $permalink['dataset.temporal'] = 'temporal';
+        $permalink['dataset.theme'] = 'theme';
+        $permalink['dataset.title'] = 'title';
+
+        return $permalink;
+    }
+    */
 
 }
 

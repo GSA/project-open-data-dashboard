@@ -22,9 +22,9 @@
                 <table class="table table-striped table-hover">
                     <tbody>
 
-                        <?php if(!empty($datajson_url)) : ?>
+                        <?php if(!empty($url)) : ?>
                             <tr>
-                                <th>Source</th> <td><?php echo $datajson_url; ?> </td>
+                                <th>Source</th> <td><?php echo $url; ?> </td>
                             </tr>
                         <?php endif; ?>
 
@@ -86,73 +86,6 @@
 
             </div>
 
-
-            <?php if(!empty($validation['qa'])) : ?>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Completeness
-                    </div>
-
-                    <table class="table table-striped table-hover">
-                        <tbody>
-
-                                <?php if(!empty($validation['qa']['accessURL_present'])) : ?>
-                                    <tr>
-                                        <th>Datasets with Downloadable URLs (accessURL)</th><td><?php echo $validation['qa']['accessURL_present']; ?> </td>
-                                    </tr>
-                                 <?php endif; ?>
-
-                                <?php if(!empty($validation['qa']['accessURL_total'])) : ?>
-                                    <tr>
-                                        <th>Total Downloadable URLs (accessURL)</th><td><?php echo $validation['qa']['accessURL_total']; ?> </td>
-                                    </tr>
-                                <?php endif; ?>
-
-
-                                <?php if(!empty($validation['qa']['programCodes'])) : ?>
-                                    <tr>
-                                        <th>Programs Represented</th><td> <?php echo count($validation['qa']['programCodes']); ?>    </td>
-                                    </tr>
-                                 <?php endif; ?>
-
-                                <?php if(!empty($validation['qa']['bureauCodes'])) : ?>
-                                    <tr>
-                                        <th>Bureaus Represented</th><td> <?php echo count($validation['qa']['bureauCodes']); ?>   </td>
-                                    </tr>    
-                                <?php endif; ?>
-
-
-                                <?php if(!empty($validation['qa']['accessLevel_public'])) : ?>
-                                    <tr>
-                                        <th>Access Level: Public</th><td><?php echo $validation['qa']['accessLevel_public']; ?> </td>
-                                    </tr>
-                                 <?php endif; ?>
-
-                                <?php if(!empty($validation['qa']['accessLevel_restricted'])) : ?>
-                                    <tr>
-                                        <th>Access Level: Restricted</th><td><?php echo $validation['qa']['accessLevel_restricted']; ?> </td>
-                                    </tr>
-                                <?php endif; ?>
-
-                                <?php if(!empty($validation['qa']['accessLevel_nonpublic'])) : ?>
-                                    <tr>
-                                        <th>Access Level: Non-Public</th><td><?php echo $validation['qa']['accessLevel_nonpublic']; ?> </td>
-                                    </tr>
-                                <?php endif; ?>
-
-                                <?php if(!empty($validation['qa']['API_total']) && !is_array($validation['qa']['API_total'])) : ?>
-                                    <tr>
-                                        <th>Total APIs</th><td><?php echo $validation['qa']['API_total']; ?> </td>
-                                    </tr>
-                                <?php endif; ?>                                
-
-
-                        </tbody>
-                    </table>
-
-                </div>
-            <?php endif; ?>
 
             <?php
                 if(!empty($validation['errors'])) {

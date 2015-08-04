@@ -41,7 +41,208 @@ class Campaign extends CI_Controller {
         
     }
 
-    public function csv_field_mapper($headings, $json_model, $inception = false) {
+    /*
+    public function convert($orgs = null, $geospatial = null, $harvest = null, $from_export = null) {
+        $this->load->model('campaign_model', 'campaign');
+
+        $orgs = (!empty($orgs)) ? $orgs : $this->input->get('orgs', TRUE);
+        $geospatial = (!empty($geospatial)) ? $geospatial : $this->input->get('geospatial', TRUE);
+        $harvest = (!empty($harvest)) ? $harvest : $this->input->get('harvest', TRUE);
+        $from_export = (!empty($from_export)) ? $from_export : $this->input->get('from_export', TRUE);
+
+
+        $row_total = 100;
+        $row_count = 0;
+
+        $row_pagesize = 100;
+        $raw_data = array();
+
+        while ($row_count < $row_total) {
+            $result = $this->campaign->get_ciogov_json($orgs, $geospatial, $row_pagesize, $row_count, true, $harvest);
+
+            if (!empty($result->result)) {
+
+                $row_total = $result->result->count;
+                $row_count = $row_count + $row_pagesize;
+
+                $raw_data = array_merge($raw_data, $result->result->results);
+
+                if ($from_export == 'true')
+                    break;
+            } else {
+                break;
+            }
+        }
+
+        if (!empty($raw_data)) {
+
+            $json_schema = $this->campaign->datajson_schema();
+            $datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);
+
+            $convert = array();
+            foreach ($raw_data as $ckan_data) {
+                $model = clone $datajson_model;
+                $convert[] = $this->campaign->datajson_crosswalk($ckan_data, $model);
+            }
+
+            if ($this->environment == 'terminal') {
+                $filepath = 'export.json';
+
+                echo 'Creating file at ' . $filepath . PHP_EOL . PHP_EOL;
+
+                $export_file = fopen($filepath, 'w');
+                fwrite($export_file, json_encode($convert));
+                fclose($export_file);
+            } else {
+
+                header('Content-type: application/json');
+                print json_encode($convert);
+                exit;
+            }
+        } else {
+
+            if ($this->environment == 'terminal') {
+                echo 'No results found for ' . $orgs;
+            } else {
+                header('Content-type: application/json');
+                print json_encode(array("error" => "no results"));
+                exit;
+            }
+        }
+    }
+
+    public function csv_to_json($schema = null) {
+
+        $schema = ($this->input->post('schema', TRUE)) ? $this->input->post('schema', TRUE) : $schema;
+        $csv_id = ($this->input->post('csv_id', TRUE)) ? $this->input->post('csv_id', TRUE) : null;
+
+
+        // Initial file upload
+        if (!empty($_FILES)) {
+
+            $this->load->library('upload');
+
+            if ($this->do_upload('csv_upload')) {
+
+                $data = $this->upload->data();
+
+
+                ini_set("auto_detect_line_endings", true);
+                $csv_handle = fopen($data['full_path'], 'r');
+                $headings = fgetcsv($csv_handle);
+
+                // Sanitize input
+                $headings = $this->security->xss_clean($headings);
+
+                // Provide mapping between csv headings and POD schema
+                $this->load->model('campaign_model', 'campaign');
+                $json_schema = $this->campaign->datajson_schema($schema);
+
+                if ($schema) {
+                    $datajson_model = $this->campaign->schema_to_model($json_schema->properties->dataset->items->properties);
+                } else {
+                    $datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);
+                }
+
+                $output = array();
+                $output['headings'] = $headings;
+                $output['datajson_model'] = $datajson_model;
+                $output['csv_id'] = $data['file_name'];
+                $output['select_mapping'] = $this->csv_field_mapper($headings, $datajson_model);
+                //var_dump($output['select_mapping']); exit;
+                $this->load->view('csv_mapping', $output);
+            }
+        }
+
+        // Apply mapping and convert file to JSON
+        else if (!empty($csv_id)) {
+
+            $mapping = ($this->input->post('mapping', TRUE)) ? $this->input->post('mapping', TRUE) : null;
+
+            $this->config->load('upload', TRUE);
+            $upload_config = $this->config->item('upload');
+
+            $full_path = $upload_config['upload_path'] . $csv_id;
+
+            $this->load->helper('csv');
+            ini_set("auto_detect_line_endings", true);
+
+            $importer = new CsvImporter($full_path, $parse_header = true, $delimiter = ",");
+            $csv = $importer->get();
+
+            $column_headers = array();
+            foreach ($csv[0] as $key => $this_header) {
+                $column_headers[$key] = trim($this_header);
+            }
+
+            $json = array();
+            foreach ($csv as $row) {
+
+                $count = 0;
+                $json_row = array();
+                foreach ($row as $key => $value) {
+                    if (!empty($column_headers[$key]) && $mapping[$count] !== 'null') {
+
+
+                        if (is_json($value)) {
+                            $value = json_decode($value);
+                        } else if ($mapping[$count] == 'keyword' |
+                                $mapping[$count] == 'language' |
+                                $mapping[$count] == 'references' |
+                                $mapping[$count] == 'theme' |
+                                $mapping[$count] == 'programCode' |
+                                $mapping[$count] == 'bureauCode') {
+                            $value = str_getcsv($value);
+                        } else if ($mapping[$count] == 'dataQuality' && !empty($value)) {
+                            $value = (bool) $value;
+                        }
+
+                        if (is_array($value)) {
+                            $value = array_map("make_utf8", $value);
+                            $value = array_map("trim", $value);
+                            $value = array_filter($value); // removes any empty elements in an array
+                            $value = array_values($value); // ensures array_filter doesn't create an associative array
+                        } else if (is_string($value)) {
+                            $value = trim($value);
+                            $value = make_utf8($value);
+                        }
+
+                        $value = (!is_bool($value) && empty($value)) ? null : $value;
+
+                        $json_row[$mapping[$count]] = $value;
+                    }
+
+                    $count++;
+                }
+
+                $json[] = $json_row;
+            }
+
+
+            // delete temporary uploaded csv file
+            unlink($full_path);
+
+            // provide json for download
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: private", false);
+            header('Content-type: application/json');
+            header("Content-Disposition: attachment; filename=\"$csv_id.json\";");
+            header("Content-Transfer-Encoding: binary");
+
+            print json_encode($json);
+            exit;
+        }
+
+        // Show upload form
+        else {
+            $this->load->view('csv_upload');
+        }
+    }
+     */
+
+    public function csv_field_mapper($headings, $datajson_model, $inception = false) {
 
         $matched = array();
         $match = false;
@@ -56,8 +257,8 @@ class Campaign extends CI_Controller {
                 <div class="col-sm-3">
                     <select id="<?php echo $field; ?>" type="text" name="mapping[<?php echo $count; ?>]">
                         <option value="null">Select a corresponding field</option>
-            <?php //var_dump($json_model);  ?>
-            <?php foreach ($json_model as $pod_field => $pod_value): ?>
+            <?php //var_dump($datajson_model);  ?>
+            <?php foreach ($datajson_model as $pod_field => $pod_value): ?>
                 <?php
                 if (is_object($pod_value) OR ( is_array($pod_value) && count($pod_value) > 0)) {
                     if (is_array($pod_value)) {
@@ -116,7 +317,7 @@ class Campaign extends CI_Controller {
                 </div>
             </div>
                         <?php
-                        reset($json_model);
+                        reset($datajson_model);
                     }
 
                     return ob_get_clean();
@@ -186,16 +387,16 @@ class Campaign extends CI_Controller {
 
 
         // use data.json model
-        $json_schema = $this->campaign->json_schema();
-        $json_model = $this->campaign->schema_to_model($json_schema->items->properties);
+        $json_schema = $this->campaign->datajson_schema();
+        $datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);
 
         $csv_rows = array();
         foreach ($raw_data as $ckan_data) {
 
             $special_extras = $this->special_extras($ckan_data);
 
-            $model = clone $json_model;
-            $csv_row = $this->campaign->json_crosswalk($ckan_data, $model);
+            $model = clone $datajson_model;
+            $csv_row = $this->campaign->datajson_crosswalk($ckan_data, $model);
 
             $csv_row->accessURL = array();
             $csv_row->format = array();
@@ -332,8 +533,37 @@ class Campaign extends CI_Controller {
     }
 
     /*
+    public function digitalstrategy($id = null) {
+
+
+        $this->load->model('campaign_model', 'campaign');
+
+        $this->db->select('*');
+        $this->db->from('offices');
+        $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
+        $this->db->where('offices.cfo_act_agency', 'true');
+        $this->db->where('offices.no_parent', 'true');
+
+        if (!empty($id) && $id != 'all') {
+            $this->db->where('offices.id', $id);
+        }
+
+        $this->db->order_by("offices.name", "asc");
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            $view_data['digitalstrategy'] = $query->result();
+            $query->free_result();
+
+            $this->load->view('digitalstrategy', $view_data);
+        } else {
+            show_404('digitalgov', false);
+        }
+    }
+
+    /*
       $id can be all, cfo-act, or a specific id
-      $component can be full-scan, all, directory, govboards, download
+      $component can be full-scan, all, directory, govboards, download ///// old: datajson, datapage, digitalstrategy, download
      */
 
     public function status($id = null, $component = null, $selected_milestone = null) {
@@ -714,6 +944,8 @@ class Campaign extends CI_Controller {
 
         $this->load->model('campaign_model', 'campaign');
 
+        //$datajson 		= ($this->input->post('datajson', TRU E)) ? $this->input->post('datajson', TRUE) : $datajson;
+
         $update = (object) $this->input->post(NULL, TRUE);
 
         $ciogov_model_fields = $this->campaign->ciogov_model();
@@ -786,25 +1018,34 @@ class Campaign extends CI_Controller {
         redirect('offices/detail/' . $ciogov_model_fields->office_id . '/' . $ciogov_model_fields->milestone);
     }
 
-    public function validate($url = null, $json = null, $headers = null, $schema = null, $output = 'browser') {
+    public function validate($datajson_url = null, $datajson = null, $headers = null, $schema = null, $output = 'browser') {
 
         $this->load->model('campaign_model', 'campaign');
 
-        $json = ($this->input->post('json')) ? $this->input->post('json') : $json;
+        $datajson = ($this->input->post('datajson')) ? $this->input->post('datajson') : $datajson;
         $schema = ($this->input->get_post('schema')) ? $this->input->get_post('schema', TRUE) : $schema;
 
-        $url = ($this->input->get_post('url')) ? $this->input->get_post('url', TRUE) : $url;
+        $datajson_url = ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url', TRUE) : $datajson_url;
         $output_type = ($this->input->get_post('output')) ? $this->input->get_post('output', TRUE) : $output;
+
+        if ($this->input->get_post('qa')) {
+            $qa = $this->input->get_post('qa');
+        } else {
+            $qa = false;
+        }
+
+        if ($qa == 'true')
+            $qa = true;
 
         if (!empty($_FILES)) {
 
             $this->load->library('upload');
 
-            if ($this->do_upload('json_upload')) {
+            if ($this->do_upload('datajson_upload')) {
 
                 $data = $this->upload->data();
 
-                $json = file_get_contents($data['full_path']);
+                $datajson = file_get_contents($data['full_path']);
                 unlink($data['full_path']);
             } else {
 
@@ -819,8 +1060,8 @@ class Campaign extends CI_Controller {
 
         $return_source = ($output_type == 'browser') ? true : false;
 
-        if ($json OR $url) {
-            $validation = $this->campaign->validate_json($url, $json, $headers, $schema, $return_source);
+        if ($datajson OR $datajson_url) {
+            $validation = $this->campaign->validate_datajson($datajson_url, $datajson, $headers, $schema, $return_source, $qa);
         }
 
 
@@ -832,8 +1073,14 @@ class Campaign extends CI_Controller {
                 $validate_response = array(
                     'validation' => $validation,
                     'schema' => $schema,
-                    'url' => $url
+                    'datajson_url' => $datajson_url
                 );
+
+                /*
+                if ($schema == 'federal-v1.1') {
+                    $validate_response['schema_v1_permalinks'] = $this->campaign->schema_v1_permalinks();
+                }
+                */
 
                 $this->load->view('validate_response', $validate_response);
             } else {
@@ -848,10 +1095,321 @@ class Campaign extends CI_Controller {
     }
 
     /*
-      Crawl each record in a json file and save current version + validation results
+    public function changeset($json_old = null, $datajson_new = null) {
+
+
+        $json_old = ($this->input->get_post('json_old', TRUE)) ? $this->input->get_post('json_old', TRUE) : $json_old;
+
+
+        if ($this->input->get_post('json_old_select', TRUE)) {
+            $selection = $this->input->get_post('json_old_select', TRUE);
+            if (!empty($selection)) {
+                $json_old = $selection;
+            }
+        }
+
+        $datajson_new = ($this->input->get_post('datajson_new', TRUE)) ? $this->input->get_post('datajson_new', TRUE) : $datajson_new;
+
+        //$datajson_new = 'http://www.treasury.gov/jsonfiles/data.json';
+
+
+
+
+        if ($json_old && $datajson_new) {
+
+            $output = array();
+            $output['json_old_request'] = $json_old;
+
+            $json_old = urlencode($json_old);
+            $json_old = 'http://catalog.data.gov/api/3/action/package_search?q=' . $json_old . "%20AND%20-type:harvest" . '&rows=200';
+
+            // $json_old = 'http://test.dev/temp/ocsit-gsa-gov.json';
+
+            $datajson_domain = parse_url($datajson_new);
+            $output['datajson_domain'] = $datajson_domain['host'];
+            $output['json_old_url'] = $json_old;
+            $output['datajson_new_url'] = $datajson_new;
+
+
+            $json_old = curl_from_json($json_old, false);
+            $datajson_new = curl_from_json($datajson_new, false);
+
+            // $object_shim = new stdClass();
+            // $object_shim->result 			= new stdClass();
+            // $object_shim->result->count 	= count($json_old);
+            // $object_shim->result->results 	= $json_old;
+            // $json_old = $object_shim;
+
+            $changeset = 0;
+            $match_count = 0;
+
+
+            $output['match_count'] = $match_count;
+            $output['new_count'] = count($datajson_new);
+            $output['old_count'] = $json_old->result->count;
+            $output['changeset'] = array();
+
+            if ($json_old->result->results) {
+                foreach ($json_old->result->results as $old_json) {
+
+                    $matches = array();
+                    $old_json_url = 'http://catalog.data.gov/dataset/' . $old_json->name;
+
+                    foreach ($datajson_new as $datajson_entry) {
+
+                        // match on id
+                        if ($datajson_entry->identifier == $old_json->id) {
+                            $matches[] = 'Match on identifier: ' . $datajson_entry->identifier;
+                        }
+
+                        // match on title
+                        if ($datajson_entry->title == $old_json->title) {
+                            $matches[] = 'Match on title: ' . $datajson_entry->title;
+                        }
+
+                        // match on URL
+                        $matched_urls = array();
+                        foreach ($old_json->resources as $resource) {
+
+                            if (empty($datajson_entry->distribution)) {
+                                $datajson_entry->distribution = array();
+                            }
+
+                            if (!empty($datajson_entry->accessURL)) {
+                                $distribution = new stdClass();
+                                $distribution->accessURL = $datajson_entry->accessURL;
+                                $datajson_entry->distribution[] = $distribution;
+                            }
+
+                            if (!empty($datajson_entry->distribution) && is_array($datajson_entry->distribution)) {
+
+                                foreach ($datajson_entry->distribution as $distribution) {
+                                    if (!empty($distribution->accessURL)) {
+                                        if ($resource->url == $distribution->accessURL && empty($matched_urls[$distribution->accessURL])) {
+                                            $matches[] = 'Match on URL for data.json id ' . $datajson_entry->identifier . ': ' . $distribution->accessURL;
+                                        }
+                                        $matched_urls[$distribution->accessURL] = true;
+                                    }
+                                }
+                                if (is_array($datajson_entry->distribution)) {
+                                    reset($datajson_entry->distribution);
+                                }
+                            }
+                        }
+                        reset($old_json->resources);
+                    }
+                    if (is_array($datajson_new)) {
+                        reset($datajson_new);
+                    }
+
+                    $matchset = array();
+
+                    if (!empty($matches)) {
+                        $matchset['url'] = $old_json_url;
+                        $matchset['match'] = true;
+                        $matchset['matches'] = $matches;
+
+                        $output['changeset'][] = $matchset;
+                        $match_count++;
+                    } else {
+
+                        $matchset['url'] = $old_json_url;
+                        $matchset['match'] = false;
+
+                        $output['changeset'][] = $matchset;
+                    }
+
+                    $changeset++;
+                }
+            }
+        }
+
+        if (!empty($changeset)) {
+
+            if (!empty($match_count)) {
+                $output['match_count'] = $match_count;
+            }
+
+            $this->load->view('changeset_result', $output);
+        } else {
+
+            $data = array();
+            $data['orgs'] = $this->assemble_org_structure();
+
+            $this->load->view('changeset', $data);
+        }
+    }
+
+    public function upgrade_schema($schema = 'federal') {
+
+        $this->load->model('campaign_model', 'campaign');
+
+        $schema = ($this->input->get_post('schema', TRUE)) ? $this->input->get_post('schema', TRUE) : $schema;
+
+        if (!empty($_FILES)) {
+
+            $this->load->library('upload');
+
+            if ($this->do_upload('datajson_upload')) {
+
+                $data = $this->upload->data();
+
+                $filename = $data['raw_name'];
+                $filename = $filename . '_v1-1_converted.json';
+
+                $datajson = file_get_contents($data['full_path']);
+                unlink($data['full_path']);
+
+                if ($datajson = json_decode($datajson)) {
+                    $json_schema = $this->campaign->datajson_schema('federal-v1.1'); // 
+                    $datajson_model = $this->campaign->schema_to_model($json_schema->properties);
+
+
+
+                    $convert = array();
+                    foreach ($datajson as $dataset) {
+                        $model = clone $datajson_model->dataset[0];
+                        $convert[] = $this->campaign->datajson_schema_crosswalk($dataset, $model);
+                    }
+
+                    $context = '@context';
+                    $id = '@id';
+
+                    unset($datajson_model->$id);
+                    $datajson_model->$context = 'https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld';
+                    $datajson_model->conformsTo = 'https://project-open-data.cio.gov/v1.1/schema';
+                    $datajson_model->describedBy = 'https://project-open-data.cio.gov/v1.1/schema/catalog.json';
+
+                    $datajson_model->dataset = $convert;
+
+
+                    // provide json for download
+                    header("Pragma: public");
+                    header("Expires: 0");
+                    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                    header("Cache-Control: private", false);
+                    header('Content-type: application/json');
+                    header("Content-Disposition: attachment; filename=\"$filename\";");
+                    header("Content-Transfer-Encoding: binary");
+
+                    print json_encode($datajson_model);
+                    exit;
+                } else {
+                    $data = array();
+                    $data['errors'] = 'The file was not valid JSON';
+                    $this->load->view('upgrade_schema', $data);
+                }
+            }
+        } else {
+            $this->load->view('upgrade_schema');
+        }
+    }
+
+    public function assemble_org_structure() {
+
+        $url = 'https://idm.data.gov/fed_agency.json';
+        $agency_list = curl_from_json($url, $array = true, $decode = true);
+
+        $taxonomies = $agency_list['taxonomies'];
+
+        $return = array();
+        // This should be the ONLY loop that go through all taxonomies.
+        foreach ($taxonomies as $taxonomy) {
+            $taxonomy = $taxonomy['taxonomy'];
+
+            //        ignore bad ones
+            if (strlen($taxonomy['unique id']) == 0) {
+                continue;
+            }
+
+            //        ignore 3rd level ones
+            if ($taxonomy['unique id'] != $taxonomy['term']) {
+                continue;
+            }
+
+            //        Make sure we got $return[$sector], ex. $return['Federal Organization']
+            if (!isset($return[$taxonomy['vocabulary']])) {
+                $return[$taxonomy['vocabulary']] = array();
+            }
+
+            if (strlen($taxonomy['Sub Agency']) != 0) {
+
+                // This is sub-agency
+                //  $return['Federal Organization']['National Archives and Records Administration']
+                if (!isset($return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']])) {
+
+                    // Make sure we got $return[$sector][$unit]
+                    $return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']] = array(
+                        // use [ ] to indicate this is agency with subs. e.g [,sub_id]
+                        'id' => "[," . $taxonomy['unique id'] . "]",
+                        'is_cfo' => $taxonomy['is_cfo'],
+                        'subs' => array(),
+                    );
+                } else {
+                    //                Add sub id to existing agency entry, e.g. [id,sub_id1,sub_id2] or [,sub_id1,sub_id2]
+                    $return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['id'] = "[" . trim($return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['id'], "[]") . "," . $taxonomy['unique id'] . "]";
+                }
+
+                //            Add term to parent's subs
+                $return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['subs'][$taxonomy['Sub Agency']] = array(
+                    'id' => $taxonomy['unique id'],
+                    'is_cfo' => $taxonomy['is_cfo'],
+                );
+            } else {
+                //        ELSE this is ROOT agency
+                if (!isset($return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']])) {
+                    //                Has not been set by its subunits before
+                    $return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']] = array(
+                        'id' => $taxonomy['unique id'], // leave it without [ ] if no subs.
+                        'is_cfo' => $taxonomy['is_cfo'],
+                        'subs' => array(),
+                    );
+                } else {
+                    //                Has been added by subunits before. so let us change it from [,sub_id1,sub_id2] to [id,sub_id1,sub_id2]
+                    $return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['id'] = "[" . $taxonomy['unique id'] . trim($return[$taxonomy['vocabulary']][$taxonomy['Federal Agency']]['id'], "[]") . "]";
+                }
+            }
+        }
+
+        $orgs = $return['Federal Organization'];
+
+        $cfo = array();
+        $non_cfo = array();
+
+        foreach ($orgs as $key => $org) {
+
+            $org['name'] = $key;
+
+            $id = $org['id'];
+            $id = str_replace('[,', '(', $id);
+            $id = str_replace(',]', ')', $id);
+            $id = str_replace(',', ' OR ', $id);
+            $id = str_replace('[', '(', $id);
+            $id = str_replace(']', ')', $id);
+
+            $org['id'] = $id;
+
+            if ($org['is_cfo'] == 'Y') {
+                $cfo[$key] = $org;
+            } else {
+                $non_cfo[$key] = $org;
+            }
+        }
+
+        ksort($cfo);
+        ksort($non_cfo);
+
+        $return = array_merge($cfo, $non_cfo);
+
+
+        return $return;
+    }
+
+    /*
+      Crawl each record in a datajson file and save current version + validation results
      */
 
-    public function version_json($office_id = null) {
+    public function version_datajson($office_id = null) {
 
 
         $this->load->model('campaign_model', 'campaign');
@@ -860,10 +1418,10 @@ class Campaign extends CI_Controller {
         // look up last crawl cycle for this office id
         if (!empty($office_id)) {
 
-            $current_crawl = $this->campaign->json_crawl();
+            $current_crawl = $this->campaign->datajson_crawl();
             $current_crawl->office_id = $office_id;
 
-            if ($last_crawl = $this->campaign->get_json_crawl($current_crawl->office_id)) {
+            if ($last_crawl = $this->campaign->get_datajson_crawl($current_crawl->office_id)) {
 
                 // make sure last crawl completed
                 if ($last_crawl->crawl_status == 'completed' && !empty($last_crawl->crawl_end)) {
@@ -874,7 +1432,7 @@ class Campaign extends CI_Controller {
                     $current_crawl->crawl_status = 'aborted';
 
                     // save crawl status
-                    $this->campaign->save_json_crawl($current_crawl);
+                    $this->campaign->save_datajson_crawl($current_crawl);
 
                     return $current_crawl;
                 }
@@ -887,14 +1445,14 @@ class Campaign extends CI_Controller {
             $current_crawl->crawl_status = 'started';
 
             // save crawl status
-            $this->campaign->save_json_crawl($current_crawl);
+            $this->campaign->save_datajson_crawl($current_crawl);
 
 
 
 
             if ($current_crawl->crawl_status == 'started') {
 
-                // check to see if json status is good enough to parse
+                // check to see if datajson status is good enough to parse
                 // ******** missing code here
 
                 foreach ($metadata_records as $metadata_record) {
@@ -902,7 +1460,7 @@ class Campaign extends CI_Controller {
                 }
 
                 // save crawl status
-                $this->campaign->save_json_crawl($current_crawl);
+                $this->campaign->save_datajson_crawl($current_crawl);
 
                 return $current_crawl;
             }
