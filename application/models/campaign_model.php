@@ -33,7 +33,7 @@ class campaign_model extends CI_Model {
         //$this->office					= $this->office();
     }
 
-    public function datagov_office($office_id, $milestone = null, $crawl_status = null, $status_id = null) {
+    public function ciogov_office($office_id, $milestone = null, $crawl_status = null, $status_id = null) {
 
         $this->db->select('*');
         $this->db->where('office_id', $office_id);
@@ -55,7 +55,7 @@ class campaign_model extends CI_Model {
             $this->db->where('milestone', $milestone);
         $this->db->limit(1);
 
-        $query = $this->db->get('datagov_campaign');
+        $query = $this->db->get('ciogov_campaign');
 
         if ($query->num_rows() > 0) {
             return $query->row();
@@ -64,7 +64,7 @@ class campaign_model extends CI_Model {
         }
     }
 
-    public function datagov_office_crawls($office_id, $milestone = null, $status_id, $direction, $limit) {
+    public function ciogov_office_crawls($office_id, $milestone = null, $status_id, $direction, $limit) {
 
         $this->db->select('status_id, crawl_start, crawl_end');
         $this->db->where('office_id', $office_id);
@@ -78,12 +78,12 @@ class campaign_model extends CI_Model {
 
         $this->db->order_by('status_id', $order_dir);
 
-        $query = $this->db->get('datagov_campaign', $limit);
+        $query = $this->db->get('ciogov_campaign', $limit);
 
         return $query->result_array();
     }
 
-    public function datagov_model() {
+    public function ciogov_model() {
 
         $model = new stdClass();
 
@@ -1446,7 +1446,7 @@ class campaign_model extends CI_Model {
         $this->db->where("(crawl_status IS NULL OR crawl_status = 'final')");
         $this->db->limit(1);
 
-        $query = $this->db->get('datagov_campaign');
+        $query = $this->db->get('ciogov_campaign');
 
         if ($query->num_rows() > 0) {
             $row = $query->row();
@@ -1468,7 +1468,7 @@ class campaign_model extends CI_Model {
                 $this->db->where('office_id', $update->office_id);
                 $this->db->where('milestone', $update->milestone);
 
-                $this->db->update('datagov_campaign', $update);
+                $this->db->update('ciogov_campaign', $update);
             }
 
             // if this is just an old record, change the crawl_status
@@ -1486,7 +1486,7 @@ class campaign_model extends CI_Model {
                     $reset = array('crawl_status' => $old_status);
 
                     $this->db->where('status_id', $existing_status['status_id']);
-                    $this->db->update('datagov_campaign', $reset);
+                    $this->db->update('ciogov_campaign', $reset);
                 }
             }
         }
@@ -1496,7 +1496,7 @@ class campaign_model extends CI_Model {
         if ($tracker_update OR ( isset($update->status_id) && !empty($update->crawl_status))) {
 
             $this->db->where('status_id', $update->status_id);
-            $this->db->update('datagov_campaign', $update);
+            $this->db->update('ciogov_campaign', $update);
 
             $status_id = $update->status_id;
 
@@ -1512,7 +1512,7 @@ class campaign_model extends CI_Model {
                 echo 'Adding ' . $update->office_id . PHP_EOL . PHP_EOL;
             }
 
-            $this->db->insert('datagov_campaign', $update);
+            $this->db->insert('ciogov_campaign', $update);
             $status_id = $this->db->insert_id();
         }
 
@@ -1526,7 +1526,7 @@ class campaign_model extends CI_Model {
             $this->db->where("(crawl_end IS NULL OR crawl_end < '$update->crawl_end')");
             $this->db->limit(1);
 
-            $query = $this->db->get('datagov_campaign');
+            $query = $this->db->get('ciogov_campaign');
 
             if ($query->num_rows() > 0) {
 
@@ -1534,7 +1534,7 @@ class campaign_model extends CI_Model {
                 $reset = array('crawl_status' => 'archive');
 
                 $this->db->where('status_id', $row->status_id);
-                $this->db->update('datagov_campaign', $reset);
+                $this->db->update('ciogov_campaign', $reset);
             }
         }
 
@@ -1652,7 +1652,7 @@ class campaign_model extends CI_Model {
         return $model;
     }
 
-    public function get_datagov_json($orgs, $geospatial = false, $rows = 100, $offset = 0, $raw = false, $allow_harvest_sources = 'true') {
+    public function get_ciogov_json($orgs, $geospatial = false, $rows = 100, $offset = 0, $raw = false, $allow_harvest_sources = 'true') {
 
         $allow_harvest_sources = (empty($allow_harvest_sources)) ? 'true' : $allow_harvest_sources;
 
@@ -1680,25 +1680,25 @@ class campaign_model extends CI_Model {
             $from_export = false;
         }
 
-        $datagov_json = curl_from_json($uri, false);
+        $ciogov_json = curl_from_json($uri, false);
 
         if ($from_export) {
 
             $object_shim = new stdClass();
             $object_shim->result = new stdClass();
-            $object_shim->result->count = count($datagov_json);
-            $object_shim->result->results = $datagov_json;
+            $object_shim->result->count = count($ciogov_json);
+            $object_shim->result->results = $ciogov_json;
 
-            $datagov_json = $object_shim;
+            $ciogov_json = $object_shim;
         }
 
-        if (empty($datagov_json))
+        if (empty($ciogov_json))
             return false;
 
         if ($raw == true) {
-            return $datagov_json;
+            return $ciogov_json;
         } else {
-            return $datagov_json->result->results;
+            return $ciogov_json->result->results;
         }
     }
 

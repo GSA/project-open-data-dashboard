@@ -9,7 +9,7 @@
         <div class="col-lg-12">
           <h2>CSV Converter</h2>
 
-            <form action="<?php echo site_url(); ?>datagov/csv_to_json" method="post" role="form" enctype="multipart/form-data">
+            <form action="<?php echo site_url(); ?>ciogov/csv_to_json" method="post" role="form" enctype="multipart/form-data">
 
                 <div class="form-group">
                     <div class="radio">

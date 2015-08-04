@@ -49,14 +49,12 @@ $route['digitalstrategy'] = "campaign/digitalstrategy";
 $route['validate'] = "campaign/validate";
 $route['changeset'] = "campaign/changeset";
 
-$route['datagov/status-update'] = "campaign/status_update";
-$route['datagov/status-review-update'] = "campaign/status_review_update";
-
-
-$route['datagov/(:any)'] = "campaign/$1";
-$route['datagov/(:any)/'] = "campaign/$1";
-$route['datagov/(:any)/(:any)'] = "campaign/$1/$2";
-$route['datagov/(:any)/(:any)/(:any)'] = "campaign/$1/$2/$3";
+$route['ciogov/status-update'] = "campaign/status_update";
+$route['ciogov/status-review-update'] = "campaign/status_review_update";
+$route['ciogov/(:any)'] = "campaign/$1";
+$route['ciogov/(:any)/'] = "campaign/$1";
+$route['ciogov/(:any)/(:any)'] = "campaign/$1/$2";
+$route['ciogov/(:any)/(:any)/(:any)'] = "campaign/$1/$2/$3";
 
 $route['offices/(:any)'] = "offices/routes/$1";
 $route['docs/(:any)'] = "docs/routes/$1";

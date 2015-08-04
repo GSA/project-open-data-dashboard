@@ -275,7 +275,7 @@ class Import extends CI_Controller {
         $importer = new CsvImporter($full_path, $parse_header = true, $delimiter = ",");
         $csv = $importer->get();
 
-        $model = (array) $this->campaign->datagov_model();
+        $model = (array) $this->campaign->ciogov_model();
 
         $note_count = 0;
         $status_count = 0;

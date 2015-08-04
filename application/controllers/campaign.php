@@ -58,7 +58,7 @@ class Campaign extends CI_Controller {
         $raw_data = array();
 
         while ($row_count < $row_total) {
-            $result = $this->campaign->get_datagov_json($orgs, $geospatial, $row_pagesize, $row_count, true, $harvest);
+            $result = $this->campaign->get_ciogov_json($orgs, $geospatial, $row_pagesize, $row_count, true, $harvest);
 
             if (!empty($result->result)) {
 
@@ -362,7 +362,7 @@ class Campaign extends CI_Controller {
         $raw_data = array();
 
         while ($row_count < $row_total) {
-            $result = $this->campaign->get_datagov_json($orgs, $geospatial, $row_pagesize, $row_count, true);
+            $result = $this->campaign->get_ciogov_json($orgs, $geospatial, $row_pagesize, $row_count, true);
 
             if (!empty($result)) {
                 $row_total = $result->result->count;
@@ -539,7 +539,7 @@ class Campaign extends CI_Controller {
 
         $this->db->select('*');
         $this->db->from('offices');
-        $this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
+        $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
         $this->db->where('offices.cfo_act_agency', 'true');
         $this->db->where('offices.no_parent', 'true');
 
@@ -607,7 +607,7 @@ class Campaign extends CI_Controller {
                 $this->campaign->validation_pointer = 0;
 
                 // initialize update object
-                $update = $this->campaign->datagov_model();
+                $update = $this->campaign->ciogov_model();
                 $update->office_id = $office->id;
 
                 $update->crawl_status = 'in_progress';
@@ -825,7 +825,7 @@ class Campaign extends CI_Controller {
                 /*
                  * TODO: REMOVE, NOT USED BY FITARA
                   ################ datapage ################
-                 */
+                 *
 
                 if ($component == 'full-scan' || $component == 'all' || $component == 'datapage') {
 
@@ -859,7 +859,7 @@ class Campaign extends CI_Controller {
                 /*
                  * TODO: REMOVE, NOT USED BY FITARA
                   ################ digitalstrategy ################
-                 */
+                 *
 
                 if ($component == 'full-scan' || $component == 'all' || $component == 'digitalstrategy' || $component == 'download') {
 
@@ -898,7 +898,7 @@ class Campaign extends CI_Controller {
                 /*
                  * TODO: REMOVE, NOT USED BY FITARA
                   ################ datajson ################
-                 */
+                 *
 
                 if ($component == 'full-scan' || $component == 'all' || $component == 'datajson' || $component == 'download') {
 
@@ -930,7 +930,7 @@ class Campaign extends CI_Controller {
 
                     /*
                       ################ download ################
-                     */
+                     *
                     if ($component == 'full-scan' || $component == 'all' || $component == 'download') {
 
                         if (!($status['http_code'] == 200)) {
@@ -948,7 +948,7 @@ class Campaign extends CI_Controller {
 
                     /*
                       ################ datajson ################
-                     */
+                     *
                     if ($component == 'full-scan' || $component == 'all' || $component == 'datajson') {
 
                         // Save current update status in case things break during json_status
@@ -1002,6 +1002,7 @@ class Campaign extends CI_Controller {
                         $this->campaign->update_status($update);
                     }
                 }
+                 */
 
 
 
@@ -1080,12 +1081,12 @@ class Campaign extends CI_Controller {
 
         $this->load->model('campaign_model', 'campaign');
 
-        $datagov_model_fields = $this->campaign->datagov_model();
+        $ciogov_model_fields = $this->campaign->ciogov_model();
         $tracker_review_model = $this->campaign->tracker_review_model();
 
-        $datagov_model_fields->status_id = (!empty($update->status_id)) ? $update->status_id : null;
-        $datagov_model_fields->office_id = $update->office_id;
-        $datagov_model_fields->milestone = $update->milestone;
+        $ciogov_model_fields->status_id = (!empty($update->status_id)) ? $update->status_id : null;
+        $ciogov_model_fields->office_id = $update->office_id;
+        $ciogov_model_fields->milestone = $update->milestone;
 
         // Set author name with best data available
         $author_full = $this->session->userdata('name_full');
@@ -1097,21 +1098,21 @@ class Campaign extends CI_Controller {
         $tracker_review_model->status = $update->status;
         $tracker_review_model->reviewer_email = $update->reviewer_email;
 
-        $datagov_model_fields->tracker_status = json_encode($tracker_review_model);
+        $ciogov_model_fields->tracker_status = json_encode($tracker_review_model);
 
         // remove blank fields from update
-        foreach ($datagov_model_fields as $field => $data) {
+        foreach ($ciogov_model_fields as $field => $data) {
             if (empty($data))
-                unset($datagov_model_fields->$field);
+                unset($ciogov_model_fields->$field);
         }
 
-        $this->campaign->update_status($datagov_model_fields);
+        $this->campaign->update_status($ciogov_model_fields);
 
         $this->session->set_flashdata('outcome', 'success');
         $this->session->set_flashdata('status', 'Status updated');
 
         $this->load->helper('url');
-        redirect('offices/detail/' . $datagov_model_fields->office_id . '/' . $datagov_model_fields->milestone);
+        redirect('offices/detail/' . $ciogov_model_fields->office_id . '/' . $ciogov_model_fields->milestone);
     }
 
     public function status_update() {
@@ -1130,7 +1131,7 @@ class Campaign extends CI_Controller {
 
         $update = (object) $this->input->post(NULL, TRUE);
 
-        $datagov_model_fields = $this->campaign->datagov_model();
+        $ciogov_model_fields = $this->campaign->ciogov_model();
         $tracker_model_fields = $this->campaign->tracker_model();
         $tracker_review_model = $this->campaign->tracker_review_model();
 
@@ -1145,7 +1146,7 @@ class Campaign extends CI_Controller {
         $tracker_review_model->status = (!empty($update->status)) ? $update->status : null;
         $tracker_review_model->reviewer_email = (!empty($update->reviewer_email)) ? $update->reviewer_email : null;
 
-        $datagov_model_fields->tracker_status = json_encode($tracker_review_model);
+        $ciogov_model_fields->tracker_status = json_encode($tracker_review_model);
 
 
 
@@ -1172,32 +1173,32 @@ class Campaign extends CI_Controller {
         }
 
         if (!empty($update->status_id)) {
-            $datagov_model_fields->status_id = $update->status_id;
+            $ciogov_model_fields->status_id = $update->status_id;
             unset($update->status_id);
         }
 
-        $datagov_model_fields->office_id = $update->office_id;
+        $ciogov_model_fields->office_id = $update->office_id;
         unset($update->office_id);
 
-        $datagov_model_fields->milestone = $update->milestone;
+        $ciogov_model_fields->milestone = $update->milestone;
         unset($update->milestone);
 
-        $datagov_model_fields->tracker_fields = json_encode($update);
+        $ciogov_model_fields->tracker_fields = json_encode($update);
 
         // remove blank fields from update
-        foreach ($datagov_model_fields as $field => $data) {
+        foreach ($ciogov_model_fields as $field => $data) {
             if (empty($data))
-                unset($datagov_model_fields->$field);
+                unset($ciogov_model_fields->$field);
         }
 
-        $this->campaign->update_status($datagov_model_fields);
+        $this->campaign->update_status($ciogov_model_fields);
 
         $this->session->set_flashdata('outcome', 'success');
         $this->session->set_flashdata('status', 'Status updated');
 
 
         $this->load->helper('url');
-        redirect('offices/detail/' . $datagov_model_fields->office_id . '/' . $datagov_model_fields->milestone);
+        redirect('offices/detail/' . $ciogov_model_fields->office_id . '/' . $ciogov_model_fields->milestone);
     }
 
     public function validate($datajson_url = null, $datajson = null, $headers = null, $schema = null, $output = 'browser') {

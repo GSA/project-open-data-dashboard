@@ -241,17 +241,17 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                                         $status = '';
                                         
                                         if ($subsection->label === 'Self-Assessment') {
-                                            $status = $office->tracker_fields->cb_self_assessment;
+                                            $status = @$office->tracker_fields->cb_self_assessment;
                                         } elseif ($subsection->label === 'Implementation Plan') {
-                                            $status = $office->tracker_fields->cb_implementation_plan; 
+                                            $status = @$office->tracker_fields->cb_implementation_plan; 
                                         } else if ($subsection->label === 'CIO Assignment Plan (Optional)') {
-                                            $status = $office->tracker_fields->cb_cio_assignment_plan;
+                                            $status = @$office->tracker_fields->cb_cio_assignment_plan;
                                         } elseif ($subsection->label === 'Bureau IT Leadership') {
-                                            $status = $office->tracker_fields->pa_bureau_it_leadership;
+                                            $status = @$office->tracker_fields->pa_bureau_it_leadership;
                                         } elseif ($subsection->label === 'CIO Governance Board List') {
-                                            $status = $office->tracker_fields->pa_cio_governance_board_list; 
+                                            $status = @$office->tracker_fields->pa_cio_governance_board_list; 
                                         } else if ($subsection->label === 'IT Policy Archive') {
-                                            $status = $office->tracker_fields->pa_num_it_policy_archive;
+                                            $status = @$office->tracker_fields->pa_num_it_policy_archive;
                                         }
 
 					$column_anchor = $section_name . '_tab';

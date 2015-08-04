@@ -13,15 +13,15 @@
             </p>
 
             <h3>As JSON</h3>
-            <code>GET /datagov/convert</code>
+            <code>GET /ciogov/convert</code>
             <p>
-                The only parameter is <code>?orgs</code> where the <code>orgs</code> refers the the name of the organization in CKAN. For example: <code><a href="<?php echo site_url('datagov/convert?orgs=usgs-gov'); ?>"><?php echo site_url('datagov/convert?orgs=usgs-gov'); ?></a></code>
+                The only parameter is <code>?orgs</code> where the <code>orgs</code> refers the the name of the organization in CKAN. For example: <code><a href="<?php echo site_url('ciogov/convert?orgs=usgs-gov'); ?>"><?php echo site_url('ciogov/convert?orgs=usgs-gov'); ?></a></code>
             </p>
 
             <h3>As CSV</h3>
-            <code>GET /datagov/csv</code>
+            <code>GET /ciogov/csv</code>
             <p>
-                The only parameter is <code>?orgs</code> where the <code>orgs</code> refers the the name of the organization in CKAN. For example: <code><a href="<?php echo site_url('datagov/csv?orgs=usgs-gov'); ?>"><?php echo site_url('datagov/csv?orgs=usgs-gov'); ?></a></code>
+                The only parameter is <code>?orgs</code> where the <code>orgs</code> refers the the name of the organization in CKAN. For example: <code><a href="<?php echo site_url('ciogov/csv?orgs=usgs-gov'); ?>"><?php echo site_url('ciogov/csv?orgs=usgs-gov'); ?></a></code>
             </p>
 
         </div>

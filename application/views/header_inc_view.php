@@ -45,7 +45,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Converters <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="<?php echo site_url('export')?>">Export API</a></li>
-            <li><a href="<?php echo site_url('datagov/csv_to_json')?>">CSV Converter</a></li>
+            <li><a href="<?php echo site_url('ciogov/csv_to_json')?>">CSV Converter</a></li>
             <li><a href="<?php echo site_url('upgrade-schema')?>">Schema Converter</a></li>
             <li><a href="<?php echo site_url('merge')?>">Data.json Merger</a></li>
           </ul>

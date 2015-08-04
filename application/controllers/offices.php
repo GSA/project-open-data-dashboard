@@ -53,11 +53,11 @@ class Offices extends CI_Controller {
 
         $this->db->select('*');
         $this->db->from('offices');
-        $this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
-        $this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
+        $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
+        $this->db->where('ciogov_campaign.milestone', $milestone->selected_milestone);
         $this->db->where('offices.cfo_act_agency', 'true');
         $this->db->where('offices.no_parent', 'true');
-        $this->db->where("(datagov_campaign.crawl_status IS NULL OR datagov_campaign.crawl_status = '$crawl_status_filter')");
+        $this->db->where("(ciogov_campaign.crawl_status IS NULL OR ciogov_campaign.crawl_status = '$crawl_status_filter')");
         $this->db->order_by("offices.name", "asc");
         $query = $this->db->get();
 
@@ -70,8 +70,8 @@ class Offices extends CI_Controller {
 
             $this->db->select('*');
             $this->db->from('offices');
-            $this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
-            $this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
+            $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
+            $this->db->where('ciogov_campaign.milestone', $milestone->selected_milestone);
             $this->db->where('offices.cfo_act_agency', 'false');
             $this->db->where('offices.reporting_authority_type', 'executive');
             $this->db->where('offices.no_parent', 'true');
@@ -86,8 +86,8 @@ class Offices extends CI_Controller {
 
             $this->db->select('*');
             $this->db->from('offices');
-            $this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
-            $this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
+            $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
+            $this->db->where('ciogov_campaign.milestone', $milestone->selected_milestone);
             $this->db->where('offices.cfo_act_agency', 'false');
             $this->db->where('offices.reporting_authority_type', 'independent');
             $this->db->where('offices.no_parent', 'true');
@@ -200,19 +200,19 @@ class Offices extends CI_Controller {
             }
 
             // Get crawler data
-            $view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id, $milestone->selected_milestone, null, $status_id);
+            $view_data['office_campaign'] = $this->campaign->ciogov_office($view_data['office']->id, $milestone->selected_milestone, null, $status_id);
 
 
             // Get the IDs of daily crawls before and after this date
-            $crawls_before = $this->campaign->datagov_office_crawls($view_data['office']->id, $milestone->selected_milestone, $view_data['office_campaign']->status_id, '<', '5');
-            $crawls_after = $this->campaign->datagov_office_crawls($view_data['office']->id, $milestone->selected_milestone, $view_data['office_campaign']->status_id, '>', '5');
+            $crawls_before = $this->campaign->ciogov_office_crawls($view_data['office']->id, $milestone->selected_milestone, $view_data['office_campaign']->status_id, '<', '5');
+            $crawls_after = $this->campaign->ciogov_office_crawls($view_data['office']->id, $milestone->selected_milestone, $view_data['office_campaign']->status_id, '>', '5');
 
             $view_data['nearby_crawls'] = array_merge(array_reverse($crawls_before), $crawls_after);
 
 
             // If we have a blank slate, populate the data model
             if (empty($view_data['office_campaign'])) {
-                $view_data['office_campaign'] = $this->campaign->datagov_model();
+                $view_data['office_campaign'] = $this->campaign->ciogov_model();
             }
 
             // Make sure tracker data uses full tracker model
@@ -238,7 +238,7 @@ class Offices extends CI_Controller {
                 // Get sub offices
                 $this->db->select('*');
                 $this->db->from('offices');
-                $this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
+                $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
                 $this->db->where('offices.parent_office_id', $view_data['office']->id);
                 $this->db->order_by("offices.name", "asc");
                 $query = $this->db->get();
