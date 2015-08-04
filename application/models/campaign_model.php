@@ -42,7 +42,7 @@ class campaign_model extends CI_Model {
         if (!empty($status_id)) {
             $this->db->where('status_id', $status_id);
         } else {
-            // otherwise see if we need to filter by crawl status	
+            // otherwise see if we need to filter by crawl status
             if (!empty($crawl_status)) {
                 $this->db->where('crawl_status', $crawl_status);
             } else {
@@ -97,6 +97,7 @@ class campaign_model extends CI_Model {
         $model->contact_email = null;
         $model->bureaudirectory_status = null;
         $model->governanceboard_status = null;
+        $model->recommendation_status = null;
         $model->tracker_fields = '';
         $model->tracker_status = null;
 
@@ -112,9 +113,9 @@ class campaign_model extends CI_Model {
         $field->value = null;
         $field->label = null;
         $field->placeholder = null;
-        
+
         // Common Baseline
-        
+
         $model->cb_self_assessment = clone $field;
         $model->cb_self_assessment->dashboard = true;
         $model->cb_self_assessment->label = "Self-Assessment";
@@ -184,14 +185,14 @@ class campaign_model extends CI_Model {
         $model->cb_org_workforce_rating_comment->maxlength = 500;
         $model->cb_org_workforce_rating_comment->indent = 2;
         */
-        
+
         $model->cb_cio_assignment_plan = clone $field;
         $model->cb_cio_assignment_plan->dashboard = true;
         $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (Optional)";
         $model->cb_cio_assignment_plan->type = "select";
 
         // Published Artifacts
-        
+
         $model->pa_overall_status = clone $field;
         $model->pa_overall_status->label = "Overall Published Artifacts Status";
         $model->pa_overall_status->type = "traffic";
@@ -243,32 +244,32 @@ class campaign_model extends CI_Model {
         $model->pa_it_policy_archive->label = "IT Policy Archive";
         $model->pa_it_policy_archive->description = "IT Policy Archive file exists with expected file extension?";
         $model->pa_it_policy_archive->type = "select";
-        
+
         $model->pa_it_policy_archive_files = clone $field;
         $model->pa_it_policy_archive_files->indent = 1;
         $model->pa_it_policy_archive_files->label = "# Files in policy archive";
         $model->pa_it_policy_archive_files->type = "integer";
-        
+
         $model->pa_it_policy_archive_filenames = clone $field;
         $model->pa_it_policy_archive_filenames->indent = 1;
         $model->pa_it_policy_archive_filenames->label = "File names in policy archive";
         $model->pa_it_policy_archive_filenames->type = "textarea";
         $model->pa_it_policy_archive_filenames->cols = 30;
         $model->pa_it_policy_archive_filenames->rows = 3;
-        
+
         $model->pa_it_policy_archive_link = clone $field;
         $model->pa_it_policy_archive_link->indent = 1;
         $model->pa_it_policy_archive_link->label = "Link to policy archive directory";
         $model->pa_it_policy_archive_link->type = "url";
 
         // GAO Recommendations
-        
+
         $model->gr_open_gao_recommendations = clone $field;
         $model->gr_open_gao_recommendations->dashboard = true;
         $model->gr_open_gao_recommendations->label = "GAO Recommendations";
         $model->gr_open_gao_recommendations->description = "# Open GAO Recommendations";
         $model->gr_open_gao_recommendations->type = "integer";
-        
+
         return $model;
     }
 
@@ -286,20 +287,20 @@ class campaign_model extends CI_Model {
     public function tracker_subsections_model() {
 
         $section_breakdown = $this->tracker_sections_model();
-        
+
         $sections = array_keys($section_breakdown);
-        
+
         $subsection_breakdown = array();
-        
+
         $tracker = $this->tracker_model();
-        
+
         foreach ($tracker as $key => $item) {
             $section = substr($key, 0, 2);
             if (isset($item->dashboard) && $item->dashboard === true) {
                 $subsection_breakdown[$section][] = $item;
             }
         }
-        
+
         return $subsection_breakdown;
     }
 
@@ -459,15 +460,15 @@ class campaign_model extends CI_Model {
             return false;
         }
     }
-    
+
     public function validate_bureaudirectory($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $component = null) {
         $this->validate_json($url, $json, $headers, 'bureaudirectory', $return_source, $component);
     }
-    
+
     public function validate_governanceboard($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $component = null) {
         $this->validate_json($url, $json, $headers, 'governanceboard', $return_source, $component);
     }
-    
+
     public function validate_json($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $component = null) {
 
 
@@ -519,7 +520,7 @@ class campaign_model extends CI_Model {
             if ($json_header['download_content_length'] > $max_remote_size) {
 
                 //$filesize = human_filesize($json_header['download_content_length']);
-                //$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";				
+                //$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";
                 // Increase the timeout limit
                 @set_time_limit(6000);
 
@@ -631,7 +632,7 @@ class campaign_model extends CI_Model {
 
 
 
-            // See if it's valid JSON 
+            // See if it's valid JSON
             if (!empty($json) && $json_header['download_content_length'] < $max_remote_size) {
 
                 // See if raw file is valid
@@ -1059,13 +1060,13 @@ class campaign_model extends CI_Model {
 
         // Attempt to get JSON, via URL in normal mode or locally if in simulation mode
         if (config_item('simulate_office_data') && in_array($filetype, array('bureaudirectory', 'governanceboard'))) {
-            
+
             echo "Simulating $filetype data for office $office_id" . PHP_EOL;
             $url = config_item('archive_dir') . DIRECTORY_SEPARATOR . $filetype . DIRECTORY_SEPARATOR . 'example.json';
             $copy = @fopen($url, 'rb');
-            
+
         } else {
-        
+
             if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                 echo 'Attempting to download ' . $url . ' to ' . $filepath . PHP_EOL;
             }
@@ -1078,7 +1079,7 @@ class campaign_model extends CI_Model {
                 )
             );
 
-            // Support for MAX proxy 
+            // Support for MAX proxy
             if (config_item('proxy_host') && config_item('proxy_port')) {
                 $opts['http']['proxy'] = 'tcp://' . config_item('proxy_host') . ':' . config_item('proxy_port');
                 $opts['http']['request_fulluri'] = true;
@@ -1089,7 +1090,7 @@ class campaign_model extends CI_Model {
 
             $context = stream_context_create($opts);
 
-            $copy = @fopen($url, 'rb', false, $context);            
+            $copy = @fopen($url, 'rb', false, $context);
         }
 
         // If we can't read from this file, skip

@@ -11,6 +11,7 @@ CREATE TABLE `ciogov_campaign` (
   `contact_email` text CHARACTER SET latin1,
   `bureaudirectory_status` longtext CHARACTER SET latin1,
   `governanceboard_status` longtext CHARACTER SET latin1,
+  `recommendation_status` longtext CHARACTER SET latin1,
   `tracker_fields` longtext CHARACTER SET latin1 NOT NULL,
   `tracker_status` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`status_id`)
