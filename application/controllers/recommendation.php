@@ -15,14 +15,24 @@ class Recommendation extends CI_Controller {
   public $log = "";
   static $currentMilestone = "2015-08-15";
   public $outputDir = "";
+  public $permission_level = "admin";
 
   function __construct() {
     parent::__construct();
+
+    if(!$this->checkPermissions()) {
+      $this->outputLog();
+      return;
+    }
 
     $this->load->model('Recommendation_model', 'recommendation', TRUE);
     $this->outputDir = $this->getArchiveDir();
 
     $data = $this->getUploadFile();
+    if(!$data) {
+       $this->outputLog();
+       return;
+    }
 
     $recommendations = $this->csv_to_array($data);
 
@@ -34,8 +44,29 @@ class Recommendation extends CI_Controller {
 
     $this->save_campaign_records($groupedRecommendations);
 
-    echo $this->log;
-  }
+    $this->outputLog();
+   }
+
+   /**
+    * Check if the user has admin privileges.
+    */
+   public function checkPermissions()
+   {
+     return true;
+     // TO DO - check if the login works on int and test environments
+     if($this->session->userdata('permissions') != $this->permission_level) {
+       $this->log("Insufficient privileges to import GAO Recommendations");
+       return false;
+     }
+
+     return true;
+   }
+
+   public function outputLog()
+   {
+     $view_data['log'] = $this->log;
+     $this->load->view('recommendation', $view_data);
+   }
 
   public function index()
   {
@@ -133,6 +164,11 @@ class Recommendation extends CI_Controller {
          'file_ext'      => ".csv"
      );
 
+     if(!file_exists($data['full_path'])) {
+       $this->log("File ". $data['file_name'] . " not found");
+       $data = null;
+     }
+
      return $data;
    }
 
@@ -176,6 +212,7 @@ class Recommendation extends CI_Controller {
             $recommendation->office_id = $office->id;
             $recommendation->url = preg_replace("/\/$/", "", $office->url);
             $recommendation->path_to_json = $this->getPathToJSON($office->id);
+            $recommendation->status = 'Open'; // default
 
             $out[] = $recommendation;
             break;
