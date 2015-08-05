@@ -7,8 +7,6 @@ csv/*
 application/config/config.php
 application/config/gearman.php
 
-.htaccess
-
 application/config/database.php
 downloads/*
 
