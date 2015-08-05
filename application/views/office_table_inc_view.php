@@ -65,9 +65,9 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                             } elseif ($subsection->label === 'Bureau IT Leadership') {
                                 $status = @$office->tracker_fields->pa_bureau_it_leadership;
                             } elseif ($subsection->label === 'CIO Governance Board List') {
-                                $status = @$office->tracker_fields->pa_cio_governance_board_list; 
+                                $status = @$office->tracker_fields->pa_cio_governance_board; 
                             } else if ($subsection->label === 'IT Policy Archive') {
-                                $status = @$office->tracker_fields->pa_num_it_policy_archive;
+                                $status = @$office->tracker_fields->pa_it_policy_archive;
                             }
 
                             $column_anchor = $section_name . '_tab';
