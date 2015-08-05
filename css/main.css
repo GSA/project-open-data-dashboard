@@ -222,6 +222,17 @@ body { padding-top: 50px; }
 }
 
 
+.dashboard .totals-row th {
+    text-align: left;
+    font-weight: bold;
+    color: #337AB7;
+}
+
+.dashboard .totals-row td {
+    text-align: center;
+}
+
+
 table.dashboard-list .info td {
     padding : 1.5em .75em;
 }
