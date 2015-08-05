@@ -72,14 +72,14 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
                             $column_anchor = $section_name . '_tab';
                             $subsection_selection = ($section_name == 'pdl') ? '' : '?highlight=' . $section_name;
-                            $metric_type = $subsection->label === 'Open GAO Recommendations' ? 'number-metric' : 'boolean-metric';
+                            $metric_type = $subsection->label === 'GAO Recommendations' ? 'number-metric' : 'boolean-metric';
                             ?>
 
                             <td class="<?php echo $metric_type; ?> <?php if (!empty($status)) echo status_color($status); ?> <?php if($status) echo $status; ?>">
                                 <a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?><?php echo $subsection_selection . '#' . $column_anchor; ?>">
                                     <span>
                                         <?php 
-                                        if ($subsection->label === 'Open GAO Recommendations') {
+                                        if ($subsection->label === 'GAO Recommendations') {
                                             echo isset($office->tracker_fields->gr_open_gao_recommendations) ? $office->tracker_fields->gr_open_gao_recommendations : '';
                                         }
                                         elseif (!empty($status)) {
