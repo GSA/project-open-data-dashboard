@@ -39,7 +39,7 @@
 
 
         <li><a href="<?php echo site_url('offices')?>">Agencies</a></li>
-        <li><a href="<?php echo site_url('validate')?>">Validator</a></li>
+        <!--<li><a href="<?php echo site_url('validate')?>">Validator</a></li>-->
 
         <!--<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Converters <b class="caret"></b></a>
@@ -51,15 +51,15 @@
           </ul>
         </li>-->
 
-        <li class="dropdown">
+        <!--<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="<?php echo site_url('docs')?>">Documentation</a></li>
             <li><a href="https://github.com/GSA/project-open-data-dashboard/issues">Feedback</a></li>
           </ul>
-        </li>
+        </li>-->
 
-        <li><a href="<?php echo site_url('docs/about')?>">About</a></li>
+        <!--<li><a href="<?php echo site_url('docs/about')?>">About</a></li>-->
 
 
       </ul>
