@@ -212,8 +212,9 @@ class Recommendation extends CI_Controller {
             $recommendation->office_id = $office->id;
             $recommendation->url = preg_replace("/\/$/", "", $office->url);
             $recommendation->path_to_json = $this->getPathToJSON($office->id);
-            $recommendation->status = 'Open'; // default
-
+            if(!isset($recommendation->status)) {
+              $recommendation->status = 'Open'; // default
+            }
             $out[] = $recommendation;
             break;
           }

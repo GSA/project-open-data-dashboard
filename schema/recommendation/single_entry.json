@@ -35,6 +35,12 @@
             "title": "Status Comments",
             "description": "Status Comments",
             "type": "string"
+        },
+        "status": {
+            "title": "Status",
+            "description": "Status",
+            "type": "string",
+            "enum" : ["Open", "Closed"]
         }
    
     }
