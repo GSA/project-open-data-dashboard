@@ -320,9 +320,9 @@ class campaign_model extends CI_Model {
     public function milestones_model() {
 
         $milestones = array(
-            "2000-01-01" => "Milestone 0",
             "2015-08-15" => "Milestone 1",
             "2015-08-31" => "Milestone 2",
+            "2015-09-30" => "Milestone 3",
         );
 
         return $milestones;
