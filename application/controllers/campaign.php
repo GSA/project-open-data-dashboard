@@ -464,9 +464,9 @@ class Campaign extends CI_Controller {
                         $status['last_crawl'] = mktime();
 
 
-                        if (is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
+                        if (isset($status['schema_errors']) && is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
                             $status['error_count'] = count($status['schema_errors']);
-                        } else if ($status['schema_errors'] === false) {
+                        } else if (isset($status['schema_errors']) && $status['schema_errors'] === false) {
                             $status['error_count'] = 0;
                         } else {
                             $status['error_count'] = null;
@@ -567,9 +567,9 @@ class Campaign extends CI_Controller {
                         $status['last_crawl'] = mktime();
 
 
-                        if (is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
+                        if (isset($status['schema_errors']) && is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
                             $status['error_count'] = count($status['schema_errors']);
-                        } else if ($status['schema_errors'] === false) {
+                        } else if (isset($status['schema_errors']) && $status['schema_errors'] === false) {
                             $status['error_count'] = 0;
                         } else {
                             $status['error_count'] = null;
