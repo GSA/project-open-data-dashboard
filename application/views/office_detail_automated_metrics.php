@@ -148,6 +148,84 @@
                             </tr>   
                         <?php endif; ?>  
 
+                        <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership)): ?>
+                            <tr>
+                                <th id="pa_bureau_it_leadership">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    Bureau IT Leadership file exists and conforms to schema?
+                                </th>             
+                                <td>      
+                                    <a name="pa_bureau_it_leadership" class="anchor-point"></a>          
+                                    <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership ? 'Yes' : 'No';?>                
+                                </td>
+                            </tr> 
+                        <?php endif; ?>
+
+                        <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders)): ?>
+                            <tr>
+                                <th id="pa_bureau_it_leaders">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leaders' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    # Bureau IT Leaders
+                                </th>             
+                                <td>      
+                                    <a name="pa_bureau_it_leaders" class="anchor-point"></a>          
+                                    <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders;?>                
+                                </td>
+                            </tr> 
+                        <?php endif; ?>
+
+                        <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_key_bureau_it_leaders)): ?>
+                            <tr>
+                                <th id="pa_key_bureau_it_leaders">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_key_bureau_it_leaders' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    # Key Bureau IT Leaders
+                                </th>             
+                                <td>      
+                                    <a name="pa_key_bureau_it_leaders" class="anchor-point"></a>          
+                                    <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_key_bureau_it_leaders;?>                
+                                </td>
+                            </tr> 
+                        <?php endif; ?>
+
+                        <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees)): ?>
+                            <tr>
+                                <th id="pa_political_appointees">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_political_appointees' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    # Political Appointees
+                                </th>             
+                                <td>      
+                                    <a name="pa_political_appointees" class="anchor-point"></a>          
+                                    <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees;?>/<?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders;?>                
+                                    (<?php echo intval($office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees / $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders * 100);?>%)                
+                                </td>
+                            </tr> 
+                        <?php endif; ?>
+
+                        <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership_link)): ?>
+                            <tr>
+                                <th id="pa_bureau_it_leadership_link">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership_link' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    Link to Bureau IT Leadership directory
+                                </th>             
+                                <td>      
+                                    <a name="pa_bureau_it_leadership_link" class="anchor-point"></a>          
+                                    <a href="<?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership_link;?>">
+                                        <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership_link;?>                
+                                    </a>    
+                                </td>
+                            </tr> 
+                        <?php endif; ?>
+
                     </table>
                 </div>
             <?php endif; ?>
@@ -231,6 +309,8 @@
 
                     </div>
                 </div>
+                
+                
 
             <?php endif; ?>       
 
@@ -365,6 +445,53 @@
                                 </td>
                             </tr>   
                         <?php endif; ?>  
+
+                        <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board)): ?>
+                            <tr>
+                                <th id="pa_cio_governance_board">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    CIO Governance Board file exists and conforms to schema? 
+                                </th>             
+                                <td>      
+                                    <a name="pa_cio_governance_board" class="anchor-point"></a>          
+                                    <?php echo $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board ? 'Yes' : 'No';?>                
+                                </td>
+                            </tr> 
+                        <?php endif; ?>
+
+                        <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_mapped_to_program_inventory)): ?>
+                            <tr>
+                                <th id="pa_mapped_to_program_inventory">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_mapped_to_program_inventory' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    % Mapped to Federal Program Inventory 
+                                </th>             
+                                <td>      
+                                    <a name="pa_mapped_to_program_inventory" class="anchor-point"></a>          
+                                    <?php echo intval($office_campaign->governanceboard_status->tracker_fields->pa_mapped_to_program_inventory / $office_campaign->governanceboard_status->tracker_fields->pa_ref_program_inventory * 100);?>%                
+                                </td>
+                            </tr> 
+                        <?php endif; ?>
+
+                        <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board_link)): ?>
+                            <tr>
+                                <th id="pa_cio_governance_board_link">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board_link' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    Link to CIO Governance Board directory 
+                                </th>             
+                                <td>      
+                                    <a name="pa_cio_governance_board_link" class="anchor-point"></a>
+                                    <a href="<?php echo $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board_link;?>">
+                                        <?php echo $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board_link;?>
+                                    </a>
+                                </td>
+                            </tr> 
+                        <?php endif; ?>
 
                     </table>
                 </div>

@@ -462,11 +462,11 @@ class campaign_model extends CI_Model {
     }
 
     public function validate_bureaudirectory($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $component = null) {
-        $this->validate_json($url, $json, $headers, 'bureaudirectory', $return_source, $component);
+        return $this->validate_json($url, $json, $headers, 'bureaudirectory', $return_source, $component);
     }
 
     public function validate_governanceboard($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $component = null) {
-        $this->validate_json($url, $json, $headers, 'governanceboard', $return_source, $component);
+        return $this->validate_json($url, $json, $headers, 'governanceboard', $return_source, $component);
     }
 
     public function validate_json($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $component = null) {

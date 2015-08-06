@@ -62,11 +62,15 @@
                 'pa_bureau_it_leaders',
                 'pa_key_bureau_it_leaders',
                 'pa_political_appointees',
+                'pa_bureau_it_leadership_link',
                 'pa_cio_governance_board',
                 'pa_mapped_to_program_inventory',
+                'pa_cio_governance_board_link',
                 'pa_it_policy_archive',
                 'pa_it_policy_archive_files',
-                'pa_it_policy_archive_filenames'
+                'pa_it_policy_archive_filenames',
+                'pa_it_policy_archive_link',
+                'gr_open_gao_recommendations'
             );
 
             $active_section = (!empty($selected_category)) ? $selected_category : 'cb';

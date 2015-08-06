@@ -431,6 +431,9 @@ class Campaign extends CI_Controller {
 
                         // download and version this json file.
                         $archive_status = $this->campaign->archive_file('bureaudirectory', $office->id, $real_url);
+                        
+                        $status['tracker_fields'] = $this->track_bureaudirectory($archive_status, $expected_url);
+                        
                     }
 
                     /*
@@ -497,7 +500,7 @@ class Campaign extends CI_Controller {
                 if ($component == 'full-scan' || $component == 'all' || $component == 'governanceboard' || $component == 'download') {
                     
                     // Get status
-                    $expected_url = $url . '/digitalstrategy/governanceboard.json';
+                    $expected_url = $url . '/digitalstrategy/governanceboards.json';
 
                     // attempt to break any caching
                     $expected_url_refresh = $expected_url . '?refresh=' . time();
@@ -534,6 +537,8 @@ class Campaign extends CI_Controller {
 
                         // download and version this json file.
                         $archive_status = $this->campaign->archive_file('governanceboard', $office->id, $real_url);
+                        
+                        $status['tracker_fields'] = $this->track_governanceboard($archive_status, $expected_url);
                     }
 
                     /*
@@ -907,6 +912,85 @@ class Campaign extends CI_Controller {
                 return $current_crawl;
             }
         }
+    }
+    
+    public function track_bureaudirectory($archive, $url) {
+        
+        $tracker_fields = new stdClass();
+
+        $tracker_fields->pa_bureau_it_leadership = false;
+        $tracker_fields->pa_bureau_it_leaders = 'Cannot be evaluated';
+        $tracker_fields->pa_key_bureau_it_leaders = 'Cannot be evaluated';
+        $tracker_fields->pa_political_appointees = 'Cannot be evaluated';
+        $tracker_fields->pa_bureau_it_leadership_link = str_replace('.json', '.html', $url);                            
+        
+        if ($archive) {
+
+            // TODO: Validate against schema
+            $tracker_fields->pa_bureau_it_leadership = true; // this should be based on the result of the schema check
+
+            if ($tracker_fields->pa_bureau_it_leadership) {
+
+                $tracker_fields->pa_bureau_it_leaders = 0;
+                $tracker_fields->pa_key_bureau_it_leaders = 0;
+                $tracker_fields->pa_political_appointees = 0;
+
+                $data = json_decode(file_get_contents($archive));
+                if ($data) {
+
+                    foreach ($data->leaders as $leader) {
+                        $tracker_fields->pa_bureau_it_leaders++;
+                        if ($leader->keyBureauCIO === 'Yes') {
+                            $tracker_fields->pa_key_bureau_it_leaders++;                                
+                        }
+                        if ($leader->typeOfAppointment === 'political') {
+                            $tracker_fields->pa_political_appointees++;                                
+                        }
+                    }
+                }
+            }
+        }
+        
+        return $tracker_fields;        
+    }
+    
+    public function track_governanceboard($archive, $url) {
+        
+        $tracker_fields = new stdClass();
+
+        $tracker_fields->pa_cio_governance_board = false;
+        $tracker_fields->pa_mapped_to_program_inventory = 'Cannot be evaluated';
+        $tracker_fields->pa_cio_governance_board_link = str_replace('.json', '.html', $url);                            
+        
+        // TODO: This value is supposed to be the number of records in agency's 
+        // Federal Program Inventory based on the FPI Code ref table,
+        // i.e. this data must be pulled from a DB table that does not yet exist
+        $tracker_fields->pa_ref_program_inventory = 10;
+
+        if ($archive) {
+
+            // TODO: Validate against schema
+            $tracker_fields->pa_cio_governance_board = true; // this should be based on the result of the schema check
+
+            if ($tracker_fields->pa_cio_governance_board) {
+
+                $tracker_fields->pa_mapped_to_program_inventory = 0;
+
+                $data = json_decode(file_get_contents($archive));
+                var_dump($archive, $data);
+                if ($data) {
+
+                    foreach ($data->boards as $board) {
+                        if (isset($board->programCodeFPI)) {
+                            $tracker_fields->pa_mapped_to_program_inventory++;                                
+                        }
+                    }
+                }
+            }
+        }
+        
+        return $tracker_fields;        
+        
     }
 
 }
