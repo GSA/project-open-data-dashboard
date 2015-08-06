@@ -42,22 +42,21 @@ $('#accShow').on('click', function() {
     return false;
 });
 
-$('table.dashboard').ready(function() {
-    var row = '<tr class="totals-row"><th>CFO Act Agencies (24)</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
-    $(this).find('tr:last').after(row);
-    $(this).find('tr').each(function() {
-        var n = 0;
-        for (var col = 2; col < 8; col++) {
-            n = $(this).find('td:nth-child(' + col + ')').find('i.text-success').length;
-            dashboardTotals[col] += n;
-        }
-        n = parseInt($(this).find('td:nth-child(8)').text());
-        dashboardTotals[8] += isNaN(n) ? 0 : n;
-    });
-    for (var col = 2; col <= 8; col++) {
-        $(this).find('tr:last').find('td:nth-child(' + col + ')').html(dashboardTotals[col]);
+// Add totals row to dashboard
+var row = '<tr class="totals-row"><th>CFO Act Agencies (24)</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
+$(this).find('table.dashboard tr:last').after(row);
+$(this).find('table.dashboard tr').each(function() {
+    var n = 0;
+    for (var col = 2; col < 8; col++) {
+        n = $(this).find('td:nth-child(' + col + ')').find('i.text-success').length;
+        dashboardTotals[col] += n;
     }
+    n = parseInt($(this).find('td:nth-child(8)').text());
+    dashboardTotals[8] += isNaN(n) ? 0 : n;
 });
+for (var col = 2; col <= 8; col++) {
+    $(this).find('table.dashboard tr:last').find('td:nth-child(' + col + ')').html(dashboardTotals[col]);
+}
 
 /* Adjust the scroll height of anchors to compensate for the fixed navbar */
 window.disableShift = false;
