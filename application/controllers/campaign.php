@@ -38,7 +38,7 @@ class Campaign extends CI_Controller {
      * @see http://codeigniter.com/user_guide/general/urls.html
      */
     public function index() {
-        
+
     }
 
     public function csv_field_mapper($headings, $json_model, $inception = false) {
@@ -392,7 +392,7 @@ class Campaign extends CI_Controller {
                  */
 
                 if ($component == 'full-scan' || $component == 'all' || $component == 'bureaudirectory' || $component == 'download') {
-                    
+
                     // Get status
                     $expected_url = $url . '/digitalstrategy/bureaudirectory.json';
 
@@ -431,9 +431,12 @@ class Campaign extends CI_Controller {
 
                         // download and version this json file.
                         $archive_status = $this->campaign->archive_file('bureaudirectory', $office->id, $real_url);
-                        
+
+                        // TO DO - when we have real agency data, validate prior to download
+                        $status = $this->campaign->validate_archive_file_with_schema($status, $archive_status, 'bureaudirectory', $real_url);
+
                         $status['tracker_fields'] = $this->track_bureaudirectory($archive_status, $expected_url);
-                        
+
                     }
 
                     /*
@@ -498,7 +501,7 @@ class Campaign extends CI_Controller {
                  */
 
                 if ($component == 'full-scan' || $component == 'all' || $component == 'governanceboard' || $component == 'download') {
-                    
+
                     // Get status
                     $expected_url = $url . '/digitalstrategy/governanceboards.json';
 
@@ -537,7 +540,9 @@ class Campaign extends CI_Controller {
 
                         // download and version this json file.
                         $archive_status = $this->campaign->archive_file('governanceboard', $office->id, $real_url);
-                        
+                        // TO DO - when we have real agency data, validate prior to download
+                        $status = $this->campaign->validate_archive_file_with_schema($status, $archive_status, 'governanceboard', $real_url);
+
                         $status['tracker_fields'] = $this->track_governanceboard($archive_status, $expected_url);
                     }
 
@@ -604,7 +609,7 @@ class Campaign extends CI_Controller {
                 }
             }
 
-            // Close file connections that are still open 
+            // Close file connections that are still open
             if (is_resource($this->campaign->validation_log)) {
                 fclose($this->campaign->validation_log);
             }
@@ -629,7 +634,17 @@ class Campaign extends CI_Controller {
 
             $qa = ($this->environment == 'terminal' OR $this->environment == 'cron') ? 'all' : true;
 
-            $validate_component = 'validate_' . $component; 
+            $validate_component = 'validate_' . $component;
+            /**
+             * TO DO - call this when we have real agency data at the expected url
+             *
+             * This will not be executed until the agencies provide actual real, valid urls.
+             * Since the urls are not valid, the http_code is 404 and this block is not executed.
+             *
+             * This calls validate_bureaudirectory or validate_governanceboard methods in campaign_model
+             * We can't call this until agencies provide valid data at expected urls.
+             * For now, we are going to validate the example data after the download is complete.
+             */
             $validation = $this->campaign->$validate_component($status['url'], null, null, 'federal', false, $qa, $component);
 
             if (!empty($validation)) {
@@ -913,17 +928,17 @@ class Campaign extends CI_Controller {
             }
         }
     }
-    
+
     public function track_bureaudirectory($archive, $url) {
-        
+
         $tracker_fields = new stdClass();
 
         $tracker_fields->pa_bureau_it_leadership = false;
         $tracker_fields->pa_bureau_it_leaders = 'Cannot be evaluated';
         $tracker_fields->pa_key_bureau_it_leaders = 'Cannot be evaluated';
         $tracker_fields->pa_political_appointees = 'Cannot be evaluated';
-        $tracker_fields->pa_bureau_it_leadership_link = str_replace('.json', '.html', $url);                            
-        
+        $tracker_fields->pa_bureau_it_leadership_link = str_replace('.json', '.html', $url);
+
         if ($archive) {
 
             // TODO: Validate against schema
@@ -941,28 +956,28 @@ class Campaign extends CI_Controller {
                     foreach ($data->leaders as $leader) {
                         $tracker_fields->pa_bureau_it_leaders++;
                         if ($leader->keyBureauCIO === 'Yes') {
-                            $tracker_fields->pa_key_bureau_it_leaders++;                                
+                            $tracker_fields->pa_key_bureau_it_leaders++;
                         }
                         if ($leader->typeOfAppointment === 'political') {
-                            $tracker_fields->pa_political_appointees++;                                
+                            $tracker_fields->pa_political_appointees++;
                         }
                     }
                 }
             }
         }
-        
-        return $tracker_fields;        
+
+        return $tracker_fields;
     }
-    
+
     public function track_governanceboard($archive, $url) {
-        
+
         $tracker_fields = new stdClass();
 
         $tracker_fields->pa_cio_governance_board = false;
         $tracker_fields->pa_mapped_to_program_inventory = 'Cannot be evaluated';
         $tracker_fields->pa_ref_program_inventory = 'Cannot be evaluated';
-        $tracker_fields->pa_cio_governance_board_link = str_replace('.json', '.html', $url);                            
-        
+        $tracker_fields->pa_cio_governance_board_link = str_replace('.json', '.html', $url);
+
         // Get number of records in agency's Federal Program Inventory
         $url = parse_url($url);
         $url = $url['scheme'] . '://' . $url['host'];
@@ -987,15 +1002,15 @@ class Campaign extends CI_Controller {
 
                     foreach ($data->boards as $board) {
                         if (isset($board->programCodeFPI)) {
-                            $tracker_fields->pa_mapped_to_program_inventory++;                                
+                            $tracker_fields->pa_mapped_to_program_inventory++;
                         }
                     }
                 }
             }
         }
-        
-        return $tracker_fields;        
-        
+
+        return $tracker_fields;
+
     }
 
 }

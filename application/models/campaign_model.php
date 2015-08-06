@@ -1411,6 +1411,81 @@ class campaign_model extends CI_Model {
       }
     }
 
+    /**
+     * TO DO - when agencies provide a valid url, we should validate that before
+     * the download.
+     *
+     * Open the archived file that has been downloaded in campaign status method and
+     * validate it against the schema
+     *
+     * @param <array> $status
+     * @param <string> $file_path
+     * @param <string> $component
+     * @param <string> $real_url
+     */
+    public function validate_archive_file_with_schema($status, $file_path, $component, $real_url)
+    {
+      $fp = fopen($file_path, 'r');
+
+      if(!$fp) {
+        $status['errors'][] = "Unable to open archived json file";
+      }
+
+      $status['total_records'] = 0;
+      $status['download_content_length'] = 0;
+      $status['schema_version'] = "1.0";
+      $json = file_get_contents($file_path);
+
+      if(empty($json)) {
+        $status['errors'][] = 'Archived json file is empty';
+        $status['valid_json'] = false;
+       }
+      else if(!is_json($json)) {
+        $json = json_text_filter($json);
+      }
+
+      if(!empty($json) && !is_json($json)) {
+        $status['errors'][] = 'Invalid archived json file';
+        $status['valid_json'] = false;
+        $status['valid_schema'] = false;
+      }
+      else {
+        $status['download_content_length'] = strlen($json);
+        $data = json_decode($json);
+        $status['total_records'] = count($data);
+      }
+
+     $schema = $this->datajson_schema($component);
+
+      if (!empty($data)) {
+        $validator = new JsonSchema\Validator();
+        $validator->check($data, $schema);
+
+        if (!$validator->isValid()) {
+          $errors = $validator->getErrors();
+          $status['schema_errors'] = $errors;
+         }
+      }
+
+      return $status;
+    }
+
+    /**
+     * Get the Recommendation schema definition
+     *
+     * @param string $component
+     * @return <array>
+     */
+    public function datajson_schema($component) {
+
+      $path = './schema/' . $component . '.json';
+
+      // Get the schema and data as objects
+      $retriever = new JsonSchema\Uri\UriRetriever;
+      $schema = $retriever->retrieve('file://' . realpath($path));
+
+      return $schema;
+    }
 }
 
 ?>
