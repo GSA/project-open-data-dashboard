@@ -57,8 +57,6 @@ class Recommendation extends CI_Controller {
     */
    public function checkPermissions()
    {
-     return true;
-     // TO DO - check if the login works on int and test environments
      if($this->session->userdata('permissions') != $this->permission_level) {
        $this->log("Insufficient privileges to import GAO Recommendations");
        return false;
