@@ -960,12 +960,18 @@ class Campaign extends CI_Controller {
 
         $tracker_fields->pa_cio_governance_board = false;
         $tracker_fields->pa_mapped_to_program_inventory = 'Cannot be evaluated';
+        $tracker_fields->pa_ref_program_inventory = 'Cannot be evaluated';
         $tracker_fields->pa_cio_governance_board_link = str_replace('.json', '.html', $url);                            
         
-        // TODO: This value is supposed to be the number of records in agency's 
-        // Federal Program Inventory based on the FPI Code ref table,
-        // i.e. this data must be pulled from a DB table that does not yet exist
-        $tracker_fields->pa_ref_program_inventory = 10;
+        // Get number of records in agency's Federal Program Inventory
+        $url = parse_url($url);
+        $url = $url['scheme'] . '://' . $url['host'];
+        $query = $this->db->query("SELECT * FROM offices WHERE url = ? LIMIT 1", array($url));
+        $result = $query->result();
+        if (count($result) > 0) {
+            $query = $this->db->query("SELECT * FROM refFPIcode WHERE agencyCode = ?", array($result[0]->agencyCode));
+            $tracker_fields->pa_ref_program_inventory = count($query->result());
+        }
 
         if ($archive) {
 
