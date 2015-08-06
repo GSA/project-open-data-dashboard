@@ -977,7 +977,6 @@ class Campaign extends CI_Controller {
                 $tracker_fields->pa_mapped_to_program_inventory = 0;
 
                 $data = json_decode(file_get_contents($archive));
-                var_dump($archive, $data);
                 if ($data) {
 
                     foreach ($data->boards as $board) {
