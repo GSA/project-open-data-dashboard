@@ -19,7 +19,7 @@
 <div class="container">
     <!-- Example row of columns -->
     <div class="row">
-        
+
         <div>
 
             <?php if ($this->session->flashdata('outcome') && $this->session->flashdata('status')): ?>
@@ -30,10 +30,10 @@
 
             <div><a href="<?php echo $office->url ?>"><?php echo $office->url ?></a></div>
 
-            <div><?php echo $office->notes ?></div>				
+            <div><?php echo $office->notes ?></div>
 
             <?php if (!empty($office->parent_office_id)): ?>
-                <div class="hidden"><a href="<?php echo site_url('office/') . $office->parent_office_id; ?>">Parent Office</a></div>				
+                <div class="hidden"><a href="<?php echo site_url('office/') . $office->parent_office_id; ?>">Parent Office</a></div>
             <?php endif; ?>
 
         </div>
@@ -56,7 +56,7 @@
             if (!empty($office_campaign->tracker_status)) {
                 $office_campaign->tracker_status = json_decode($office_campaign->tracker_status);
             }
-            
+
             $crawl_details = array(
                 'pa_bureau_it_leadership',
                 'pa_bureau_it_leaders',
@@ -76,7 +76,7 @@
             $active_section = (!empty($selected_category)) ? $selected_category : 'cb';
             ?>
 
-        
+
             <?php /* if ($this->session->userdata('permissions') == $permission_level): ?>
 
               <?php if(!empty($office_campaign->contact_email)): ?>
@@ -87,26 +87,26 @@
 
               <?php endif; */ ?>
 
-        
+
             <?php if ($milestone->selected_milestone == $milestone->current): ?>
                 <p class="form-flash text-danger bg-danger"><strong>Current Milestone:</strong> The milestone selected is still in progress. The Automated Metrics will update daily until the milestone date.</p>
             <?php endif; ?>
 
             <?php if ($milestone->selected_milestone == $milestone->previous): ?>
                 <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The Automated Metrics are a snapshot from the milestone date.</p>
-            <?php endif; ?>  
+            <?php endif; ?>
 
             <?php if (empty($office_campaign->tracker_status->status) OR $office_campaign->tracker_status->status == 'not-started'): ?>
                 <p class="form-flash text-danger bg-danger"><strong>OMB Review Has Not Begun:</strong> OMB has not begun reviewing the agency for this milestone. The review will begin after the milestone date.</p>
-            <?php endif; ?>  
+            <?php endif; ?>
 
             <?php if (!empty($office_campaign->tracker_status->status) && $office_campaign->tracker_status->status == 'in-progress'): ?>
                 <p class="form-flash text-warning bg-warning"><strong>OMB Review In Progress:</strong> OMB is currently reviewing the agency for this milestone. This review status indicator will change once the review is complete.</p>
-            <?php endif; ?>            
+            <?php endif; ?>
 
             <?php if (!empty($office_campaign->tracker_status->status) && $office_campaign->tracker_status->status == 'complete'): ?>
                 <p class="form-flash text-success bg-success"><strong>OMB Review Complete:</strong> OMB has completed the agency review for this milestone. Agencies should contact their OMB desk officer if anything looks incorrect.</p>
-            <?php endif; ?>                 
+            <?php endif; ?>
 
 
             <ul class="milestone-selector nav nav-pills">
@@ -135,13 +135,13 @@
 
                 <?php include 'office_detail_review_status.php'; ?>
 
-                <?php if ($this->session->userdata('permissions') == $permission_level) : ?>                
+                <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
 
-                    <input type="hidden" name="status_id" value="<?php echo $office_campaign->status_id; ?>">  
-                    <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">   
-                    <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">                       
+                    <input type="hidden" name="status_id" value="<?php echo $office_campaign->status_id; ?>">
+                    <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">
+                    <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">
 
-                    <button type="submit" class="btn btn-success" name="review_status_submit">Update</button>                    
+                    <button type="submit" class="btn btn-success" name="review_status_submit">Update</button>
                 <?php endif; ?>
 
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
@@ -154,7 +154,7 @@
             <?php endif; ?>
 
                <?php include 'office_detail_general_notes.php'; ?>
-                    
+
                <?php include 'office_detail_tracker.php'; ?>
 
                 <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
@@ -162,14 +162,14 @@
                         <input type="hidden" name="reviewer_email" value="<?php if (!empty($office_campaign->tracker_status->reviewer_email)) echo $office_campaign->tracker_status->reviewer_email ?>">
                         <input type="hidden" name="status" value="<?php if (!empty($office_campaign->tracker_status->status)) echo $office_campaign->tracker_status->status ?>">
                     <?php endif; ?>
-                    <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">   
-                    <input type="hidden" name="status_id" value="<?php echo $office_campaign->status_id; ?>">  
-                    <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">                       
+                    <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">
+                    <input type="hidden" name="status_id" value="<?php echo $office_campaign->status_id; ?>">
+                    <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">
                 <?php endif; ?>
-                    
+
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                 </form>
-            <?php endif; ?>   
+            <?php endif; ?>
 
             <?php include 'office_detail_automated_metrics.php'; ?>
 
@@ -183,8 +183,8 @@
 
     </div>
 
-</div>    
-    
+</div>
+
 <hr>
 
 <?php include 'footer.php'; ?>

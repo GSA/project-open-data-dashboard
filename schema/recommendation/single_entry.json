@@ -9,38 +9,45 @@
          "agencyCode": {
             "title": "Agency Code",
             "description": "Agency Code",
-            "type": "string"
+            "type": "string",
+            "office_detail": false
         },
         "productNumber": {
             "title": "Product Number",
             "description": "",
-            "type": "string"
-        },
+            "type": "string",
+            "office_detail": true
+         },
        "agencyName": {
             "title": "Recommendation Target Agency/Organization",
             "description": "Agency Name",
-            "type": "string"
-        },
+            "type": "string",
+            "office_detail": false
+          },
        "engagementCode": {
             "title": "Engagement Code",
             "description": "Engagement Code",
-            "type": "string"
+            "type": "string",
+            "office_detail": false
         },
-         "recommendationText": {
+          "recommendationText": {
             "title": "Recommendation Text",
             "description": "Recommendation Text",
-            "type": "string"
+            "type": "string",
+            "office_detail": true
         },
   		"statusComments": {
             "title": "Status Comments",
             "description": "Status Comments",
-            "type": "string"
+            "type": "string",
+            "office_detail": false
         },
         "status": {
             "title": "Status",
             "description": "Status",
             "type": "string",
-            "enum" : ["Open", "Closed"]
+            "enum" : ["Open", "Closed"],
+            "office_detail": true
         }
    
     }

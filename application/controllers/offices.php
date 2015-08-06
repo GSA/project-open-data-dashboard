@@ -10,7 +10,7 @@ class Offices extends CI_Controller {
 
         $this->load->helper('url');
     }
-    
+
     /**
      * Index Page for this controller.
      *
@@ -227,6 +227,8 @@ class Offices extends CI_Controller {
                 $view_data['office_campaign']->tracker_fields = json_encode($tracker_fields);
             }
 
+            $view_data = $this->getRecommendationDetail($view_data, $milestone->selected_milestone);
+
             if ($this->config->item('show_all_offices')) {
 
                 // Get sub offices
@@ -254,9 +256,33 @@ class Offices extends CI_Controller {
         // pass config variable
         $view_data['config'] = array('max_remote_size' => $this->config->item('max_remote_size'), 'archive_dir' => $this->config->item('archive_dir'));
 
-        //var_dump($view_data['office_campaign']); exit;
-
+        //var_dump($view_data) exit;
         $this->load->view('office_detail', $view_data);
+    }
+
+    /**
+     * Get the table html to display the GAO Recommendations for one office.
+     * For the office_detail_automated_tracker view, get the recommendation tracker
+     * fields into an object.
+     *
+     * @param <int> $office_id
+     * @param <date> $selected_milestone
+     * @return <array>
+     */
+    public function getRecommendationDetail($view_data, $selected_milestone)
+    {
+      $office_id = $view_data['office']->id;
+      $office = $this->campaign->ciogov_office_recommendations($office_id, $selected_milestone);
+
+      $this->load->model('Recommendation_model', 'recommendation', TRUE);
+
+      $detail = $this->recommendation->get_office_detail($office);
+      $view_data['recommendation_detail'] = $detail;
+
+      $status = $this->recommendation->get_office_detail_status($office);
+      $view_data['office_campaign']->recommendation_status = $status;
+
+      return $view_data;
     }
 
     public function routes($route, $parameter1 = null, $parameter2 = null, $parameter3 = null, $parameter4 = null) {
@@ -295,10 +321,10 @@ class Offices extends CI_Controller {
             return $this->index($milestone = $route, $output = null, $show_all_offices, $show_all_fields, $show_qa_fields);
         }
     }
-    
+
     /**
      * Get default milestone (the first milestone after today's date)
-     * 
+     *
      * @return string - date in YYYY-MM-DD format
      */
     public function get_default_milestone() {

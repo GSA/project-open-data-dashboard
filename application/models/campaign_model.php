@@ -1136,7 +1136,7 @@ class campaign_model extends CI_Model {
     }
 
     public function update_status($update) {
-        
+
         $existing_status = array();
         $tracker_update = false;
 
@@ -1228,7 +1228,7 @@ class campaign_model extends CI_Model {
             if ($this->environment == 'terminal') {
                 echo 'Adding ' . $update->office_id . PHP_EOL . PHP_EOL;
             }
-            
+
             // Copy tracker data over from the current record for this milestone
             $this->db->select('tracker_fields, tracker_status');
             $this->db->where('office_id', $update->office_id);
@@ -1236,7 +1236,7 @@ class campaign_model extends CI_Model {
             $this->db->where('crawl_status', 'current');
             $this->db->order_by('status_id', 'desc');
             $this->db->limit(1);
-            $query = $this->db->get('ciogov_campaign');            
+            $query = $this->db->get('ciogov_campaign');
             if ($query->num_rows() > 0) {
                 error_log('Found current record');
                 $row = $query->row();
@@ -1382,6 +1382,33 @@ class campaign_model extends CI_Model {
         }
 
         return $model;
+    }
+
+    /**
+     * Return the GAO Recommendations record for the given office and milestone.
+     *
+     * @param <int> $office_id
+     * @param <date> $milestone
+     * @return <object|false>
+     */
+    public function ciogov_office_recommendations($office_id, $milestone = null)
+    {
+      $this->db->select('*');
+      $this->db->where('office_id', $office_id);
+      $this->db->where('recommendation_status is not NULL');
+      $this->db->order_by("crawl_end", "desc");
+
+      if ($milestone)
+        $this->db->where('milestone', $milestone);
+      $this->db->limit(1);
+
+      $query = $this->db->get('ciogov_campaign');
+
+      if ($query->num_rows() > 0) {
+        return $query->row();
+      } else {
+        return false;
+      }
     }
 
 }

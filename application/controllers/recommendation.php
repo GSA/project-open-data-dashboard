@@ -15,6 +15,7 @@ class Recommendation extends CI_Controller {
   public $log = "";
   static $currentMilestone = "2015-08-15";
   public $outputDir = "";
+  public $filetime = "";
   public $permission_level = "admin";
 
   function __construct() {
@@ -25,14 +26,17 @@ class Recommendation extends CI_Controller {
       return;
     }
 
+    $today = date('Y-m-d');
     $this->load->model('Recommendation_model', 'recommendation', TRUE);
-    $this->outputDir = $this->getArchiveDir();
+    $this->outputDir = $this->getArchiveDir($today);
 
     $data = $this->getUploadFile();
     if(!$data) {
        $this->outputLog();
        return;
     }
+
+    $this->filetime = date("l, d-M-Y H:i:s T", filemtime($data['full_path']));
 
     $recommendations = $this->csv_to_array($data);
 
@@ -42,6 +46,7 @@ class Recommendation extends CI_Controller {
 
     $this->save_json_to_file($data, $groupedRecommendations);
 
+    $this->delete_old_campaign_records($today);
     $this->save_campaign_records($groupedRecommendations);
 
     $this->outputLog();
@@ -293,11 +298,11 @@ class Recommendation extends CI_Controller {
     * Store the json files in recommendation/today date/office id.json
     * e.g., recommendation/2015-07-01/92601.json
     */
-   function getArchiveDir()
+   function getArchiveDir($today)
    {
      $dir = $this->config->item('archive_dir') . "/". static::$archive_dir;
      $this->checkDir($dir);
-     $dir = $dir . "/". date('Y-m-d');
+     $dir = $dir . "/". $today;
      $this->checkDir($dir);
 
      return $dir;
@@ -337,6 +342,19 @@ class Recommendation extends CI_Controller {
    }
 
    /**
+    * Delete any gao recommendation campaign records for the same
+    * day since these will refer to data that is being overwritten
+    * by the new import.
+    */
+   public function delete_old_campaign_records($today)
+   {
+     $this->db->where('date(crawl_start)', $today);
+     $this->db->where('milestone', static::$currentMilestone);
+     $this->db->where('recommendation_status is NOT NULL');
+     $this->db->delete('ciogov_campaign');
+   }
+
+   /**
     * Save a record to the ciogov_campaign table indicating that
     * the GAO Recommendations have been read and stored.
     *
@@ -365,11 +383,13 @@ class Recommendation extends CI_Controller {
     */
    public function setOneCampaignRecord($recommendation)
    {
-     $now = date('Y/m/d H:i:s');
+     $now = date('Y-m-d H:i:s');
 
      $status['url'] = $recommendation->url;
      $status['expected_url'] = $recommendation->path_to_json;
      $status['schema_errors'] = 0;
+     $status['content_type'] = 'application/json';
+     $status['filetime'] = $this->filetime;
 
      $campaign = $this->campaign->ciogov_model();
      $campaign->office_id = $recommendation->office_id;
