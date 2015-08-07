@@ -436,8 +436,7 @@ class Campaign extends CI_Controller {
                         $status = $this->campaign->validate_archive_file_with_schema($status, $archive_status, 'bureaudirectory', $real_url);
 
                         $status['tracker_fields'] = $this->track_bureaudirectory($archive_status, $expected_url);
-
-                    }
+                }
 
                     /*
                       ################ bureaudirectory ################
@@ -562,7 +561,7 @@ class Campaign extends CI_Controller {
 
                         // Check JSON status
                         // TODO: Update this function to validate governanceboard schema
-                        $status = $this->json_status($status, $real_url, 'governanceboard');
+                        //$status = $this->json_status($status, $real_url, 'governanceboard');
 
                         // Set correct URL
                         if (!empty($status['url'])) {

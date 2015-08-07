@@ -370,27 +370,48 @@ class Recommendation extends CI_Controller {
      foreach($groupedRecommendations as $office_id => $agencyRecommendations) {
        if(!is_array($agencyRecommendations)) {
          $agencyRecommendations = array($agencyRecommendations);
-       }
-        $campaign = $this->setOneCampaignRecord($agencyRecommendations[0]);
+        }
+        $openCount = $this->getCountOpenRecommendations($agencyRecommendations);
+        $campaign = $this->setOneCampaignRecord($agencyRecommendations[0], $openCount);
         $this->db->insert('ciogov_campaign', $campaign);
        }
+   }
+
+   /**
+    * Count the open recommendations for this agency
+    *
+    * @param array $agencyRecommendations
+    * @return number
+    */
+   public function getCountOpenRecommendations($agencyRecommendations)
+   {
+      $count = 0;
+      foreach($agencyRecommendations as $recommendation) {
+        if($recommendation->status == 'Open') {
+          $count++;
+        }
+      }
+
+      return $count;
    }
 
    /**
     * Set the values into one model instance for a campaign insert.
     *
     * @param <int> $office_id
+    * @param <int> $openCount
     * @return <object>
     */
-   public function setOneCampaignRecord($recommendation)
+   public function setOneCampaignRecord($recommendation, $openCount)
    {
      $now = date('Y-m-d H:i:s');
 
      $status['url'] = $recommendation->url;
      $status['expected_url'] = $recommendation->path_to_json;
-     $status['schema_errors'] = 0;
+     $status['schema_errors'] = null;
      $status['content_type'] = 'application/json';
      $status['filetime'] = $this->filetime;
+     $status['tracker_fields']['gr_open_gao_recommendations'] = $openCount;
 
      $campaign = $this->campaign->ciogov_model();
      $campaign->office_id = $recommendation->office_id;

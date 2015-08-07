@@ -1407,7 +1407,9 @@ class campaign_model extends CI_Model {
       if ($query->num_rows() > 0) {
         return $query->row();
       } else {
-        return false;
+        $office = new stdClass();
+        $office->recommendation_status = "";
+        return $office;
       }
     }
 
@@ -1433,6 +1435,7 @@ class campaign_model extends CI_Model {
 
       $status['total_records'] = 0;
       $status['download_content_length'] = 0;
+      $status['content_type'] = "application/json";
       $status['schema_version'] = "1.0";
       $json = file_get_contents($file_path);
 
@@ -1447,13 +1450,12 @@ class campaign_model extends CI_Model {
       if(!empty($json) && !is_json($json)) {
         $status['errors'][] = 'Invalid archived json file';
         $status['valid_json'] = false;
-        $status['valid_schema'] = false;
       }
       else {
         $status['download_content_length'] = strlen($json);
         $data = json_decode($json);
         $status['total_records'] = count($data);
-      }
+     }
 
      $schema = $this->datajson_schema($component);
 
@@ -1464,6 +1466,9 @@ class campaign_model extends CI_Model {
         if (!$validator->isValid()) {
           $errors = $validator->getErrors();
           $status['schema_errors'] = $errors;
+         }
+         else {
+           $status['valid_json'] = true;
          }
       }
 

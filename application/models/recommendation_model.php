@@ -6,7 +6,7 @@
 class Recommendation_model extends CI_Model {
 
   static $products_url = "http://www.gao.gov/products/";
-  public $emptyMessage = "";
+  public $emptyMessage = "No GAO Recommendations provided.";
 
   public function __construct()
   {
@@ -247,9 +247,16 @@ class Recommendation_model extends CI_Model {
    */
   public function get_json_path($status)
   {
+      $url = null;
+      if(empty($status)) {
+        return $url;
+      }
       $status = json_decode($status);
-      $url = $status->expected_url;
+      if(!is_object($status) || !property_exists($status, "expected_url")) {
+        return $url;
+      }
 
+      $url = $status->expected_url;
       if(!file_exists($url)) {
         $this->emptyMessage = "Invalid path for GAO Recommendation details json file ". $url;
         $url = null;
@@ -308,11 +315,20 @@ class Recommendation_model extends CI_Model {
   public function get_office_detail_status($office)
   {
     $status = new stdClass();
+    $status->empty = false;
     $json = $office->recommendation_status;
-    $status = json_decode($json);
+    if(!empty($json)) {
+      $status = json_decode($json);
+    }
+    else {
+      $status->emptyMessage = $this->emptyMessage;
+      $status->empty = true;
+    }
 
-    $date = new DateTime($office->crawl_end);
-    $status->last_crawl = $date->format("l, d-M-Y H:i:s T");
+    if(property_exists($office, "crawl_end")) {
+      $date = new DateTime($office->crawl_end);
+      $status->last_crawl = $date->format("l, d-M-Y H:i:s T");
+    }
 
     return $status;
   }

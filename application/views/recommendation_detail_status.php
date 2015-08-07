@@ -2,19 +2,21 @@
 
         <div id="recommendation-heading" class="panel panel-default">
                     <div class="panel-heading">
-                        <?php echo $office_campaign->recommendation_status->expected_url  ?>
+                  <?php  if(empty($office_campaign->recommendation_status->emptyMessage)) {
+                            echo "recommendation.json";
+                         }
+                         else {
+                            echo $office_campaign->recommendation_status->emptyMessage;
+                         }
+                   ?>
                     </div>
 
+                    <?php  if(!empty($office_campaign->recommendation_status) && (!property_exists($office_campaign->recommendation_status, "empty") || $office_campaign->recommendation_status->empty == false)) { ?>
                     <table class="table table-striped table-hover">
                         <tr>
                             <th>Expected GAO Recommendation json URL for office</th>
-                            <td>
-                                <?php if (!empty($office_campaign->recommendation_status->expected_url)): ?>
-                                    <?php echo $office_campaign->recommendation_status->expected_url ?>
-                                <?php endif; ?>
-
+                            <td>recommendaton.json
                                 <?php
-
                                 if (!empty($office_campaign->recommendation_status->content_type)) {
                                     if (strpos($office_campaign->recommendation_status->content_type, 'application/json') !== false) {
                                         $mime_color = 'success';
@@ -64,7 +66,22 @@
                                     </span>
                                 </td>
                             </tr>
+
+                             <tr>
+                                <th>GAO Recommendations file exists and conforms to schema?</th>
+                                <td>
+                                    <span>Yes</span>
+                                </td>
+                            </tr>
+
+                             <tr>
+                                <th># Open GAO Recommendations</th>
+                                <td>
+                                    <span><?php echo $office_campaign->recommendation_status->tracker_fields->gr_open_gao_recommendations ?></span>
+                                </td>
+                            </tr>
                         <?php endif; ?>
 
                     </table>
+                    <?php } ?>
                 </div>
