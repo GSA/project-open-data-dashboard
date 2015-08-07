@@ -231,7 +231,6 @@
             <?php endif; ?>
 
             <?php if ($valid_json == true && !empty($bureau_directory)): ?>
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Bureau IT Leadership Directory
@@ -257,53 +256,39 @@
                             echo 'Date of bureaudirectory.json file: ' . date("l, d-M-Y H:i:s T", $office_campaign->bureaudirectory_status->filetime);
                         }
 
-                        echo "<hr>";
                         ?>
-
                         <?php
-                        if (!empty($bureau_directory->items)) {
-
-                            foreach ($bureau_directory->items as $item) {
-                                if (!empty($sections[$item->id])) {
-
-                                    echo "<a name=\"{$sections[$item->id]}\" class=\"anchor-point\"></a>";
-                                    echo "<h3>{$item->id} {$item->text}</h3>";
-
-                                    if ($item->multiple === false) {
-                                        echo "<h4>{$item->fields[0]->label}</h4>";
-                                        echo '<br>';
-                                        echo '<pre style="white-space: pre-wrap; word-break: keep-all; ">' . $item->fields[0]->value . '</pre>';
-                                    } else {
-
-                                        $columns = count($item->fields);
-                                        $rows = count($item->fields[0]->value);
-
-
-
-                                        for ($row = 0; $row < $rows; $row++) {
-
-                                            echo '<table class="table table-striped table-hover" style="margin-bottom : 4em; border-bottom : 3px solid #ccc">';
-
-                                            for ($column = 0; $column < $columns; $column++) {
-                                                echo '<tr>';
-                                                echo '<th class="col-sm-2 col-md-2 col-lg-2">' . "{$item->fields[$column]->label}</th>";
-
-                                                echo '<td class="col-sm-10 col-md-10 col-lg-10">';
-                                                if (!empty($item->fields[$column]->value[$row])) {
-                                                    echo $item->fields[$column]->value[$row];
-                                                }
-                                                echo "</td>";
-
-                                                echo "</tr>";
-                                            }
-
-                                            echo '</table>';
-                                        }
-                                    }
-
-                                    echo '<hr>';
-                                }
+                        if (!empty($bureau_directory->leaders)) {
+                            echo '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
+                            echo "<tr>";   
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Code</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>First Name</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Last Name</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Key Bureau CIO</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Employment Type</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Employment Type Other</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Type of Appointment</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Other Responsibilities</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Rating Official Title</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Reviewing Official Title</th>";
+                            echo "</tr>\n";
+                            foreach($bureau_directory->leaders as $leader) {
+                                echo "<tr>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->bureauCode . "</td>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauName) ? $leader->bureauName : "Agency-wide")  . "</td>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->firstName . "</td>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->lastName . "</td>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->keyBureauCIO . "</td>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->employmentType . "</td>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->employmentTypeOther) ? $leader->employmentTypeOther : "") . "</td>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->typeOfAppointment . "</td>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->otherResponsibilities) ? $leader->otherResponsibilities : "") . "</td>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->evaluationRatingOfficialTitle . "</td>";
+                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->evaluationReviewingOfficialTitle) ? $leader->evaluationReviewingOfficialTitle : "") . "</td>";
+                                echo "</tr>\n";
                             }
+                            echo '</table>';
                         }
                         ?>
 
@@ -311,7 +296,6 @@
                 </div>
                 
                 
-
             <?php endif; ?>
 
             <?php if (!empty($office_campaign->governanceboard_status)): ?>
@@ -524,54 +508,32 @@
                             echo 'Date of governanceboard.json file: ' . date("l, d-M-Y H:i:s T", $office_campaign->governanceboard_status->filetime);
                         }
 
-                        echo "<hr>";
                         ?>
 
                         <?php
-                        if (!empty($governance_board->items)) {
-
-                            foreach ($governance_board->items as $item) {
-                                if (!empty($sections[$item->id])) {
-
-                                    echo "<a name=\"{$sections[$item->id]}\" class=\"anchor-point\"></a>";
-                                    echo "<h3>{$item->id} {$item->text}</h3>";
-
-                                    if ($item->multiple === false) {
-                                        echo "<h4>{$item->fields[0]->label}</h4>";
-                                        echo '<br>';
-                                        echo '<pre style="white-space: pre-wrap; word-break: keep-all; ">' . $item->fields[0]->value . '</pre>';
-                                    } else {
-
-                                        $columns = count($item->fields);
-                                        $rows = count($item->fields[0]->value);
-
-
-
-                                        for ($row = 0; $row < $rows; $row++) {
-
-                                            echo '<table class="table table-striped table-hover" style="margin-bottom : 4em; border-bottom : 3px solid #ccc">';
-
-                                            for ($column = 0; $column < $columns; $column++) {
-                                                echo '<tr>';
-                                                echo '<th class="col-sm-2 col-md-2 col-lg-2">' . "{$item->fields[$column]->label}</th>";
-
-                                                echo '<td class="col-sm-10 col-md-10 col-lg-10">';
-                                                if (!empty($item->fields[$column]->value[$row])) {
-                                                    echo $item->fields[$column]->value[$row];
-                                                }
-                                                echo "</td>";
-
-                                                echo "</tr>";
-                                            }
-
-                                            echo '</table>';
-                                        }
-                                    }
-
-                                    echo '<hr>';
-                                }
+                        if (!empty($governance_board[0]->boards)) {
+                            echo '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
+                            echo "<tr>";   
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Code</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Governance Board Name</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Code</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Name</th>";
+                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>CIO Involvement Description</th>";
+                            echo "</tr>";   
+                            foreach ($governance_board[0]->boards as $board) {
+                                echo "<tr>";
+                                echo "<td class='col-sm-2 col-md-2 col-lg-2'>" . $board->bureauCode . "</td>";
+                                echo "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauName) ? $board->bureauName : "Agency-wide")  . "</td>";
+                                echo "<td class='col-sm-2 col-md-6 col-lg-2'>" . $board->governanceBoardName . "</td>";
+                                echo "<td class='col-sm-2 col-md-2 col-lg-2'>" . $board->programCodeFPI . "</td>";
+                                echo "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programNameFPI) ? $board>programNameFPI : "") . "</td>";
+                                echo "<td class='col-sm-6 col-md-6 col-lg-6'>" . (isset($board->cioInvolvementDescription) ? $board->cioInvolvementDescription : "") . "</td>";
+                                echo "</tr>\n";
                             }
+                            echo "</table>\n";
                         }
+
                         ?>
 
                     </div>
