@@ -56,7 +56,6 @@ class Recommendation extends CI_Controller {
     */
    public function checkPermissions()
    {
-       echo 'php_sapi_name() = ' . php_sapi_name() . PHP_EOL;
      if (php_sapi_name() == 'cli') {
          return true;
      }
