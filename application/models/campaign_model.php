@@ -1249,7 +1249,11 @@ class campaign_model extends CI_Model {
             if ($query->num_rows() > 0) {
                 error_log('Found current record');
                 $row = $query->row();
-                $update->tracker_fields = $row->tracker_fields;
+                if (config_item('simulate_office_data') && empty($row->tracker_fields)) {
+                    $update->tracker_fields = $this->simulate_tracker_fields();
+                } else {
+                    $update->tracker_fields = $row->tracker_fields;
+                }
                 $update->tracker_status = $row->tracker_status;
                 $update->recommendation_status = $row->recommendation_status;
             }
@@ -1501,6 +1505,34 @@ class campaign_model extends CI_Model {
 
       return $schema;
     }
+    
+    /**
+     * Simulate tracker data
+     * 
+     * @return string
+     */
+    public function simulate_tracker_fields() {
+        
+        if (!config_item('simulate_office_data')) {
+            return '';
+        }
+        
+        $tracker_fields = new stdClass();
+        
+        foreach ($this->tracker_model() as $key => $field) {
+            if (isset($field->dashboard) && $field->dashboard === true) {
+                if ($field->type === 'integer') {
+                    $tracker_fields->$key = rand(0, 99);
+                } else {
+                    $tracker_fields->$key = rand(0, 1) === 1 ? 'yes' : '';
+                }
+            }
+        }
+        
+        return json_encode($tracker_fields);
+    }
+    
+    
 }
 
 ?>
