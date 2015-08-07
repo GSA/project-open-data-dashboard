@@ -46,7 +46,6 @@ class Recommendation extends CI_Controller {
 
     $this->save_json_to_file($data, $groupedRecommendations);
 
-    $this->delete_old_campaign_records($today);
     $this->save_campaign_records($groupedRecommendations);
 
     $this->outputLog();
@@ -57,6 +56,7 @@ class Recommendation extends CI_Controller {
     */
    public function checkPermissions()
    {
+       echo 'php_sapi_name() = ' . php_sapi_name() . PHP_EOL;
      if (php_sapi_name() == 'cli') {
          return true;
      }
@@ -343,19 +343,6 @@ class Recommendation extends CI_Controller {
    }
 
    /**
-    * Delete any gao recommendation campaign records for the same
-    * day since these will refer to data that is being overwritten
-    * by the new import.
-    */
-   public function delete_old_campaign_records($today)
-   {
-     $this->db->where('date(crawl_start)', $today);
-     $this->db->where('milestone', static::$currentMilestone);
-     $this->db->where('recommendation_status is NOT NULL');
-     $this->db->delete('ciogov_campaign');
-   }
-
-   /**
     * Save a record to the ciogov_campaign table indicating that
     * the GAO Recommendations have been read and stored.
     *
@@ -366,14 +353,26 @@ class Recommendation extends CI_Controller {
      $this->log("Saving campaign records for GAO Recommendations upload");
 
      $this->load->model('campaign_model', 'campaign');
-
+     
      foreach($groupedRecommendations as $office_id => $agencyRecommendations) {
        if(!is_array($agencyRecommendations)) {
          $agencyRecommendations = array($agencyRecommendations);
         }
         $openCount = $this->getCountOpenRecommendations($agencyRecommendations);
         $campaign = $this->setOneCampaignRecord($agencyRecommendations[0], $openCount);
-        $this->db->insert('ciogov_campaign', $campaign);
+        
+        $where = array(
+            'milestone' => $campaign->milestone,
+            'office_id' => $campaign->office_id,
+            'crawl_status' => 'current'
+        );
+        $query = $this->db->get_where('ciogov_campaign', $where);
+        if ($query->num_rows() > 0) {
+            $set = array('recommendation_status' => $campaign->recommendation_status);        
+            $this->db->update('ciogov_campaign', $set, $where);        
+        } else {
+            $this->db->insert('ciogov_campaign', $campaign);        
+        }
        }
    }
 
@@ -418,6 +417,7 @@ class Recommendation extends CI_Controller {
      $campaign->milestone = static::$currentMilestone;
      $campaign->crawl_start = $now;
      $campaign->crawl_end = $now;
+     $campaign->crawl_status = 'current';
      $campaign->recommendation_status = json_encode($status);
 
      return $campaign;

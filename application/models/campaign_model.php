@@ -1067,10 +1067,10 @@ class campaign_model extends CI_Model {
         // Attempt to get JSON, via URL in normal mode or locally if in simulation mode
         if (config_item('simulate_office_data') && in_array($filetype, array('bureaudirectory', 'governanceboard'))) {
 
-            echo "Simulating $filetype data for office $office_id" . PHP_EOL;
             $path = str_replace('system', 'archive/' . $filetype, BASEPATH);
             $file = 'example' . (rand(1, 6)) . '.json';
             $url = $path . $file;
+            echo "Simulating $filetype data for office $office_id with $file" . PHP_EOL;
             $copy = @fopen($url, 'rb');
 
         } else {
@@ -1237,8 +1237,9 @@ class campaign_model extends CI_Model {
                 echo 'Adding ' . $update->office_id . PHP_EOL . PHP_EOL;
             }
 
-            // Copy tracker data over from the current record for this milestone
-            $this->db->select('tracker_fields, tracker_status');
+            // Copy tracker data and GAO recommendations over from the current 
+            // record for this milestone
+            $this->db->select('tracker_fields, tracker_status, recommendation_status');
             $this->db->where('office_id', $update->office_id);
             $this->db->where('milestone', $update->milestone);
             $this->db->where('crawl_status', 'current');
@@ -1250,6 +1251,7 @@ class campaign_model extends CI_Model {
                 $row = $query->row();
                 $update->tracker_fields = $row->tracker_fields;
                 $update->tracker_status = $row->tracker_status;
+                $update->recommendation_status = $row->recommendation_status;
             }
 
             $this->db->insert('ciogov_campaign', $update);
