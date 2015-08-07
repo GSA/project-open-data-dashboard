@@ -10,7 +10,7 @@
  */
 class Recommendation extends CI_Controller {
 
-  static $csvFile = 'gao rec.csv';
+  static $csvFile = 'gao_rec.csv';
   static $archive_dir = 'recommendation';
   public $log = "";
   static $currentMilestone = "2015-08-15";
