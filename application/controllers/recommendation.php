@@ -160,13 +160,13 @@ class Recommendation extends CI_Controller {
    function getUploadFile()
    {
      $this->load->library('upload');
-     $upload_path = $this->upload->upload_path;
+     $path = str_replace('system', 'archive/recommendation', BASEPATH);
 
      $data = array(
          'file_name'     => static::$csvFile,
          'file_type'     => "csv",
-         'file_path'     => $upload_path,
-         'full_path'     => $upload_path . static::$csvFile,
+         'file_path'     => $path,
+         'full_path'     => $path . static::$csvFile,
          'file_ext'      => ".csv"
      );
 

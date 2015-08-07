@@ -1062,7 +1062,9 @@ class campaign_model extends CI_Model {
         if (config_item('simulate_office_data') && in_array($filetype, array('bureaudirectory', 'governanceboard'))) {
 
             echo "Simulating $filetype data for office $office_id" . PHP_EOL;
-            $url = config_item('archive_dir') . DIRECTORY_SEPARATOR . $filetype . DIRECTORY_SEPARATOR . 'example.json';
+            $path = str_replace('system', 'archive/' . $filetype, BASEPATH);
+            $file = 'example' . (rand(1, 6)) . '.json';
+            $url = $path . $file;
             $copy = @fopen($url, 'rb');
 
         } else {

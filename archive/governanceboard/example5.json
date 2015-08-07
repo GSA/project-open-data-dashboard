@@ -1,0 +1,15 @@
+{
+    "boards" : [
+        {
+            "governanceBoardName" : "Committee for Naming Oversight",
+            "programCodeFPI" : "005-001",
+            "bureauCode" : "12",
+            "cioInvolvementDescription" : "Optional Reviewing Official Title here.  Max 500 characters, but this is way more than that, so it should result in a schema validation error.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer finibus lorem dui, tincidunt iaculis nisi lacinia sit amet. Proin vel euismod quam. Maecenas condimentum neque ut felis molestie, quis rutrum neque placerat. Donec vel sodales nunc. Proin quis bibendum lectus. Vestibulum sed dui eget est sagittis facilisis. In hac habitasse platea dictumst. Nulla tristique vulputate nisi, eu suscipit mi ultricies eget. “
+        },
+        {
+            "governanceBoardName" : "Board of Boring Names",
+            "bureauCode" : "10"
+        }
+    ]
+    
+}

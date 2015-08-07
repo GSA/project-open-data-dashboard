@@ -1,0 +1,25 @@
+{
+    "leaders" : [
+        {
+            "bureauCode" : "12",
+            "firstName" : "Jane",
+            "lastName" : "Smith",
+            "employmentType" : "GS",
+            "typeOfAppointment" : "career",
+            "otherResponsibilities": "Optional description of other responsibilities here.  Max length is 500 characters.",
+            "evaluationRatingOfficialTitle" : "CIO",
+            "evaluationReviewingOfficialTitle" : "Optional Reviewing Official Title here.  Max 500 characters",
+            "keyBureauCIO" : "Yes"
+        },
+        {
+            "bureauCode": "33",
+            "firstName": "John",
+            "lastName": "Doe",
+            "employmentType": "SES",
+            "typeOfAppointment": "political",
+            "evaluationRatingOfficialTitle": "CFO",
+            "keyBureauCIO": "No"            
+        }
+    ]
+    
+}
