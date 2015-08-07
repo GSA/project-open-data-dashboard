@@ -809,11 +809,17 @@ class campaign_model extends CI_Model {
 
         if ($data) {
 
-            $schema_variant = (!empty($schema)) ? "$schema/" : "";
+            $schema_variant = (!empty($schema)) ? "$schema" : "";
 
             $schema_module = ($schema == 'federal-v1.1' && $chunked == true) ? 'dataset.json' : 'catalog.json';
 
-            $path = './schema/' . $schema_variant . $schema_module;
+            $path = './schema/' . $schema_variant;
+            if (file_exists(realpath($path . '.json'))) {
+                $path .= '.json';
+            }
+            else {
+                $path .= "/" . $schema_module;
+            }
 
             //echo $path; exit;
             // Get the schema and data as objects
