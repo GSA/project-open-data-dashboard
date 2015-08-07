@@ -371,6 +371,8 @@ class Campaign extends CI_Controller {
         if ($query->num_rows() > 0) {
             $offices = $query->result();
 
+            $this->finalize_prior_milestone($offices, $milestone);
+
             foreach ($offices as $office) {
 
                 // Set current office id
@@ -612,7 +614,79 @@ class Campaign extends CI_Controller {
             if (is_resource($this->campaign->validation_log)) {
                 fclose($this->campaign->validation_log);
             }
+
+         } // end if $offices
+
+    }
+
+
+    /**
+     * Check if this is the first time we are crawling in the current
+     * milestone. If so, set the crawl_status of the last crawl in the
+     * prior milestone to 'final';
+     *
+     * If the last crawl of the prior milestone was already set to final,
+     * then nothing to do.
+     *
+     * TO DO - for efficiency, it would be more efficient to work this status
+     * update into the status method processing. This was added as a separate
+     * step to minimize the risk of creating bugs in the status method.
+     *
+     * @param <object> $milestone
+     */
+    public function finalize_prior_milestone($offices, $milestone)
+    {
+       if(!$milestone->previous) {
+         return;
+       }
+
+       foreach($offices as $office) {
+
+        if($this->campaignStatusIsFinalizedForMilestone($office, $milestone->previous)) {
+          continue;
         }
+
+        // Finalize the status of the milestone for this office
+        $this->db->select('status_id, milestone, crawl_status, crawl_start');
+        $this->db->where('milestone', $milestone->previous);
+        $this->db->where('office_id', $office->id);
+        $this->db->where('crawl_status', 'current');
+        $this->db->order_by('crawl_start', 'desc');
+        $this->db->limit(1);
+        $query = $this->db->get('ciogov_campaign');
+
+        if ($query->num_rows() > 0) {
+          $campaigns = $query->result();
+          $update = $campaigns[0];
+          $update->crawl_status = 'final';
+          $this->db->where('status_id', $update->status_id);
+          $this->db->update('ciogov_campaign', $update);
+        }
+      }
+    }
+
+    /**
+     * Check if the campaign status is already final for the milestone.
+     *
+     * @param <object> $office
+     * @param <date> $milestoneDate
+     * @returns <boolean>
+     */
+    public function campaignStatusIsFinalizedForMilestone($office, $milestoneDate)
+    {
+      // Check if this office has already been finalized
+      $this->db->select('status_id, milestone, crawl_status, crawl_start');
+      $this->db->where('milestone', $milestoneDate);
+      $this->db->where('office_id', $office->id);
+      $this->db->where('crawl_status', 'final');
+      $this->db->order_by('crawl_start', 'desc');
+      $this->db->limit(1);
+      $query = $this->db->get('ciogov_campaign');
+      if ($query->num_rows() > 0) {
+        return true;
+      }
+
+      return false;
     }
 
     public function json_status($status, $real_url = null, $component = null) {
