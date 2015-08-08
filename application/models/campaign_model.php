@@ -193,10 +193,6 @@ class campaign_model extends CI_Model {
 
         // Published Artifacts
 
-        $model->pa_overall_status = clone $field;
-        $model->pa_overall_status->label = "Overall Published Artifacts Status";
-        $model->pa_overall_status->type = "traffic";
-
         $model->pa_bureau_it_leadership = clone $field;
         $model->pa_bureau_it_leadership->dashboard = true;
         $model->pa_bureau_it_leadership->label = "Bureau IT Leadership";
@@ -216,7 +212,7 @@ class campaign_model extends CI_Model {
         $model->pa_political_appointees = clone $field;
         $model->pa_political_appointees->indent = 1;
         $model->pa_political_appointees->label = "# Political Appointees";
-        $model->pa_political_appointees->type = "string";
+        $model->pa_political_appointees->type = "integer";
 
         $model->pa_bureau_it_leadership_link = clone $field;
         $model->pa_bureau_it_leadership_link->indent = 1;
@@ -276,8 +272,8 @@ class campaign_model extends CI_Model {
     public function tracker_sections_model() {
 
         $section_breakdown = array(
-            'cb' => 'Common Baseline',
-            'pa' => 'Published Artifacts',
+            'cb' => 'Common Baseline Submission Status',
+            'pa' => 'Published Artifacts Submission Status',
             'gr' => 'GAO Recommendations'
         );
 
@@ -1524,12 +1520,12 @@ class campaign_model extends CI_Model {
         $tracker_fields = new stdClass();
         
         foreach ($this->tracker_model() as $key => $field) {
-            if (isset($field->dashboard) && $field->dashboard === true) {
-                if ($field->type === 'integer') {
-                    $tracker_fields->$key = rand(0, 99);
-                } else {
-                    $tracker_fields->$key = rand(0, 1) === 1 ? 'yes' : '';
-                }
+            if ($field->type === 'integer' || $field->type === 'percent') {
+                $tracker_fields->$key = rand(0, 99);
+            } elseif ($field->type === 'select') {
+                $tracker_fields->$key = rand(0, 1) === 1 ? 'yes' : '';
+            } elseif ($field->type === 'url') {
+                $tracker_fields->$key = 'http://example.gov/' . substr(md5(time()), 0, rand(10, 20));
             }
         }
         

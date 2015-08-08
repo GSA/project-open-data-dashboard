@@ -208,7 +208,7 @@
                                 <td>
                                     <a name="pa_political_appointees" class="anchor-point"></a>
                                     <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees;?>/<?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders;?>
-                                    (<?php echo intval($office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees / $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders * 100);?>%)
+                                    (<?php echo intval($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders) > 0 ? intval($office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees / $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders * 100) : 0;?>%)
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -461,9 +461,7 @@
                                 </th>
                                 <td>
                                     <a name="pa_mapped_to_program_inventory" class="anchor-point"></a>
-                                    <?php if($office_campaign->governanceboard_status->tracker_fields->pa_ref_program_inventory != 0) {
-                                            echo intval($office_campaign->governanceboard_status->tracker_fields->pa_mapped_to_program_inventory / $office_campaign->governanceboard_status->tracker_fields->pa_ref_program_inventory * 100) . "%";
-                                          } ?>
+                                    <?php echo intval($office_campaign->governanceboard_status->tracker_fields->pa_ref_program_inventory) > 0 ? intval($office_campaign->governanceboard_status->tracker_fields->pa_mapped_to_program_inventory / $office_campaign->governanceboard_status->tracker_fields->pa_ref_program_inventory * 100) : 0;?>%
                                 </td>
                             </tr>
                         <?php endif; ?>
