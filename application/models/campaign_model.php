@@ -1256,6 +1256,10 @@ class campaign_model extends CI_Model {
                 }
                 $update->tracker_status = $row->tracker_status;
                 $update->recommendation_status = $row->recommendation_status;
+            } else {
+                if (config_item('simulate_office_data')) {
+                    $update->tracker_fields = $this->simulate_tracker_fields();
+                }
             }
 
             $this->db->insert('ciogov_campaign', $update);
