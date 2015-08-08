@@ -1525,7 +1525,8 @@ class campaign_model extends CI_Model {
             } elseif ($field->type === 'select') {
                 $tracker_fields->$key = rand(0, 1) === 1 ? 'yes' : '';
             } elseif ($field->type === 'url') {
-                $tracker_fields->$key = 'http://example.gov/' . substr(md5(time()), 0, rand(10, 20));
+                $url = 'http://example.gov/' . substr(md5(rand(0, 9)), 0, rand(10, 20));
+                $tracker_fields->$key = '<a href="' . $url . '" target="_blank">' . $url . '</a>';
             }
         }
         
