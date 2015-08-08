@@ -96,17 +96,17 @@
                 <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The Automated Metrics are a snapshot from the milestone date.</p>
             <?php endif; ?>
 
-            <?php if (empty($office_campaign->tracker_status->status) OR $office_campaign->tracker_status->status == 'not-started'): ?>
+            <?php /*if (empty($office_campaign->tracker_status->status) OR $office_campaign->tracker_status->status == 'not-started'): ?>
                 <p class="form-flash text-danger bg-danger"><strong>OMB Review Has Not Begun:</strong> OMB has not begun reviewing the agency for this milestone. The review will begin after the milestone date.</p>
-            <?php endif; ?>
+            <?php endif;*/ ?>
 
-            <?php if (!empty($office_campaign->tracker_status->status) && $office_campaign->tracker_status->status == 'in-progress'): ?>
+            <?php /*if (!empty($office_campaign->tracker_status->status) && $office_campaign->tracker_status->status == 'in-progress'): ?>
                 <p class="form-flash text-warning bg-warning"><strong>OMB Review In Progress:</strong> OMB is currently reviewing the agency for this milestone. This review status indicator will change once the review is complete.</p>
-            <?php endif; ?>
+            <?php endif;*/ ?>
 
-            <?php if (!empty($office_campaign->tracker_status->status) && $office_campaign->tracker_status->status == 'complete'): ?>
+            <?php /*if (!empty($office_campaign->tracker_status->status) && $office_campaign->tracker_status->status == 'complete'): ?>
                 <p class="form-flash text-success bg-success"><strong>OMB Review Complete:</strong> OMB has completed the agency review for this milestone. Agencies should contact their OMB desk officer if anything looks incorrect.</p>
-            <?php endif; ?>
+            <?php endif;*/ ?>
 
 
             <ul class="milestone-selector nav nav-pills">
