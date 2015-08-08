@@ -456,7 +456,7 @@ class Campaign extends CI_Controller {
 
                         // Check JSON status
                         // TODO: Update this function to validate bureaudirectory schema
-                        $status = $this->json_status($status, $real_url, 'bureaudirectory'); // note, this appears to duplicate the JSON validation after a fresh download, duplicated in validate_archive_file_with_schema above
+                        //$status = $this->json_status($status, $real_url, 'bureaudirectory'); // note, this appears to duplicate the JSON validation after a fresh download, duplicated in validate_archive_file_with_schema above
 
                         // Set correct URL
                         if (!empty($status['url'])) {
