@@ -5,7 +5,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
     ?>
 	<div class="panel panel-default">
 	<table class="dashboard table table-striped table-hover table-bordered">
-            
+
             <tr class="dashboard-meta-heading">
                 <td><?php echo $title ?></td>
 
@@ -21,7 +21,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
             </tr>
             <tr class="dashboard-heading">
-                
+
                     <th class="col-sm-3"><div class="sr-only">Agency</div></th>
 
                     <?php foreach ($subsections_breakdown as $section_name => $subsections): ?>
@@ -43,29 +43,29 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 		<?php
                 if(!empty($office->tracker_fields)) {
                     $office->tracker_fields = json_decode($office->tracker_fields);
-                }			
+                }
 		?>
 
 		<tr class="metrics-row">
-                    
+
                     <th><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>"><?php echo $office->name;?></a></th>
 
                     <?php foreach ($subsections_breakdown as $section_name => $subsections): ?>
                         <?php foreach ($subsections as $subsection): ?>
 
-                            <?php 
+                            <?php
                             $status = '';
 
                             if ($subsection->label === 'Self-Assessment') {
                                 $status = @$office->tracker_fields->cb_self_assessment;
                             } elseif ($subsection->label === 'Implementation Plan') {
-                                $status = @$office->tracker_fields->cb_implementation_plan; 
+                                $status = @$office->tracker_fields->cb_implementation_plan;
                             } else if ($subsection->label === 'CIO Assignment Plan (Optional)') {
                                 $status = @$office->tracker_fields->cb_cio_assignment_plan;
                             } elseif ($subsection->label === 'Bureau IT Leadership') {
                                 $status = @$office->tracker_fields->pa_bureau_it_leadership;
                             } elseif ($subsection->label === 'CIO Governance Board List') {
-                                $status = @$office->tracker_fields->pa_cio_governance_board; 
+                                $status = @$office->tracker_fields->pa_cio_governance_board;
                             } else if ($subsection->label === 'IT Policy Archive') {
                                 $status = @$office->tracker_fields->pa_it_policy_archive;
                             }
@@ -78,9 +78,12 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                             <td class="<?php echo $metric_type; ?> <?php if (!empty($status)) echo status_color($status); ?> <?php if($status) echo $status; ?>">
                                 <a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?><?php echo $subsection_selection . '#' . $column_anchor; ?>">
                                     <span>
-                                        <?php 
+                                        <?php
+                                        // TO DO - once the gr_open_gao_recommendations value is set correctly
+                                        // in tracker_fields, use that instead.
+                                        $rec_status = json_decode($office->recommendation_status);
                                         if ($subsection->label === 'GAO Recommendations') {
-                                            echo isset($office->tracker_fields->gr_open_gao_recommendations) ? $office->tracker_fields->gr_open_gao_recommendations : '';
+                                            echo isset($rec_status->tracker_fields->gr_open_gao_recommendations) ? $rec_status->tracker_fields->gr_open_gao_recommendations : '';
                                         }
                                         elseif (!empty($status)) {
                                             echo page_status($status);
@@ -99,7 +102,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 	</div>
 
     <?php
-} 
+}
 
 function http_status_color($status_code) {
 
@@ -161,7 +164,7 @@ function page_status($data_status, $status_color = null) {
 	if ($data_status == 'unknown') {
 		$status_color = (!empty($status_color)) ? 'text-'. $status_color : '';
 		 $icon = '<i class="unknown-value ' . $status_color . ' fa fa-question-circle"></i>';
-	}	
+	}
 
 	if(empty($icon) && !empty($data_status))  $icon = '<i class="text-' . $status_color . ' fa fa-question-circle"></i>';
 
@@ -177,7 +180,7 @@ function metric_status_color($metric, $success_basis, $weight) {
 	if(!empty($success_basis)) {
 
 		$emphasis = false;
-		
+
 		// curve the percentage
 		$curve = pow(100, 1-$weight) * pow($metric, $weight);
 
@@ -187,26 +190,26 @@ function metric_status_color($metric, $success_basis, $weight) {
 			$value = 1 - $value;
 
 			if($metric > 50) {
-				$emphasis = true;			
-			} 
+				$emphasis = true;
+			}
 
 		} else {
 			if($metric < 50) {
-				$emphasis = true;				
-			} 			
+				$emphasis = true;
+			}
 		}
 
 		if($emphasis) {
 			$saturation = '80%';
-			$lightness  = '80%';				
+			$lightness  = '80%';
 		} else {
 			$saturation = '75%';
-			$lightness  = '85%';			
+			$lightness  = '85%';
 		}
 
 
 
-		$hue = round(($value) * 120);		
+		$hue = round(($value) * 120);
 		$status_color = "background-color : hsl($hue, $saturation, $lightness);";
 	} else {
 		$status_color = '';
