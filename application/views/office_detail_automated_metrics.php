@@ -422,4 +422,173 @@
                 </div>
             <?php endif; ?>
 
+            <?php if (!empty($office_campaign->policyarchive_status)): ?>
+            <?php
+            $office_campaign->policyarchive_status = json_decode($office_campaign->policyarchive_status);
+            ?>
+                <div id="policyarchive-heading" class="panel panel-default">
+                    <div class="panel-heading">
+                        /digitalstrategy/policyarchive.zip (.tar / .tar.gz / .tgz)
+                        <a class="info-icon" href="<?php echo site_url('docs') . '#policyarchive' ?>">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                        </a>
+                    </div>
+
+                    <table class="table table-striped table-hover">
+
+                        <tr>
+                            <th>Expected policyarchive.zip URL</th>
+                            <td>
+                                <?php if (!empty($office_campaign->policyarchive_status->expected_url)): ?>
+                                    <a href="<?php echo $office_campaign->policyarchive_status->expected_url ?>"><?php echo $office_campaign->policyarchive_status->expected_url ?></a>
+                                <?php endif; ?>
+
+                                <?php
+                                $http_code = (!empty($office_campaign->policyarchive_status->http_code)) ? $office_campaign->policyarchive_status->http_code : 0;
+
+                                switch ($http_code) {
+                                    case 404:
+                                        $status_color = 'danger';
+                                        break;
+                                    case 200:
+                                        $status_color = 'success';
+                                        break;
+                                    case 0:
+                                        $status_color = '';
+                                        break;
+                                    default:
+                                        $status_color = 'warning';
+                                }
+
+                                if (!empty($office_campaign->policyarchive_status->content_type)) {
+                                    if (strpos($office_campaign->policyarchive_status->content_type, 'application/zip') !== false ||
+                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-tar') || 
+                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-gtar')
+                                            ) {
+                                        $mime_color = 'success';
+                                    } else {
+                                        $mime_color = 'danger';
+                                    }
+                                } else {
+                                    $mime_color = 'danger';
+                                }
+                                ?>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Resolved policyarchive.zip URL</th>
+                            <td>
+                                <a href="<?php echo $office_campaign->policyarchive_status->url ?>"><?php echo $office_campaign->policyarchive_status->url ?></a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Redirects</th>
+                            <td>
+                                <?php if (!empty($office_campaign->policyarchive_status->redirect_count)): ?>
+                                                            <span class="text-<?php echo ($office_campaign->policyarchive_status->redirect_count > 5) ? 'danger' : 'warning' ?>">
+                                    <?php echo $office_campaign->policyarchive_status->redirect_count . ' redirects'; ?>
+                                                            </span>
+                                    <?php if ($office_campaign->policyarchive_status->redirect_count > 5): ?>
+                                                                <span style="color:#ccc"> (stops tracking after 6)</span>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+
+                        <tr class="<?php echo $status_color; ?>">
+                            <th>HTTP Status</th>
+                            <td>
+                                <span class="text-<?php echo $status_color; ?>">
+                                    <?php echo $office_campaign->policyarchive_status->http_code ?>
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr class="<?php echo $mime_color; ?>">
+                            <th>Content Type</th>
+                            <td>
+                                <span class="text-<?php echo $mime_color; ?>">
+                                    <?php echo $office_campaign->policyarchive_status->content_type ?>
+                                </span>
+                            </td>
+                        </tr>
+
+                        <?php if (!empty($office_campaign->policyarchive_status->filetime) && $office_campaign->policyarchive_status->filetime > 0): ?>
+                            <tr>
+                                <th>Last modified</th>
+                                <td>
+                                    <span>
+                                        <?php echo date("l, d-M-Y H:i:s T", $office_campaign->policyarchive_status->filetime) ?>
+                                    </span>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+
+                        <?php if (!empty($office_campaign->policyarchive_status->last_crawl)): ?>
+                            <tr>
+                                <th>Last crawl</th>
+                                <td>
+                                    <span>
+                                        <?php echo date("l, d-M-Y H:i:s T", $office_campaign->policyarchive_status->last_crawl) ?>
+                                    </span>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+
+                        <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive)): ?>
+                            <tr>
+                                <th id="pa_it_policy_archive">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    IT Policy Archive file exists?
+                                </th>
+                                <td>
+                                    <a name="pa_it_policy_archive" class="anchor-point"></a>
+                                    <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive ? 'Yes' : 'No';?>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+
+                        <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_filenames)): ?>
+                            <tr>
+                                <th id="pa_it_policy_archive_filenames">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive_filenames' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    Files in Archive
+                                </th>
+                                <td>
+                                    <a name="pa_it_policy_archive_filenames" class="anchor-point"></a>
+                                    <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_filenames; ?>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+
+                        <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_link)): ?>
+                            <tr>
+                                <th id="pa_it_policy_archive_link">
+                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive_link' ?>">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+                                    Link to IT Policy Archive
+                                </th>
+                                <td>
+                                    <a name="pa_it_policy_archive_link" class="anchor-point"></a>
+                                    <a href="<?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_link;?>">
+                                        <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_link;?>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+
+                    </table>
+                </div>
+            <?php endif; ?>
+
+
+
           <?php include "recommendation_detail_status.php" ?>

@@ -653,6 +653,7 @@ class Campaign extends CI_Controller {
                         $archive_status = $this->campaign->archive_file('policyarchive', $office->id, $real_url);
 
                         $status['tracker_fields'] = $this->track_policyarchive($archive_status, $expected_url);
+                        $this->campaign->update_status($update);
                 }
 
                     /*
