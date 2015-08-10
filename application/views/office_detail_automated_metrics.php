@@ -462,8 +462,8 @@
 
                                 if (!empty($office_campaign->policyarchive_status->content_type)) {
                                     if (strpos($office_campaign->policyarchive_status->content_type, 'application/zip') !== false ||
-                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-tar') || 
-                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-gtar')
+                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-tar') !== false || 
+                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-gtar') !== false
                                             ) {
                                         $mime_color = 'success';
                                     } else {
