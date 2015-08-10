@@ -291,16 +291,16 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status) {
                 $retval .= "</tr>\n";
                 foreach($bureau_directory->leaders as $leader) {
                     $retval .= "<tr>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->bureauCode . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauCode) ? $leader->bureauCode : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauName) ? $leader->bureauName : "Agency-wide")  . "</td>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->firstName . "</td>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->lastName . "</td>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->keyBureauCIO . "</td>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->employmentType . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->firstName) ? $leader->firstName : "") . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->lastName) ? $leader->lastName : "") . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->keyBureauCIO) ? $leader->keyBureauCIO : "") . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->employmentType) ? $leader->employmentType : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->employmentTypeOther) ? $leader->employmentTypeOther : "") . "</td>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->typeOfAppointment . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->typeOfAppointment) ? $leader->typeOfAppointment : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->otherResponsibilities) ? $leader->otherResponsibilities : "") . "</td>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->evaluationRatingOfficialTitle . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->evaluationRatingOfficialTitle) ? $leader->evaluationRatingOfficialTitle : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->evaluationReviewingOfficialTitle) ? $leader->evaluationReviewingOfficialTitle : "") . "</td>";
                     $retval .= "</tr>\n";
                 }
@@ -351,7 +351,7 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status) {
                 ?>
 
                 <?php
-                if (!empty($gb_directory[0]->boards)) {
+                if (!empty($gb_directory->boards)) {
                     $retval .= '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
                     $retval .= "<tr>";
                     $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Code</th>";
@@ -361,12 +361,12 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status) {
                     $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Name</th>";
                     $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>CIO Involvement Description</th>";
                     $retval .= "</tr>";
-                    foreach ($gb_directory[0]->boards as $board) {
+                    foreach ($gb_directory->boards as $board) {
                         $retval .= "<tr>";
-                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . $board->bureauCode . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauCode) ? $board->bureauCode : "") . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauName) ? $board->bureauName : "Agency-wide")  . "</td>";
-                        $retval .= "<td class='col-sm-2 col-md-6 col-lg-2'>" . $board->governanceBoardName . "</td>";
-                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . $board->programCodeFPI . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-6 col-lg-2'>" . (isset($board->governanceBoardName) ? $board->governanceBoardName : "") . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programCodeFPI) ? $board->programCodeFPI : "") . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programNameFPI) ? $board>programNameFPI : "") . "</td>";
                         $retval .= "<td class='col-sm-6 col-md-6 col-lg-6'>" . (isset($board->cioInvolvementDescription) ? $board->cioInvolvementDescription : "") . "</td>";
                         $retval .= "</tr>\n";
