@@ -232,72 +232,7 @@
 
                     </table>
                 </div>
-            <?php endif; ?>
 
-            <?php if ($valid_json == true && !empty($bureau_directory)): ?>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Bureau IT Leadership Directory
-                        <a class="info-icon" href="<?php echo site_url('docs') . '#bureaudirectory_excerpts' ?>">
-                            <span class="glyphicon glyphicon-info-sign"></span>
-                        </a>
-                    </div>
-                    <div style="padding : 1em;">
-                        <?php
-                        $sections = array("1.2.4" => "edi_schedule_delivered",
-                            "1.2.5" => "schedule",
-                            "1.2.6" => "pe_feedback_specified",
-                            "1.2.7" => "ps_publication_process");
-
-                        if (!empty($bureau_directory->generated)) {
-                            if ($published_date = strtotime($bureau_directory->generated)) {
-                                $published_date = date("l, d-M-Y H:i:s T", $published_date);
-                                echo '<h2><span style="color:#666">Date specified: </span>' . "$published_date</h2>";
-                            }
-                        }
-
-                        if (!empty($office_campaign->bureaudirectory_status->filetime) && $office_campaign->bureaudirectory_status->filetime > 0) {
-                            echo 'Date of bureaudirectory.json file: ' . date("l, d-M-Y H:i:s T", $office_campaign->bureaudirectory_status->filetime);
-                        }
-
-                        ?>
-                        <?php
-                        if (!empty($bureau_directory->leaders)) {
-                            echo '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
-                            echo "<tr>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Code</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>First Name</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Last Name</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Key Bureau CIO</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Employment Type</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Employment Type Other</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Type of Appointment</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Other Responsibilities</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Rating Official Title</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Reviewing Official Title</th>";
-                            echo "</tr>\n";
-                            foreach($bureau_directory->leaders as $leader) {
-                                echo "<tr>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->bureauCode . "</td>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauName) ? $leader->bureauName : "Agency-wide")  . "</td>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->firstName . "</td>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->lastName . "</td>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->keyBureauCIO . "</td>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->employmentType . "</td>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->employmentTypeOther) ? $leader->employmentTypeOther : "") . "</td>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->typeOfAppointment . "</td>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->otherResponsibilities) ? $leader->otherResponsibilities : "") . "</td>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->evaluationRatingOfficialTitle . "</td>";
-                                echo "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->evaluationReviewingOfficialTitle) ? $leader->evaluationReviewingOfficialTitle : "") . "</td>";
-                                echo "</tr>\n";
-                            }
-                            echo '</table>';
-                        }
-                        ?>
-
-                    </div>
-                </div>
             <?php endif; ?>
 
             <?php if (!empty($office_campaign->governanceboard_status)): ?>
@@ -485,66 +420,6 @@
 
                     </table>
                 </div>
-            <?php endif; ?>
-
-            <?php if ($valid_json == true && !empty($governance_board)): ?>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Governance Boards
-                        <a class="info-icon" href="<?php echo site_url('docs') . '#governanceboard_excerpts' ?>">
-                            <span class="glyphicon glyphicon-info-sign"></span>
-                        </a>
-                    </div>
-                    <div style="padding : 1em;">
-                        <?php
-                        $sections = array("1.2.4" => "edi_schedule_delivered",
-                            "1.2.5" => "schedule",
-                            "1.2.6" => "pe_feedback_specified",
-                            "1.2.7" => "ps_publication_process");
-
-                        if (!empty($governance_board->generated)) {
-                            if ($published_date = strtotime($governance_board->generated)) {
-                                $published_date = date("l, d-M-Y H:i:s T", $published_date);
-                                echo '<h2><span style="color:#666">Date specified: </span>' . "$published_date</h2>";
-                            }
-                        }
-
-                        if (!empty($office_campaign->governanceboard_status->filetime) && $office_campaign->governanceboard_status->filetime > 0) {
-                            echo 'Date of governanceboard.json file: ' . date("l, d-M-Y H:i:s T", $office_campaign->governanceboard_status->filetime);
-                        }
-
-                        ?>
-
-                        <?php
-                        if (!empty($governance_board[0]->boards)) {
-                            echo '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
-                            echo "<tr>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Code</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Governance Board Name</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Code</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Name</th>";
-                            echo "<th class='col-sm-2 col-md-2 col-lg-2'>CIO Involvement Description</th>";
-                            echo "</tr>";
-                            foreach ($governance_board[0]->boards as $board) {
-                                echo "<tr>";
-                                echo "<td class='col-sm-2 col-md-2 col-lg-2'>" . $board->bureauCode . "</td>";
-                                echo "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauName) ? $board->bureauName : "Agency-wide")  . "</td>";
-                                echo "<td class='col-sm-2 col-md-6 col-lg-2'>" . $board->governanceBoardName . "</td>";
-                                echo "<td class='col-sm-2 col-md-2 col-lg-2'>" . $board->programCodeFPI . "</td>";
-                                echo "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programNameFPI) ? $board>programNameFPI : "") . "</td>";
-                                echo "<td class='col-sm-6 col-md-6 col-lg-6'>" . (isset($board->cioInvolvementDescription) ? $board->cioInvolvementDescription : "") . "</td>";
-                                echo "</tr>\n";
-                            }
-                            echo "</table>\n";
-                        }
-
-                        ?>
-
-                    </div>
-                </div>
-
             <?php endif; ?>
 
           <?php include "recommendation_detail_status.php" ?>

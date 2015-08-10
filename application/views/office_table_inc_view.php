@@ -241,6 +241,143 @@ function process_percentage ($numerator, $denominator) {
 
 }
 
+function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status) {
+    $last_crawl = $bd_status->last_crawl;
+    $crawl_file = $archive_dir . "/bureaudirectory/" . date("Y-m-d", $last_crawl) . "/$office_id.json";
+    if (file_exists($crawl_file)) {
+        $data = file_get_contents($crawl_file);
+        $bureau_directory = json_decode($data);
+    }
+    $retval = '
+        <!-- Agency Bureau Table -->
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            Bureau IT Leadership Directory';
+    $retval .= "        <a class=\"info-icon\" href=\"" . site_url('docs') . '#bureaudirectory_excerpts">';
+    $retval .= "            <span class=\"glyphicon glyphicon-info-sign\"></span>
+            </a>
+        </div>
+        <div style=\"padding : 1em;\">";
+            $sections = array("1.2.4" => "edi_schedule_delivered",
+                "1.2.5" => "schedule",
+                "1.2.6" => "pe_feedback_specified",
+                "1.2.7" => "ps_publication_process");
 
+            if (!empty($bureau_directory->generated)) {
+                if ($published_date = strtotime($bureau_directory->generated)) {
+                    $published_date = date("l, d-M-Y H:i:s T", $published_date);
+                    $retval .= '<h2><span style="color:#666">Date specified: </span>' . "$published_date</h2>";
+                }
+            }
+
+            if (!empty($bd_status->filetime) && $bd_status->filetime > 0) {
+                $retval .= 'Date of bureaudirectory.json file: ' . date("l, d-M-Y H:i:s T", $bd_status->filetime);
+            }
+
+            if (!empty($bureau_directory->leaders)) {
+                $retval .= '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
+                $retval .= "<tr>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Code</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>First Name</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Last Name</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Key Bureau CIO</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Employment Type</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Employment Type Other</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Type of Appointment</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Other Responsibilities</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Rating Official Title</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Reviewing Official Title</th>";
+                $retval .= "</tr>\n";
+                foreach($bureau_directory->leaders as $leader) {
+                    $retval .= "<tr>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->bureauCode . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauName) ? $leader->bureauName : "Agency-wide")  . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->firstName . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->lastName . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->keyBureauCIO . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->employmentType . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->employmentTypeOther) ? $leader->employmentTypeOther : "") . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->typeOfAppointment . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->otherResponsibilities) ? $leader->otherResponsibilities : "") . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . $leader->evaluationRatingOfficialTitle . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->evaluationReviewingOfficialTitle) ? $leader->evaluationReviewingOfficialTitle : "") . "</td>";
+                    $retval .= "</tr>\n";
+                }
+                $retval .= '</table>';
+            }
+
+        $retval .= "</div>";
+    $retval .= "</div>";
+    return $retval;
+
+}
+
+function getGovernanceBoardTable($archive_dir, $office_id, $gb_status) {
+    $last_crawl = $gb_status->last_crawl;
+    $crawl_file = $archive_dir . "/governanceboard/" . date("Y-m-d", $last_crawl) . "/$office_id.json";
+    if (file_exists($crawl_file)) {
+        $data = file_get_contents($crawl_file);
+        $gb_directory = json_decode($data);
+    }
+    else {
+        error_log("getGovernanceBoard : no file for $crawl_file");
+    }
+
+    $retval = "<div class=\"panel panel-default\">
+                    <div class=\"panel-heading\">
+                        Governance Boards
+                        <a class=\"info-icon\" href=\"" . site_url('docs') . "#governanceboard_excerpts\">
+                            <span class=\"glyphicon glyphicon-info-sign\"></span>
+                        </a>
+                    </div>
+                    <div style=\"padding : 1em;\">";
+                        $sections = array("1.2.4" => "edi_schedule_delivered",
+                            "1.2.5" => "schedule",
+                            "1.2.6" => "pe_feedback_specified",
+                            "1.2.7" => "ps_publication_process");
+
+                if (!empty($governance_board->generated)) {
+                    if ($published_date = strtotime($governance_board->generated)) {
+                        $published_date = date("l, d-M-Y H:i:s T", $published_date);
+                        $retval .= '<h2><span style="color:#666">Date specified: </span>' . "$published_date</h2>";
+                    }
+                }
+
+                if (!empty($gb_status->filetime) && $gb_status->filetime > 0) {
+                    $retval .= 'Date of governanceboard.json file: ' . date("l, d-M-Y H:i:s T", $gb_status->filetime);
+                }
+
+                ?>
+
+                <?php
+                if (!empty($gb_directory[0]->boards)) {
+                    $retval .= '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
+                    $retval .= "<tr>";
+                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Code</th>";
+                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
+                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Governance Board Name</th>";
+                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Code</th>";
+                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Name</th>";
+                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>CIO Involvement Description</th>";
+                    $retval .= "</tr>";
+                    foreach ($gb_directory[0]->boards as $board) {
+                        $retval .= "<tr>";
+                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . $board->bureauCode . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauName) ? $board->bureauName : "Agency-wide")  . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-6 col-lg-2'>" . $board->governanceBoardName . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . $board->programCodeFPI . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programNameFPI) ? $board>programNameFPI : "") . "</td>";
+                        $retval .= "<td class='col-sm-6 col-md-6 col-lg-6'>" . (isset($board->cioInvolvementDescription) ? $board->cioInvolvementDescription : "") . "</td>";
+                        $retval .= "</tr>\n";
+                    }
+                    $retval .= "</table>\n";
+                }
+
+            $retval .= "</div>
+        </div>";
+    return $retval;
+
+}
 
 ?>

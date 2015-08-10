@@ -41,8 +41,12 @@
         <?php if (!empty($office_campaign)): ?>
 
             <?php
+            //error_log('office_detail');
+            //error_log(print_r($config, true));
+            //error_log(print_r($office_campaign->bureaudirectory_status, true));
             if (!empty($office_campaign->bureaudirectory_status)) {
                 $office_campaign->bureaudirectory_status = json_decode($office_campaign->bureaudirectory_status);
+                //error_log(print_r($office_campaign->bureaudirectory_status, true));
             }
 
             if (!empty($office_campaign->governanceboard_status)) {
@@ -51,6 +55,14 @@
 
             if (!empty($office_campaign->tracker_fields)) {
                 $office_campaign->tracker_fields = json_decode($office_campaign->tracker_fields);
+            }
+
+            if (!empty($office_campaign->bureaudirectory_status)) {
+                $office_campaign->tracker_fields->pa_bureau_it_leadership_table = getBureauITLeadershipTable($config['archive_dir'], (!empty($office->parent_office_id) ? $office->parent_office_id : $office->id), $office_campaign->bureaudirectory_status);
+            }
+
+            if (!empty($office_campaign->governanceboard_status)) {
+                $office_campaign->tracker_fields->pa_cio_governance_board_table = getGovernanceBoardTable($config['archive_dir'], (!empty($office->parent_office_id) ? $office->parent_office_id : $office->id), $office_campaign->governanceboard_status);
             }
 
             if (!empty($office_campaign->tracker_status)) {

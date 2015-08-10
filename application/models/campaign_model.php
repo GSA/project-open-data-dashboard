@@ -219,6 +219,11 @@ class campaign_model extends CI_Model {
         $model->pa_bureau_it_leadership_link->label = "Link to Bureau IT Leadership directory";
         $model->pa_bureau_it_leadership_link->type = "url";
 
+        $model->pa_bureau_it_leadership_table = clone $field;
+        $model->pa_bureau_it_leadership_table->indent = 1;
+        $model->pa_bureau_it_leadership_table->label = "Bureau IT Leadership Directory";
+        $model->pa_bureau_it_leadership_table->type = "table";
+
         $model->pa_cio_governance_board = clone $field;
         $model->pa_cio_governance_board->dashboard = true;
         $model->pa_cio_governance_board->label = "CIO Governance Board List";
@@ -234,6 +239,11 @@ class campaign_model extends CI_Model {
         $model->pa_cio_governance_board_link->indent = 1;
         $model->pa_cio_governance_board_link->label = "Link to CIO Governance Board directory";
         $model->pa_cio_governance_board_link->type = "url";
+
+        $model->pa_cio_governance_board_table = clone $field;
+        $model->pa_cio_governance_board_table->indent = 1;
+        $model->pa_cio_governance_board_table->label = "CIO Governance Board Membership List";
+        $model->pa_cio_governance_board_table->type = "table";
 
         $model->pa_it_policy_archive = clone $field;
         $model->pa_it_policy_archive->dashboard = true;
@@ -458,6 +468,7 @@ class campaign_model extends CI_Model {
     }
 
     public function validate_bureaudirectory($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $component = null) {
+        error_log('validate_bureaudirectory');
         return $this->validate_json($url, $json, $headers, 'bureaudirectory', $return_source, $component);
     }
 
@@ -466,6 +477,7 @@ class campaign_model extends CI_Model {
     }
 
     public function validate_json($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $component = null) {
+        error_log('validate_json');
 
 
         if ($url) {

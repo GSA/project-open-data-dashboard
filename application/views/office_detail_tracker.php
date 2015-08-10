@@ -148,6 +148,9 @@
                                                         } elseif ($office_campaign->tracker_fields->$tracker_field_name === "approved") {
                                                             echo "Approved";
                                                         }
+                                                    } elseif ($tracker_field_meta->type == "table") {
+                                                        $overflow_text = true;
+                                                        echo '<em>See below</em>';
                                                     } else {
                                                         if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
                                                             if (strlen($office_campaign->tracker_fields->$tracker_field_name) < 20) {
@@ -226,11 +229,11 @@
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "url") : ?>
-                                                        <input type="url" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>">
+                                                        <input type="url" name="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>">
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "string") : ?>
-                                                        <input type="text" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
+                                                        <input type="text" name="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "textarea") : ?>

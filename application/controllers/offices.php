@@ -227,6 +227,7 @@ class Offices extends CI_Controller {
                 $view_data['office_campaign']->tracker_fields = json_encode($tracker_fields);
             }
 
+            //$view_data['bureau_governance_detail'] = $this->getBureauGovernanceDetail();
             $view_data = $this->getRecommendationDetail($view_data, $milestone->selected_milestone);
 
             if ($this->config->item('show_all_offices')) {
@@ -283,6 +284,11 @@ class Offices extends CI_Controller {
       $view_data['office_campaign']->recommendation_status = $status;
 
       return $view_data;
+    }
+
+    public function getBureauGovernanceDetail() {
+      //$office_id = $view_data['office']->id;
+
     }
 
     public function routes($route, $parameter1 = null, $parameter2 = null, $parameter3 = null, $parameter4 = null) {
