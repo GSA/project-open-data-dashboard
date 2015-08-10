@@ -98,6 +98,7 @@ class campaign_model extends CI_Model {
         $model->bureaudirectory_status = null;
         $model->governanceboard_status = null;
         $model->recommendation_status = null;
+        $model->policyarchive_status = null;
         $model->tracker_fields = '';
         $model->tracker_status = null;
 
@@ -468,7 +469,6 @@ class campaign_model extends CI_Model {
     }
 
     public function validate_bureaudirectory($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $component = null) {
-        error_log('validate_bureaudirectory');
         return $this->validate_json($url, $json, $headers, 'bureaudirectory', $return_source, $component);
     }
 
@@ -477,7 +477,6 @@ class campaign_model extends CI_Model {
     }
 
     public function validate_json($url = null, $json = null, $headers = null, $schema = null, $return_source = false, $component = null) {
-        error_log('validate_json');
 
 
         if ($url) {
@@ -1056,6 +1055,20 @@ class campaign_model extends CI_Model {
         if ($filetype == 'json-lines') {
             $directory = "$download_dir/json-lines";
             $filepath = $directory . '/' . $office_id . '.raw';
+        } else if ($filetype == 'policyarchive') {
+            $crawl_date = date("Y-m-d");
+            $directory = "$download_dir/$filetype/$crawl_date";
+            $extension = "zip";
+            if (substr($url, -6) == 'tar.gz') {
+                $extension = 'tar.gz';
+            }
+            else {
+                $ext_pos = strrpos($url, '.') + 1;
+                if ($ext_pos !== false) {
+                    $extension = substr($url, $ext_pos);
+                }
+            }
+            $filepath = $directory . '/' . $office_id . '.' . $extension;
         } else {
             $crawl_date = date("Y-m-d");
             $directory = "$download_dir/$filetype/$crawl_date";

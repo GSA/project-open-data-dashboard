@@ -9,6 +9,7 @@ class Campaign extends CI_Controller {
 
         $this->load->helper('api');
         $this->load->helper('url');
+        $this->load->helper('file');
 
         // Determine the environment we're run from for debugging/output
         if (php_sapi_name() == 'cli') {
@@ -604,6 +605,109 @@ class Campaign extends CI_Controller {
                     }
                 }
 
+
+/*
+                  ################ policyarchive ################
+                 */
+
+                if ($component == 'full-scan' || $component == 'all' || $component == 'policyarchive' || $component == 'download') {
+
+                    // Get status
+                    $expected_url_array = array(
+                        $url . '/digitalstrategy/policyarchive.zip',
+                        $url . '/digitalstrategy/policyarchive.tar',
+                        $url . '/digitalstrategy/policyarchive.tar.gz',
+                        $url . '/digitalstrategy/policyarchive.tgz'
+                    );
+
+                    $real_url = $expected_url_array[0];
+                    for ($x = 0; $x < count($expected_url_array); $x++) {
+                        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                            echo 'Attempting to request ' . $expected_url_array[$x] . PHP_EOL;
+                        }
+
+                        $json_refresh = false;
+                        $status = $this->campaign->uri_header($expected_url_array[$x]);
+
+                        $status['expected_url'] = $expected_url_array[$x];
+
+                        if ($status['http_code'] == 200) {
+                            $real_url = $expected_url_array[$x];
+                            break;
+                        }
+                    }
+
+                    /*
+                      ################ download ################
+                     */
+                    if ($component == 'full-scan' || $component == 'all' || $component == 'download') {
+
+                        if (!($status['http_code'] == 200) && !config_item('simulate_office_data')) {
+                            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                                echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
+                            }
+                            continue;
+                        }
+
+                        // download and version this json file.
+                        $archive_status = $this->campaign->archive_file('policyarchive', $office->id, $real_url);
+
+                        $status['tracker_fields'] = $this->track_policyarchive($archive_status, $expected_url);
+                }
+
+                    /*
+                      ################ policyarchive ################
+                     */
+                    if ($component == 'full-scan' || $component == 'all' || $component == 'policyarchive') {
+
+                        // Save current update status in case things break during json_status
+                        $update->policyarchive_status = (!empty($status)) ? json_encode($status) : null;
+
+                        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                            echo 'Attempting to set ' . $update->office_id . ' with ' . $update->policyarchive_status . PHP_EOL . PHP_EOL;
+                        }
+
+                        $update->status_id = $this->campaign->update_status($update);
+
+                        // Check JSON status
+                        // TODO: Update this function to validate policyarchive schema
+                        //$status = $this->json_status($status, $real_url, 'policyarchive'); // note, this appears to duplicate the JSON validation after a fresh download, duplicated in validate_archive_file_with_schema above
+                        $archive_status = $this->campaign->archive_file('policyarchive', $office->id, $real_url);
+                        $status['tracker_fields'] = $this->track_policyarchive($archive_status, $real_url);
+
+                        $status['url'] = $real_url;
+                        $status['expected_url'] = $real_url;
+                        $status['last_crawl'] = mktime();
+
+
+                        if (isset($status['schema_errors']) && is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
+                            $status['error_count'] = count($status['schema_errors']);
+                        } else if (isset($status['schema_errors']) && $status['schema_errors'] === false) {
+                            $status['error_count'] = 0;
+                        } else {
+                            $status['error_count'] = null;
+                        }
+
+                        $status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;
+
+                        $update->policyarchive_status = (!empty($status)) ? json_encode($status) : null;
+                        if (!empty($status) && !empty($status['schema_errors'])) {
+                            unset($status['schema_errors']);
+                        }
+
+                        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                            echo 'Attempting to set ' . $update->office_id . ' with ' . $update->policyarchive_status . PHP_EOL . PHP_EOL;
+                        }
+
+                        $update->crawl_status = 'current';
+                        $update->crawl_end = gmdate("Y-m-d H:i:s");
+
+                        $this->campaign->update_status($update);
+                    }
+                }
+
+
+
                 if (!empty($id) && $this->environment != 'terminal' && $this->environment != 'cron') {
                     $this->load->helper('url');
                     redirect('/offices/detail/' . $id, 'location');
@@ -1085,5 +1189,56 @@ class Campaign extends CI_Controller {
         return $tracker_fields;
 
     }
+
+public function track_policyarchive($archive, $url) {
+
+        $tracker_fields = new stdClass();
+
+        $tracker_fields->pa_it_policy_archive = false;
+        $tracker_fields->pa_it_policy_archive_files = 'Cannot be evaluated';
+        $tracker_fields->pa_it_policy_archive_filenames = 'Cannot be evaluated';
+        $tracker_fields->pa_it_policy_archive_link = $url;
+
+        if ($archive) {
+
+            // TODO: Validate against schema
+            $tracker_fields->pa_it_policy_archive = true; // this should be based on the result of the schema check
+
+            if ($tracker_fields->pa_it_policy_archive) {
+
+                $tracker_fields->pa_it_policy_archive_files = 0;
+                $tracker_fields->pa_it_policy_archive_filenames = "";
+
+                // download and extract file names here
+                // save in tracker fields
+                if (substr($archive, -3) == "zip") {
+                    $za = new ZipArchive(); 
+                    $za->open($archive); 
+
+                    $tracker_fields->pa_it_policy_archive_files = $za->numFiles;
+                    for( $i = 0; $i < $za->numFiles; $i++ ){ 
+                        $stat = $za->statIndex( $i );
+                        $tracker_fields->pa_it_policy_archive_filenames .= ( basename( $stat['name'] ) . PHP_EOL ); 
+                    }
+                }
+                else if (substr($archive, -3) == "tgz" || substr($archive, -6) == "tar.gz") {
+                    $cmd = "tar -ztf $archive";
+                    $files = explode(PHP_EOL, trim(shell_exec(escapeshellcmd($cmd))));
+                    $tracker_fields->pa_it_policy_archive_files = count($files);
+                    $tracker_fields->pa_it_policy_archive_filenames = implode(PHP_EOL,$files); 
+                }
+                else if (substr($archive, -3) == "tar") {
+                    $cmd = "tar -tf $archive";
+                    $files = explode(PHP_EOL, trim(shell_exec(escapeshellcmd($cmd))));
+                    $tracker_fields->pa_it_policy_archive_files = count($files);
+                    $tracker_fields->pa_it_policy_archive_filenames = implode(PHP_EOL,$files); 
+                }
+            }
+        }
+
+        return $tracker_fields;
+    }
+
+
 
 }
