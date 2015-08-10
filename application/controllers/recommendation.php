@@ -13,10 +13,10 @@ class Recommendation extends CI_Controller {
   static $csvFile = 'gao_rec.csv';
   static $archive_dir = 'recommendation';
   public $log = "";
-  static $currentMilestone = "2015-08-15";
   public $outputDir = "";
   public $filetime = "";
-  public $permission_level = "admin";
+  public $permission_level = "";
+  public $currentMilestone = "admin";
 
   function __construct() {
     parent::__construct();
@@ -349,17 +349,18 @@ class Recommendation extends CI_Controller {
     */
    public function save_campaign_records($groupedRecommendations)
    {
-     $this->log("Saving campaign records for GAO Recommendations upload");
+     $currentMilestone = $this->getCurrentMilestone();
+     $this->log("Saving campaign records for GAO Recommendations upload for milestone ". $currentMilestone);
 
      $this->load->model('campaign_model', 'campaign');
-     
+
      foreach($groupedRecommendations as $office_id => $agencyRecommendations) {
        if(!is_array($agencyRecommendations)) {
          $agencyRecommendations = array($agencyRecommendations);
         }
         $openCount = $this->getCountOpenRecommendations($agencyRecommendations);
-        $campaign = $this->setOneCampaignRecord($agencyRecommendations[0], $openCount);
-        
+        $campaign = $this->setOneCampaignRecord($agencyRecommendations[0], $openCount, $currentMilestone);
+
         $where = array(
             'milestone' => $campaign->milestone,
             'office_id' => $campaign->office_id,
@@ -367,10 +368,10 @@ class Recommendation extends CI_Controller {
         );
         $query = $this->db->get_where('ciogov_campaign', $where);
         if ($query->num_rows() > 0) {
-            $set = array('recommendation_status' => $campaign->recommendation_status);        
-            $this->db->update('ciogov_campaign', $set, $where);        
+            $set = array('recommendation_status' => $campaign->recommendation_status);
+            $this->db->update('ciogov_campaign', $set, $where);
         } else {
-            $this->db->insert('ciogov_campaign', $campaign);        
+            $this->db->insert('ciogov_campaign', $campaign);
         }
        }
    }
@@ -398,9 +399,10 @@ class Recommendation extends CI_Controller {
     *
     * @param <int> $office_id
     * @param <int> $openCount
+    * @param <date> $currentMilestone
     * @return <object>
     */
-   public function setOneCampaignRecord($recommendation, $openCount)
+   public function setOneCampaignRecord($recommendation, $openCount, $currentMilestone)
    {
      $now = date('Y-m-d H:i:s');
 
@@ -413,13 +415,26 @@ class Recommendation extends CI_Controller {
 
      $campaign = $this->campaign->ciogov_model();
      $campaign->office_id = $recommendation->office_id;
-     $campaign->milestone = static::$currentMilestone;
+     $campaign->milestone = $this->getCurrentMilestone();
      $campaign->crawl_start = $now;
      $campaign->crawl_end = $now;
      $campaign->crawl_status = 'current';
      $campaign->recommendation_status = json_encode($status);
 
      return $campaign;
+   }
+
+   /**
+    * Get the current milestone based on today's date
+    *
+    * @returns <date>
+    */
+   public function getCurrentMilestone()
+   {
+     $this->load->model('campaign_model', 'campaign');
+     $milestones = $this->campaign->milestones_model();
+     $milestone = $this->campaign->milestone_filter("", $milestones);
+     return $milestone->current;
    }
 
 }
