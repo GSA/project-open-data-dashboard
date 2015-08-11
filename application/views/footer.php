@@ -3,7 +3,7 @@
 <hr>
       <footer class="footer">
         <div class="container <?php if(!empty($container_class)) echo $container_class; ?>">
-        <div class="pull-left"><a href="https://github.com/GSA/project-open-data-dashboard/issues">Fork me on Github</a></div>
+        <?php /*<div class="pull-left"><a href="https://github.com/GSA/project-open-data-dashboard/issues">Fork me on Github</a></div>*/ ?>
 
 
 
