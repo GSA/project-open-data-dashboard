@@ -277,7 +277,7 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status) {
             if (!empty($bureau_directory->leaders)) {
                 $retval .= '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
                 $retval .= "<tr>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Code</th>";
+                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>Bureau Code</th>";
                 $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
                 $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>First Name</th>";
                 $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Last Name</th>";
@@ -291,7 +291,7 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status) {
                 $retval .= "</tr>\n";
                 foreach($bureau_directory->leaders as $leader) {
                     $retval .= "<tr>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauCode) ? $leader->bureauCode : "") . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11' style='width: 1%'>" . (isset($leader->bureauCode) ? $leader->bureauCode : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauName) ? $leader->bureauName : "Agency-wide")  . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->firstName) ? $leader->firstName : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->lastName) ? $leader->lastName : "") . "</td>";
@@ -354,7 +354,7 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status) {
                 if (!empty($gb_directory->boards)) {
                     $retval .= '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
                     $retval .= "<tr>";
-                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Code</th>";
+                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>Bureau Code</th>";
                     $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
                     $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Governance Board Name</th>";
                     $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Code</th>";
@@ -363,7 +363,7 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status) {
                     $retval .= "</tr>";
                     foreach ($gb_directory->boards as $board) {
                         $retval .= "<tr>";
-                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauCode) ? $board->bureauCode : "") . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>" . (isset($board->bureauCode) ? $board->bureauCode : "") . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauName) ? $board->bureauName : "Agency-wide")  . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-6 col-lg-2'>" . (isset($board->governanceBoardName) ? $board->governanceBoardName : "") . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programCodeFPI) ? $board->programCodeFPI : "") . "</td>";
