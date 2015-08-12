@@ -276,22 +276,22 @@ class campaign_model extends CI_Model {
         */
 
         // GAO Recommendations
-
+        /*
         $model->gr_open_gao_recommendations = clone $field;
         $model->gr_open_gao_recommendations->dashboard = true;
         $model->gr_open_gao_recommendations->label = "GAO Recommendations";
         $model->gr_open_gao_recommendations->description = "# Open GAO Recommendations";
         $model->gr_open_gao_recommendations->type = "integer";
-
+        */
         return $model;
     }
 
-    public function tracker_sections_model() {
+     public function tracker_sections_model() {
 
         $section_breakdown = array(
             'cb' => 'Common Baseline Submission Status',
             'pa' => 'Published Artifacts Submission Status',
-            'gr' => 'GAO Recommendations'
+         //   'gr' => 'GAO Recommendations'
         );
 
         return $section_breakdown;
@@ -1264,7 +1264,7 @@ class campaign_model extends CI_Model {
                 echo 'Adding ' . $update->office_id . PHP_EOL . PHP_EOL;
             }
 
-            // Copy tracker data and GAO recommendations over from the current 
+            // Copy tracker data and GAO recommendations over from the current
             // record for this milestone
             $this->db->select('tracker_fields, tracker_status, recommendation_status');
             $this->db->where('office_id', $update->office_id);
@@ -1536,20 +1536,20 @@ class campaign_model extends CI_Model {
 
       return $schema;
     }
-    
+
     /**
      * Simulate tracker data
-     * 
+     *
      * @return string
      */
     public function simulate_tracker_fields() {
-        
+
         if (!config_item('simulate_office_data')) {
             return '';
         }
-        
+
         $tracker_fields = new stdClass();
-        
+
         foreach ($this->tracker_model() as $key => $field) {
             if ($field->type === 'integer' || $field->type === 'percent') {
                 $tracker_fields->$key = rand(0, 99);
@@ -1560,11 +1560,11 @@ class campaign_model extends CI_Model {
                 $tracker_fields->$key = '<a href="' . $url . '" target="_blank">' . $url . '</a>';
             }
         }
-        
+
         return json_encode($tracker_fields);
     }
-    
-    
+
+
 }
 
 ?>
