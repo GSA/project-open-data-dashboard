@@ -10,7 +10,7 @@ class Campaign extends CI_Controller {
         $this->load->helper('api');
         $this->load->helper('url');
         $this->load->helper('file');
-
+        
         // Determine the environment we're run from for debugging/output
         if (php_sapi_name() == 'cli') {
             if (isset($_SERVER['TERM'])) {
@@ -988,11 +988,11 @@ class Campaign extends CI_Controller {
 
         $this->load->model('campaign_model', 'campaign');
 
-        $json = ($this->input->post('json')) ? $this->input->post('json') : $json;
-        $schema = ($this->input->get_post('schema')) ? $this->input->get_post('schema', TRUE) : $schema;
+        $json = htmlspecialchars(($this->input->post('json')) ? $this->input->post('json') : $json);
+        $schema = htmlspecialchars(($this->input->get_post('schema')) ? $this->input->get_post('schema', TRUE) : $schema);
 
-        $url = ($this->input->get_post('url')) ? $this->input->get_post('url', TRUE) : $url;
-        $output_type = ($this->input->get_post('output')) ? $this->input->get_post('output', TRUE) : $output;
+        $url = htmlspecialchars(($this->input->get_post('url')) ? $this->input->get_post('url', TRUE) : $url);
+        $output_type = htmlspecialchars(($this->input->get_post('output')) ? $this->input->get_post('output', TRUE) : $output);
 
         if (!empty($_FILES)) {
 

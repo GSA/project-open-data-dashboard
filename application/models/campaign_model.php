@@ -66,6 +66,8 @@ class campaign_model extends CI_Model {
 
     public function ciogov_office_crawls($office_id, $milestone = null, $status_id, $direction, $limit) {
 
+        $status_id = intval($status_id);
+        
         $this->db->select('status_id, crawl_start, crawl_end');
         $this->db->where('office_id', $office_id);
         $this->db->where('milestone', $milestone);
