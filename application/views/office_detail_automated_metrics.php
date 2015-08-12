@@ -462,7 +462,7 @@
 
                                 if (!empty($office_campaign->policyarchive_status->content_type)) {
                                     if (strpos($office_campaign->policyarchive_status->content_type, 'application/zip') !== false ||
-                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-tar') !== false || 
+                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-tar') !== false ||
                                             strpos($office_campaign->policyarchive_status->content_type, 'application/x-gtar') !== false
                                             ) {
                                         $mime_color = 'success';
@@ -591,4 +591,4 @@
 
 
 
-          <?php include "recommendation_detail_status.php" ?>
+          <?php /* GAO Recommendation removed */ //include "recommendation_detail_status.php" ?>

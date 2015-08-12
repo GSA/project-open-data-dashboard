@@ -1,4 +1,7 @@
-var dashboardTotals = [null, null, 0, 0, 0, 0, 0, 0, 0];
+/**
+ * Last dashboardTotals "0" element for GAO Recommendations was removed
+ */
+var dashboardTotals = [null, null, 0, 0, 0, 0, 0, 0];
 
 $(function() {
 
@@ -42,8 +45,13 @@ $('#accShow').on('click', function() {
     return false;
 });
 
-// Add totals row to dashboard
-var row = '<tr class="totals-row"><th>CFO Act Agencies (24)</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
+/**
+ * Add totals row to dashboard
+ * 
+ * The last <td></td> in var row which was meant for for GAO Recommendations total 
+ * was removed.
+ */
+var row = '<tr class="totals-row"><th>CFO Act Agencies (24)</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
 $(this).find('table.dashboard tr:last').after(row);
 $(this).find('table.dashboard tr').each(function() {
     var n = 0;
