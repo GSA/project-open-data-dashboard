@@ -135,7 +135,7 @@
             </ul>
 
 
-
+            <!--
             <a name="general_indicators" class="anchor-point"></a>
             <h3>General Indicators <a class="info-icon" href="<?php echo site_url('docs'); ?>#general_indicators"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
             <p>These indicators are reviewed by the Office of Management and Budget</p>
@@ -145,7 +145,7 @@
                 <form method="post" action="<?php echo site_url(); ?>ciogov/status-review-update" role="form">
             <?php endif; ?>
 
-                <?php include 'office_detail_review_status.php'; ?>
+                <?php /*include 'office_detail_review_status.php';*/ ?>
 
                 <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
 
@@ -159,6 +159,7 @@
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                 </form>
             <?php endif; ?>
+            -->
 
 
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
