@@ -200,6 +200,7 @@ class campaign_model extends CI_Model {
         $model->pa_bureau_it_leadership->description = "Bureau IT Leadership file exists and conforms to schema?";
         $model->pa_bureau_it_leadership->type = "select";
 
+        /*
         $model->pa_bureau_it_leaders = clone $field;
         $model->pa_bureau_it_leaders->indent = 1;
         $model->pa_bureau_it_leaders->label = "# Bureau IT Leaders";
@@ -219,6 +220,7 @@ class campaign_model extends CI_Model {
         $model->pa_bureau_it_leadership_link->indent = 1;
         $model->pa_bureau_it_leadership_link->label = "Link to Bureau IT Leadership directory";
         $model->pa_bureau_it_leadership_link->type = "url";
+        */
 
         $model->pa_bureau_it_leadership_table = clone $field;
         $model->pa_bureau_it_leadership_table->indent = 1;
@@ -231,6 +233,7 @@ class campaign_model extends CI_Model {
         $model->pa_cio_governance_board->description = "CIO Governance Board file exists and conforms to schema?";
         $model->pa_cio_governance_board->type = "select";
 
+        /*
         $model->pa_mapped_to_program_inventory = clone $field;
         $model->pa_mapped_to_program_inventory->indent = 1;
         $model->pa_mapped_to_program_inventory->label = "% Mapped to Federal Program Inventory";
@@ -240,6 +243,7 @@ class campaign_model extends CI_Model {
         $model->pa_cio_governance_board_link->indent = 1;
         $model->pa_cio_governance_board_link->label = "Link to CIO Governance Board directory";
         $model->pa_cio_governance_board_link->type = "url";
+        */
 
         $model->pa_cio_governance_board_table = clone $field;
         $model->pa_cio_governance_board_table->indent = 1;
@@ -252,6 +256,7 @@ class campaign_model extends CI_Model {
         $model->pa_it_policy_archive->description = "IT Policy Archive file exists with expected file extension?";
         $model->pa_it_policy_archive->type = "select";
 
+        /*
         $model->pa_it_policy_archive_files = clone $field;
         $model->pa_it_policy_archive_files->indent = 1;
         $model->pa_it_policy_archive_files->label = "# Files in policy archive";
@@ -268,6 +273,7 @@ class campaign_model extends CI_Model {
         $model->pa_it_policy_archive_link->indent = 1;
         $model->pa_it_policy_archive_link->label = "Link to policy archive directory";
         $model->pa_it_policy_archive_link->type = "url";
+        */
 
         // GAO Recommendations
 
