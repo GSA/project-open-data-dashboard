@@ -163,7 +163,18 @@ abstract class OAuth2_Provider
 
 				// Need to switch to Request library, but need to test it on one that works
 				$url .= '?'.http_build_query($params);
-				$response = file_get_contents($url);
+
+				if (config_item('proxy_host') && config_item('proxy_port')) {
+				  $context = stream_context_create(array(
+									 'http' => array(
+											 'proxy' => config_item('proxy_host') .':' .  config_item('proxy_port'),          
+											 'request_fulluri' => true)
+									 ));
+				  $response = file_get_contents($url, $false, $context);                                    
+				} else {
+				  $response = file_get_contents($url, $false);  
+				}
+
 
 				parse_str($response, $return);
 
