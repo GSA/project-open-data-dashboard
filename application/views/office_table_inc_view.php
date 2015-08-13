@@ -246,6 +246,7 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status) {
     $crawl_file = $archive_dir . "/bureaudirectory/" . date("Y-m-d", $last_crawl) . "/$office_id.json";
     if (file_exists($crawl_file)) {
         $data = file_get_contents($crawl_file);
+        $data = replaceInvalidCharacters($data);
         $bureau_directory = json_decode($data);
     }
     $retval = '
@@ -318,6 +319,7 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status) {
     $crawl_file = $archive_dir . "/governanceboard/" . date("Y-m-d", $last_crawl) . "/$office_id.json";
     if (file_exists($crawl_file)) {
         $data = file_get_contents($crawl_file);
+        $data = replaceInvalidCharacters($data);
         $gb_directory = json_decode($data);
     }
     else {
@@ -379,5 +381,18 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status) {
     return $retval;
 
 }
+
+function replaceInvalidCharacters($text) {
+    $text = str_replace(
+        array("\xe2\x80\x98", "\xe2\x80\x99", "\xe2\x80\x9c", "\xe2\x80\x9d", "\xe2\x80\x93", "\xe2\x80\x94", "\xe2\x80\xa6"),
+        array("'", "'", '"', '"', '-', '--', '...'),
+        $text);
+    $text = str_replace(
+        array(chr(145), chr(146), chr(147), chr(148), chr(150), chr(151), chr(133)),
+        array("'", "'", '"', '"', '-', '--', '...'),
+        $text);
+    return $text;
+}
+
 
 ?>
