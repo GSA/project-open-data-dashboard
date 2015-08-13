@@ -314,7 +314,7 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status) {
 
 }
 
-function getGovernanceBoardTable($archive_dir, $office_id, $gb_status) {
+function getGovernanceBoardTable($archive_dir, $office_id, $gb_status, $agency_code, $db_obj) {
     $last_crawl = $gb_status->last_crawl;
     $crawl_file = $archive_dir . "/governanceboard/" . date("Y-m-d", $last_crawl) . "/$office_id.json";
     if (file_exists($crawl_file)) {
@@ -366,10 +366,10 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status) {
                     foreach ($gb_directory->boards as $board) {
                         $retval .= "<tr>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>" . (isset($board->bureauCode) ? $board->bureauCode : "") . "</td>";
-                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauName) ? $board->bureauName : "Agency-wide")  . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauCode) ? getBureauNameByBureauCode($agency_code, $board->bureauCode, $db_obj) : "Agency-wide")  . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-6 col-lg-2'>" . (isset($board->governanceBoardName) ? $board->governanceBoardName : "") . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programCodeFPI) ? $board->programCodeFPI : "") . "</td>";
-                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programNameFPI) ? $board->programNameFPI : "") . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programCodeFPI) ? getFPINameByFPICode($board->programCodeFPI, $db_obj) : "") . "</td>";
                         $retval .= "<td class='col-sm-6 col-md-6 col-lg-6'>" . (isset($board->cioInvolvementDescription) ? $board->cioInvolvementDescription : "") . "</td>";
                         $retval .= "</tr>\n";
                     }
@@ -380,6 +380,26 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status) {
         </div>";
     return $retval;
 
+}
+
+function getBureauNameByBureauCode($agency_code, $bureau_code, $db) {
+    $retval = "";
+    $query = $db->query("SELECT bureauName FROM refBureau WHERE agencyCode = ? and bureauCode = ? LIMIT 1", array($agency_code, $bureau_code));
+    $result = $query->result();
+    if (count($result) == 1){
+        $retval = $result[0]->bureauName;
+    }
+    return $retval;
+}
+
+function getFPINameByFPICode($fpi_code, $db) {
+    $retval = "";
+    $query = $db->query("SELECT programName FROM refFPIcode WHERE programCode = ? LIMIT 1", array($fpi_code));
+    $result = $query->result();
+    if (count($result) == 1){
+        $retval = $result[0]->programName;
+    }
+    return $retval;
 }
 
 function replaceInvalidCharacters($text) {

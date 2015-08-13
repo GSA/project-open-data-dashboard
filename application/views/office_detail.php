@@ -62,7 +62,7 @@
             }
 
             if (!empty($office_campaign->governanceboard_status)) {
-                $office_campaign->tracker_fields->pa_cio_governance_board_table = getGovernanceBoardTable($config['archive_dir'], (!empty($office->parent_office_id) ? $office->parent_office_id : $office->id), $office_campaign->governanceboard_status);
+                $office_campaign->tracker_fields->pa_cio_governance_board_table = getGovernanceBoardTable($config['archive_dir'], (!empty($office->parent_office_id) ? $office->parent_office_id : $office->id), $office_campaign->governanceboard_status, $office->agencyCode, $this->db);
             }
 
             if (!empty($office_campaign->tracker_status)) {
