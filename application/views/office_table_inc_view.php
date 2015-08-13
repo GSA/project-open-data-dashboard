@@ -293,7 +293,7 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status, $agenc
                 foreach($bureau_directory->leaders as $leader) {
                     $retval .= "<tr>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11' style='width: 1%'>" . (isset($leader->bureauCode) ? $leader->bureauCode : "") . "</td>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauCode) ? getBureauNameByBureauCode($agency_code, $leader->bureauName, $db_obj) : "")  . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauCode) ? getBureauNameByBureauCode($agency_code, $leader->bureauCode, $db_obj) : "")  . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->firstName) ? $leader->firstName : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->lastName) ? $leader->lastName : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->keyBureauCIO) ? $leader->keyBureauCIO : "") . "</td>";
