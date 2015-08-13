@@ -58,7 +58,7 @@
             }
 
             if (!empty($office_campaign->bureaudirectory_status)) {
-                $office_campaign->tracker_fields->pa_bureau_it_leadership_table = getBureauITLeadershipTable($config['archive_dir'], (!empty($office->parent_office_id) ? $office->parent_office_id : $office->id), $office_campaign->bureaudirectory_status);
+                $office_campaign->tracker_fields->pa_bureau_it_leadership_table = getBureauITLeadershipTable($config['archive_dir'], (!empty($office->parent_office_id) ? $office->parent_office_id : $office->id), $office_campaign->bureaudirectory_status, $office->agencyCode, $this->db);
             }
 
             if (!empty($office_campaign->governanceboard_status)) {

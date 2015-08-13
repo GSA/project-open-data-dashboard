@@ -241,7 +241,7 @@ function process_percentage ($numerator, $denominator) {
 
 }
 
-function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status) {
+function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status, $agency_code, $db_obj) {
     $last_crawl = $bd_status->last_crawl;
     $crawl_file = $archive_dir . "/bureaudirectory/" . date("Y-m-d", $last_crawl) . "/$office_id.json";
     if (file_exists($crawl_file)) {
@@ -293,7 +293,7 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status) {
                 foreach($bureau_directory->leaders as $leader) {
                     $retval .= "<tr>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11' style='width: 1%'>" . (isset($leader->bureauCode) ? $leader->bureauCode : "") . "</td>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauName) ? $leader->bureauName : "Agency-wide")  . "</td>";
+                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauCode) ? getBureauNameByBureauCode($agency_code, $leader->bureauName, $db_obj) : "")  . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->firstName) ? $leader->firstName : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->lastName) ? $leader->lastName : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->keyBureauCIO) ? $leader->keyBureauCIO : "") . "</td>";
@@ -366,7 +366,7 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status, $agency_c
                     foreach ($gb_directory->boards as $board) {
                         $retval .= "<tr>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>" . (isset($board->bureauCode) ? $board->bureauCode : "") . "</td>";
-                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauCode) ? getBureauNameByBureauCode($agency_code, $board->bureauCode, $db_obj) : "Agency-wide")  . "</td>";
+                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauCode) ? getBureauNameByBureauCode($agency_code, $board->bureauCode, $db_obj) : "")  . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-6 col-lg-2'>" . (isset($board->governanceBoardName) ? $board->governanceBoardName : "") . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programCodeFPI) ? $board->programCodeFPI : "") . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programCodeFPI) ? getFPINameByFPICode($board->programCodeFPI, $db_obj) : "") . "</td>";
