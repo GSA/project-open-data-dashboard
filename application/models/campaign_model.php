@@ -512,9 +512,21 @@ class campaign_model extends CI_Model {
                     )
                 );
 
-                $context = stream_context_create($opts);
+		if (config_item('proxy_host') && config_item('proxy_port')) {
+		  $ch = curl_init ($url);
+		  curl_setopt($ch, CURLOPT_HEADER, 0);
+		  $proxy = config_item('proxy_host') .":" .config_item('proxy_port');
+		  curl_setopt($ch, CURLOPT_PROXY, $proxy);
+		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		  $json=curl_exec($ch);
 
-                $json = @file_get_contents($url, false, $context, -1, $max_remote_size + 1);
+
+		} else {
+		  $context = stream_context_create($opts);
+		  $json = @file_get_contents($url, false, $context, -1, $max_remote_size + 1);
+		}
+
+
 
                 if ($json == false) {
 
@@ -1102,68 +1114,74 @@ class campaign_model extends CI_Model {
             echo "Simulating $filetype data for office $office_id with $file" . PHP_EOL;
             $copy = @fopen($url, 'rb');
 
+	    // If we can't read from this file, skip
+	    if ($copy === false) {
+	      
+	      if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                echo 'Could not read from ' . $url . PHP_EOL;
+	      }
+	    }
+	    
+	    $paste = @fopen($filepath, 'wb');
+	    
+	    // If we can't write to this file, skip
+	    if ($paste === false) {
+	      
+	      if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                echo 'Could not open ' . $filepath . PHP_EOL;
+	      }
+	    }
+	    
+	    if ($copy !== false && $paste !== false) {
+	      while (!feof($copy)) {
+                if (fwrite($paste, fread($copy, 1024)) === FALSE) {
+		  
+		  if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+		    echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
+		  }
+                }
+	      }
+	    } else {
+	      
+	      return false;
+	    }
+
+	    fclose($copy);
+	    fclose($paste);
+
+
         } else {
 
             if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                 echo 'Attempting to download ' . $url . ' to ' . $filepath . PHP_EOL;
             }
 
+	    if (config_item('proxy_host') && config_item('proxy_port')) {
+	      $ch = curl_init ($url);
+	      curl_setopt($ch, CURLOPT_HEADER, 0);
+	      $proxy = config_item('proxy_host') .":" .config_item('proxy_port');
+	      curl_setopt($ch, CURLOPT_PROXY, $proxy);
+	      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	      $copy=curl_exec($ch);
+	      print ("\n\n\n *********** got copy from curl **********\n");
+	    } else {
+	      $copy = file_get_contents($url, false);
+	    }
 
-            $opts = array(
-                'http' => array(
-                    'method' => "GET",
-                    'user_agent' => "FITARA crawler"
-                )
-            );
-
-            // Support for MAX proxy
-            if (config_item('proxy_host') && config_item('proxy_port')) {
-                $opts['http']['proxy'] = 'tcp://' . config_item('proxy_host') . ':' . config_item('proxy_port');
-                $opts['http']['request_fulluri'] = true;
-                if (substr($url, 0, 5) === 'https') {
-                    $opts['ssl']['SNI_enabled'] = false;
-                }
-            }
-
-            $context = stream_context_create($opts);
-
-            $copy = @fopen($url, 'rb', false, $context);
-        }
-
-        // If we can't read from this file, skip
-        if ($copy === false) {
-
-            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+	    // If we can't read from this file, skip
+	    if ($copy === false || $copy === "") {
+	      if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                 echo 'Could not read from ' . $url . PHP_EOL;
-            }
-        }
+	      }
+	      $copy == false;
+	    }
 
-        $paste = @fopen($filepath, 'wb');
-
-        // If we can't write to this file, skip
-        if ($paste === false) {
-
-            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo 'Could not open ' . $filepath . PHP_EOL;
-            }
-        }
-
-        if ($copy !== false && $paste !== false) {
-            while (!feof($copy)) {
-                if (fwrite($paste, fread($copy, 1024)) === FALSE) {
-
-                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                        echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
-                    }
-                }
-            }
-        } else {
-
-            return false;
-        }
-
-        fclose($copy);
-        fclose($paste);
+      	    if ($copy !== false) {
+	      if (! file_put_contents($filepath, $copy) ) {
+                echo 'Could not write to ' . $filepath . PHP_EOL;
+	      }
+	    }
+	}
 
         if ($this->environment == 'terminal' OR $this->environment == 'cron') {
             echo 'Done' . PHP_EOL . PHP_EOL;

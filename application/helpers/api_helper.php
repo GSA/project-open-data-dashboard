@@ -60,6 +60,11 @@ function curl_header($url, $follow_redirect = true, $tmp_dir = null) {
   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
   curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
 
+  if (config_item('proxy_host') && config_item('proxy_port')) {
+    $proxy = config_item('proxy_host') .":" .config_item('proxy_port');
+    curl_setopt($ch, CURLOPT_PROXY, $proxy);
+  }
+
   $http_heading = curl_exec($ch);
 
   $info['header'] = http_parse_headers($http_heading);
