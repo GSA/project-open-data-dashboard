@@ -54,13 +54,12 @@ class Offices extends CI_Controller {
         $this->db->select('*');
         $this->db->from('offices');
         $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
-        $this->db->where('ciogov_campaign.milestone', $milestone->selected_milestone);
+        $this->db->where("(`ciogov_campaign`.`milestone` IS NULL OR `ciogov_campaign`.`milestone` = '{$milestone->selected_milestone}')");
         $this->db->where('offices.cfo_act_agency', 'true');
         $this->db->where('offices.no_parent', 'true');
         $this->db->where("(ciogov_campaign.crawl_status IS NULL OR ciogov_campaign.crawl_status = '$crawl_status_filter')");
         $this->db->order_by("offices.name", "asc");
         $query = $this->db->get();
-
         if ($query->num_rows() > 0) {
             $view_data['cfo_offices'] = $query->result();
             $query->free_result();
