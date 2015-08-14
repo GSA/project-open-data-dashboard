@@ -1163,7 +1163,6 @@ class campaign_model extends CI_Model {
 	      curl_setopt($ch, CURLOPT_PROXY, $proxy);
 	      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	      $copy=curl_exec($ch);
-	      print ("\n\n\n *********** got copy from curl **********\n");
 	    } else {
 	      $copy = file_get_contents($url, false);
 	    }
