@@ -38,11 +38,10 @@ if($show_all_fields) {
                 <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The status of each field won't be final until a few weeks after the milestone has passed</p>
             <?php endif; ?>
 
-           <?php $selected_milestone = (array_key_exists($milestone->selected_milestone, $milestone->milestones)) ? $milestone->milestones[$milestone->selected_milestone] : $milestone->milestones[$milestone->current]; ?>
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                      Selected: <?php echo $selected_milestone  . ' - ' . date("F jS Y", strtotime($milestone->current)); ?> <span class="caret"></span>
+                      Selected: <?php echo $milestone->milestones[$milestone->selected_milestone]  . ' - ' . date("F jS Y", strtotime($milestone->selected_milestone)); ?> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <?php foreach ($milestone->milestones as $milestone_date => $milestone_name): ?>

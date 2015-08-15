@@ -371,7 +371,7 @@ class campaign_model extends CI_Model {
         }
 
         // if we didn't explicitly select a milestone, use the current one
-        if (empty($selected_milestone)) {
+        if (empty($selected_milestone) || !array_key_exists($selected_milestone, $milestones)) {
             $selected_milestone = $current_milestone;
             $specified = "false";
         } else {
