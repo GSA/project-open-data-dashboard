@@ -142,6 +142,8 @@ class Offices extends CI_Controller {
       }
 
       // Get all the office ids from above results
+      $idList = "";
+      $ids = array();
       if(count($cfo_offices)) {
         $ids = array();
         foreach($cfo_offices as $cfo_office) {
@@ -150,19 +152,19 @@ class Offices extends CI_Controller {
         $idList = implode(",", $ids);
       }
 
+      $this->db->select('*');
+      $this->db->from('offices');
+      $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
+      $this->db->where('offices.cfo_act_agency', 'true');
+      $this->db->where('offices.no_parent', 'true');
       if($idList) {
-        $this->db->select('*');
-        $this->db->from('offices');
-        $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
-        $this->db->where('offices.cfo_act_agency', 'true');
-        $this->db->where('offices.no_parent', 'true');
         $this->db->where("offices.id NOT IN ($idList)");
-        $this->db->group_by('offices.id');
-        $query2 = $this->db->get();
-        if ($query2->num_rows() > 0) {
-          $cfo_offices2 = $query2->result();
-          $query2->free_result();
-        }
+      }
+      $this->db->group_by('offices.id');
+      $query2 = $this->db->get();
+      if ($query2->num_rows() > 0) {
+        $cfo_offices2 = $query2->result();
+        $query2->free_result();
       }
 
       /**
