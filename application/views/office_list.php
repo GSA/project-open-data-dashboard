@@ -1,4 +1,4 @@
-<?php 
+<?php
 if($show_all_fields) $container_class = "full-width";
 ?>
 
@@ -8,7 +8,7 @@ if($show_all_fields) $container_class = "full-width";
 
 <?php include 'office_table_inc_view.php';?>
 
-<?php 
+<?php
 
 if($show_all_fields) {
   $dashboard_type = 'full';
@@ -26,7 +26,7 @@ if($show_all_fields) {
       <!-- Example row of columns -->
       <div class="row">
         <div>
-          
+
           <p class="intro-blurb">This is a public dashboard showing Federal agency progress towards implementing the Federal Information Technology Acquisition Reform Act (FITARA). <a href="https://management.cio.gov/">Learn more</a></p>
 
            <?php if($milestone->selected_milestone == $milestone->current): ?>
@@ -36,13 +36,13 @@ if($show_all_fields) {
 
            <?php if($milestone->selected_milestone == $milestone->previous): ?>
                 <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The status of each field won't be final until a few weeks after the milestone has passed</p>
-            <?php endif; ?>  
+            <?php endif; ?>
 
-
+           <?php $selected_milestone = (array_key_exists($milestone->selected_milestone, $milestone->milestones)) ? $milestone->milestones[$milestone->selected_milestone] : $milestone->milestones[$milestone->current]; ?>
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                      Selected: <?php echo $milestone->milestones[$milestone->selected_milestone]  . ' - ' . date("F jS Y", strtotime($milestone->selected_milestone)); ?> <span class="caret"></span>
+                      Selected: <?php echo $selected_milestone  . ' - ' . date("F jS Y", strtotime($milestone->current)); ?> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <?php foreach ($milestone->milestones as $milestone_date => $milestone_name): ?>
