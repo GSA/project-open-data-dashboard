@@ -165,12 +165,12 @@ abstract class OAuth2_Provider
 				$url .= '?'.http_build_query($params);
 
 				if (config_item('proxy_host') && config_item('proxy_port')) {
-				  $context = stream_context_create(array(
-									 'http' => array(
-											 'proxy' => config_item('proxy_host') .':' .  config_item('proxy_port'),          
-											 'request_fulluri' => true)
-									 ));
-				  $response = file_get_contents($url, $false, $context);                                    
+				  $ch = curl_init ($url);
+				  curl_setopt($ch, CURLOPT_HEADER, 0);
+				  $proxy = config_item('proxy_host') .":" .config_item('proxy_port');
+				  curl_setopt($ch, CURLOPT_PROXY, $proxy);
+				  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				  $response = curl_exec($ch);
 				} else {
 				  $response = file_get_contents($url, $false);  
 				}
