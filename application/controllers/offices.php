@@ -51,19 +51,7 @@ class Offices extends CI_Controller {
 
         $view_data = array();
 
-        $this->db->select('*');
-        $this->db->from('offices');
-        $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
-        $this->db->where("(`ciogov_campaign`.`milestone` IS NULL OR `ciogov_campaign`.`milestone` = '{$milestone->selected_milestone}')");
-        $this->db->where('offices.cfo_act_agency', 'true');
-        $this->db->where('offices.no_parent', 'true');
-        $this->db->where("(ciogov_campaign.crawl_status IS NULL OR ciogov_campaign.crawl_status = '$crawl_status_filter')");
-        $this->db->order_by("offices.name", "asc");
-        $query = $this->db->get();
-        if ($query->num_rows() > 0) {
-            $view_data['cfo_offices'] = $query->result();
-            $query->free_result();
-        }
+        $view_data['cfo_offices'] = $this->get_dashboard_office_list($milestone->selected_milestone, $crawl_status_filter);
 
         if ($this->config->item('show_all_offices') || $show_all_offices) {
 
@@ -122,6 +110,79 @@ class Offices extends CI_Controller {
         }
 
         $this->load->view('office_list', $view_data);
+    }
+
+    /**
+     * Code Ignitor doesn't support unions and not sure about
+     * stored procedures - there seem to be difficulties with that
+     * also. So, run two queries and only include results from 2nd
+     * that are not in first.
+     *
+     * @param <string> $selected_milestone
+     * @returns <array>
+     */
+    public function get_dashboard_office_list($selected_milestone, $crawl_status_filter)
+    {
+      $cfo_offices = array();
+      $cfo_offices2 = array();
+
+      $this->db->select('*');
+      $this->db->from('offices');
+      $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
+      $this->db->where("(`ciogov_campaign`.`milestone` IS NULL OR `ciogov_campaign`.`milestone` = '". $selected_milestone ."')");
+      $this->db->where('offices.cfo_act_agency', 'true');
+      $this->db->where('offices.no_parent', 'true');
+      $this->db->where("(ciogov_campaign.crawl_status IS NULL OR ciogov_campaign.crawl_status = '$crawl_status_filter')");
+      $this->db->order_by("offices.name", "asc");
+
+      $query = $this->db->get();
+      if ($query->num_rows() > 0) {
+        $cfo_offices = $query->result();
+        $query->free_result();
+      }
+
+      // Get all the office ids from above results
+      if(count($cfo_offices)) {
+        $ids = array();
+        foreach($cfo_offices as $cfo_office) {
+          $ids[] = $cfo_office->id;
+      }
+        $idList = implode(",", $ids);
+      }
+
+      if($idList) {
+        $this->db->select('*');
+        $this->db->from('offices');
+        $this->db->join('ciogov_campaign', 'ciogov_campaign.office_id = offices.id', 'left');
+        $this->db->where('offices.cfo_act_agency', 'true');
+        $this->db->where('offices.no_parent', 'true');
+        $this->db->where("offices.id NOT IN ($idList)");
+        $this->db->group_by('offices.id');
+        $query2 = $this->db->get();
+        if ($query2->num_rows() > 0) {
+          $cfo_offices2 = $query2->result();
+          $query2->free_result();
+        }
+      }
+
+      /**
+       * Have had unexpected results with array_merge so not used here.
+       * Only need to resort if we had results
+       */
+      if(count($cfo_offices2)) {
+        foreach($cfo_offices2 as $cfo_office2) {
+          $cfo_offices[] = $cfo_office2;
+        }
+
+        function cmp($a, $b)
+        {
+          return strcmp($a->name, $b->name);
+        }
+
+         usort($cfo_offices, 'cmp');
+      }
+
+      return $cfo_offices;
     }
 
     public function export() {
