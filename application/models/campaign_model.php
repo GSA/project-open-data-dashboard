@@ -60,14 +60,27 @@ class campaign_model extends CI_Model {
         if ($query->num_rows() > 0) {
             return $query->row();
         } else {
-            return false;
+          // Create a template record if not in db
+          $campaign = new stdClass();
+          $campaign->office_id = $office_id;
+          $campaign->milestone = $milestone;
+          $campaign->status_id = 0;
+          $campaign->crawl_start = "";
+          $campaign->crawl_end = "";
+          $campaign->crawl_status = "current";
+          $campaign->bureaudirectory_status = "";
+          $campaign->governanceboard_status = "";
+          $campaign->recommendation_status = "";
+          $campaign->policyarchive_status = "";
+          $campaign->tracker_fields = "";
+          return $campaign;
         }
     }
 
     public function ciogov_office_crawls($office_id, $milestone = null, $status_id, $direction, $limit) {
 
         $status_id = intval($status_id);
-        
+
         $this->db->select('status_id, crawl_start, crawl_end');
         $this->db->where('office_id', $office_id);
         $this->db->where('milestone', $milestone);
@@ -1116,33 +1129,33 @@ class campaign_model extends CI_Model {
 
 	    // If we can't read from this file, skip
 	    if ($copy === false) {
-	      
+
 	      if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                 echo 'Could not read from ' . $url . PHP_EOL;
 	      }
 	    }
-	    
+
 	    $paste = @fopen($filepath, 'wb');
-	    
+
 	    // If we can't write to this file, skip
 	    if ($paste === false) {
-	      
+
 	      if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                 echo 'Could not open ' . $filepath . PHP_EOL;
 	      }
 	    }
-	    
+
 	    if ($copy !== false && $paste !== false) {
 	      while (!feof($copy)) {
                 if (fwrite($paste, fread($copy, 1024)) === FALSE) {
-		  
+
 		  if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 		    echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
 		  }
                 }
 	      }
 	    } else {
-	      
+
 	      return false;
 	    }
 
