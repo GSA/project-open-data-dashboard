@@ -1531,6 +1531,7 @@ class campaign_model extends CI_Model {
         $status['download_content_length'] = strlen($json);
         $data = json_decode($json);
         $status['total_records'] = count($data);
+        $status['valid_json'] = true;
      }
 
      $schema = $this->datajson_schema($component);
@@ -1543,10 +1544,7 @@ class campaign_model extends CI_Model {
           $errors = $validator->getErrors();
           $status['schema_errors'] = $errors;
          }
-         else {
-           $status['valid_json'] = true;
-         }
-      }
+       }
 
       return $status;
     }
