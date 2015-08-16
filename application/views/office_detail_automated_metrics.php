@@ -36,9 +36,9 @@
                                 <?php endif; ?>
 
                                 <?php
-                                $http_code = (!empty($office_campaign->bureaudirectory_status->http_code)) ? $office_campaign->bureaudirectory_status->http_code : 0;
+                                $bureaudirectory_http_code = (!empty($office_campaign->bureaudirectory_status->http_code)) ? $office_campaign->bureaudirectory_status->http_code : 0;
 
-                                switch ($http_code) {
+                                switch ($bureaudirectory_http_code) {
                                     case 404:
                                         $status_color = 'danger';
                                         break;
@@ -107,24 +107,23 @@
 
                         <?php
                         // TO DO - when we have agency files at a valid url, put the checks back
+                        $bureaudirectory_valid_json = false;
                         if(property_exists($office_campaign->bureaudirectory_status, "valid_json")) {
-                           $valid_json = $office_campaign->bureaudirectory_status->valid_json;
+                           $bureaudirectory_valid_json = $office_campaign->bureaudirectory_status->valid_json;
                         }
-                        else if ($http_code == 200 && $bureau_directory = curl_from_json($office_campaign->bureaudirectory_status->url, false, true)) {
-                            $valid_json = true;
-                        } else {
-                            $valid_json = false;
+                        else if ($bureaudirectory_http_code == 200 && $bureau_directory = curl_from_json($office_campaign->bureaudirectory_status->url, false, true)) {
+                            $bureaudirectory_valid_json = true;
                         }
                         ?>
 
-                        <tr class="<?php echo ($valid_json == true) ? 'success' : 'danger' ?>">
+                        <tr class="<?php echo ($bureaudirectory_valid_json == true) ? 'success' : 'danger' ?>">
                             <th>Valid JSON</th>
                             <td>
-                                <span class="text-<?php echo ($valid_json == true) ? 'success' : 'danger' ?>">
+                                <span class="text-<?php echo ($bureaudirectory_valid_json == true) ? 'success' : 'danger' ?>">
                                 <?php
-                                if ($valid_json == true)
+                                if ($bureaudirectory_valid_json == true)
                                     echo 'Valid';
-                                if (($valid_json == false && $valid_json !== null) || ($office_campaign->bureaudirectory_status->http_code == 200 && $valid_json != true))
+                                if (($bureaudirectory_valid_json == false && $bureaudirectory_valid_json !== null) || ($office_campaign->bureaudirectory_status->http_code == 200 && $bureaudirectory_valid_json != true))
                                     echo 'Invalid <span><a href="http://jsonlint.com/">Check a JSON Validator</a></span>';
                                 ?>
                             </td>
@@ -152,20 +151,26 @@
                             </tr>
                         <?php endif; ?>
 
-                        <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership)): ?>
-                            <tr>
-                                <th id="pa_bureau_it_leadership">
-                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership' ?>">
-                                        <span class="glyphicon glyphicon-info-sign"></span>
-                                    </a>
-                                    Bureau IT Leadership file exists and conforms to schema?
-                                </th>
-                                <td>
-                                    <a name="pa_bureau_it_leadership" class="anchor-point"></a>
-                                    <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership ? 'Yes' : 'No';?>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
+                        <tr class="<?php echo (isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true)) ? 'success' : 'danger' ?>">
+                            <th id="pa_bureau_it_leadership">
+                                <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership' ?>">
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                </a>
+                                Bureau IT Leadership file exists and conforms to schema?
+                            </th>
+                            <td>
+                                <a name="pa_bureau_it_leadership" class="anchor-point"></a>
+                                <?php 
+                                //echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership ? 'Yes' : 'No';
+                                if ( isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true)) {
+                                    echo "Yes";
+                                }
+                                else  {
+                                    echo "No";
+                                }
+                                ?>
+                            </td>
+                        </tr>
 
                         <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders)): ?>
                             <tr>
@@ -255,9 +260,9 @@
                                 <?php endif; ?>
 
                                 <?php
-                                $http_code = (!empty($office_campaign->governanceboard_status->http_code)) ? $office_campaign->governanceboard_status->http_code : 0;
+                                $governanceboard_http_code = (!empty($office_campaign->governanceboard_status->http_code)) ? $office_campaign->governanceboard_status->http_code : 0;
 
-                                switch ($http_code) {
+                                switch ($governanceboard_http_code) {
                                     case 404:
                                         $status_color = 'danger';
                                         break;
@@ -327,23 +332,23 @@
                         <?php
                         // TO DO - when we have agency files at a valid url, put the checks back
                         if(property_exists($office_campaign->governanceboard_status, "valid_json")) {
-                          $valid_json = $office_campaign->governanceboard_status->valid_json;
+                          $governanceboard_valid_json = $office_campaign->governanceboard_status->valid_json;
                         }
-                        else if ($http_code == 200 && $governance_board = curl_from_json($office_campaign->governanceboard_status->url, false, true)) {
-                            $valid_json = true;
+                        else if ($governanceboard_http_code == 200 && $governance_board = curl_from_json($office_campaign->governanceboard_status->url, false, true)) {
+                            $governanceboard_valid_json = true;
                         } else {
-                            $valid_json = false;
+                            $governanceboard_valid_json = false;
                         }
                         ?>
 
-                        <tr class="<?php echo ($valid_json == true) ? 'success' : 'danger' ?>">
+                        <tr class="<?php echo ($governanceboard_valid_json == true) ? 'success' : 'danger' ?>">
                             <th>Valid JSON</th>
                             <td>
-                                <span class="text-<?php echo ($valid_json == true) ? 'success' : 'danger' ?>">
+                                <span class="text-<?php echo ($governanceboard_valid_json == true) ? 'success' : 'danger' ?>">
                                 <?php
-                                if ($valid_json == true)
+                                if ($governanceboard_valid_json == true)
                                     echo 'Valid';
-                                if (($valid_json == false && $valid_json !== null) || ($office_campaign->governanceboard_status->http_code == 200 && $valid_json != true))
+                                if (($governanceboard_valid_json == false && $governanceboard_valid_json !== null) || ($office_campaign->governanceboard_status->http_code == 200 && $governanceboard_valid_json != true))
                                     echo 'Invalid <span><a href="http://jsonlint.com/">Check a JSON Validator</a></span>';
                                 ?>
                             </td>
@@ -371,20 +376,27 @@
                             </tr>
                         <?php endif; ?>
 
-                        <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board)): ?>
-                            <tr>
-                                <th id="pa_cio_governance_board">
-                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board' ?>">
-                                        <span class="glyphicon glyphicon-info-sign"></span>
-                                    </a>
-                                    CIO Governance Board file exists and conforms to schema?
-                                </th>
-                                <td>
-                                    <a name="pa_cio_governance_board" class="anchor-point"></a>
-                                    <?php echo $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board ? 'Yes' : 'No';?>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
+                        <tr class="<?php echo (isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true)) ? 'success' : 'danger' ?>">
+                            <th id="pa_cio_governance_board">
+                                <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board' ?>">
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                </a>
+                                CIO Governance Board file exists and conforms to schema?
+                            </th>
+                            <td>
+                                <a name="pa_cio_governance_board" class="anchor-point"></a>
+                                <?php 
+                                //echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership ? 'Yes' : 'No';
+                                if ( isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true)) {
+                                    echo "Yes";
+                                }
+                                else  {
+                                    echo "No";
+                                }
+                                ?>
+
+                            </td>
+                        </tr>
 
                         <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_mapped_to_program_inventory)): ?>
                             <tr>
@@ -444,9 +456,9 @@
                                 <?php endif; ?>
 
                                 <?php
-                                $http_code = (!empty($office_campaign->policyarchive_status->http_code)) ? $office_campaign->policyarchive_status->http_code : 0;
+                                $policyarchive_http_code = (!empty($office_campaign->policyarchive_status->http_code)) ? $office_campaign->policyarchive_status->http_code : 0;
 
-                                switch ($http_code) {
+                                switch ($policyarchive_http_code) {
                                     case 404:
                                         $status_color = 'danger';
                                         break;
@@ -465,12 +477,12 @@
                                             strpos($office_campaign->policyarchive_status->content_type, 'application/x-tar') !== false ||
                                             strpos($office_campaign->policyarchive_status->content_type, 'application/x-gtar') !== false
                                             ) {
-                                        $mime_color = 'success';
+                                        $policyarchive_mime_color = 'success';
                                     } else {
-                                        $mime_color = 'danger';
+                                        $policyarchive_mime_color = 'danger';
                                     }
                                 } else {
-                                    $mime_color = 'danger';
+                                    $policyarchive_mime_color = 'danger';
                                 }
                                 ?>
 
@@ -507,10 +519,10 @@
                             </td>
                         </tr>
 
-                        <tr class="<?php echo $mime_color; ?>">
+                        <tr class="<?php echo $policyarchive_mime_color; ?>">
                             <th>Content Type</th>
                             <td>
-                                <span class="text-<?php echo $mime_color; ?>">
+                                <span class="text-<?php echo $policyarchive_mime_color; ?>">
                                     <?php echo $office_campaign->policyarchive_status->content_type ?>
                                 </span>
                             </td>
@@ -538,20 +550,18 @@
                             </tr>
                         <?php endif; ?>
 
-                        <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive)): ?>
-                            <tr>
-                                <th id="pa_it_policy_archive">
-                                    <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive' ?>">
-                                        <span class="glyphicon glyphicon-info-sign"></span>
-                                    </a>
-                                    IT Policy Archive file exists?
-                                </th>
-                                <td>
-                                    <a name="pa_it_policy_archive" class="anchor-point"></a>
-                                    <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive ? 'Yes' : 'No';?>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
+                        <tr class="<?php echo (isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && ($policyarchive_http_code == 200) && ($policyarchive_mime_color == 'success')) ? 'success' : 'danger' ?>">
+                            <th id="pa_it_policy_archive">
+                                <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive' ?>">
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                </a>
+                                IT Policy Archive file exists?
+                            </th>
+                            <td>
+                                <a name="pa_it_policy_archive" class="anchor-point"></a>
+                                <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive ? 'Yes' : 'No';?>
+                            </td>
+                        </tr>
 
                         <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_filenames)): ?>
                             <tr>

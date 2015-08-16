@@ -241,13 +241,16 @@ function process_percentage ($numerator, $denominator) {
 
 }
 
-function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status, $agency_code, $db_obj) {
-    $last_crawl = $bd_status->last_crawl;
+function getBureauITLeadershipTable($archive_dir, $office_id, $office_campaign, $agency_code, $db_obj) {
+    $last_crawl = strtotime($office_campaign->crawl_end);
     $crawl_file = $archive_dir . "/bureaudirectory/" . date("Y-m-d", $last_crawl) . "/$office_id.json";
     if (file_exists($crawl_file)) {
         $data = file_get_contents($crawl_file);
         $data = replaceInvalidCharacters($data);
         $bureau_directory = json_decode($data);
+    }
+    else {
+        error_log("Could not open $crawl_file");
     }
     $retval = '
         <!-- Agency Bureau Table -->
@@ -271,8 +274,8 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status, $agenc
                 }
             }
 
-            if (!empty($bd_status->filetime) && $bd_status->filetime > 0) {
-                $retval .= 'Date of bureaudirectory.json file: ' . date("l, d-M-Y H:i:s T", $bd_status->filetime);
+            if (!empty($office_campaign->bureaudirectory_status->filetime) && $office_campaign->bureaudirectory_status->filetime > 0) {
+                $retval .= 'Date of bureaudirectory.json file: ' . date("l, d-M-Y H:i:s T", $office_campaign->bureaudirectory_status->filetime);
             }
 
             if (!empty($bureau_directory->leaders)) {
@@ -307,6 +310,9 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status, $agenc
                 }
                 $retval .= '</table>';
             }
+            else {
+                $retval .= 'Data unavailable.';
+            }
 
         $retval .= "</div>";
     $retval .= "</div>";
@@ -314,8 +320,8 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $bd_status, $agenc
 
 }
 
-function getGovernanceBoardTable($archive_dir, $office_id, $gb_status, $agency_code, $db_obj) {
-    $last_crawl = $gb_status->last_crawl;
+function getGovernanceBoardTable($archive_dir, $office_id, $office_campaign, $agency_code, $db_obj) {
+    $last_crawl = strtotime($office_campaign->crawl_end);
     $crawl_file = $archive_dir . "/governanceboard/" . date("Y-m-d", $last_crawl) . "/$office_id.json";
     if (file_exists($crawl_file)) {
         $data = file_get_contents($crawl_file);
@@ -346,8 +352,8 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status, $agency_c
                     }
                 }
 
-                if (!empty($gb_status->filetime) && $gb_status->filetime > 0) {
-                    $retval .= 'Date of governanceboard.json file: ' . date("l, d-M-Y H:i:s T", $gb_status->filetime);
+                if (!empty($office_campaign->governanceboard_status->filetime) && $office_campaign->governanceboard_status->filetime > 0) {
+                    $retval .= 'Date of governanceboard.json file: ' . date("l, d-M-Y H:i:s T", $office_campaign->governanceboard_status->filetime);
                 }
 
                 ?>
@@ -374,6 +380,9 @@ function getGovernanceBoardTable($archive_dir, $office_id, $gb_status, $agency_c
                         $retval .= "</tr>\n";
                     }
                     $retval .= "</table>\n";
+                }
+                else {
+                    $retval .= 'Data unavailable.';
                 }
 
             $retval .= "</div>
