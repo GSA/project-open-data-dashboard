@@ -150,7 +150,7 @@
                             </tr>
                         <?php endif; ?>
 
-                        <tr class="<?php echo (isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true) && empty($office_campaign->bureaudirectory_status->schema_errors)) ? 'success' : 'danger' ?>">
+                        <tr class="<?php echo (isset($office_campaign->tracker_fields->pa_bureau_it_leadership) && $office_campaign->tracker_fields->pa_bureau_it_leadership && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true) && empty($office_campaign->bureaudirectory_status->schema_errors)) ? 'success' : 'danger' ?>">
                             <th id="pa_bureau_it_leadership">
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
@@ -160,8 +160,8 @@
                             <td>
                                 <a name="pa_bureau_it_leadership" class="anchor-point"></a>
                                 <?php 
-                                //echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership ? 'Yes' : 'No';
-                                if ( isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true) && empty($office_campaign->bureaudirectory_status->schema_errors)) {
+                                //echo $office_campaign->tracker_fields->pa_bureau_it_leadership ? 'Yes' : 'No';
+                                if ( isset($office_campaign->tracker_fields->pa_bureau_it_leadership) && $office_campaign->tracker_fields->pa_bureau_it_leadership && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true) && empty($office_campaign->bureaudirectory_status->schema_errors)) {
                                     echo "<span class='success'>Yes</span>";
                                 }
                                 else  {
@@ -189,7 +189,7 @@
 
                         <?php endif; ?>
 
-                        <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders)): ?>
+                        <?php if(isset($office_campaign->tracker_fields->pa_bureau_it_leaders)): ?>
                             <tr>
                                 <th id="pa_bureau_it_leaders">
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leaders' ?>">
@@ -199,12 +199,12 @@
                                 </th>
                                 <td>
                                     <a name="pa_bureau_it_leaders" class="anchor-point"></a>
-                                    <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders;?>
+                                    <?php echo $office_campaign->tracker_fields->pa_bureau_it_leaders;?>
                                 </td>
                             </tr>
                         <?php endif; ?>
 
-                        <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_key_bureau_it_leaders)): ?>
+                        <?php if(isset($office_campaign->tracker_fields->pa_key_bureau_it_leaders)): ?>
                             <tr>
                                 <th id="pa_key_bureau_it_leaders">
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_key_bureau_it_leaders' ?>">
@@ -214,12 +214,12 @@
                                 </th>
                                 <td>
                                     <a name="pa_key_bureau_it_leaders" class="anchor-point"></a>
-                                    <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_key_bureau_it_leaders;?>
+                                    <?php echo $office_campaign->tracker_fields->pa_key_bureau_it_leaders;?>
                                 </td>
                             </tr>
                         <?php endif; ?>
 
-                        <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees)): ?>
+                        <?php if(isset($office_campaign->tracker_fields->pa_political_appointees)): ?>
                             <tr>
                                 <th id="pa_political_appointees">
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_political_appointees' ?>">
@@ -229,13 +229,13 @@
                                 </th>
                                 <td>
                                     <a name="pa_political_appointees" class="anchor-point"></a>
-                                    <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees;?>/<?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders;?>
-                                    (<?php echo intval($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders) > 0 ? intval($office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees / $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders * 100) : 0;?>%)
+                                    <?php echo $office_campaign->tracker_fields->pa_political_appointees;?>/<?php echo $office_campaign->tracker_fields->pa_bureau_it_leaders;?>
+                                    (<?php echo intval($office_campaign->tracker_fields->pa_bureau_it_leaders) > 0 ? intval($office_campaign->tracker_fields->pa_political_appointees / $office_campaign->tracker_fields->pa_bureau_it_leaders * 100) : 0;?>%)
                                 </td>
                             </tr>
                         <?php endif; ?>
 
-                        <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership_link)): ?>
+                        <?php if(isset($office_campaign->tracker_fields->pa_bureau_it_leadership_link)): ?>
                             <tr>
                                 <th id="pa_bureau_it_leadership_link">
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership_link' ?>">
@@ -245,8 +245,8 @@
                                 </th>
                                 <td>
                                     <a name="pa_bureau_it_leadership_link" class="anchor-point"></a>
-                                    <a href="<?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership_link;?>">
-                                        <?php echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership_link;?>
+                                    <a href="<?php echo $office_campaign->tracker_fields->pa_bureau_it_leadership_link;?>">
+                                        <?php echo $office_campaign->tracker_fields->pa_bureau_it_leadership_link;?>
                                     </a>
                                 </td>
                             </tr>
@@ -393,7 +393,7 @@
                             </tr>
                         <?php endif; ?>
 
-                        <tr class="<?php echo (isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true) && empty($office_campaign->governanceboard_status->schema_errors)) ? 'success' : 'danger' ?>">
+                        <tr class="<?php echo (isset($office_campaign->tracker_fields->pa_cio_governance_board) && $office_campaign->tracker_fields->pa_cio_governance_board && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true) && empty($office_campaign->governanceboard_status->schema_errors)) ? 'success' : 'danger' ?>">
                             <th id="pa_cio_governance_board">
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
@@ -403,7 +403,7 @@
                             <td>
                                 <a name="pa_cio_governance_board" class="anchor-point"></a>
                                 <?php 
-                                if ( isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true) && empty($office_campaign->governanceboard_status->schema_errors)) {
+                                if ( isset($office_campaign->tracker_fields->pa_cio_governance_board) && $office_campaign->tracker_fields->pa_cio_governance_board && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true) && empty($office_campaign->governanceboard_status->schema_errors)) {
                                     echo "<span class='success'>Yes</span>";
                                 }
                                 else  {
@@ -433,7 +433,7 @@
                         <?php endif; ?>
 
 
-                        <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_mapped_to_program_inventory)): ?>
+                        <?php if(isset($office_campaign->tracker_fields->pa_mapped_to_program_inventory)): ?>
                             <tr>
                                 <th id="pa_mapped_to_program_inventory">
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_mapped_to_program_inventory' ?>">
@@ -443,12 +443,12 @@
                                 </th>
                                 <td>
                                     <a name="pa_mapped_to_program_inventory" class="anchor-point"></a>
-                                    <?php echo intval($office_campaign->governanceboard_status->tracker_fields->pa_ref_program_inventory) > 0 ? intval($office_campaign->governanceboard_status->tracker_fields->pa_mapped_to_program_inventory / $office_campaign->governanceboard_status->tracker_fields->pa_ref_program_inventory * 100) : 0;?>%
+                                    <?php echo intval($office_campaign->tracker_fields->pa_ref_program_inventory) > 0 ? intval($office_campaign->tracker_fields->pa_mapped_to_program_inventory / $office_campaign->tracker_fields->pa_ref_program_inventory * 100) : 0;?>%
                                 </td>
                             </tr>
                         <?php endif; ?>
 
-                        <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board_link)): ?>
+                        <?php if(isset($office_campaign->tracker_fields->pa_cio_governance_board_link)): ?>
                             <tr>
                                 <th id="pa_cio_governance_board_link">
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board_link' ?>">
@@ -458,8 +458,8 @@
                                 </th>
                                 <td>
                                     <a name="pa_cio_governance_board_link" class="anchor-point"></a>
-                                    <a href="<?php echo $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board_link;?>">
-                                        <?php echo $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board_link;?>
+                                    <a href="<?php echo $office_campaign->tracker_fields->pa_cio_governance_board_link;?>">
+                                        <?php echo $office_campaign->tracker_fields->pa_cio_governance_board_link;?>
                                     </a>
                                 </td>
                             </tr>
@@ -585,7 +585,7 @@
                             </tr>
                         <?php endif; ?>
 
-                        <tr class="<?php echo (isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && ($policyarchive_http_code == 200) && ($policyarchive_mime_color == 'success')) ? 'success' : 'danger' ?>">
+                        <tr class="<?php echo (isset($office_campaign->tracker_fields->pa_it_policy_archive) && ($policyarchive_http_code == 200) && ($policyarchive_mime_color == 'success')) ? 'success' : 'danger' ?>">
                             <th id="pa_it_policy_archive">
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
@@ -594,11 +594,11 @@
                             </th>
                             <td>
                                 <a name="pa_it_policy_archive" class="anchor-point"></a>
-                                    <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive ? '<span class="success">Yes</span>' : '<span class="text-danger">No</span>';?>
+                                    <?php echo $office_campaign->tracker_fields->pa_it_policy_archive ? '<span class="success">Yes</span>' : '<span class="text-danger">No</span>';?>
                             </td>
                         </tr>
 
-                        <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_filenames)): ?>
+                        <?php if(isset($office_campaign->tracker_fields->pa_it_policy_archive_filenames)): ?>
                             <tr>
                                 <th id="pa_it_policy_archive_filenames">
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive_filenames' ?>">
@@ -608,12 +608,12 @@
                                 </th>
                                 <td>
                                     <a name="pa_it_policy_archive_filenames" class="anchor-point"></a>
-                                    <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_filenames; ?>
+                                    <?php echo $office_campaign->tracker_fields->pa_it_policy_archive_filenames; ?>
                                 </td>
                             </tr>
                         <?php endif; ?>
 
-                        <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_link)): ?>
+                        <?php if(isset($office_campaign->tracker_fields->pa_it_policy_archive_link)): ?>
                             <tr>
                                 <th id="pa_it_policy_archive_link">
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive_link' ?>">
@@ -623,8 +623,8 @@
                                 </th>
                                 <td>
                                     <a name="pa_it_policy_archive_link" class="anchor-point"></a>
-                                    <a href="<?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_link;?>">
-                                        <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_link;?>
+                                    <a href="<?php echo $office_campaign->tracker_fields->pa_it_policy_archive_link;?>">
+                                        <?php echo $office_campaign->tracker_fields->pa_it_policy_archive_link;?>
                                     </a>
                                 </td>
                             </tr>
