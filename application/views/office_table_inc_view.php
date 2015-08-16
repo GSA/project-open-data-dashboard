@@ -311,7 +311,7 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $office_campaign, 
                 $retval .= '</table>';
             }
             else {
-                $retval .= 'Data unavailable.';
+                $retval .= '<br>Data unavailable.';
             }
 
         $retval .= "</div>";
@@ -382,7 +382,7 @@ function getGovernanceBoardTable($archive_dir, $office_id, $office_campaign, $ag
                     $retval .= "</table>\n";
                 }
                 else {
-                    $retval .= 'Data unavailable.';
+                    $retval .= '<br>Data unavailable.';
                 }
 
             $retval .= "</div>

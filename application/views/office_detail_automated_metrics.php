@@ -1,4 +1,3 @@
-
             <a name="automated_metrics" class="anchor-point"></a>
             <h3 id="automated-metrics-heading">Automated Metrics <a class="info-icon" href="<?php echo site_url('docs'); ?>#automated_metrics"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
 
@@ -151,7 +150,7 @@
                             </tr>
                         <?php endif; ?>
 
-                        <tr class="<?php echo (isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true)) ? 'success' : 'danger' ?>">
+                        <tr class="<?php echo (isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true) && empty($office_campaign->bureaudirectory_status->schema_errors)) ? 'success' : 'danger' ?>">
                             <th id="pa_bureau_it_leadership">
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
@@ -162,15 +161,33 @@
                                 <a name="pa_bureau_it_leadership" class="anchor-point"></a>
                                 <?php 
                                 //echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership ? 'Yes' : 'No';
-                                if ( isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true)) {
-                                    echo "Yes";
+                                if ( isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true) && empty($office_campaign->bureaudirectory_status->schema_errors)) {
+                                    echo "<span class='success'>Yes</span>";
                                 }
                                 else  {
-                                    echo "No";
+                                    echo "<span class='text-danger'>No";
+                                    if (!empty($office_campaign->bureaudirectory_status->schema_errors)) {
+                                        echo " (schema errors)";
+                                    }
+                                    echo "</span>";
                                 }
                                 ?>
                             </td>
                         </tr>
+                        <?php if ($this->session->userdata('permissions') == $permission_level && !(empty($office_campaign->bureaudirectory_status->schema_errors))) : ?>
+                        <tr class='danger'>
+                        <th>JSON Schema errors</th>
+                            <td><span class='text-danger'><?php 
+                                for ($x = 0; $x < count($office_campaign->bureaudirectory_status->schema_errors); $x++) {
+                                    if ($x) {
+                                        echo "<br>\n";
+                                    }
+                                    echo $office_campaign->bureaudirectory_status->schema_errors[$x]->message;
+                                };
+                            ?></span></td>
+                            </tr>
+
+                        <?php endif; ?>
 
                         <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders)): ?>
                             <tr>
@@ -376,7 +393,7 @@
                             </tr>
                         <?php endif; ?>
 
-                        <tr class="<?php echo (isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true)) ? 'success' : 'danger' ?>">
+                        <tr class="<?php echo (isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true) && empty($office_campaign->governanceboard_status->schema_errors)) ? 'success' : 'danger' ?>">
                             <th id="pa_cio_governance_board">
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
@@ -386,17 +403,35 @@
                             <td>
                                 <a name="pa_cio_governance_board" class="anchor-point"></a>
                                 <?php 
-                                //echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership ? 'Yes' : 'No';
-                                if ( isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true)) {
-                                    echo "Yes";
+                                if ( isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true) && empty($office_campaign->governanceboard_status->schema_errors)) {
+                                    echo "<span class='success'>Yes</span>";
                                 }
                                 else  {
-                                    echo "No";
+                                    echo "<span class='text-danger'>No";
+                                    if (!empty($office_campaign->governanceboard_status->schema_errors)) {
+                                        echo " (schema errors)";
+                                    }
+                                    echo "</span>";
                                 }
                                 ?>
 
                             </td>
                         </tr>
+                        <?php if ($this->session->userdata('permissions') == $permission_level && !(empty($office_campaign->governanceboard_status->schema_errors))) : ?>
+                        <tr class='danger'>
+                        <th>JSON Schema errors</th>
+                            <td><span class='text-danger'><?php 
+                                for ($x = 0; $x < count($office_campaign->governanceboard_status->schema_errors); $x++) {
+                                    if ($x) {
+                                        echo "<br>\n";
+                                    }
+                                    echo $office_campaign->governanceboard_status->schema_errors[$x]->message;
+                                };
+                            ?></span></td>
+                            </tr>
+
+                        <?php endif; ?>
+
 
                         <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_mapped_to_program_inventory)): ?>
                             <tr>
@@ -559,7 +594,7 @@
                             </th>
                             <td>
                                 <a name="pa_it_policy_archive" class="anchor-point"></a>
-                                <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive ? 'Yes' : 'No';?>
+                                    <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive ? '<span class="success">Yes</span>' : '<span class="text-danger">No</span>';?>
                             </td>
                         </tr>
 

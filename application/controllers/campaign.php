@@ -1162,14 +1162,18 @@ class Campaign extends CI_Controller {
 
                 $data = json_decode(file_get_contents($archive));
                 if ($data) {
-
-                    foreach ($data->leaders as $leader) {
-                        $tracker_fields->pa_bureau_it_leaders++;
-                        if ($leader->keyBureauCIO === 'Yes') {
-                            $tracker_fields->pa_key_bureau_it_leaders++;
-                        }
-                        if ($leader->typeOfAppointment === 'political') {
-                            $tracker_fields->pa_political_appointees++;
+                    if (!isset($data->leaders)) {
+                        $tracker_fields->pa_bureau_it_leadership = false;
+                    }
+                    else {
+                        foreach ($data->leaders as $leader) {
+                            $tracker_fields->pa_bureau_it_leaders++;
+                            if ($leader->keyBureauCIO === 'Yes') {
+                                $tracker_fields->pa_key_bureau_it_leaders++;
+                            }
+                            if ($leader->typeOfAppointment === 'political') {
+                                $tracker_fields->pa_political_appointees++;
+                            }
                         }
                     }
                 }
@@ -1209,7 +1213,9 @@ class Campaign extends CI_Controller {
 
                 $data = json_decode(file_get_contents($archive));
                 if ($data) {
-
+                    if (!isset($data->boards)) {
+                        $tracker_fields->pa_cio_governance_board = false;
+                    }
                     foreach ($data->boards as $board) {
                         if (isset($board->programCodeFPI)) {
                             $tracker_fields->pa_mapped_to_program_inventory++;

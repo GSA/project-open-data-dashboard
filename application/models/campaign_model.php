@@ -846,7 +846,6 @@ class campaign_model extends CI_Model {
 
     public function jsonschema_validator($data, $schema = null, $chunked = null) {
 
-
         if ($data) {
 
             $schema_variant = (!empty($schema)) ? "$schema" : "";
@@ -1109,7 +1108,7 @@ class campaign_model extends CI_Model {
         }
 
 
-        if (!get_dir_file_info($directory)) {
+        if (!is_dir($directory)) {
 
             if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                 echo 'Creating directory ' . $directory . PHP_EOL;
