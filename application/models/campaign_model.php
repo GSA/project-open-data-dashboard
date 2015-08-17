@@ -1174,6 +1174,7 @@ class campaign_model extends CI_Model {
 	      $proxy = config_item('proxy_host') .":" .config_item('proxy_port');
 	      curl_setopt($ch, CURLOPT_PROXY, $proxy);
 	      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+          curl_setopt($ch, CURLOPT_FOLLOWLOCATION,true);
 	      $copy=curl_exec($ch);
 	    } else {
 	      $copy = file_get_contents($url, false);

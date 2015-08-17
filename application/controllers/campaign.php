@@ -385,7 +385,7 @@ class Campaign extends CI_Controller {
                 $update->office_id = $office->id;
 
                 $update->crawl_status = 'in_progress';
-                $update->crawl_start = gmdate("Y-m-d H:i:s");
+                $update->crawl_start = date("Y-m-d H:i:s");
 
                 $url = parse_url($office->url);
                 $url = $url['scheme'] . '://' . $url['host'];
@@ -436,8 +436,6 @@ class Campaign extends CI_Controller {
                             }
                             $bureaudirectory_error = true;
                             $status['valid_json'] = false;
-                            $status['tracker_fields'] = $this->track_bureaudirectory(false, $expected_url);
-                            $update->tracker_fields = json_encode($status['tracker_fields']);
                             $update->bureaudirectory_status = (!empty($status)) ? json_encode($status) : null;
                             $update->status_id = $this->campaign->update_status($update);
                         }
@@ -448,8 +446,6 @@ class Campaign extends CI_Controller {
 
                             // TO DO - when we have real agency data, validate prior to download
                             $status = $this->campaign->validate_archive_file_with_schema($status, $archive_status, 'bureaudirectory', $real_url);
-                            $status['tracker_fields'] = $this->track_bureaudirectory($archive_status, $expected_url);
-                            $update->tracker_fields = json_encode($status['tracker_fields']);
                             $update->status_id = $this->campaign->update_status($update);
 
                         }
@@ -468,10 +464,6 @@ class Campaign extends CI_Controller {
                         }
 
                         $update->status_id = $this->campaign->update_status($update);
-
-                        // Check JSON status
-                        // TODO: Update this function to validate bureaudirectory schema
-                        //$status = $this->json_status($status, $real_url, 'bureaudirectory'); // note, this appears to duplicate the JSON validation after a fresh download, duplicated in validate_archive_file_with_schema above
 
                         // Set correct URL
                         if (!empty($status['url'])) {
@@ -507,10 +499,6 @@ class Campaign extends CI_Controller {
                             echo 'Attempting to set ' . $update->office_id . ' with ' . $update->bureaudirectory_status . PHP_EOL . PHP_EOL;
                         }
 
-                        //$update->crawl_status = 'current';
-                        //$update->crawl_end = gmdate("Y-m-d H:i:s");
-
-                        //$this->campaign->update_status($update);
                         $update->status_id = $this->campaign->update_status($update);
                     }
                 }
@@ -542,7 +530,6 @@ class Campaign extends CI_Controller {
                         $governanceboard_status = $this->campaign->uri_header($expected_url);
                     }
 
-                    //$governanceboard_status['url']          = $expected_url;
                     $governanceboard_status['expected_url'] = $expected_url;
 
                     $real_url = ($json_refresh) ? $expected_url_refresh : $expected_url;
@@ -559,8 +546,6 @@ class Campaign extends CI_Controller {
                             $governanceboard_error = true;
                             $governanceboard_status['valid_json'] = false;
                             $governanceboard_status['tracker_fields'] = $this->track_governanceboard(false, $expected_url);
-                            $status['tracker_fields'] = (object) array_merge((array) $status['tracker_fields'], (array) $governanceboard_status['tracker_fields']);
-                            $update->tracker_fields = json_encode($status['tracker_fields']);
                             $update->governanceboard_status = (!empty($status)) ? json_encode($governanceboard_status) : null;
                             $update->status_id = $this->campaign->update_status($update);
                         }
@@ -568,12 +553,9 @@ class Campaign extends CI_Controller {
 
                             // download and version this json file.
                             $archive_status = $this->campaign->archive_file('governanceboard', $office->id, $real_url);
-                            // TO DO - when we have real agency data, validate prior to download
                             $governanceboard_status = $this->campaign->validate_archive_file_with_schema($governanceboard_status, $archive_status, 'governanceboard', $real_url);
                             $governanceboard_status['tracker_fields'] = $this->track_governanceboard($archive_status, $expected_url);
 
-                            $status['tracker_fields'] = (object) array_merge((array) $status['tracker_fields'], (array) $governanceboard_status['tracker_fields']);
-                            $update->tracker_fields = json_encode($status['tracker_fields']);
                             $update->governanceboard_status = (!empty($status)) ? json_encode($governanceboard_status) : null;
                             $update->status_id = $this->campaign->update_status($update);
                         }
@@ -592,10 +574,6 @@ class Campaign extends CI_Controller {
                         }
 
                         $update->status_id = $this->campaign->update_status($update);
-
-                        // Check JSON status
-                        // TODO: Update this function to validate governanceboard schema
-                        //governanceboard_$status = $this->json_status($status, $real_url, 'governanceboard');
 
                         // Set correct URL
                         if (!empty($governanceboard_status['url'])) {
@@ -680,8 +658,6 @@ class Campaign extends CI_Controller {
                             $policyarchive_error = true;
                             $policyarchive_status['valid_json'] = false;
                             $policyarchive_status['tracker_fields'] = $this->track_policyarchive(false, $policyarchive_status['expected_url']);
-                            $status['tracker_fields'] = (object) array_merge((array) $status['tracker_fields'], (array) $policyarchive_status['tracker_fields']);
-                            $update->tracker_fields = json_encode($status['tracker_fields']);
                             $update->policyarchive_status = (!empty($status)) ? json_encode($policyarchive_status) : null;
                             $update->status_id = $this->campaign->update_status($update);
                         }
@@ -690,8 +666,6 @@ class Campaign extends CI_Controller {
                             // download and version this json file.
                             $archive_status = $this->campaign->archive_file('policyarchive', $office->id, $real_url);
                             $policyarchive_status['tracker_fields'] = $this->track_policyarchive($archive_status, $policyarchive_status['expected_url']);
-                            $status['tracker_fields'] = (object) array_merge((array) $status['tracker_fields'], $policyarchive_status['tracker_fields']);
-                            $update->tracker_fields = json_encode($status['tracker_fields']);
                             $update->policyarchive_status = (!empty($status)) ? json_encode($policyarchive_status) : null;
                             $update->status_id = $this->campaign->update_status($update);
                         }
@@ -711,12 +685,8 @@ class Campaign extends CI_Controller {
 
                         $update->status_id = $this->campaign->update_status($update);
 
-                        // Check JSON status
-                        // TODO: Update this function to validate policyarchive schema
-                        //$policyarchive_status = $this->json_status($policyarchive_status, $real_url, 'policyarchive'); // note, this appears to duplicate the JSON validation after a fresh download, duplicated in validate_archive_file_with_schema above
                         $archive_status = $this->campaign->archive_file('policyarchive', $office->id, $real_url);
                         $policyarchive_status['tracker_fields'] = $this->track_policyarchive($archive_status, $policyarchive_status['expected_url']);
-                        $status['tracker_fields'] = (object) array_merge((array) $status['tracker_fields'], (array) $policyarchive_status['tracker_fields']);
 
                         $policyarchive_status['url'] = $real_url;
                         if (!isset($policyarchive_status['last_crawl'])) {
@@ -735,7 +705,7 @@ class Campaign extends CI_Controller {
                 }
 
                 $update->crawl_status = 'current';
-                $update->crawl_end = gmdate("Y-m-d H:i:s");
+                $update->crawl_end = date("Y-m-d H:i:s");
 
                 $update->status_id = $this->campaign->update_status($update);
 
