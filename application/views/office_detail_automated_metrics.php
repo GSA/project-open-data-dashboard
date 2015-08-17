@@ -182,7 +182,7 @@
                                     if ($x) {
                                         echo "<br>\n";
                                     }
-                                    echo $office_campaign->bureaudirectory_status->schema_errors[$x]->message;
+                                    echo $office_campaign->bureaudirectory_status->schema_errors[$x]->property . ': ' . $office_campaign->bureaudirectory_status->schema_errors[$x]->message;
                                 };
                             ?></span></td>
                             </tr>
