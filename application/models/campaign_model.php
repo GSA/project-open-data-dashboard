@@ -1318,6 +1318,9 @@ class campaign_model extends CI_Model {
                 if (config_item('simulate_office_data')) {
                     $update->tracker_fields = $this->simulate_tracker_fields();
                 }
+                else {
+                    $update->tracker_fields = $this->seed_first_tracker_fields();
+                }
             }
 
             $this->db->insert('ciogov_campaign', $update);
@@ -1593,6 +1596,21 @@ class campaign_model extends CI_Model {
         return json_encode($tracker_fields);
     }
 
+    /**
+     * Seed initial tracker data
+     *
+     * @return string
+     */
+    public function seed_first_tracker_fields() {
+
+        $tracker_fields = new stdClass();
+
+        foreach ($this->tracker_model() as $key => $field) {
+            $tracker_fields->$key = '';
+        }
+
+        return json_encode($tracker_fields);
+    }
 
 }
 
