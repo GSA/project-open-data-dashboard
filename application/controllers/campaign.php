@@ -396,6 +396,7 @@ class Campaign extends CI_Controller {
                 }
 
                 $bureaudirectory_error = $governanceboard_error = $policyarchive_error = false;
+                $bureaudirectory_status = $governanceboard_status = $policyarchive_status = array();
                 /*
                   ################ bureaudirectory ################
                  */
@@ -413,15 +414,15 @@ class Campaign extends CI_Controller {
 
                     // Try to force refresh the cache, follow redirects and get headers
                     $json_refresh = true;
-                    $status = $this->campaign->uri_header($expected_url_refresh);
+                    $bureaudirectory_status = $this->campaign->uri_header($expected_url_refresh);
 
-                    if (!$status OR $status['http_code'] != 200) {
+                    if (!$bureaudirectory_status OR $bureaudirectory_status['http_code'] != 200) {
                         $json_refresh = false;
-                        $status = $this->campaign->uri_header($expected_url);
+                        $bureaudirectory_status = $this->campaign->uri_header($expected_url);
                     }
 
-                    $status['expected_url'] = $expected_url;
-                    $status['last_crawl'] = mktime();
+                    $bureaudirectory_status['expected_url'] = $expected_url;
+                    $bureaudirectory_status['last_crawl'] = mktime();
 
                     $real_url = ($json_refresh) ? $expected_url_refresh : $expected_url;
 
@@ -430,24 +431,23 @@ class Campaign extends CI_Controller {
                      */
                     if ($component == 'full-scan' || $component == 'all' || $component == 'download') {
 
-                        if (!($status['http_code'] == 200) && !config_item('simulate_office_data')) {
+                        if (!($bureaudirectory_status['http_code'] == 200) && !config_item('simulate_office_data')) {
                             if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                                 echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
                             }
                             $bureaudirectory_error = true;
-                            $status['valid_json'] = false;
-                            $update->bureaudirectory_status = (!empty($status)) ? json_encode($status) : null;
+                            $bureaudirectory_status['valid_json'] = false;
+                            $bureaudirectory_status['tracker_fields'] = $this->track_bureaudirectory(false, $expected_url);
+                            $update->bureaudirectory_status = (!empty($bureaudirectory_status)) ? json_encode($bureaudirectory_status) : null;
                             $update->status_id = $this->campaign->update_status($update);
                         }
                         else {
-
                             // download and version this json file.
-                            $archive_status = $this->campaign->archive_file('bureaudirectory', $office->id, $real_url);
-
-                            // TO DO - when we have real agency data, validate prior to download
-                            $status = $this->campaign->validate_archive_file_with_schema($status, $archive_status, 'bureaudirectory', $real_url);
+                            $bd_archive_status = $this->campaign->archive_file('bureaudirectory', $office->id, $real_url);
+                            $bureaudirectory_status = $this->campaign->validate_archive_file_with_schema($bureaudirectory_status, $bd_archive_status, 'bureaudirectory', $real_url);
+                            $bureaudirectory_status['tracker_fields'] = $this->track_bureaudirectory($bd_archive_status, $expected_url);
+                            $update->bureaudirectory_status = (!empty($bureaudirectory_status)) ? json_encode($bureaudirectory_status) : null;
                             $update->status_id = $this->campaign->update_status($update);
-
                         }
                     }
 
@@ -456,8 +456,7 @@ class Campaign extends CI_Controller {
                      */
                     if (!$bureaudirectory_error && ($component == 'full-scan' || $component == 'all' || $component == 'bureaudirectory') ) {
 
-                        // Save current update status in case things break during json_status
-                        $update->bureaudirectory_status = (!empty($status)) ? json_encode($status) : null;
+                        $update->bureaudirectory_status = (!empty($bureaudirectory_status)) ? json_encode($bureaudirectory_status) : null;
 
                         if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                             echo 'Attempting to set ' . $update->office_id . ' with ' . $update->bureaudirectory_status . PHP_EOL . PHP_EOL;
@@ -466,33 +465,33 @@ class Campaign extends CI_Controller {
                         $update->status_id = $this->campaign->update_status($update);
 
                         // Set correct URL
-                        if (!empty($status['url'])) {
-                            if (strpos($status['url'], '?refresh=')) {
-                                $status['url'] = substr($status['url'], 0, strpos($status['url'], '?refresh='));
+                        if (!empty($bureaudirectory_status['url'])) {
+                            if (strpos($bureaudirectory_status['url'], '?refresh=')) {
+                                $bureaudirectory_status['url'] = substr($bureaudirectory_status['url'], 0, strpos($bureaudirectory_status['url'], '?refresh='));
                             }
                         } else {
-                            $status['url'] = $expected_url;
+                            $bureaudirectory_status['url'] = $expected_url;
                         }
 
-                        $status['expected_url'] = $expected_url;
-                        if (!isset($status['last_crawl'])) {
-                            $status['last_crawl'] = mktime();
+                        $bureaudirectory_status['expected_url'] = $expected_url;
+                        if (!isset($bureaudirectory_status['last_crawl'])) {
+                            $bureaudirectory_status['last_crawl'] = mktime();
                         }
 
 
-                        if (isset($status['schema_errors']) && is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
-                            $status['error_count'] = count($status['schema_errors']);
-                        } else if (isset($status['schema_errors']) && $status['schema_errors'] === false) {
-                            $status['error_count'] = 0;
+                        if (isset($bureaudirectory_status['schema_errors']) && is_array($bureaudirectory_status['schema_errors']) && !empty($bureaudirectory_status['schema_errors'])) {
+                            $bureaudirectory_status['error_count'] = count($bureaudirectory_status['schema_errors']);
+                        } else if (isset($bureaudirectory_status['schema_errors']) && $bureaudirectory_status['schema_errors'] === false) {
+                            $bureaudirectory_status['error_count'] = 0;
                         } else {
-                            $status['error_count'] = null;
+                            $bureaudirectory_status['error_count'] = null;
                         }
 
-                        $status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;
+                        $bureaudirectory_status['schema_errors'] = (!empty($bureaudirectory_status['schema_errors'])) ? array_slice($bureaudirectory_status['schema_errors'], 0, 10, true) : null;
 
-                        $update->bureaudirectory_status = (!empty($status)) ? json_encode($status) : null;
-                        if (!empty($status) && !empty($status['schema_errors'])) {
-                            unset($status['schema_errors']);
+                        $update->bureaudirectory_status = (!empty($bureaudirectory_status)) ? json_encode($bureaudirectory_status) : null;
+                        if (!empty($bureaudirectory_status) && !empty($bureaudirectory_status['schema_errors'])) {
+                            unset($bureaudirectory_status['schema_errors']);
                         }
 
                         if ($this->environment == 'terminal' OR $this->environment == 'cron') {
@@ -507,7 +506,6 @@ class Campaign extends CI_Controller {
                 /*
                   ################ governanceboard ################
                  */
-                //unset($status['error_count'], $status['errors'], $status['http_code'], $status['valid_json']);
 
                 if ($component == 'full-scan' || $component == 'all' || $component == 'governanceboard' || $component == 'download') {
 
@@ -546,17 +544,17 @@ class Campaign extends CI_Controller {
                             $governanceboard_error = true;
                             $governanceboard_status['valid_json'] = false;
                             $governanceboard_status['tracker_fields'] = $this->track_governanceboard(false, $expected_url);
-                            $update->governanceboard_status = (!empty($status)) ? json_encode($governanceboard_status) : null;
+                            $update->governanceboard_status = (!empty($governanceboard_status)) ? json_encode($governanceboard_status) : null;
                             $update->status_id = $this->campaign->update_status($update);
                         }
                         else {
 
                             // download and version this json file.
-                            $archive_status = $this->campaign->archive_file('governanceboard', $office->id, $real_url);
-                            $governanceboard_status = $this->campaign->validate_archive_file_with_schema($governanceboard_status, $archive_status, 'governanceboard', $real_url);
-                            $governanceboard_status['tracker_fields'] = $this->track_governanceboard($archive_status, $expected_url);
+                            $gb_archive_status = $this->campaign->archive_file('governanceboard', $office->id, $real_url);
+                            $governanceboard_status = $this->campaign->validate_archive_file_with_schema($governanceboard_status, $gb_archive_status, 'governanceboard', $real_url);
+                            $governanceboard_status['tracker_fields'] = $this->track_governanceboard($gb_archive_status, $expected_url);
 
-                            $update->governanceboard_status = (!empty($status)) ? json_encode($governanceboard_status) : null;
+                            $update->governanceboard_status = (!empty($governanceboard_status)) ? json_encode($governanceboard_status) : null;
                             $update->status_id = $this->campaign->update_status($update);
                         }
                     }
@@ -566,7 +564,6 @@ class Campaign extends CI_Controller {
                      */
                     if (!$governanceboard_error && ($component == 'full-scan' || $component == 'all' || $component == 'governanceboard') ) {
 
-                        // Save current update status in case things break during json_status
                         $update->governanceboard_status = (!empty($governanceboard_status)) ? json_encode($governanceboard_status) : null;
 
                         if ($this->environment == 'terminal' OR $this->environment == 'cron') {
@@ -616,7 +613,6 @@ class Campaign extends CI_Controller {
                 /*
                   ################ policyarchive ################
                  */
-                //unset($status['error_count'], $status['errors'], $status['http_code'], $status['valid_json']);
 
                 if ($component == 'full-scan' || $component == 'all' || $component == 'policyarchive' || $component == 'download') {
 
@@ -658,15 +654,15 @@ class Campaign extends CI_Controller {
                             $policyarchive_error = true;
                             $policyarchive_status['valid_json'] = false;
                             $policyarchive_status['tracker_fields'] = $this->track_policyarchive(false, $policyarchive_status['expected_url']);
-                            $update->policyarchive_status = (!empty($status)) ? json_encode($policyarchive_status) : null;
+                            $update->policyarchive_status = (!empty($policyarchive_status)) ? json_encode($policyarchive_status) : null;
                             $update->status_id = $this->campaign->update_status($update);
                         }
                         else {
 
                             // download and version this json file.
-                            $archive_status = $this->campaign->archive_file('policyarchive', $office->id, $real_url);
-                            $policyarchive_status['tracker_fields'] = $this->track_policyarchive($archive_status, $policyarchive_status['expected_url']);
-                            $update->policyarchive_status = (!empty($status)) ? json_encode($policyarchive_status) : null;
+                            $pa_archive_status = $this->campaign->archive_file('policyarchive', $office->id, $real_url);
+                            $policyarchive_status['tracker_fields'] = $this->track_policyarchive($pa_archive_status, $policyarchive_status['expected_url']);
+                            $update->policyarchive_status = (!empty($policyarchive_status)) ? json_encode($policyarchive_status) : null;
                             $update->status_id = $this->campaign->update_status($update);
                         }
                     }
@@ -676,7 +672,6 @@ class Campaign extends CI_Controller {
                      */
                     if (!$policyarchive_error && ($component == 'full-scan' || $component == 'all' || $component == 'policyarchive') ) {
 
-                        // Save current update status in case things break during json_status
                         $update->policyarchive_status = (!empty($policyarchive_status)) ? json_encode($policyarchive_status) : null;
 
                         if ($this->environment == 'terminal' OR $this->environment == 'cron') {
@@ -685,8 +680,8 @@ class Campaign extends CI_Controller {
 
                         $update->status_id = $this->campaign->update_status($update);
 
-                        $archive_status = $this->campaign->archive_file('policyarchive', $office->id, $real_url);
-                        $policyarchive_status['tracker_fields'] = $this->track_policyarchive($archive_status, $policyarchive_status['expected_url']);
+                        $pa_archive_status = $this->campaign->archive_file('policyarchive', $office->id, $real_url);
+                        $policyarchive_status['tracker_fields'] = $this->track_policyarchive($pa_archive_status, $policyarchive_status['expected_url']);
 
                         $policyarchive_status['url'] = $real_url;
                         if (!isset($policyarchive_status['last_crawl'])) {
@@ -796,6 +791,7 @@ class Campaign extends CI_Controller {
     }
 
     public function json_status($status, $real_url = null, $component = null) {
+        error_log('DEFUNCT? json_status');
 
         // if this isn't an array, assume it's a urlencoded URI
         if (is_string($status)) {
@@ -1051,6 +1047,7 @@ class Campaign extends CI_Controller {
      */
 
     public function version_json($office_id = null) {
+        error_log('DEFUNCT? version_json');
 
 
         $this->load->model('campaign_model', 'campaign');
@@ -1137,10 +1134,10 @@ class Campaign extends CI_Controller {
                     else {
                         foreach ($data->leaders as $leader) {
                             $tracker_fields->pa_bureau_it_leaders++;
-                            if ($leader->keyBureauCIO === 'Yes') {
+                            if (!empty($leader->keyBureauCIO) && $leader->keyBureauCIO === 'Yes') {
                                 $tracker_fields->pa_key_bureau_it_leaders++;
                             }
-                            if ($leader->typeOfAppointment === 'political') {
+                            if (!empty($leader->typeOfAppointment) && $leader->typeOfAppointment === 'political') {
                                 $tracker_fields->pa_political_appointees++;
                             }
                         }
@@ -1182,12 +1179,14 @@ class Campaign extends CI_Controller {
 
                 $data = json_decode(file_get_contents($archive));
                 if ($data) {
-                    if (!isset($data->boards)) {
+                    if (empty($data->boards)) {
                         $tracker_fields->pa_cio_governance_board = false;
                     }
-                    foreach ($data->boards as $board) {
-                        if (isset($board->programCodeFPI)) {
-                            $tracker_fields->pa_mapped_to_program_inventory++;
+                    else {
+                        foreach ($data->boards as $board) {
+                            if (isset($board->programCodeFPI)) {
+                                $tracker_fields->pa_mapped_to_program_inventory++;
+                            }
                         }
                     }
                 }
@@ -1241,6 +1240,9 @@ public function track_policyarchive($archive, $url) {
                     $tracker_fields->pa_it_policy_archive_files = count($files);
                     $tracker_fields->pa_it_policy_archive_filenames = implode(PHP_EOL,$files); 
                 }
+            }
+            if ($tracker_fields->pa_it_policy_archive_files == 0) {
+                $tracker_fields->pa_it_policy_archive = false;  
             }
         }
 

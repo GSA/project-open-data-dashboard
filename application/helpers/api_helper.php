@@ -236,6 +236,7 @@ function make_utf8 ($input) {
 
 
 function is_json($string) {
+ $string = trim(str_replace("\r", "", $string));
  json_decode($string);
  return (json_last_error() == JSON_ERROR_NONE);
 }

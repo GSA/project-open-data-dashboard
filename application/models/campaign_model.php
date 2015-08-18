@@ -517,34 +517,28 @@ class campaign_model extends CI_Model {
                     $json_header['download_content_length'] > 0 &&
                     $json_header['download_content_length'] < $max_remote_size)) {
 
-                // Load the JSON
-                $opts = array(
-                    'http' => array(
-                        'method' => "GET",
-                        'user_agent' => "CIO.gov Digital Strategy JSON crawler"
-                    )
-                );
-
-		if (config_item('proxy_host') && config_item('proxy_port')) {
-		  $ch = curl_init ($url);
-		  curl_setopt($ch, CURLOPT_HEADER, 0);
-		  $proxy = config_item('proxy_host') .":" .config_item('proxy_port');
-		  curl_setopt($ch, CURLOPT_PROXY, $proxy);
-		  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		  $json=curl_exec($ch);
-
-
-		} else {
-		  $context = stream_context_create($opts);
-		  $json = @file_get_contents($url, false, $context, -1, $max_remote_size + 1);
-		}
-
-
+                if (config_item('proxy_host') && config_item('proxy_port')) {
+                    $ch = curl_init ($url);
+                    curl_setopt($ch, CURLOPT_HEADER, 0);
+                    $proxy = config_item('proxy_host') .":" .config_item('proxy_port');
+                    curl_setopt($ch, CURLOPT_PROXY, $proxy);
+                    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; CIO.gov Digital Strategy JSON crawler)');
+                    curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION,true);
+                    $json=curl_exec($ch);
+                } else {
+                    $ch = curl_init ($url);
+                    curl_setopt($ch, CURLOPT_HEADER, 0);
+                    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; CIO.gov Digital Strategy JSON crawler)');
+                    curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION,true);
+                    $json=curl_exec($ch);
+                }
 
                 if ($json == false) {
-
                     $json = curl_from_json($url, false, false);
-
                     if (!$json) {
                         $errors[] = "File not found or couldn't be downloaded";
                     }
@@ -1173,11 +1167,21 @@ class campaign_model extends CI_Model {
 	      curl_setopt($ch, CURLOPT_HEADER, 0);
 	      $proxy = config_item('proxy_host') .":" .config_item('proxy_port');
 	      curl_setopt($ch, CURLOPT_PROXY, $proxy);
+          curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; CrawlBot/1.0.0)');
+	      curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
 	      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
           curl_setopt($ch, CURLOPT_FOLLOWLOCATION,true);
 	      $copy=curl_exec($ch);
 	    } else {
-	      $copy = file_get_contents($url, false);
+	      //$copy = file_get_contents($url, false);
+          $ch = curl_init ($url);
+	      curl_setopt($ch, CURLOPT_HEADER, 0);
+          curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; CrawlBot/1.0.0)');
+	      curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
+	      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+          curl_setopt($ch, CURLOPT_FOLLOWLOCATION,true);
+	      $copy=curl_exec($ch);
+
 	    }
 
 	    // If we can't read from this file, skip
