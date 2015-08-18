@@ -613,7 +613,7 @@
                             </tr>
                         <?php endif; ?>
 
-                        <tr class="<?php echo (isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && ($policyarchive_http_code == 200) && ($policyarchive_mime_color == 'success')) ? 'success' : 'danger' ?>">
+                        <tr class="<?php echo (isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive && ($policyarchive_http_code == 200) && ($policyarchive_mime_color == 'success')) ? 'success' : 'danger' ?>">
                             <th id="pa_it_policy_archive">
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
