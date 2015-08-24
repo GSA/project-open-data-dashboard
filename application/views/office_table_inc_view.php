@@ -412,6 +412,7 @@ function getFPINameByFPICode($fpi_code, $db) {
 }
 
 function replaceInvalidCharacters($text) {
+    $text = str_replace("\xef\xbb\xbf", "", $text);
     $text = str_replace(
         array("\xe2\x80\x98", "\xe2\x80\x99", "\xe2\x80\x9c", "\xe2\x80\x9d", "\xe2\x80\x93", "\xe2\x80\x94", "\xe2\x80\xa6"),
         array("'", "'", '"', '"', '-', '--', '...'),

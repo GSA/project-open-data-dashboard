@@ -622,7 +622,7 @@
                             </th>
                             <td>
                                 <a name="pa_it_policy_archive" class="anchor-point"></a>
-                                    <?php echo $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive ? '<span class="success">Yes</span>' : '<span class="text-danger">No</span>';?>
+                                    <?php echo ( isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive && ($policyarchive_http_code == 200) && ($policyarchive_mime_color == 'success') ? '<span class="success">Yes</span>' : '<span class="text-danger">No</span>');?>
                             </td>
                         </tr>
 
