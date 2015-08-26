@@ -75,6 +75,7 @@ class Offices extends CI_Controller {
 			$this->db->where('offices.cfo_act_agency', 'false');
 			$this->db->where('offices.reporting_authority_type', 'executive');
 			$this->db->where('offices.no_parent', 'true');
+			$this->db->where("(datagov_campaign.crawl_status IS NULL OR datagov_campaign.crawl_status = '$crawl_status_filter')");
 			$this->db->order_by("offices.name", "asc");
 			$query = $this->db->get();
 
@@ -83,7 +84,6 @@ class Offices extends CI_Controller {
 			   $query->free_result();
 			}
 
-
 			$this->db->select('*');
 			$this->db->from('offices');
 			$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
@@ -91,6 +91,7 @@ class Offices extends CI_Controller {
 			$this->db->where('offices.cfo_act_agency', 'false');
 			$this->db->where('offices.reporting_authority_type', 'independent');
 			$this->db->where('offices.no_parent', 'true');
+			$this->db->where("(datagov_campaign.crawl_status IS NULL OR datagov_campaign.crawl_status = '$crawl_status_filter')");
 			$this->db->order_by("offices.name", "asc");
 			$query = $this->db->get();
 
