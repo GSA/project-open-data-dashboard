@@ -1765,6 +1765,17 @@ class campaign_model extends CI_Model {
 
 	}
 
+	public function finalize_milestone($milestone) {
+		
+		$this->db->where('milestone', $milestone);
+		$this->db->where('crawl_status', 'current');
+		
+		$finalize = array( 'crawl_status' => 'final' );
+		$this->db->update('datagov_campaign', $finalize); 
+
+		return;
+	}
+
 
 	public function update_note($update) {
 

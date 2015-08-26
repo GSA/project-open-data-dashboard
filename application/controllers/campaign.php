@@ -702,6 +702,16 @@ class Campaign extends CI_Controller {
 
 		$this->load->model('campaign_model', 'campaign');
 
+        // Determine current milestone
+        $milestones             = $this->campaign->milestones_model();  
+        $milestone              = $this->campaign->milestone_filter($selected_milestone, $milestones);
+
+        // If it's the first day of a new milestone, finalize last results from previous milestone
+        if ($milestone->current == date('Y-m-d')) { 
+            $this->campaign->finalize_milestone($milestone->previous);
+        }
+
+        // Build query for list of offices to update
 		$this->db->select('url, id');
 
 		// Filter for certain offices
@@ -712,12 +722,6 @@ class Campaign extends CI_Controller {
 		if (is_numeric($id)) {
 			$this->db->where('id', $id);
 		}
-
-		// Determine current milestone
-
-		$milestones 			= $this->campaign->milestones_model();	
-		$milestone 				= $this->campaign->milestone_filter($selected_milestone, $milestones);
-
 
 		$query = $this->db->get('offices');
 
