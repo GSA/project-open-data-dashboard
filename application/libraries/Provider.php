@@ -172,7 +172,7 @@ abstract class OAuth2_Provider
 				  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				  $response = curl_exec($ch);
 				} else {
-				  $response = file_get_contents($url, $false);  
+				  $response = file_get_contents($url);  
 				}
 
 

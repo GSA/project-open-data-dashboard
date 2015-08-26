@@ -1,5 +1,5 @@
             <a name="automated_metrics" class="anchor-point"></a>
-            <h3 id="automated-metrics-heading">Automated Metrics <a class="info-icon" href="<?php echo site_url('docs'); ?>#automated_metrics"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
+            <h3 id="automated-metrics-heading">Automated Metrics <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users <a class="info-icon" href="<?php echo site_url('docs'); ?>#automated_metrics"><span class="glyphicon glyphicon-info-sign"></span></a>--></h3>
 
 
             <?php if (empty($office_campaign->bureaudirectory_status) && empty($office_campaign->governanceboard_status)): ?>
@@ -20,9 +20,11 @@
                 <div id="bureaudirectory-heading" class="panel panel-default">
                     <div class="panel-heading">
                         /digitalstrategy/bureaudirectory.json
+                        <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                         <a class="info-icon" href="<?php echo site_url('docs') . '#bureaudirectory' ?>">
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
+                        -->
                     </div>
 
                     <table class="table table-striped table-hover">
@@ -152,9 +154,11 @@
 
                         <tr class="<?php echo (isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true) && empty($office_campaign->bureaudirectory_status->errors) && empty($office_campaign->bureaudirectory_status->schema_errors)) ? 'success' : 'danger' ?>">
                             <th id="pa_bureau_it_leadership">
+                                <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
                                 </a>
+                                -->
                                 Bureau IT Leadership file exists and conforms to schema?
                             </th>
                             <td>
@@ -206,9 +210,11 @@
                         <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders)): ?>
                             <tr>
                                 <th id="pa_bureau_it_leaders">
+                                    <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leaders' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
                                     </a>
+                                    -->
                                     # Bureau IT Leaders
                                 </th>
                                 <td>
@@ -221,9 +227,11 @@
                         <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_key_bureau_it_leaders)): ?>
                             <tr>
                                 <th id="pa_key_bureau_it_leaders">
+                                    <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_key_bureau_it_leaders' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
                                     </a>
+                                    -->
                                     # Key Bureau IT Leaders
                                 </th>
                                 <td>
@@ -236,9 +244,11 @@
                         <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees)): ?>
                             <tr>
                                 <th id="pa_political_appointees">
+                                    <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_political_appointees' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
                                     </a>
+                                    -->
                                     # Political Appointees
                                 </th>
                                 <td>
@@ -252,9 +262,11 @@
                         <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership_link)): ?>
                             <tr>
                                 <th id="pa_bureau_it_leadership_link">
+                                    <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership_link' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
                                     </a>
+                                    -->
                                     Link to Bureau IT Leadership directory
                                 </th>
                                 <td>
@@ -276,9 +288,11 @@
                 <div id="governanceboard-heading" class="panel panel-default">
                     <div class="panel-heading">
                         /digitalstrategy/governanceboards.json
+                        <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                         <a class="info-icon" href="<?php echo site_url('docs') . '#governanceboard' ?>">
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
+                        -->
                     </div>
 
                     <table class="table table-striped table-hover">
@@ -409,9 +423,11 @@
 
                         <tr class="<?php echo (isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true) && empty($office_campaign->governanceboard_status->errors) && empty($office_campaign->governanceboard_status->schema_errors)) ? 'success' : 'danger' ?>">
                             <th id="pa_cio_governance_board">
+                                <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
                                 </a>
+                                -->
                                 CIO Governance Board file exists and conforms to schema?
                             </th>
                             <td>
@@ -464,9 +480,11 @@
                         <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_mapped_to_program_inventory)): ?>
                             <tr>
                                 <th id="pa_mapped_to_program_inventory">
+                                    <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_mapped_to_program_inventory' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
                                     </a>
+                                    -->
                                     % Mapped to Federal Program Inventory
                                 </th>
                                 <td>
@@ -479,9 +497,11 @@
                         <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board_link)): ?>
                             <tr>
                                 <th id="pa_cio_governance_board_link">
+                                    <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board_link' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
                                     </a>
+                                    -->
                                     Link to CIO Governance Board directory
                                 </th>
                                 <td>
@@ -504,9 +524,11 @@
                 <div id="policyarchive-heading" class="panel panel-default">
                     <div class="panel-heading">
                         /digitalstrategy/policyarchive.zip (.tar / .tar.gz / .tgz)
+                        <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                         <a class="info-icon" href="<?php echo site_url('docs') . '#policyarchive' ?>">
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
+                        -->
                     </div>
 
                     <table class="table table-striped table-hover">
@@ -615,9 +637,11 @@
 
                         <tr class="<?php echo (isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive && ($policyarchive_http_code == 200) && ($policyarchive_mime_color == 'success')) ? 'success' : 'danger' ?>">
                             <th id="pa_it_policy_archive">
+                                <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
                                 </a>
+                                -->
                                 IT Policy Archive file exists?
                             </th>
                             <td>
@@ -629,9 +653,11 @@
                         <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_filenames)): ?>
                             <tr>
                                 <th id="pa_it_policy_archive_filenames">
+                                    <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive_filenames' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
                                     </a>
+                                    -->
                                     Files in Archive
                                 </th>
                                 <td>
@@ -644,9 +670,11 @@
                         <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_link)): ?>
                             <tr>
                                 <th id="pa_it_policy_archive_link">
+                                    <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive_link' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
                                     </a>
+                                    -->
                                     Link to IT Policy Archive
                                 </th>
                                 <td>

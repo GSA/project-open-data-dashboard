@@ -225,7 +225,9 @@ class Offices extends CI_Controller {
 
         // pass tracker data model
         $view_data['tracker_model'] = $this->campaign->tracker_model();
-
+        
+        // indicate "tracker fields" that are placeholders for tables, not actual fields
+        $view_data['tracker_field_tables'] = array('pa_bureau_it_leadership_table', 'pa_cio_governance_board_table', '');
 
         $this->db->select('*');
         $this->db->where('id', $id);

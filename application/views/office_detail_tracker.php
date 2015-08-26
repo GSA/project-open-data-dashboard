@@ -93,13 +93,13 @@
 
                                         if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
                                             if ($office_campaign->tracker_fields->$tracker_field_name == 'yes' || $office_campaign->tracker_fields->$tracker_field_name == 'green') {
-                                                $status_icon = '<i class="text-success fa fa-check-square"></i>';
+                                                $status_icon = '<i class="text-success fa fa-check-square"></i><span class="sr-only">OK</span>';
                                                 $status_class = 'success';
                                             } else if ($office_campaign->tracker_fields->$tracker_field_name == 'no' || $office_campaign->tracker_fields->$tracker_field_name == 'red') {
-                                                $status_icon = '<i class="text-danger fa fa-times-circle"></i>';
+                                                $status_icon = '<i class="text-danger fa fa-times-circle"></i><span class="sr-only">Error</span>';
                                                 $status_class = 'danger';
                                             } else {
-                                                $status_icon = '<i class="text-warning fa fa-exclamation-triangle"></i>';
+                                                $status_icon = '<i class="text-warning fa fa-exclamation-triangle"></i><span class="sr-only">Warning</span>';
                                                 $status_class = '';
                                             }
                                         } else {
@@ -121,10 +121,18 @@
                                             <td class="tracker-field<?php if (isset($tracker_field_meta->indent)) echo " tracker-field-indent" . $tracker_field_meta->indent; ?>">
                                                 <a name="tracker_<?php echo $tracker_field_name ?>" class="anchor-point"></a>
                                                 <strong>
+                                                    <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                                     <a href="<?php echo site_url('docs') . '#' . $tracker_field_name ?>">
                                                         <span class="glyphicon glyphicon-info-sign"></span>
                                                     </a>
-                                                    <?php echo isset($tracker_field_meta->description) ? $tracker_field_meta->description : $tracker_field_meta->label ?>
+                                                    -->
+                                                    <?php if ($this->session->userdata('permissions') == $permission_level && !in_array($tracker_field_name, $tracker_field_tables)) : ?>
+                                                        <label for="<?php echo $tracker_field_name; ?>">
+                                                    <?php endif; ?>
+                                                        <?php echo isset($tracker_field_meta->description) ? $tracker_field_meta->description : $tracker_field_meta->label ?>
+                                                    <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                                                        </label>
+                                                    <?php endif; ?>
                                                 </strong>
                                             </td>
 
@@ -171,7 +179,7 @@
                                                 <td>
 
                                                     <?php if ($tracker_field_meta->type == "select") : ?>
-                                                        <select name="<?php echo $tracker_field_name ?>">
+                                                        <select name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>">
                                                             <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "yes") ? 'selected = "selected"' : '' ?> value="yes">Yes</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "no") ? 'selected = "selected"' : '' ?> value="no">No</option>
@@ -179,7 +187,7 @@
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "grade") : ?>
-                                                        <select name="<?php echo $tracker_field_name ?>">
+                                                        <select name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>">
                                                             <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Grade</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "A") ? 'selected = "selected"' : '' ?> value="A">A</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "B") ? 'selected = "selected"' : '' ?> value="B">B</option>
@@ -190,7 +198,7 @@
 
 
                                                     <?php if ($tracker_field_meta->type == "progress") : ?>
-                                                        <select name="<?php echo $tracker_field_name ?>">
+                                                        <select name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>">
                                                             <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Progress</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "progress") ? 'selected = "selected"' : '' ?> value="progress">Progress</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "neutral") ? 'selected = "selected"' : '' ?> value="neutral">Neutral</option>
@@ -200,7 +208,7 @@
 
 
                                                     <?php if ($tracker_field_meta->type == "traffic") : ?>
-                                                        <select name="<?php echo $tracker_field_name ?>">
+                                                        <select name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>">
                                                             <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "red") ? 'selected = "selected"' : '' ?> value="red">Red</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "yellow") ? 'selected = "selected"' : '' ?> value="yellow">Yellow</option>
@@ -210,7 +218,7 @@
 
 
                                                     <?php if ($tracker_field_meta->type == "status") : ?>
-                                                        <select name="<?php echo $tracker_field_name ?>">
+                                                        <select name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>">
                                                             <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "not-submitted") ? 'selected = "selected"' : '' ?> value="not-submitted">Not Submitted</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "on-time") ? 'selected = "selected"' : '' ?> value="on-time">Submitted on Time</option>
@@ -221,23 +229,23 @@
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "integer") : ?>
-                                                        <input type="number" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>" min="0" step="1">
+                                                        <input type="number" name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>" min="0" step="1">
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "percent") : ?>
-                                                        <input type="number" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>" min="0" step="1">%
+                                                        <input type="number" name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>" min="0" step="1">%
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "url") : ?>
-                                                        <input type="url" name="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>">
+                                                        <input type="url" name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>">
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "string") : ?>
-                                                        <input type="text" name="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
+                                                        <input type="text" name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "textarea") : ?>
-                                                        <textarea name="<?php echo $tracker_field_name ?>" cols="<?php echo isset($tracker_field_meta->cols) ? $tracker_field_meta->cols : 80; ?>" rows="<?php echo isset($tracker_field_meta->rows) ? $tracker_field_meta->rows : 5; ?>" maxlength="<?php echo isset($tracker_field_meta->maxlength) ? $tracker_field_meta->maxlength : 9999; ?>"><?php echo $office_campaign->tracker_fields->$tracker_field_name; ?></textarea>
+                                                        <textarea name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" cols="<?php echo isset($tracker_field_meta->cols) ? $tracker_field_meta->cols : 80; ?>" rows="<?php echo isset($tracker_field_meta->rows) ? $tracker_field_meta->rows : 5; ?>" maxlength="<?php echo isset($tracker_field_meta->maxlength) ? $tracker_field_meta->maxlength : 9999; ?>"><?php echo $office_campaign->tracker_fields->$tracker_field_name; ?></textarea>
                                                     <?php endif; ?>
 
                                                 </td>

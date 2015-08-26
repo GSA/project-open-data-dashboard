@@ -146,27 +146,27 @@ function page_status($data_status, $status_color = null) {
 	if($data_status == 'yellow') $data_status = 'warning';
 
 	if ($data_status == 'highlight') {
-	    $icon = '<i class="text-success fa fa-star"></i>';
+	    $icon = '<i class="text-success fa fa-star"></i><span class="sr-only">OK (highlighted)</span>';
 	}
 
 	if ($data_status == 'success') {
-	    $icon = '<i class="text-success fa fa-check-square"></i>';
+	    $icon = '<i class="text-success fa fa-check-square"></i><span class="sr-only">OK</span>';
 	}
 
 	if ($data_status == 'danger') {
-	    $icon = '<i class="text-danger fa fa-times-circle"></i>';
+	    $icon = '<i class="text-danger fa fa-times-circle"></i><span class="sr-only">Error</span>';
 	}
 
 	if ($data_status == 'warning' || $status_color == 'warning') {
-        $icon = '<i class="text-warning fa fa-exclamation-triangle"></i>';
+        $icon = '<i class="text-warning fa fa-exclamation-triangle"></i><span class="sr-only">Warning</span>';
 	}
 
 	if ($data_status == 'unknown') {
 		$status_color = (!empty($status_color)) ? 'text-'. $status_color : '';
-		 $icon = '<i class="unknown-value ' . $status_color . ' fa fa-question-circle"></i>';
+		 $icon = '<i class="unknown-value ' . $status_color . ' fa fa-question-circle"></i><span class="sr-only">Unknown status</span>';
 	}
 
-	if(empty($icon) && !empty($data_status))  $icon = '<i class="text-' . $status_color . ' fa fa-question-circle"></i>';
+	if(empty($icon) && !empty($data_status))  $icon = '<i class="text-' . $status_color . ' fa fa-question-circle"></i><span class="sr-only">Unknown status</span>';
 
 	if(empty($icon)) $icon = '';
 
@@ -257,9 +257,9 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $office_campaign, 
         <div class="panel panel-default">
         <div class="panel-heading">
             Bureau IT Leadership Directory';
-    $retval .= "        <a class=\"info-icon\" href=\"" . site_url('docs') . '#bureaudirectory_excerpts">';
+    $retval .= "        <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users <a class=\"info-icon\" href=\"" . site_url('docs') . '#bureaudirectory_excerpts">';
     $retval .= "            <span class=\"glyphicon glyphicon-info-sign\"></span>
-            </a>
+            </a>-->
         </div>
         <div style=\"padding : 1em;\">";
             $sections = array("1.2.4" => "edi_schedule_delivered",
@@ -335,9 +335,9 @@ function getGovernanceBoardTable($archive_dir, $office_id, $office_campaign, $ag
     $retval = "<div class=\"panel panel-default\">
                     <div class=\"panel-heading\">
                         Governance Boards
-                        <a class=\"info-icon\" href=\"" . site_url('docs') . "#governanceboard_excerpts\">
+                        <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users <a class=\"info-icon\" href=\"" . site_url('docs') . "#governanceboard_excerpts\">
                             <span class=\"glyphicon glyphicon-info-sign\"></span>
-                        </a>
+                        </a>-->
                     </div>
                     <div style=\"padding : 1em;\">";
                         $sections = array("1.2.4" => "edi_schedule_delivered",
