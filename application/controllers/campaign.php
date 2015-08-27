@@ -1238,7 +1238,7 @@ public function track_policyarchive($archive, $url) {
         $tracker_fields->pa_it_policy_archive_filenames = 'Cannot be evaluated';
         $tracker_fields->pa_it_policy_archive_link = $url;
 
-        if ($archive) {
+       if ($archive) {
 
             // TODO: Validate against schema
             $tracker_fields->pa_it_policy_archive = true; // this should be based on the result of the schema check
@@ -1272,11 +1272,13 @@ public function track_policyarchive($archive, $url) {
                     $tracker_fields->pa_it_policy_archive_files = count($files);
                     $tracker_fields->pa_it_policy_archive_filenames = implode(PHP_EOL,$files);
                 }
+
+                // MAX environment may not permit opening of compressed files
+                if(!$tracker_fields->pa_it_policy_archive_filenames) {
+                    $tracker_fields->pa_it_policy_archive_filenames = "Unable to open archive";
+                }
             }
-            if ($tracker_fields->pa_it_policy_archive_files == 0) {
-                $tracker_fields->pa_it_policy_archive = false;
-            }
-        }
+        } // end if archive file is found
 
         return $tracker_fields;
     }
