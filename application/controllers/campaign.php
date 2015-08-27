@@ -10,7 +10,7 @@ class Campaign extends CI_Controller {
         $this->load->helper('api');
         $this->load->helper('url');
         $this->load->helper('file');
-        
+
         // Determine the environment we're run from for debugging/output
         if (php_sapi_name() == 'cli') {
             if (isset($_SERVER['TERM'])) {
@@ -332,11 +332,22 @@ class Campaign extends CI_Controller {
         return $special_extras;
     }
 
-    /*
-      $id can be all, cfo-act, or a specific id
-      $component can be full-scan, all, directory, govboards, download
+    /**
+     * $id can be all, cfo-act, or a specific id
+     * $component can be full-scan, all, directory, govboards, download
+     *
+     * crawl_status values:
+     * in_progress
+     * current
+     * final
+     * aborted
+     * started
+     * archive
+     *
+     * @param string $id
+     * @param string $component
+     * @param string $selected_milestone
      */
-
     public function status($id = null, $component = null, $selected_milestone = null) {
 
         // enforce explicit component selection
@@ -729,6 +740,9 @@ class Campaign extends CI_Controller {
      * If the last crawl of the prior milestone was already set to final,
      * then nothing to do.
      *
+     * We check each office's campaign records individually in case any
+     * of the records are in an inconsistent state.
+     *
      * TO DO - for efficiency, it would be more efficient to work this status
      * update into the status method processing. This was added as a separate
      * step to minimize the risk of creating bugs in the status method.
@@ -743,51 +757,69 @@ class Campaign extends CI_Controller {
 
        foreach($offices as $office) {
 
-        if($this->campaignStatusIsFinalizedForMilestone($office, $milestone->previous)) {
-          continue;
-        }
+         $update = null;
+         $update = $this->get_campaign_for_milestone($office, $milestone->previous, 'final');
 
-        // Finalize the status of the milestone for this office
-        $this->db->select('status_id, milestone, crawl_status, crawl_start');
-        $this->db->where('milestone', $milestone->previous);
-        $this->db->where('office_id', $office->id);
-        $this->db->where('crawl_status', 'current');
-        $this->db->order_by('crawl_start', 'desc');
-        $this->db->limit(1);
-        $query = $this->db->get('ciogov_campaign');
+         if($update) {
+           $this->output("finalize_prior_milestone: office {$office->id} ciogov_campaign record already finalized for milestone " . $milestone->previous);
+           continue;
+         }
 
-        if ($query->num_rows() > 0) {
-          $campaigns = $query->result();
-          $update = $campaigns[0];
-          $update->crawl_status = 'final';
-          $this->db->where('status_id', $update->status_id);
-          $this->db->update('ciogov_campaign', $update);
-        }
+         // There should be a record with crawl_status of 'current'
+         $update = $this->get_campaign_for_milestone($office, $milestone->previous, 'current');
+
+         if(!$update) {
+          // Check for any valid record in the prior milestone
+          $update = $this->get_campaign_for_milestone($office, $milestone->previous, 'archive');
+         }
+
+         // If we didn't find any valid record in the prior milestone, create one.
+         if(!$update) {
+           $now = date('Y-m-d H:i:s');
+           $update->tracker_fields = $this->campaign->seed_first_tracker_fields();
+           $update->office_id = $office->id;
+           $update->milestone = $milestone->previous;
+           $update->crawl_status = 'final';
+           $update->crawl_start = $now;
+           $update->crawl_end = $now;
+           $this->db->insert('ciogov_campaign', $update);
+           $this->output("finalize_prior_milestone: office {$office->id} missing valid ciogov_campaign record for milestone " . $milestone->previous . " finalized record inserted");
+         }
+         else {
+           $this->db->where('status_id', $update->status_id);
+           $this->db->update('ciogov_campaign', array('crawl_status' => 'final'));
+           $this->output("finalize_prior_milestone: office {$office->id} ciogov_campaign record {$update->status_id} finalized for milestone " . $milestone->previous);
+         }
       }
     }
 
+
     /**
-     * Check if the campaign status is already final for the milestone.
+     * Find the most recent campaign record for the given office, milestone,
+     * and status.
      *
      * @param <object> $office
      * @param <date> $milestoneDate
-     * @returns <boolean>
+     * @param <string> $status
+     * @returns <object>
      */
-    public function campaignStatusIsFinalizedForMilestone($office, $milestoneDate)
+    public function get_campaign_for_milestone($office, $milestoneDate, $status)
     {
-      // Check if this office has already been finalized
       $this->db->select('status_id, milestone, crawl_status, crawl_start');
       $this->db->where('milestone', $milestoneDate);
       $this->db->where('office_id', $office->id);
-      $this->db->where('crawl_status', 'final');
+      $this->db->where('crawl_status', $status);
       $this->db->order_by('crawl_start', 'desc');
       $this->db->limit(1);
       $query = $this->db->get('ciogov_campaign');
+
+      $campaign = null;
       if ($query->num_rows() > 0) {
-        return true;
+        $campaigns = $query->result();
+        $campaign = $campaigns[0];
       }
 
-      return false;
+      return $campaign;
     }
 
     public function json_status($status, $real_url = null, $component = null) {
@@ -1219,36 +1251,48 @@ public function track_policyarchive($archive, $url) {
                 // download and extract file names here
                 // save in tracker fields
                 if (substr($archive, -3) == "zip") {
-                    $za = new ZipArchive(); 
-                    $za->open($archive); 
+                    $za = new ZipArchive();
+                    $za->open($archive);
 
                     $tracker_fields->pa_it_policy_archive_files = $za->numFiles;
-                    for( $i = 0; $i < $za->numFiles; $i++ ){ 
+                    for( $i = 0; $i < $za->numFiles; $i++ ){
                         $stat = $za->statIndex( $i );
-                        $tracker_fields->pa_it_policy_archive_filenames .= ( basename( $stat['name'] ) . PHP_EOL ); 
+                        $tracker_fields->pa_it_policy_archive_filenames .= ( basename( $stat['name'] ) . PHP_EOL );
                     }
                 }
                 else if (substr($archive, -3) == "tgz" || substr($archive, -6) == "tar.gz") {
                     $cmd = "tar -ztf $archive";
                     $files = explode(PHP_EOL, trim(shell_exec(escapeshellcmd($cmd))));
                     $tracker_fields->pa_it_policy_archive_files = count($files);
-                    $tracker_fields->pa_it_policy_archive_filenames = implode(PHP_EOL,$files); 
+                    $tracker_fields->pa_it_policy_archive_filenames = implode(PHP_EOL,$files);
                 }
                 else if (substr($archive, -3) == "tar") {
                     $cmd = "tar -tf $archive";
                     $files = explode(PHP_EOL, trim(shell_exec(escapeshellcmd($cmd))));
                     $tracker_fields->pa_it_policy_archive_files = count($files);
-                    $tracker_fields->pa_it_policy_archive_filenames = implode(PHP_EOL,$files); 
+                    $tracker_fields->pa_it_policy_archive_filenames = implode(PHP_EOL,$files);
                 }
             }
             if ($tracker_fields->pa_it_policy_archive_files == 0) {
-                $tracker_fields->pa_it_policy_archive = false;  
+                $tracker_fields->pa_it_policy_archive = false;
             }
         }
 
         return $tracker_fields;
     }
 
+    /**
+     * If running in terminal or cron mode, then provide information
+     * on the job.
+     *
+     * @param <string> $text
+     */
+    public function output($text)
+    {
+      if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+        echo $text . PHP_EOL;
+      }
+    }
 
 
 }
