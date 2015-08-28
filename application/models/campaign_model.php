@@ -322,10 +322,23 @@ class campaign_model extends CI_Model {
         $model->gr_open_gao_recommendations->description = "# Open GAO Recommendations";
         $model->gr_open_gao_recommendations->type = "integer";
         */
+        
+        if (strtotime($milestone) >= strtotime('2105-09-30')) {
+            
+            $model->ci_listserv_members = clone $field;
+            $model->ci_listserv_members->dashboard = true;
+            $model->ci_listserv_members->label = "Listserv Members";
+            $model->ci_listserv_members->description = "# of Listserv Members";
+            $model->ci_listserv_members->type = "integer";            
+            
+        }
+        
         return $model;
     }
 
      public function tracker_sections_model($milestone = null) {
+         
+        $milestone = $milestone === null ? '2000-01-01' : $milestone; 
          
         $cb = $milestone === '2015-09-30' ?  'Common Baseline: OMB Approval' : 'Common Baseline Submission Status';
          
@@ -334,6 +347,10 @@ class campaign_model extends CI_Model {
             'pa' => 'Published Artifacts Submission Status',
             //'gr' => 'GAO Recommendations'
         );
+        
+        if (strtotime($milestone) >= strtotime('2105-09-30')) {
+            $section_breakdown['ci'] = 'Community Involvement';
+        }
 
         return $section_breakdown;
     }

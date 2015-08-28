@@ -68,14 +68,20 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                                 $status = @$office->tracker_fields->pa_cio_governance_board;
                             } else if ($subsection->label === 'IT Policy Archive') {
                                 $status = @$office->tracker_fields->pa_it_policy_archive;
+                            } else if ($subsection->label === 'Listserv Members') {
+                                $status = @$office->tracker_fields->ci_listserv_members;
                             }
 
                             $column_anchor = $section_name . '_tab';
                             $subsection_selection = ($section_name == 'pdl') ? '' : '?highlight=' . $section_name;
-                            $metric_type = $subsection->label === 'GAO Recommendations' ? 'number-metric' : 'boolean-metric';
+                            if ($subsection->label === 'GAO Recommendations' || $subsection->label === 'Listserv Members') {
+                                $metric_type = 'number-metric';
+                            } else {
+                                $metric_type = 'boolean-metric';
+                            }
                             ?>
 
-                            <td class="<?php echo $metric_type; ?> <?php if (!empty($status)) echo status_color($status); ?> <?php if($status) echo $status; ?>">
+                            <td class="<?php echo $metric_type; ?> <?php if (!empty($status) && !is_numeric($status)) echo status_color($status); ?> <?php if($status) echo $status; ?>">
                                 <a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?><?php echo $subsection_selection . '#' . $column_anchor; ?>">
                                     <span>
                                         <?php
@@ -84,6 +90,9 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                                         $rec_status = json_decode($office->recommendation_status);
                                         if ($subsection->label === 'GAO Recommendations') {
                                             echo isset($rec_status->tracker_fields->gr_open_gao_recommendations) ? $rec_status->tracker_fields->gr_open_gao_recommendations : '';
+                                        }
+                                        elseif ($subsection->label === 'Listserv Members') {
+                                            echo $status;
                                         }
                                         elseif (!empty($status)) {
                                             echo page_status($status);
