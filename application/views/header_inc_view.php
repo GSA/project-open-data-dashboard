@@ -64,26 +64,28 @@
 
       </ul>
 
-      <?php if ($this->session->userdata('username')) : ?>
-            <ul class="nav navbar-nav navbar-right">
-              <li>
-                    <div class="btn-group navbar-btn">
-                      <button type="button" class="btn btn-inverse">
-                        <i class="glyphicon glyphicon-user glyphicon-white"></i>
-                        <?php echo $this->session->userdata('name_full'); ?>
-                      </button>
-                      <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                      </button>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="<?php echo site_url('account')?>"><i class="glyphicon glyphicon-pencil"></i> Account</a></li>
-                        <li><a href="<?php echo site_url('logout')?>"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>
-                      </ul>
-                    </div>
-              </li>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/GSA/fitara/issues" title="Feedback" target="_blank">Feedback</a></li>
+        <?php if ($this->session->userdata('username')) : ?>
+        <li>
+          <div class="btn-group navbar-btn">
+            <button type="button" class="btn btn-inverse">
+              <i class="glyphicon glyphicon-user glyphicon-white"></i>
+              <?php echo $this->session->userdata('name_full'); ?>
+            </button>
+            <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="<?php echo site_url('account')?>"><i class="glyphicon glyphicon-pencil"></i> Account</a></li>
+              <li><a href="<?php echo site_url('logout')?>"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>
             </ul>
-      <?php endif; ?>
+          </div>
+        </li>
+        <?php endif; ?>
+      </ul>
 
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
