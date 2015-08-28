@@ -120,7 +120,7 @@ class campaign_model extends CI_Model {
         return $model;
     }
 
-    public function tracker_model() {
+    public function tracker_model($milestone = null) {
 
         $model = new stdClass();
         $field = new stdClass();
@@ -135,7 +135,7 @@ class campaign_model extends CI_Model {
         $model->cb_self_assessment = clone $field;
         $model->cb_self_assessment->dashboard = true;
         $model->cb_self_assessment->label = "Self-Assessment";
-        $model->cb_self_assessment->type = "select";
+        $model->cb_self_assessment->type = $milestone === '2015-09-30' ? "approval" : "status";
 
         /*
         $model->cb_sa_overall_status_comment = clone $field;
@@ -148,7 +148,7 @@ class campaign_model extends CI_Model {
         $model->cb_implementation_plan = clone $field;
         $model->cb_implementation_plan->dashboard = true;
         $model->cb_implementation_plan->label = "Implementation Plan";
-        $model->cb_implementation_plan->type = "select";
+        $model->cb_implementation_plan->type = $milestone === '2015-09-30' ? "approval" : "status";
 
         /*
         $model->cb_overall_status_comment = clone $field;
@@ -205,7 +205,7 @@ class campaign_model extends CI_Model {
         $model->cb_cio_assignment_plan = clone $field;
         $model->cb_cio_assignment_plan->dashboard = true;
         $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (Optional)";
-        $model->cb_cio_assignment_plan->type = "select";
+        $model->cb_cio_assignment_plan->type = $milestone === '2015-09-30' ? "approval" : "status";
 
         $model->cb_self_assessment_url = clone $field;
         $model->cb_self_assessment_url->dashboard = false;
@@ -325,26 +325,28 @@ class campaign_model extends CI_Model {
         return $model;
     }
 
-     public function tracker_sections_model() {
-
+     public function tracker_sections_model($milestone = null) {
+         
+        $cb = $milestone === '2015-09-30' ?  'Common Baseline: OMB Approval' : 'Common Baseline Submission Status';
+         
         $section_breakdown = array(
-            'cb' => 'Common Baseline Submission Status',
+            'cb' => $cb,
             'pa' => 'Published Artifacts Submission Status',
-         //   'gr' => 'GAO Recommendations'
+            //'gr' => 'GAO Recommendations'
         );
 
         return $section_breakdown;
     }
 
-    public function tracker_subsections_model() {
+    public function tracker_subsections_model($milestone = null) {
 
-        $section_breakdown = $this->tracker_sections_model();
+        $section_breakdown = $this->tracker_sections_model($milestone);
 
         $sections = array_keys($section_breakdown);
 
         $subsection_breakdown = array();
 
-        $tracker = $this->tracker_model();
+        $tracker = $this->tracker_model($milestone);
 
         foreach ($tracker as $key => $item) {
             $section = substr($key, 0, 2);

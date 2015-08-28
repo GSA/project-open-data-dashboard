@@ -944,7 +944,7 @@ class Campaign extends CI_Controller {
         $update = (object) $this->input->post(NULL, TRUE);
 
         $ciogov_model_fields = $this->campaign->ciogov_model();
-        $tracker_model_fields = $this->campaign->tracker_model();
+        $tracker_model_fields = $this->campaign->tracker_model($update->milestone);
         $tracker_review_model = $this->campaign->tracker_review_model();
 
         // Set author name with best data available

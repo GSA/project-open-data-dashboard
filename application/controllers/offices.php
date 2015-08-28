@@ -91,9 +91,9 @@ class Offices extends CI_Controller {
 
         // pass milestones and tracker data model
         $view_data['milestone'] = $milestone;
-        $view_data['tracker'] = $this->campaign->tracker_model();
-        $view_data['section_breakdown'] = $this->campaign->tracker_sections_model();
-        $view_data['subsection_breakdown'] = $this->campaign->tracker_subsections_model();
+        $view_data['tracker'] = $this->campaign->tracker_model($selected_milestone);
+        $view_data['section_breakdown'] = $this->campaign->tracker_sections_model($selected_milestone);
+        $view_data['subsection_breakdown'] = $this->campaign->tracker_subsections_model($selected_milestone);
 
         // pass config variables
         $view_data['max_remote_size'] = $this->config->item('max_remote_size');
@@ -225,7 +225,7 @@ class Offices extends CI_Controller {
         $view_data['milestone'] = $milestone;
 
         // pass tracker data model
-        $view_data['tracker_model'] = $this->campaign->tracker_model();
+        $view_data['tracker_model'] = $this->campaign->tracker_model($selected_milestone);
         
         // indicate "tracker fields" that are placeholders for tables, not actual fields
         $view_data['tracker_field_tables'] = array('pa_bureau_it_leadership_table', 'pa_cio_governance_board_table', '');
@@ -326,7 +326,7 @@ class Offices extends CI_Controller {
         $view_data['selected_category'] = $selected_category;
 
         // pass tracker section breakdown model
-        $view_data['section_breakdown'] = $this->campaign->tracker_sections_model();
+        $view_data['section_breakdown'] = $this->campaign->tracker_sections_model($selected_milestone);
 
         // pass config variable
         $view_data['config'] = array('max_remote_size' => $this->config->item('max_remote_size'), 'archive_dir' => $this->config->item('archive_dir'));

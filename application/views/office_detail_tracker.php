@@ -91,7 +91,7 @@
                                         if (strpos($tracker_field_name, 'selected_best_practice') !== false && !$this->session->userdata('permissions') == $permission_level)
                                             continue;
 
-                                        if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
+                                        if (!empty($office_campaign->tracker_fields->$tracker_field_name) && $office_campaign->tracker_fields->$tracker_field_name != 'none') {
                                             if ($office_campaign->tracker_fields->$tracker_field_name == 'yes' || $office_campaign->tracker_fields->$tracker_field_name == 'green') {
                                                 $status_icon = '<i class="text-success fa fa-check-square"></i><span class="sr-only">OK</span>';
                                                 $status_class = 'success';
@@ -142,7 +142,7 @@
                                                    <?php
                                                     $overflow_text = false;
 
-                                                    if (!empty($status_icon) && ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "traffic")) {
+                                                    if (!empty($status_icon) && ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "approval" || $tracker_field_meta->type == "traffic")) {
                                                         echo $status_icon;
                                                     } elseif ($tracker_field_meta->type == "status") {
                                                         if ($office_campaign->tracker_fields->$tracker_field_name === "not-submitted") {
@@ -183,6 +183,15 @@
                                                             <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "yes") ? 'selected = "selected"' : '' ?> value="yes">Yes</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "no") ? 'selected = "selected"' : '' ?> value="no">No</option>
+                                                        </select>
+                                                    <?php endif; ?>
+
+                                                    <?php if ($tracker_field_meta->type == "approval") : ?>
+                                                        <select name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>">
+                                                            <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>
+                                                            <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "green") ? 'selected = "selected"' : '' ?> value="green">Approved</option>
+                                                            <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "red") ? 'selected = "selected"' : '' ?> value="red">Not Received</option>
+                                                            <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "none") ? 'selected = "selected"' : '' ?> value="none">Not Yet Approved</option>
                                                         </select>
                                                     <?php endif; ?>
 

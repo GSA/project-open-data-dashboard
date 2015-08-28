@@ -125,7 +125,7 @@ function http_status_color($status_code) {
 
 function status_color($status) {
 
-	if(empty($status)) return '';
+	if(empty($status) || $status == 'none') return '';
 
 	if ($status == 'yes' || $status == 'green') {
 		return 'success';
@@ -139,7 +139,7 @@ function status_color($status) {
 
 function page_status($data_status, $status_color = null) {
 
-	if(empty($data_status)) return '';
+	if(empty($data_status) || $data_status == 'none') return '';
 
 	if($data_status == 'yes' || $data_status == 'green') $data_status = 'success';
 	if($data_status == 'no' || $data_status == 'red') $data_status = 'danger';
