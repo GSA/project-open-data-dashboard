@@ -251,6 +251,7 @@ table.dashboard-list .info td a {
     border : 0;
 }
 
+/*
 form .tracker-content .table-striped > tbody > tr > td, 
 form .tracker-content .table-striped > tbody > tr > th {
     background-color: #fff !important;
@@ -260,6 +261,7 @@ form .tracker-content .table-striped > tbody > tr:nth-child(4n) > td,
 form .tracker-content .table-striped > tbody > tr:nth-child(4n) > th {
     background-color: #F9F9F9 !important;
 }
+*/
 
 .table-striped > tbody > tr.table-header th, 
 form .tracker-content .table-striped > tbody > tr.table-header th {
