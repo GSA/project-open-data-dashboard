@@ -93,7 +93,9 @@ window.addEventListener("hashchange", shiftWindow);
 
 
 
-
+$('.datepicker').datepicker({
+    format:'yyyy-mm-dd'
+});
 
 
 
