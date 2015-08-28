@@ -65,11 +65,11 @@
                                     <th>Status</th>
 
                                     <th>Automated Metrics</th>
+                                    <!--
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                             <th></th>
                                     <?php endif; ?>
-                                    </th>
-
+                                    -->
                                     <!-- NOTES
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                             <th></th>
@@ -135,7 +135,7 @@
                                                     <?php endif; ?>
                                                 </strong>
                                             </td>
-
+                                            
                                             <?php if ($this->session->userdata('permissions') != $permission_level) : ?>
                                                 <td>
 
@@ -247,6 +247,11 @@
                                                     <?php if ($tracker_field_meta->type == "textarea") : ?>
                                                         <textarea name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" cols="<?php echo isset($tracker_field_meta->cols) ? $tracker_field_meta->cols : 80; ?>" rows="<?php echo isset($tracker_field_meta->rows) ? $tracker_field_meta->rows : 5; ?>" maxlength="<?php echo isset($tracker_field_meta->maxlength) ? $tracker_field_meta->maxlength : 9999; ?>"><?php echo $office_campaign->tracker_fields->$tracker_field_name; ?></textarea>
                                                     <?php endif; ?>
+                                                        
+                                                    <?php if ($tracker_field_meta->type == "table") : ?>
+                                                        <?php $overflow_text = true; ?>
+                                                        <em>See below</em>
+                                                    <?php endif; ?>
 
                                                 </td>
                                             <?php endif; ?>
@@ -276,7 +281,7 @@
 
                                     <?php if (isset($overflow_text) && $overflow_text): ?>
                                         <tr>
-                                            <td colspan="5" class="overflow-row">
+                                            <td colspan="3" class="overflow-row">
                                                 <?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>
                                             </td>
                                         </tr>
@@ -284,7 +289,7 @@
 
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                         <tr>
-                                            <td colspan="5" class="hidden-row">
+                                            <td colspan="3" class="hidden-row">
                                                 <div class="edit-toggle collapse container form-group" id="note-expander-<?php echo $tracker_field_name ?>">
 
                                                     <?php
