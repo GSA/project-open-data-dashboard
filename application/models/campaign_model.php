@@ -122,6 +122,9 @@ class campaign_model extends CI_Model {
 
     public function tracker_model($milestone = null) {
 
+        $milestones = $this->campaign->milestones_model();
+        $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1; 
+        
         $model = new stdClass();
         $field = new stdClass();
 
@@ -135,7 +138,7 @@ class campaign_model extends CI_Model {
         $model->cb_self_assessment = clone $field;
         $model->cb_self_assessment->dashboard = true;
         $model->cb_self_assessment->label = "Self-Assessment";
-        $model->cb_self_assessment->type = $milestone === '2015-09-30' ? "approval" : "select";
+        $model->cb_self_assessment->type = $milestone_index === 3 ? "approval" : "select";
 
         $model->cb_self_assessment_url = clone $field;
         $model->cb_self_assessment_url->dashboard = false;
@@ -155,7 +158,7 @@ class campaign_model extends CI_Model {
         $model->cb_implementation_plan = clone $field;
         $model->cb_implementation_plan->dashboard = true;
         $model->cb_implementation_plan->label = "Implementation Plan";
-        $model->cb_implementation_plan->type = $milestone === '2015-09-30' ? "approval" : "select";
+        $model->cb_implementation_plan->type = $milestone_index === 3 ? "approval" : "select";
 
         $model->cb_implementation_plan_url = clone $field;
         $model->cb_implementation_plan_url->dashboard = false;
@@ -226,7 +229,7 @@ class campaign_model extends CI_Model {
         $model->cb_cio_assignment_plan = clone $field;
         $model->cb_cio_assignment_plan->dashboard = true;
         $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (Optional)";
-        $model->cb_cio_assignment_plan->type = $milestone === '2015-09-30' ? "approval" : "select";
+        $model->cb_cio_assignment_plan->type = $milestone_index === 3 ? "approval" : "select";
 
         $model->cb_cio_assign_plan_url = clone $field;
         $model->cb_cio_assign_plan_url->dashboard = false;
@@ -327,7 +330,7 @@ class campaign_model extends CI_Model {
         $model->gr_open_gao_recommendations->type = "integer";
         */
         
-        if (strtotime($milestone) >= strtotime('2105-09-30')) {
+        if ($milestone_index >= 3) {
             
             $model->ci_listserv_members = clone $field;
             $model->ci_listserv_members->dashboard = true;
@@ -342,9 +345,10 @@ class campaign_model extends CI_Model {
 
      public function tracker_sections_model($milestone = null) {
          
-        $milestone = $milestone === null ? '2000-01-01' : $milestone; 
+        $milestones = $this->campaign->milestones_model();
+        $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1; 
          
-        $cb = $milestone === '2015-09-30' ?  'Common Baseline: OMB Approval' : 'Common Baseline Submission Status';
+        $cb = $milestone_index === 3 ?  'Common Baseline: OMB Approval' : 'Common Baseline Submission Status';
          
         $section_breakdown = array(
             'cb' => $cb,
@@ -352,7 +356,7 @@ class campaign_model extends CI_Model {
             //'gr' => 'GAO Recommendations'
         );
         
-        if (strtotime($milestone) >= strtotime('2105-09-30')) {
+        if ($milestone_index >= 3) {
             $section_breakdown['ci'] = 'Community Involvement';
         }
 
