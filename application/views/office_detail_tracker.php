@@ -243,6 +243,10 @@
                                                     <?php if ($tracker_field_meta->type == "string") : ?>
                                                         <input type="text" name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
                                                     <?php endif; ?>
+                                                        
+                                                    <?php if ($tracker_field_meta->type == "date") : ?>
+                                                        <input type="text" class="datepicker" name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
+                                                    <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "textarea") : ?>
                                                         <textarea name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" cols="<?php echo isset($tracker_field_meta->cols) ? $tracker_field_meta->cols : 80; ?>" rows="<?php echo isset($tracker_field_meta->rows) ? $tracker_field_meta->rows : 5; ?>" maxlength="<?php echo isset($tracker_field_meta->maxlength) ? $tracker_field_meta->maxlength : 9999; ?>"><?php echo $office_campaign->tracker_fields->$tracker_field_name; ?></textarea>

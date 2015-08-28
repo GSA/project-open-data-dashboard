@@ -6,8 +6,10 @@
 <script src="<?php echo site_url('js/vendor/g.raphael.js') ?>"></script>
 <script src="<?php echo site_url('js/vendor/g.pie.js') ?>"></script>
 <script src="<?php echo site_url('js/vendor/morris.min.js') ?>"></script>
+<script src="<?php echo site_url('js/vendor/bootstrap-datepicker.js') ?>"></script>
 
 <link href="<?php echo site_url('css/morris.css') ?>" rel="stylesheet">
+<link href="<?php echo site_url('css/datepicker.css') ?>" rel="stylesheet">
 
 <?php include 'header_inc_view.php'; ?>
 

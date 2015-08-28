@@ -216,8 +216,9 @@ class Offices extends CI_Controller {
         $selected_category = ($this->input->get_post('highlight', TRUE)) ? $this->input->get_post('highlight', TRUE) : null;
 
         $milestone = $this->campaign->milestone_filter($selected_milestone, $milestones);
-
-
+        $selected_milestone_index = array_search($selected_milestone,array_keys($milestones))+1;
+        
+        
         $view_data = array();
 
         // pass milestones data model
@@ -283,11 +284,20 @@ class Offices extends CI_Controller {
             if (isset($view_data['office_campaign']->tracker_fields)) {
 
                 $tracker_fields = ($view_data['office_campaign']->tracker_fields) ? json_decode($view_data['office_campaign']->tracker_fields) : new stdClass();
-
+                
+                $clone_tracker_model = clone $view_data['tracker_model'];
                 foreach ($view_data['tracker_model'] as $field_name => $value) {
-                    $tracker_fields->$field_name = (isset($tracker_fields->$field_name)) ? $tracker_fields->$field_name : null;
+                  //disable tracker field in data+model if not in correct milestone
+                  if(isset($value->active) && (intval($selected_milestone_index) < intval($value->active))){
+                    unset($tracker_fields->$field_name);
+                    unset($clone_tracker_model->$field_name);
+                  }
+                  else{
+                    $tracker_fields->$field_name = (isset($tracker_fields->$field_name)) ? $tracker_fields->$field_name : null;  
+                  }
                 }
-
+                $view_data['tracker_model'] = $clone_tracker_model;//updates model if any tracker fields were disabled
+                
                 $view_data['office_campaign']->tracker_fields = json_encode($tracker_fields);
             }
 

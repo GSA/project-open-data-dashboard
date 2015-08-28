@@ -207,6 +207,30 @@ class campaign_model extends CI_Model {
         $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (Optional)";
         $model->cb_cio_assignment_plan->type = "select";
 
+        $model->cb_self_assessment_url = clone $field;
+        $model->cb_self_assessment_url->dashboard = false;
+        $model->cb_self_assessment_url->label = "Self-Assessment Plan URL (Optional)";
+        $model->cb_self_assessment_url->type = "url";
+        $model->cb_self_assessment_url->active = "3";//active for milestone 3 and forward
+        
+        $model->cb_implementation_plan_url = clone $field;
+        $model->cb_implementation_plan_url->dashboard = false;
+        $model->cb_implementation_plan_url->label = "Implementation Plan URL";
+        $model->cb_implementation_plan_url->type = "url";
+        $model->cb_implementation_plan_url->active = "3";//active for milestone 3 and forward
+        
+        $model->cb_date_of_omb_approval_of_implementation_plan = clone $field;
+        $model->cb_date_of_omb_approval_of_implementation_plan->dashboard = false;
+        $model->cb_date_of_omb_approval_of_implementation_plan->label = "Date of OMB Approval of Implementation Plan ";
+        $model->cb_date_of_omb_approval_of_implementation_plan->type = "date";
+        $model->cb_date_of_omb_approval_of_implementation_plan->active = "3";//active for milestone 3 and forward
+        
+        $model->cb_cio_assign_plan_url = clone $field;
+        $model->cb_cio_assign_plan_url->dashboard = false;
+        $model->cb_cio_assign_plan_url->label = "CIO Assignment Plan URL (If Applicable)";
+        $model->cb_cio_assign_plan_url->type = "url";
+        $model->cb_cio_assign_plan_url->active = "3";//active for milestone 3 and forward
+        
         // Published Artifacts
 
         $model->pa_bureau_it_leadership = clone $field;
