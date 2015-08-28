@@ -135,7 +135,7 @@ class campaign_model extends CI_Model {
         $model->cb_self_assessment = clone $field;
         $model->cb_self_assessment->dashboard = true;
         $model->cb_self_assessment->label = "Self-Assessment";
-        $model->cb_self_assessment->type = $milestone === '2015-09-30' ? "approval" : "status";
+        $model->cb_self_assessment->type = $milestone === '2015-09-30' ? "approval" : "select";
 
         /*
         $model->cb_sa_overall_status_comment = clone $field;
@@ -148,7 +148,7 @@ class campaign_model extends CI_Model {
         $model->cb_implementation_plan = clone $field;
         $model->cb_implementation_plan->dashboard = true;
         $model->cb_implementation_plan->label = "Implementation Plan";
-        $model->cb_implementation_plan->type = $milestone === '2015-09-30' ? "approval" : "status";
+        $model->cb_implementation_plan->type = $milestone === '2015-09-30' ? "approval" : "select";
 
         /*
         $model->cb_overall_status_comment = clone $field;
@@ -205,7 +205,7 @@ class campaign_model extends CI_Model {
         $model->cb_cio_assignment_plan = clone $field;
         $model->cb_cio_assignment_plan->dashboard = true;
         $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (Optional)";
-        $model->cb_cio_assignment_plan->type = $milestone === '2015-09-30' ? "approval" : "status";
+        $model->cb_cio_assignment_plan->type = $milestone === '2015-09-30' ? "approval" : "select";
 
         $model->cb_self_assessment_url = clone $field;
         $model->cb_self_assessment_url->dashboard = false;
