@@ -1831,9 +1831,19 @@ class campaign_model extends CI_Model {
 
 	public function datajson_schema($version = '') {
 
-		$version_path = (!empty($version)) ? $version . '/' : '';
+		$prefix = 'fitara';
 
-		$path = './schema/' . $version_path . 'catalog.json';
+		if (!empty($version)) {			
+			if (substr($version, 0, strlen($prefix)) == $prefix) {
+				$version_path = $prefix . '/' . substr($version, strlen($prefix)+1) . '.json';
+			} else {
+				$version_path = $version . '/catalog.json';
+			}
+		} else {
+			$version_path = 'catalog.json';
+		}
+
+		$path = './schema/' . $version_path; 
 
 		// Get the schema and data as objects
         $retriever = new JsonSchema\Uri\UriRetriever;

@@ -121,6 +121,11 @@ class Campaign extends CI_Controller {
 
         $schema         = ($this->input->post('schema', TRUE)) ? $this->input->post('schema', TRUE) : $schema;
 		$csv_id 		= ($this->input->post('csv_id', TRUE)) ? $this->input->post('csv_id', TRUE) : null;
+        $prefix         = 'fitara';
+
+        if (substr($schema, 0, strlen($prefix)) == $prefix) {
+            $prefix_model = substr($schema, strlen($prefix)+1);
+        }
 
 		// Initial file upload
 		if(!empty($_FILES)) {
@@ -143,7 +148,11 @@ class Campaign extends CI_Controller {
                 $json_schema = $this->campaign->datajson_schema($schema);
 
                 if ($schema) {
-                    $datajson_model = $this->campaign->schema_to_model($json_schema->properties->dataset->items->properties);
+                    if (!empty($prefix_model)) {
+                        $datajson_model = $this->campaign->schema_to_model($json_schema->properties->$prefix_model->items->properties);
+                    } else {
+                        $datajson_model = $this->campaign->schema_to_model($json_schema->properties->dataset->items->properties);
+                    }                    
                 } else {
                     $datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);    
                 }
@@ -252,6 +261,11 @@ class Campaign extends CI_Controller {
 
                             $value = $this->schema_map_filter($mapping[$count], $value, $schema);
 
+                            // Convert ints to strings for FITARA
+                            if(!empty($prefix_model)) {
+                                $value = (is_int($value)) ? (string)$value : $value;
+                            }
+
                             $json_row[$mapping[$count]] = $value;
                         }
 
@@ -260,9 +274,19 @@ class Campaign extends CI_Controller {
 
                     $json[] = $json_row;
 
-                }            
+                }         
+
+                if(!empty($prefix_model)) {
+
+                    $container = new stdClass();
+                    $container->$prefix_model = $json;
+                    $json = $container;
+
+                }
 
             }
+
+
 
 			// delete temporary uploaded csv file
 			unlink($full_path);

@@ -15,17 +15,35 @@
                     <div class="radio">
                       <label>
                         <input type="radio" name="schema" id="schema-federal-v1.1" value="federal-v1.1" checked>
-                        Federal schema v1.1
+                        Project Open Data schema v1.1
                       </label>
                     </div>
 
                     <div class="radio">
                       <label>
                         <input type="radio" name="schema" id="schema-federal-v1.0" value="">
-                        Federal schema v1.0
+                        Project Open Data schema v1.0
                       </label>
                     </div>
+
+                    <hr>
+
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="schema" id="fitara-leaders" value="fitara-leaders">
+                        FITARA Bureau IT Leadership Directory
+                      </label>
+                    </div>         
+
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="schema" id="fitara-boards" value="fitara-boards">
+                        FITARA CIO Governance Board Membership List
+                      </label>
+                    </div>                                  
                 </div>
+
+                <hr>
 
                 <div class="form-group">
                     <label for="datajson">Upload a CSV File</label>
