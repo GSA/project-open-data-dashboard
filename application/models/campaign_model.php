@@ -123,8 +123,8 @@ class campaign_model extends CI_Model {
     public function tracker_model($milestone = null) {
 
         $milestones = $this->campaign->milestones_model();
-        $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1; 
-        
+        $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1;
+
         $model = new stdClass();
         $field = new stdClass();
 
@@ -146,7 +146,7 @@ class campaign_model extends CI_Model {
         $model->cb_self_assessment_url->type = "url";
         $model->cb_self_assessment_url->indent = 1;
         $model->cb_self_assessment_url->active = "3";//active for milestone 3 and forward
-        
+
         /*
         $model->cb_sa_overall_status_comment = clone $field;
         $model->cb_sa_overall_status_comment->label = "Self-Assessment Overall Status Comment";
@@ -166,14 +166,14 @@ class campaign_model extends CI_Model {
         $model->cb_implementation_plan_url->type = "url";
         $model->cb_implementation_plan_url->indent = 1;
         $model->cb_implementation_plan_url->active = "3";//active for milestone 3 and forward
-        
+
         $model->cb_date_of_omb_approval_of_implementation_plan = clone $field;
         $model->cb_date_of_omb_approval_of_implementation_plan->dashboard = false;
         $model->cb_date_of_omb_approval_of_implementation_plan->label = "Date of OMB Approval of Implementation Plan ";
         $model->cb_date_of_omb_approval_of_implementation_plan->type = "date";
         $model->cb_date_of_omb_approval_of_implementation_plan->indent = 1;
         $model->cb_date_of_omb_approval_of_implementation_plan->active = "3";//active for milestone 3 and forward
-        
+
         /*
         $model->cb_overall_status_comment = clone $field;
         $model->cb_overall_status_comment->label = "Implemenation Plan Overall Status Comment";
@@ -237,7 +237,7 @@ class campaign_model extends CI_Model {
         $model->cb_cio_assign_plan_url->type = "url";
         $model->cb_cio_assign_plan_url->indent = 1;
         $model->cb_cio_assign_plan_url->active = "3";//active for milestone 3 and forward
-        
+
         // Published Artifacts
 
         $model->pa_bureau_it_leadership = clone $field;
@@ -329,33 +329,33 @@ class campaign_model extends CI_Model {
         $model->gr_open_gao_recommendations->description = "# Open GAO Recommendations";
         $model->gr_open_gao_recommendations->type = "integer";
         */
-        
+
         if ($milestone_index >= 3) {
-            
+
             $model->ci_listserv_members = clone $field;
             $model->ci_listserv_members->dashboard = true;
             $model->ci_listserv_members->label = "Listserv Members";
             $model->ci_listserv_members->description = "# of Listserv Members";
-            $model->ci_listserv_members->type = "integer";            
-            
+            $model->ci_listserv_members->type = "integer";
+
         }
-        
+
         return $model;
     }
 
      public function tracker_sections_model($milestone = null) {
-         
+
         $milestones = $this->campaign->milestones_model();
-        $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1; 
-         
+        $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1;
+
         $cb = $milestone_index === 3 ?  'Common Baseline: OMB Approval' : 'Common Baseline Submission Status';
-         
+
         $section_breakdown = array(
             'cb' => $cb,
             'pa' => 'Published Artifacts Submission Status',
             //'gr' => 'GAO Recommendations'
         );
-        
+
         if ($milestone_index >= 3) {
             $section_breakdown['ci'] = 'Community Involvement';
         }
@@ -418,7 +418,7 @@ class campaign_model extends CI_Model {
 
                 if (empty($current_milestone)) {
                     $current_milestone = $milestone_date;
-                } else {
+                } else if (!config_item('show_all_milestones')) {
                     unset($milestones[$milestone_date]);
                 }
             }
