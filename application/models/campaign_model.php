@@ -334,10 +334,9 @@ class campaign_model extends CI_Model {
 
             $model->ci_listserv_members = clone $field;
             $model->ci_listserv_members->dashboard = true;
-            $model->ci_listserv_members->label = "Listserv Members";
-            $model->ci_listserv_members->description = "# of Listserv Members";
-            $model->ci_listserv_members->type = "integer";
-
+            $model->ci_listserv_members->label = "# of Listserv Members";
+            $model->ci_listserv_members->type = "integer";            
+            
         }
 
         return $model;

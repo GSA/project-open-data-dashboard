@@ -91,9 +91,9 @@ class Offices extends CI_Controller {
 
         // pass milestones and tracker data model
         $view_data['milestone'] = $milestone;
-        $view_data['tracker'] = $this->campaign->tracker_model($selected_milestone);
-        $view_data['section_breakdown'] = $this->campaign->tracker_sections_model($selected_milestone);
-        $view_data['subsection_breakdown'] = $this->campaign->tracker_subsections_model($selected_milestone);
+        $view_data['tracker'] = $this->campaign->tracker_model($milestone->selected_milestone);
+        $view_data['section_breakdown'] = $this->campaign->tracker_sections_model($milestone->selected_milestone);
+        $view_data['subsection_breakdown'] = $this->campaign->tracker_subsections_model($milestone->selected_milestone);
 
         // pass config variables
         $view_data['max_remote_size'] = $this->config->item('max_remote_size');
