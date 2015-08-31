@@ -336,6 +336,10 @@ function getGovernanceBoardTable($archive_dir, $office_id, $office_campaign, $ag
         $data = file_get_contents($crawl_file);
         $data = replaceInvalidCharacters($data);
         $gb_directory = json_decode($data);
+        if(is_array($gb_directory) && sizeof($gb_directory)==1 && is_object($gb_directory[0]))
+        {
+          $gb_directory = $gb_directory[0];//get object from array
+        }
     }
     else {
         error_log("getGovernanceBoard : no file for $crawl_file");
