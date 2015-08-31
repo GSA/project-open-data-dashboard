@@ -1,7 +1,4 @@
-/**
- * Last dashboardTotals "0" element for GAO Recommendations was removed
- */
-var dashboardTotals = [null, null, 0, 0, 0, 0, 0, 0];
+var dashboardTotals = [null, null]; // initialize with nulls that represent non-data columns
 
 $(function() {
 
@@ -51,20 +48,40 @@ $('#accShow').on('click', function() {
  * The last <td></td> in var row which was meant for for GAO Recommendations total 
  * was removed.
  */
-var row = '<tr class="totals-row"><th>CFO Act Agencies (24)</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
-$(this).find('table.dashboard tr:last').after(row);
-$(this).find('table.dashboard tr').each(function() {
-    var n = 0;
-    for (var col = 2; col < 8; col++) {
-        n = $(this).find('td:nth-child(' + col + ')').find('i.text-success').length;
-        dashboardTotals[col] += n;
+var doDashboardTotals = function() {
+    
+    // Initialize totals row, and append to table
+    var cols = $(document).find('table.dashboard tr:last td').length;
+    var row = '<tr class="totals-row"><th>CFO Act Agencies (24)</th>';
+    for (var col = 0; col < cols; col++) {
+        row += '<td></td>';
+        dashboardTotals.push(0);
     }
-    n = parseInt($(this).find('td:nth-child(8)').text());
-    dashboardTotals[8] += isNaN(n) ? 0 : n;
-});
-for (var col = 2; col <= 8; col++) {
-    $(this).find('table.dashboard tr:last').find('td:nth-child(' + col + ')').html(dashboardTotals[col]);
-}
+    row += '</tr>';
+    $(document).find('table.dashboard tr:last').after(row);
+ 
+    // Get totals
+    $(document).find('table.dashboard tr').each(function() {
+        var n = 0;
+        var cols = $(this).find('td').length;
+        if (cols > 5) { // exclude header rows
+            for (var col = 2; col <= cols + 1; col++) {
+                if (parseInt($(this).find('td:nth-child(' + col + ')').text()) > 0) {
+                    n = parseInt($(this).find('td:nth-child(' + col + ')').text());
+                } else {
+                    n = $(this).find('td:nth-child(' + col + ')').find('i.text-success').length;
+                }
+                dashboardTotals[col] += isNaN(n) ? 0 : n;
+            }
+        }
+    });
+    
+    // Insert totals into totals row
+    for (var col = 2; col <= cols + 1; col++) {
+        $(document).find('table.dashboard tr:last').find('td:nth-child(' + col + ')').html(dashboardTotals[col]);
+    }
+    
+};
 
 /* Adjust the scroll height of anchors to compensate for the fixed navbar */
 window.disableShift = false;
@@ -90,14 +107,14 @@ window.addEventListener("hashchange", shiftWindow);
 
 
 
+doDashboardTotals();
+
 
 
 
 $('.datepicker').datepicker({
     format:'yyyy-mm-dd'
 });
-
-
 
 
 
