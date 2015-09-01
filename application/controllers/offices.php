@@ -410,11 +410,21 @@ class Offices extends CI_Controller {
     public function get_default_milestone() {
         $this->load->model('campaign_model', 'campaign');
         $milestones = $this->campaign->milestones_model();
+        $selected_date = '';
         foreach ($milestones as $date => $name) {
-            if (date(strtotime($date)) > date('U')) {
-                return $date;
+            //timestamp isn't future
+            if (date(strtotime($date)) <= date('U')) {
+              //set first date as selected
+              if($selected_date==""){
+                $selected_date = $date;
+              }
+              //override if next date is closer to today's date
+              else if(date(strtotime($selected_date)) < date(strtotime($date))){
+                $selected_date = $date;
+              }  
             }
         }
+        return $selected_date;
     }
 
 }
