@@ -731,8 +731,9 @@ class Campaign extends CI_Controller {
         $milestone              = $this->campaign->milestone_filter($selected_milestone, $milestones);
 
         // If it's the first day of a new milestone, finalize last results from previous milestone
-        if ($milestone->current == date('Y-m-d')) { 
-            $this->campaign->finalize_milestone($milestone->previous);
+        $yesterday = date("Y-m-d", time() - 60 * 60 * 24);
+        if ($milestone->previous == $yesterday) { 
+            $this->finalize_milestone($milestone->previous);
         }
 
         // Build query for list of offices to update
@@ -1568,6 +1569,10 @@ class Campaign extends CI_Controller {
 
 	}
 
+    public function finalize_milestone($milestone) {
+        $this->load->model('campaign_model', 'campaign');
+        return $this->campaign->finalize_milestone($milestone);
+    }
 
 	/*
 	Crawl each record in a datajson file and save current version + validation results
