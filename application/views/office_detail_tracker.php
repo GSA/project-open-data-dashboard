@@ -255,7 +255,7 @@
                                                     <?php endif; ?>
                                                         
                                                     <?php if ($tracker_field_meta->type == "date") : ?>
-                                                        <input type="text" class="datepicker" name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
+                                                        <input type="text" pattern="[0-9]{4}\-[0-9]{2}\-[0-9]{2}" title='Date format: YYYY-MM-DD' class="datepicker" name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
                                                     <?php endif; ?>
 
                                                     <?php if ($tracker_field_meta->type == "textarea") : ?>
