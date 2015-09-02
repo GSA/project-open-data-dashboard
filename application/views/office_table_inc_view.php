@@ -68,13 +68,13 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                                 $status = @$office->tracker_fields->pa_cio_governance_board;
                             } else if ($subsection->label === 'IT Policy Archive') {
                                 $status = @$office->tracker_fields->pa_it_policy_archive;
-                            } else if ($subsection->label === 'Listserv Members') {
+                            } else if ($subsection->label === '# of Listserv Members') {
                                 $status = @$office->tracker_fields->ci_listserv_members;
                             }
 
                             $column_anchor = $section_name . '_tab';
                             $subsection_selection = ($section_name == 'pdl') ? '' : '?highlight=' . $section_name;
-                            if ($subsection->label === 'GAO Recommendations' || $subsection->label === 'Listserv Members') {
+                            if ($subsection->label === 'GAO Recommendations' || $subsection->label === '# of Listserv Members') {
                                 $metric_type = 'number-metric';
                             } else {
                                 $metric_type = 'boolean-metric';
@@ -91,7 +91,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                                         if ($subsection->label === 'GAO Recommendations') {
                                             echo isset($rec_status->tracker_fields->gr_open_gao_recommendations) ? $rec_status->tracker_fields->gr_open_gao_recommendations : '';
                                         }
-                                        elseif ($subsection->label === 'Listserv Members') {
+                                        elseif ($subsection->label === '# of Listserv Members') {
                                             echo $status;
                                         }
                                         elseif (!empty($status)) {
