@@ -66,7 +66,9 @@
 
       
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="https://github.com/GSA/fitara/issues" title="Feedback" target="_blank">Feedback</a></li>
+        <?php if($this->config->item('feedback_url')): ?>
+        <li><a href="<?php echo $this->config->item('feedback_url');?>" title="Feedback" target="_blank">Feedback</a></li>
+        <?php endif; ?>
         <?php if ($this->session->userdata('username')) : ?>
         <li>
           <div class="btn-group navbar-btn">

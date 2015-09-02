@@ -3,6 +3,7 @@
 $config['download_dir'] = '/var/www/project-open-data-dashboard/downloads';
 $config['archive_dir']  = '/var/www/project-open-data-dashboard/archive';
 $config['docs_path'] = 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';
+$config['feedback_url'] = 'https://github.com/GSA/fitara/issues';
 
 $config['import_active'] = true;
 $config['show_all_offices'] = false;
