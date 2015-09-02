@@ -403,30 +403,20 @@ class Offices extends CI_Controller {
     }
 
     /**
-     * Get default milestone (the first milestone after today's date)
+     * Get default milestone (the last completed milestone before today's date)
      *
      * @return string - date in YYYY-MM-DD format
      */
     public function get_default_milestone() {
         $this->load->model('campaign_model', 'campaign');
-        $milestones = $this->campaign->milestones_model();
-        $selected_date = '';
+        $milestones = array_reverse($this->campaign->milestones_model());//reverse since milestones will always as ascending dates
         foreach ($milestones as $date => $name) {
-            //timestamp isn't future
-            if (date(strtotime($date)) <= date('U')) {
-              //set first date as selected
-              if($selected_date==""){
-                $selected_date = $date;
-              }
-              //override if next date is closer to today's date
-              else if(date(strtotime($selected_date)) < date(strtotime($date))){
-                $selected_date = $date;
-              }  
-            }
+          //return first date that is before today
+          if (date(strtotime($date)) < date('U')) {
+            return $date; 
+          }
         }
-        return $selected_date;
     }
-
 }
 
 /* End of file welcome.php */
