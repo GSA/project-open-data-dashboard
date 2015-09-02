@@ -107,6 +107,9 @@
                                             $status_icon = '';
                                             $status_class = '';
                                         }
+                                        
+                                        $overflow_text = $tracker_field_meta->type == 'table' ? true : false;
+                                        
                                         ?>
 
                                         <?php
@@ -140,7 +143,6 @@
                                                 <td>
 
                                                    <?php
-                                                    $overflow_text = false;
 
                                                     if (!empty($status_icon) && ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "approval" || $tracker_field_meta->type == "traffic")) {
                                                         echo $status_icon;
@@ -157,7 +159,6 @@
                                                             echo "Approved";
                                                         }
                                                     } elseif ($tracker_field_meta->type == "table") {
-                                                        $overflow_text = true;
                                                         echo '<em>See below</em>';
                                                     } else {
                                                         if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
@@ -262,7 +263,6 @@
                                                     <?php endif; ?>
                                                         
                                                     <?php if ($tracker_field_meta->type == "table") : ?>
-                                                        <?php $overflow_text = true; ?>
                                                         <em>See below</em>
                                                     <?php endif; ?>
 
