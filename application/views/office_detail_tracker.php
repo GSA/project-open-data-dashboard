@@ -160,6 +160,8 @@
                                                         }
                                                     } elseif ($tracker_field_meta->type == "table") {
                                                         echo '<em>See below</em>';
+                                                    } elseif ($tracker_field_meta->type == "url") {
+                                                        echo "<a href='".$office_campaign->tracker_fields->$tracker_field_name."' target='blank'>".$office_campaign->tracker_fields->$tracker_field_name."</a>";
                                                     } else {
                                                         if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
                                                             if (strlen($office_campaign->tracker_fields->$tracker_field_name) < 20) {

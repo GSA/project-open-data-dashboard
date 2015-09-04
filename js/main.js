@@ -113,9 +113,26 @@ doDashboardTotals();
 
 
 $('.datepicker').datepicker({
-    format:'yyyy-mm-dd'
+    format:'yyyy-mm-dd',
+    autoclose:true
 });
 
+var isValidDate = function(date){
+    var d = new Date(date);
+    if ( Object.prototype.toString.call(d) !== "[object Date]" )
+        return false;
+    return !isNaN(d.getTime());
+};
+var validateDatePickerInput = function(){
+    if(!isValidDate($(this).val())){
+        $(this).get(0).setCustomValidity('Date format: YYYY-MM-DD');
+    }
+    else{
+        $(this).get(0).setCustomValidity('');
+    }
+};
+$(document).on('focusout','.datepicker',validateDatePickerInput);
+$(document).on('changeDate','.datepicker',validateDatePickerInput);
 
 
 });
