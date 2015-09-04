@@ -3,7 +3,7 @@
 function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $subsections_breakdown, $milestone = null) {
 
     ?>
-	<div class="panel panel-default">
+	<div class="panel panel-default panel-dashboard">
 	<table class="dashboard table table-striped table-hover table-bordered">
 
             <tr class="dashboard-meta-heading">
@@ -435,6 +435,84 @@ function replaceInvalidCharacters($text) {
         array("'", "'", '"', '"', '-', '--', '...'),
         $text);
     return $text;
+}
+
+function status_table_gao($app, $milestone) {
+    
+    // GAO recommendation status data is saved in the notes table using office_id 0
+    $notes = $app->campaign->get_notes('0', $milestone->selected_milestone);
+    $data = $notes->num_rows() > 0 ? json_decode($notes->row()->note) : new stdClass();
+    
+    ?>
+
+    <?php if ($app->session->userdata('permissions') == 'admin') : ?>
+        <form method="post" action="<?php echo site_url(); ?>ciogov/status-update-gao" role="form" id="gao_recs">
+        <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>" />
+    <?php endif; ?>
+
+        <p>In February 2015, the U.S. Government Accountability Office (GAO) added “Improving the Management of IT Acquisitions and Operations” to its biennial 
+            <a href="http://www.gao.gov/highrisk/overview" target="_blank">High Risk List</a>. 
+            In this report, GAO cited inconsistent implementation of executive branch initiatives aimed at addressing IT operations challenges, 
+            as well as insufficient agency governance and CIO empowerment as factors contributing to IT challenges. 
+            The Comptroller General, who directs GAO, <a href="http://www.gpo.gov/fdsys/pkg/CHRG-114hhrg94537/pdf/CHRG-114hhrg94537.pdf" target="_blank">testified</a> 
+            that IT was added to the High Risk List in part to ensure the effective implementation of FITARA.</p>
+        <p>The High Risk List was informed by 737 related recommendations made by GAO to executive branch agencies. 
+            Agencies agreed with <?php echo isset($data->baseline) ? $data->baseline : 'many'; ?> of these recommendations. 
+            We will track and report on the status of these recommendations over time as an indicator of enhanced IT management practices, 
+            which can be strengthened through effective governmentwide implementation of FITARA and OMB’s FITARA implementation 
+            <a href="https://www.whitehouse.gov/sites/default/files/omb/memoranda/2015/m-15-14.pdf" target="_blank">guidance</a>.</p>    
+            
+        <?php if ($app->session->flashdata('outcome_gao') && $app->session->flashdata('status_gao')): ?>
+            <p class="form-flash bg-<?php echo $app->session->flashdata('outcome_gao'); ?>"><?php echo $app->session->flashdata('status_gao'); ?></p>
+        <?php endif; ?>
+
+	<div class="panel panel-default panel-gao-recommendations">
+	<table class="dashboard table table-striped table-hover table-bordered">
+
+            <tr class="dashboard-meta-heading">
+                <td></td>
+                <?php if ($app->session->userdata('permissions') == 'admin') : ?>
+                    <td><label for="baseline_gao_recs"># of Baseline GAO Recommendations</label></td>
+                    <td><label for="closed_gao_recs"># of Closed GAO Recommendations</label></td>
+                <?php else: ?>
+                    <td># of Baseline GAO Recommendations</td>
+                    <td># of Closed GAO Recommendations</td>
+                <?php endif; ?>
+                <td>% of Closed GAO Recommendations</td>
+            </tr>
+
+            <tr class="totals-row">
+                <th>CFO Act Agencies (24)</th>
+                <td>
+                    <?php if ($app->session->userdata('permissions') == 'admin') : ?>
+                        <input type="number" name="baseline" id="baseline_gao_recs" value="<?php echo isset($data->baseline) ? $data->baseline : 0; ?>" min="0" step="1">
+                    <?php else: ?>
+                        <?php echo isset($data->baseline) ? $data->baseline : 0; ?>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php if ($app->session->userdata('permissions') == 'admin') : ?>
+                        <input type="number" name="closed" id="closed_gao_recs" value="<?php echo isset($data->closed) ? $data->closed : 0; ?>" min="0" step="1">
+                    <?php else: ?>
+                        <?php echo isset($data->closed) ? $data->closed : 0; ?>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php echo isset($data->baseline) && isset($data->closed) ? number_format(($data->closed / $data->baseline * 100), 1) : 0; ?>%
+                </td>
+            </tr>
+            
+        </table>
+        </div>
+
+    <?php if ($app->session->userdata('permissions') == 'admin') : ?>
+        <div  class="pull-right" style="margin : 1em 0;">                                
+            <button type="submit" class="btn btn-success btn-xs">Update</button> 
+        </div>  
+        </form>
+    <?php endif; ?>
+
+    <?php
 }
 
 

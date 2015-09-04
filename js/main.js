@@ -51,17 +51,17 @@ $('#accShow').on('click', function() {
 var doDashboardTotals = function() {
     
     // Initialize totals row, and append to table
-    var cols = $(document).find('table.dashboard tr:last td').length;
+    var cols = $(document).find('table.dashboard:first tr:last td').length;
     var row = '<tr class="totals-row"><th>CFO Act Agencies (24)</th>';
     for (var col = 0; col < cols; col++) {
         row += '<td></td>';
         dashboardTotals.push(0);
     }
     row += '</tr>';
-    $(document).find('table.dashboard tr:last').after(row);
+    $(document).find('table.dashboard:first tr:last').after(row);
  
     // Get totals
-    $(document).find('table.dashboard tr').each(function() {
+    $(document).find('table.dashboard:first tr').each(function() {
         var n = 0;
         var cols = $(this).find('td').length;
         if (cols > 5) { // exclude header rows
@@ -78,7 +78,7 @@ var doDashboardTotals = function() {
     
     // Insert totals into totals row
     for (var col = 2; col <= cols + 1; col++) {
-        $(document).find('table.dashboard tr:last').find('td:nth-child(' + col + ')').html(dashboardTotals[col]);
+        $(document).find('table.dashboard:first tr:last').find('td:nth-child(' + col + ')').html(dashboardTotals[col]);
     }
     
 };

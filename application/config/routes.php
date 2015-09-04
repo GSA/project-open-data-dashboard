@@ -51,6 +51,7 @@ $route['changeset'] = "campaign/changeset";
 
 $route['ciogov/status-update'] = "campaign/status_update";
 $route['ciogov/status-review-update'] = "campaign/status_review_update";
+$route['ciogov/status-update-gao'] = "campaign/status_update_gao";
 $route['ciogov/(:any)'] = "campaign/$1";
 $route['ciogov/(:any)/'] = "campaign/$1";
 $route['ciogov/(:any)/(:any)'] = "campaign/$1/$2";

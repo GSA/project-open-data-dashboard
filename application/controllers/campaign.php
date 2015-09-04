@@ -1296,5 +1296,40 @@ public function track_policyarchive($archive, $url) {
       }
     }
 
+    /**
+     * Save GAO Recommendations status
+     */
+    public function status_update_gao() {
+
+        // Kick them out if they're not allowed here.
+        if ($this->session->userdata('permissions') !== 'admin') {
+            $this->load->helper('url');
+            redirect('/');
+            exit;
+        }
+        
+        $this->load->model('campaign_model', 'campaign');
+        
+        $update = (object) $this->input->post(NULL, TRUE);
+        
+        $milestone = isset($update->milestone) && !empty($update->milestone) ? $update->milestone : "";
+        $baseline = isset($update->baseline) && !empty($update->baseline) ? $update->baseline : "";
+        $closed = isset($update->closed) && !empty($update->closed) ? $update->closed : "";
+
+        $note_model_fields = $this->campaign->note_model();
+        $note_model_fields->office_id = 0;
+        $note_model_fields->milestone = $milestone;
+        $note_model_fields->field_name = 'gao_recommendations';
+        $note_model_fields->note = json_encode(array('baseline' => $baseline, 'closed' => $closed));
+        
+        $this->campaign->update_note($note_model_fields);
+
+        $this->session->set_flashdata('outcome_gao', 'success');
+        $this->session->set_flashdata('status_gao', 'GAO recommendation status updated');
+
+        $this->load->helper('url');
+        redirect('offices/' . $note_model_fields->milestone . '#gao_recs');
+        
+    }
 
 }
