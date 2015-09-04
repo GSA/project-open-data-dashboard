@@ -66,9 +66,11 @@ if($show_all_fields) {
             if(!empty($independent_offices)) {
                 status_table('Other Independent Offices', $independent_offices, $config, $milestone->selected_milestone, $milestone->specified);
             }
+            
+            status_table_gao($this, $milestone);
 
             ?>
-
+                
         </div>
       </div>
 

@@ -74,6 +74,15 @@ body { padding-top: 50px; }
     margin-bottom : 6em;
 }
 
+.panel-dashboard {
+    margin-bottom: 2em;
+}
+
+.panel-gao-recommendations {
+    margin-top: 2em;
+    margin-bottom : 0;
+}
+
 
 .form-flash {
     padding : 1em;
