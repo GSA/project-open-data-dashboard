@@ -438,11 +438,11 @@ function replaceInvalidCharacters($text) {
 }
 
 function status_table_gao($app, $milestone) {
-    
+
     // GAO recommendation status data is saved in the notes table using office_id 0
     $notes = $app->campaign->get_notes('0', $milestone->selected_milestone);
     $data = $notes->num_rows() > 0 ? json_decode($notes->row()->note) : new stdClass();
-    
+
     ?>
 
     <?php if ($app->session->userdata('permissions') == 'admin') : ?>
@@ -450,18 +450,18 @@ function status_table_gao($app, $milestone) {
         <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>" />
     <?php endif; ?>
 
-        <p>In February 2015, the U.S. Government Accountability Office (GAO) added “Improving the Management of IT Acquisitions and Operations” to its biennial 
-            <a href="http://www.gao.gov/highrisk/overview" target="_blank">High Risk List</a>. 
-            In this report, GAO cited inconsistent implementation of executive branch initiatives aimed at addressing IT operations challenges, 
-            as well as insufficient agency governance and CIO empowerment as factors contributing to IT challenges. 
-            The Comptroller General, who directs GAO, <a href="http://www.gpo.gov/fdsys/pkg/CHRG-114hhrg94537/pdf/CHRG-114hhrg94537.pdf" target="_blank">testified</a> 
+        <p>In February 2015, the U.S. Government Accountability Office (GAO) added “Improving the Management of IT Acquisitions and Operations” to its biennial
+            <a href="http://www.gao.gov/highrisk/overview" target="_blank">High Risk List</a>.
+            In this report, GAO cited inconsistent implementation of executive branch initiatives aimed at addressing IT operations challenges,
+            as well as insufficient agency governance and CIO empowerment as factors contributing to IT challenges.
+            The Comptroller General, who directs GAO, <a href="http://www.gpo.gov/fdsys/pkg/CHRG-114hhrg94537/pdf/CHRG-114hhrg94537.pdf" target="_blank">testified</a>
             that IT was added to the High Risk List in part to ensure the effective implementation of FITARA.</p>
-        <p>The High Risk List was informed by 737 related recommendations made by GAO to executive branch agencies. 
-            Agencies agreed with <?php echo isset($data->baseline) ? $data->baseline : 'many'; ?> of these recommendations. 
-            We will track and report on the status of these recommendations over time as an indicator of enhanced IT management practices, 
-            which can be strengthened through effective governmentwide implementation of FITARA and OMB’s FITARA implementation 
-            <a href="https://www.whitehouse.gov/sites/default/files/omb/memoranda/2015/m-15-14.pdf" target="_blank">guidance</a>.</p>    
-            
+        <p>The High Risk List was informed by 737 related recommendations made by GAO to executive branch agencies.
+            Agencies agreed with <?php echo isset($data->baseline) ? $data->baseline : 'many'; ?> of these recommendations.
+            We will track and report on the status of these recommendations over time as an indicator of enhanced IT management practices,
+            which can be strengthened through effective governmentwide implementation of FITARA and OMB’s FITARA implementation
+            <a href="https://www.whitehouse.gov/sites/default/files/omb/memoranda/2015/m-15-14.pdf" target="_blank">guidance</a>.</p>
+
         <?php if ($app->session->flashdata('outcome_gao') && $app->session->flashdata('status_gao')): ?>
             <p class="form-flash bg-<?php echo $app->session->flashdata('outcome_gao'); ?>"><?php echo $app->session->flashdata('status_gao'); ?></p>
         <?php endif; ?>
@@ -498,17 +498,17 @@ function status_table_gao($app, $milestone) {
                     <?php endif; ?>
                 </td>
                 <td>
-                    <?php echo isset($data->baseline) && isset($data->closed) ? number_format(($data->closed / $data->baseline * 100), 1) : 0; ?>%
+                    <?php echo isset($data->baseline) && $data->baseline > 0 && isset($data->closed) ? number_format(($data->closed / $data->baseline * 100), 1) : 0; ?>%
                 </td>
             </tr>
-            
+
         </table>
         </div>
 
     <?php if ($app->session->userdata('permissions') == 'admin') : ?>
-        <div  class="pull-right" style="margin : 1em 0;">                                
-            <button type="submit" class="btn btn-success btn-xs">Update</button> 
-        </div>  
+        <div  class="pull-right" style="margin : 1em 0;">
+            <button type="submit" class="btn btn-success btn-xs">Update</button>
+        </div>
         </form>
     <?php endif; ?>
 
