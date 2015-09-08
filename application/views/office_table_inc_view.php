@@ -457,7 +457,7 @@ function status_table_gao($app, $milestone) {
             The Comptroller General, who directs GAO, <a href="http://www.gpo.gov/fdsys/pkg/CHRG-114hhrg94537/pdf/CHRG-114hhrg94537.pdf" target="_blank">testified</a>
             that IT was added to the High Risk List in part to ensure the effective implementation of FITARA.</p>
         <p>The High Risk List was informed by 737 related recommendations made by GAO to executive branch agencies.
-            Agencies agreed with <?php echo isset($data->baseline) ? $data->baseline : 'many'; ?> of these recommendations.
+            Agencies agreed with <?php echo isset($data->baseline) && $data->baseline > 0 ? $data->baseline : 'many'; ?> of these recommendations.
             We will track and report on the status of these recommendations over time as an indicator of enhanced IT management practices,
             which can be strengthened through effective governmentwide implementation of FITARA and OMB’s FITARA implementation
             <a href="https://www.whitehouse.gov/sites/default/files/omb/memoranda/2015/m-15-14.pdf" target="_blank">guidance</a>.</p>
