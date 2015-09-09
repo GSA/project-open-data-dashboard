@@ -163,7 +163,7 @@
                             </th>
                             <td>
                                 <a name="pa_bureau_it_leadership" class="anchor-point"></a>
-                                <?php 
+                                <?php
                                 //echo $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership ? 'Yes' : 'No';
                                 if ( isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true) && empty($office_campaign->bureaudirectory_status->errors) && empty($office_campaign->bureaudirectory_status->schema_errors)) {
                                     echo "<span class='success'>Yes</span>";
@@ -181,7 +181,7 @@
                         <?php if ($this->session->userdata('permissions') == $permission_level && !(empty($office_campaign->bureaudirectory_status->errors))) : ?>
                         <tr class='danger'>
                         <th>Download errors</th>
-                            <td><span class='text-danger'><?php 
+                            <td><span class='text-danger'><?php
                                 for ($x = 0; $x < count($office_campaign->bureaudirectory_status->errors); $x++) {
                                     if ($x) {
                                         echo "<br>\n";
@@ -195,7 +195,7 @@
                         <?php if ($this->session->userdata('permissions') == $permission_level && !(empty($office_campaign->bureaudirectory_status->schema_errors))) : ?>
                         <tr class='danger'>
                         <th>JSON Schema errors</th>
-                            <td><span class='text-danger'><?php 
+                            <td><span class='text-danger'><?php
                                 for ($x = 0; $x < count($office_campaign->bureaudirectory_status->schema_errors); $x++) {
                                     if ($x) {
                                         echo "<br>\n";
@@ -432,7 +432,7 @@
                             </th>
                             <td>
                                 <a name="pa_cio_governance_board" class="anchor-point"></a>
-                                <?php 
+                                <?php
                                 if ( isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true) && empty($office_campaign->governanceboard_status->errors) && empty($office_campaign->governanceboard_status->schema_errors)) {
                                     echo "<span class='success'>Yes</span>";
                                 }
@@ -450,7 +450,7 @@
                         <?php if ($this->session->userdata('permissions') == $permission_level && !(empty($office_campaign->governanceboard_status->errors))) : ?>
                         <tr class='danger'>
                         <th>Download errors</th>
-                            <td><span class='text-danger'><?php 
+                            <td><span class='text-danger'><?php
                                 for ($x = 0; $x < count($office_campaign->governanceboard_status->errors); $x++) {
                                     if ($x) {
                                         echo "<br>\n";
@@ -464,7 +464,7 @@
                         <?php if ($this->session->userdata('permissions') == $permission_level && !(empty($office_campaign->governanceboard_status->schema_errors))) : ?>
                         <tr class='danger'>
                         <th>JSON Schema errors</th>
-                            <td><span class='text-danger'><?php 
+                            <td><span class='text-danger'><?php
                                 for ($x = 0; $x < count($office_campaign->governanceboard_status->schema_errors); $x++) {
                                     if ($x) {
                                         echo "<br>\n";
@@ -560,7 +560,8 @@
                                 if (!empty($office_campaign->policyarchive_status->content_type)) {
                                     if (strpos($office_campaign->policyarchive_status->content_type, 'application/zip') !== false ||
                                             strpos($office_campaign->policyarchive_status->content_type, 'application/x-tar') !== false ||
-                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-gtar') !== false
+                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-gtar') !== false ||
+                                            strpos($office_campaign->policyarchive_status->content_type, 'application/x-zip-compressed') !== false
                                             ) {
                                         $policyarchive_mime_color = 'success';
                                     } else {
@@ -635,7 +636,7 @@
                             </tr>
                         <?php endif; ?>
 
-                        <tr class="<?php echo (isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive && ($policyarchive_http_code == 200) && ($policyarchive_mime_color == 'success')) ? 'success' : 'danger' ?>">
+                        <tr class="<?php echo (isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive && ($policyarchive_http_code == 200)) ? 'success' : 'danger' ?>">
                             <th id="pa_it_policy_archive">
                                 <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive' ?>">
@@ -646,7 +647,7 @@
                             </th>
                             <td>
                                 <a name="pa_it_policy_archive" class="anchor-point"></a>
-                                    <?php echo ( isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive && ($policyarchive_http_code == 200) && ($policyarchive_mime_color == 'success') ? '<span class="success">Yes</span>' : '<span class="text-danger">No</span>');?>
+                                    <?php echo ( isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive && ($policyarchive_http_code == 200) ? '<span class="success">Yes</span>' : '<span class="text-danger">No</span>');?>
                             </td>
                         </tr>
 
