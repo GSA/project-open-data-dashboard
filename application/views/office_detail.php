@@ -30,7 +30,7 @@
 
             <h2><?php echo $office->name ?> - <?php echo $milestone->milestones[$milestone->selected_milestone]; ?> - <?php echo date("F jS Y", strtotime($milestone->selected_milestone)) ?></h2>
 
-            <div><a href="<?php echo $office->url ?>"><?php echo $office->url ?></a></div>
+            <div><a href="<?php echo $office->url ?>" tabindex="4"><?php echo $office->url ?></a></div>
 
             <div><?php echo $office->notes ?></div>
 
@@ -121,12 +121,12 @@
 
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="milestone drop down" tabindex="4">
                         Selected: <?php echo $milestone->milestones[$milestone->selected_milestone] . ' - ' . date("F jS Y", strtotime($milestone->selected_milestone)); ?> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <?php foreach ($milestone->milestones as $milestone_date => $milestone_name): ?>
-                            <li><a href="<?php echo site_url(); ?>offices/detail/<?php echo $office->id; ?>/<?php echo $milestone_date; ?>"><?php echo $milestone_name . ' - ' . date("F jS Y", strtotime($milestone_date)); ?></a></li>
+                            <li><a href="<?php echo site_url(); ?>offices/detail/<?php echo $office->id; ?>/<?php echo $milestone_date; ?>" title="select milestone"><?php echo $milestone_name . ' - ' . date("F jS Y", strtotime($milestone_date)); ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
@@ -134,8 +134,8 @@
 
 
             <!--
-            <a name="general_indicators" class="anchor-point"></a>
-            <h3>General Indicators <a class="info-icon" href="<?php echo site_url('docs'); ?>#general_indicators"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
+            <a name="general_indicators" class="anchor-point" tabindex="-1"></a>
+            <h3>General Indicators <a class="info-icon" href="<?php echo site_url('docs'); ?>#general_indicators" tabindex="-1"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
             <p>These indicators are reviewed by the Office of Management and Budget</p>
 
 

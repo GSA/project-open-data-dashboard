@@ -1090,18 +1090,37 @@ textarea {
 }
 a {
   color: #337ab7;
-  text-decoration: none;
+  text-decoration: underline;
 }
 a:hover,
 a:focus {
   color: #23527c;
   text-decoration: underline;
 }
-a:focus {
+a:focus,
+li.active a:focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
+
+li.dropdown a,
+table.dashboard th a,
+div.navbar-header a,
+ul.nav a,
+tr.dashboard-meta-heading a {
+	text-decoration: none;
+}
+
+
+div.navbar-btn button.btn-inverse:focus,
+div.navbar-btn button.btn-inverse.focus,
+div.navbar-btn button.btn-inverse:active {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
 figure {
   margin: 0;
 }
@@ -2990,11 +3009,15 @@ select[multiple].form-group-lg .form-control {
 .btn.active:focus,
 .btn.focus,
 .btn:active.focus,
-.btn.active.focus {
+.btn.active.focus,
+.btn-inverse:focus,
+.btn-inverse.active.focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
+
+
 .btn:hover,
 .btn:focus,
 .btn.focus {
@@ -3910,6 +3933,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   line-height: 1.42857143;
   border: 1px solid transparent;
   border-radius: 4px 4px 0 0;
+  text-decoration: none;
 }
 .nav-tabs > li > a:hover {
   border-color: #eee #eee #ddd;
@@ -6545,6 +6569,7 @@ button.close {
 .visible-print-inline {
   display: none !important;
 }
+
 @media print {
   .visible-print-inline {
     display: inline !important;

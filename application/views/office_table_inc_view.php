@@ -8,13 +8,9 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
             <tr class="dashboard-meta-heading">
                 <td><?php echo $title ?></td>
-
                 <?php foreach ($sections_breakdown as $key => $name): ?>
                     <td colspan="<?php echo count($subsections_breakdown[$key]); ?>" class="section-<?php echo $key; ?>">
                         <span><?php echo $name; ?>
-                            <a href="<?php echo site_url('docs') . '#general_indicators' ?>">
-                                <span class="glyphicon glyphicon-info-sign"></span>
-                            </a>
                         </span>
                     </td>
                 <?php endforeach; ?>
@@ -22,11 +18,11 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
             </tr>
             <tr class="dashboard-heading">
 
-                    <th class="col-sm-3"><div class="sr-only">Agency</div></th>
+                    <th scope="col" class="col-sm-3"><div class="sr-only">Agency</div></th>
 
                     <?php foreach ($subsections_breakdown as $section_name => $subsections): ?>
                         <?php foreach ($subsections as $subsection): ?>
-                            <th class="tilt"><div><?php echo $subsection->label;?></div></th>
+                            <th scope="col" class="tilt"><div><?php echo $subsection->label;?></div></th>
                         <?php endforeach; ?>
                     <?php endforeach; reset($subsections_breakdown); ?>
 
@@ -48,7 +44,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
 		<tr class="metrics-row">
 
-                    <th><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>"><?php echo $office->name;?></a></th>
+                    <th scope="row"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>" title="link to agency detail"><?php echo $office->name;?></a></th>
 
                     <?php foreach ($subsections_breakdown as $section_name => $subsections): ?>
                         <?php foreach ($subsections as $subsection): ?>
@@ -472,17 +468,17 @@ function status_table_gao($app, $milestone) {
             <tr class="dashboard-meta-heading">
                 <td></td>
                 <?php if ($app->session->userdata('permissions') == 'admin') : ?>
-                    <td><label for="baseline_gao_recs"># of Baseline GAO Recommendations</label></td>
-                    <td><label for="closed_gao_recs"># of Closed GAO Recommendations</label></td>
+                    <td scope="col"><label for="baseline_gao_recs"># of Baseline GAO Recommendations</label></td>
+                    <td scope="col"><label for="closed_gao_recs"># of Closed GAO Recommendations</label></td>
                 <?php else: ?>
-                    <td># of Baseline GAO Recommendations</td>
-                    <td># of Closed GAO Recommendations</td>
+                    <td scope="col"># of Baseline GAO Recommendations</td>
+                    <td scope="col"># of Closed GAO Recommendations</td>
                 <?php endif; ?>
-                <td>% of Closed GAO Recommendations</td>
+                <td scope="col">% of Closed GAO Recommendations</td>
             </tr>
 
             <tr class="totals-row">
-                <th>CFO Act Agencies (24)</th>
+                <th scope="row">CFO Act Agencies (24)</th>
                 <td>
                     <?php if ($app->session->userdata('permissions') == 'admin') : ?>
                         <input type="number" name="baseline" id="baseline_gao_recs" value="<?php echo isset($data->baseline) ? $data->baseline : 0; ?>" min="0" step="1">

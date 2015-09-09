@@ -17,7 +17,7 @@
                     <div class="note-heading">
                         <span class="note-metadata">
                             No general notes have been added yet
-                        </span>                                    
+                        </span>
                     </div>
                 <?php endif; ?>
 
@@ -29,11 +29,11 @@
                     <?php if (!empty($note_data->current->date) && !empty($note_data->current->author)): ?>
                             <div class="note-metadata">
                                 Lasted edited on <?php echo $note_data->current->date; ?> by <?php echo $note_data->current->author; ?>
-                            </div> 
+                            </div>
                     <?php endif; ?>
 
                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                                <button class="btn btn-primary edit-button" type="button">Edit</button>                                
+                                <button class="btn btn-primary edit-button" type="button" tabindex="6">Edit</button>
                     <?php endif; ?>
                         </div>
                 <?php endif; ?>
@@ -41,8 +41,8 @@
                 </div>
 
                 <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                    <div  class="pull-right" style="margin : 1em 0;">                                
+                    <div  class="pull-right" style="margin : 1em 0;">
                         <button class="btn btn-default btn-xs" id="accShow">Show All Notes</button>
-                        <button type="submit" class="btn btn-success btn-xs">Update</button> 
-                    </div>  
+                        <button type="submit" class="btn btn-success btn-xs">Update</button>
+                    </div>
                 <?php endif; ?>

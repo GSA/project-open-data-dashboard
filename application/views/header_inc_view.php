@@ -30,7 +30,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<?php echo site_url('')?>">FITARA Dashboard</a>
+      <a class="navbar-brand" href="<?php echo site_url('')?>" title="Link to FITARA Dashboard" tabindex="1">FITARA Dashboard</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -38,7 +38,7 @@
       <ul class="nav navbar-nav">
 
 
-        <li><a href="<?php echo site_url('offices')?>">Agencies</a></li>
+        <li><a href="<?php echo site_url('offices')?>" title="Link to Agency Offices" tabindex="2">Agencies</a></li>
         <!--<li><a href="<?php echo site_url('validate')?>">Validator</a></li>-->
 
         <!--<li class="dropdown">
@@ -64,7 +64,7 @@
 
       </ul>
 
-      
+
       <ul class="nav navbar-nav navbar-right">
         <?php if($this->config->item('feedback_url')): ?>
         <li><a href="<?php echo $this->config->item('feedback_url');?>" title="Feedback" target="_blank">Feedback</a></li>
@@ -72,17 +72,17 @@
         <?php if ($this->session->userdata('username')) : ?>
         <li>
           <div class="btn-group navbar-btn">
-            <button type="button" class="btn btn-inverse">
+            <button type="button" class="btn btn-inverse" tabindex="-1">
               <i class="glyphicon glyphicon-user glyphicon-white"></i>
               <?php echo $this->session->userdata('name_full'); ?>
             </button>
-            <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" tabindex="3">
               <span class="caret"></span>
               <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="<?php echo site_url('account')?>"><i class="glyphicon glyphicon-pencil"></i> Account</a></li>
-              <li><a href="<?php echo site_url('logout')?>"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>
+              <li><a href="<?php echo site_url('account')?>" title="link to Account" tabindex="-1"><i class="glyphicon glyphicon-pencil"></i> Account</a></li>
+              <li><a href="<?php echo site_url('logout')?>" title="link to logout" tabindex="-1"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>
             </ul>
           </div>
         </li>

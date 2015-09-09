@@ -1,6 +1,7 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs tracker-sections">
 
+                    <?php $tabIndex = 7; ?>
                     <?php foreach ($section_breakdown as $section_abbreviation => $section_title): ?>
 
                         <?php
@@ -17,11 +18,12 @@
                         ?>
 
                         <li  <?php if ($section_abbreviation == $active_section) echo 'class="active"'; ?>>
-                            <a name="<?php echo $section_abbreviation . '_tab'; ?>" href="#<?php echo $section_abbreviation; ?>" data-toggle="tab">
+                            <a name="<?php echo $section_abbreviation . '_tab'; ?>" href="#<?php echo $section_abbreviation; ?>" data-toggle="tab" title="link to section tab" tabindex="<?php echo $tabIndex ?>">
                         <?php echo $section_title; ?>
                                 <div class="section-score <?php echo $section_score ?>"></div>
                             </a>
                         </li>
+                            <?php $tabIndex++; ?>
                             <?php endforeach;
                             reset($section_breakdown); ?>
                 </ul>
@@ -107,9 +109,9 @@
                                             $status_icon = '';
                                             $status_class = '';
                                         }
-                                        
+
                                         $overflow_text = $tracker_field_meta->type == 'table' ? true : false;
-                                        
+
                                         ?>
 
                                         <?php
@@ -138,7 +140,7 @@
                                                     <?php endif; ?>
                                                 </strong>
                                             </td>
-                                            
+
                                             <?php if ($this->session->userdata('permissions') != $permission_level) : ?>
                                                 <td>
 
@@ -255,7 +257,7 @@
                                                     <?php if ($tracker_field_meta->type == "string") : ?>
                                                         <input type="text" name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
                                                     <?php endif; ?>
-                                                        
+
                                                     <?php if ($tracker_field_meta->type == "date") : ?>
                                                         <input type="text" pattern="[0-9]{4}\-[0-9]{2}\-[0-9]{2}" title='Date format: YYYY-MM-DD' class="datepicker" name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" value="<?php echo htmlentities($office_campaign->tracker_fields->$tracker_field_name); ?>" maxlength="<?php if (isset($tracker_field_meta->maxlength)) echo $tracker_field_meta->maxlength; ?>">
                                                     <?php endif; ?>
@@ -263,7 +265,7 @@
                                                     <?php if ($tracker_field_meta->type == "textarea") : ?>
                                                         <textarea name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>" cols="<?php echo isset($tracker_field_meta->cols) ? $tracker_field_meta->cols : 80; ?>" rows="<?php echo isset($tracker_field_meta->rows) ? $tracker_field_meta->rows : 5; ?>" maxlength="<?php echo isset($tracker_field_meta->maxlength) ? $tracker_field_meta->maxlength : 9999; ?>"><?php echo $office_campaign->tracker_fields->$tracker_field_name; ?></textarea>
                                                     <?php endif; ?>
-                                                        
+
                                                     <?php if ($tracker_field_meta->type == "table") : ?>
                                                         <em>See below</em>
                                                     <?php endif; ?>
