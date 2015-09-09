@@ -121,7 +121,7 @@
 
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="milestone drop down" tabindex="4">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Milestone selector" tabindex="4">
                         Selected: <?php echo $milestone->milestones[$milestone->selected_milestone] . ' - ' . date("F jS Y", strtotime($milestone->selected_milestone)); ?> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">

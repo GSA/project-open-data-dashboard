@@ -81,8 +81,8 @@
               <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="<?php echo site_url('account')?>" title="link to Account" tabindex="-1"><i class="glyphicon glyphicon-pencil"></i> Account</a></li>
-              <li><a href="<?php echo site_url('logout')?>" title="link to logout" tabindex="-1"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>
+              <li><a href="<?php echo site_url('account')?>" title="Link to Account" tabindex="-1"><i class="glyphicon glyphicon-pencil"></i> Account</a></li>
+              <li><a href="<?php echo site_url('logout')?>" title="link to Logout" tabindex="-1"><i class="glyphicon glyphicon-remove"></i> Logout</a></li>
             </ul>
           </div>
         </li>

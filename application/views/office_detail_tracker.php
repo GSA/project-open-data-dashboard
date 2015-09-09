@@ -18,7 +18,7 @@
                         ?>
 
                         <li  <?php if ($section_abbreviation == $active_section) echo 'class="active"'; ?>>
-                            <a name="<?php echo $section_abbreviation . '_tab'; ?>" href="#<?php echo $section_abbreviation; ?>" data-toggle="tab" title="link to section tab" tabindex="<?php echo $tabIndex ?>">
+                            <a name="<?php echo $section_abbreviation . '_tab'; ?>" href="#<?php echo $section_abbreviation; ?>" data-toggle="tab" title="Link to <?php echo $section_title ?> tab" tabindex="<?php echo $tabIndex ?>">
                         <?php echo $section_title; ?>
                                 <div class="section-score <?php echo $section_score ?>"></div>
                             </a>

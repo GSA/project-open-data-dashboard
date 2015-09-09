@@ -44,7 +44,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
 		<tr class="metrics-row">
 
-                    <th scope="row"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>" title="link to agency detail"><?php echo $office->name;?></a></th>
+                    <th scope="row"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>" title="Link to <?php echo $office->name ?> detail"><?php echo $office->name;?></a></th>
 
                     <?php foreach ($subsections_breakdown as $section_name => $subsections): ?>
                         <?php foreach ($subsections as $subsection): ?>
