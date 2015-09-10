@@ -382,6 +382,22 @@ class Campaign extends CI_Controller {
 
         if ($query->num_rows() > 0) {
             $offices = $query->result();
+            
+            // make sure to update any defunct, older in_progress records to aborted
+            $this->db->where('crawl_status', 'in_progress');
+            $this->db->where("(`ciogov_campaign`.`crawl_start` < NOW() - INTERVAL 20 MINUTE)");
+            $this->db->update('ciogov_campaign', array('crawl_status' => 'aborted'));
+
+            // check if a crawl is currently underway, if so, return false
+            $this->db->select('status_id');
+            $this->db->where("(`ciogov_campaign`.`crawl_start` >= NOW() - INTERVAL 20 MINUTE)");
+            $this->db->where('crawl_status', 'in_progress');
+            $query = $this->db->get('ciogov_campaign');
+            if ($query->num_rows() > 0) {
+                // abort crawl
+                error_log('FOUND ' . $query->num_rows() . ' recent ciogov_campiagn record(s) that are in_progress.  ABORTING CRAWL.');
+                return false;
+            }
 
             $this->finalize_prior_milestone($offices, $milestone);
 
