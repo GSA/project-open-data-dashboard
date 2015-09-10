@@ -5,28 +5,33 @@ function curl_from_json($url, $array=false, $decode=true) {
 	$ch = curl_init();
     curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
 	curl_setopt($ch, CURLOPT_URL, $url);
-	
+
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);	
-	
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+
     curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
     curl_setopt($ch, CURLOPT_FILETIME, true);
-    
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET'); 
-    
+
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
     curl_setopt($ch, CURLOPT_COOKIESESSION, true);
     curl_setopt($ch, CURLOPT_COOKIE, "");
-    
+
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);    
-    
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+
 
 	$data=curl_exec($ch);
+
+	$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	if (!$httpCode){
+      error_log("curl_from_json return code for url $url is HTTP Status '0' \n". curl_error($ch));
+	}
 	curl_close($ch);
 
     if($decode == true) {
       $data = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($data));
-	    return json_decode($data, $array);	        
+	    return json_decode($data, $array);
     } else {
         return $data;
     }
@@ -37,23 +42,23 @@ function curl_from_json($url, $array=false, $decode=true) {
 
 function curl_header($url, $follow_redirect = true, $tmp_dir = null) {
   $info = array();
-  
+
   $ch = curl_init();
 
   curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
   curl_setopt($ch, CURLOPT_URL, $url);
 
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 
-  curl_setopt($ch, CURLOPT_TIMEOUT, 10);  
+  curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 
   curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
   curl_setopt($ch, CURLOPT_FILETIME, true);
 
   curl_setopt($ch, CURLOPT_NOBODY, true);
   curl_setopt($ch, CURLOPT_HEADER, true);
-  
+
   curl_setopt($ch, CURLOPT_COOKIESESSION, true);
   curl_setopt($ch, CURLOPT_COOKIE, "");
 
@@ -69,12 +74,18 @@ function curl_header($url, $follow_redirect = true, $tmp_dir = null) {
 
   $info['header'] = http_parse_headers($http_heading);
   $info['info'] = curl_getinfo($ch);
+
+  $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  if (!$httpCode){
+     error_log("curl_header return code for url $url is HTTP Status '0' \n". curl_error($ch));
+  }
+
   curl_close($ch);
 
 
-  // If the server didn't support HTTP HEAD, use the shim. 
+  // If the server didn't support HTTP HEAD, use the shim.
   if( (!empty($info['header']['X-Error-Message']) && trim($info['header']['X-Error-Message']) == 'HEAD is not supported')
-      OR empty($info['header']['Content-Type'])) {   
+      OR empty($info['header']['Content-Type'])) {
     return curl_head_shim($url, $follow_redirect, $tmp_dir);
   } else {
     return $info;
@@ -99,8 +110,8 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
   curl_setopt($ch, CURLOPT_FILE, $output);
 
   curl_setopt($ch, CURLOPT_WRITEHEADER, $headerfile);
-  curl_setopt($ch, CURLOPT_TIMEOUT, 3); 
-  curl_setopt($ch, CURLOPT_HEADER, true); 
+  curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+  curl_setopt($ch, CURLOPT_HEADER, true);
 
   curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
 
@@ -288,7 +299,7 @@ function filter_json( $source_json, $dataset_array = false ) {
 
       if (is_string($field_value)) {
         $field_value =  filter_var( $field_value, FILTER_SANITIZE_STRING );
-      } 
+      }
 
       $dataset->$field_name = $field_value;
 
@@ -302,7 +313,7 @@ function filter_json( $source_json, $dataset_array = false ) {
     $source_json = $datasets;
   }
 
-    return $source_json; 
+    return $source_json;
 }
 
 
