@@ -47,7 +47,7 @@ The options for [component] are: `all`, `datajson`, `datapage`, `digitalstrategy
 Installation
 -----
 
-This is a <a href="http://ellislab.com/codeigniter">CodeIgniter</a> PHP application. Installation primarily consists of editing config files in `/application/config` and importing the database schema. 
+This is a [CodeIgniter](http://www.codeigniter.com/) PHP application. Installation primarily consists of editing config files in `/application/config` and importing the database schema. 
 
 1. Grab the code `git clone https://github.com/GSA/project-open-data-dashboard.git`
 1. Copy `/sample.htaccess` to `/.htaccess`. You may need to adjust the configuration of your .htaccess file to match your environment.
