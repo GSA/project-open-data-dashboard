@@ -1108,7 +1108,8 @@ li.dropdown a,
 table.dashboard th a,
 div.navbar-header a,
 ul.nav a,
-tr.dashboard-meta-heading a {
+tr.dashboard-meta-heading a,
+td.number-metric a {
 	text-decoration: none;
 }
 
