@@ -176,7 +176,7 @@ class campaign_model extends CI_Model {
 
         $model->cb_cio_assignment_plan = clone $field;
         $model->cb_cio_assignment_plan->dashboard = true;
-        $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (Optional)";
+        $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (If Applicable)";
         $model->cb_cio_assignment_plan->type = $milestone_index === 3 ? "approval" : "select";
 
         $model->cb_cio_assign_plan_url = clone $field;
