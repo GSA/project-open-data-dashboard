@@ -22,7 +22,12 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
                     <?php foreach ($subsections_breakdown as $section_name => $subsections): ?>
                         <?php foreach ($subsections as $subsection): ?>
-                            <th scope="col" class="tilt"><div><?php echo $subsection->label;?></div></th>
+                            <th scope="col" class="tilt">
+                              <div>
+                                <?php echo $subsection->label;?>
+                                <?php if($subsection->due_date) echo "<span>{$subsection->due_date}</span>" ?>
+                              </div>
+                            </th>
                         <?php endforeach; ?>
                     <?php endforeach; reset($subsections_breakdown); ?>
 

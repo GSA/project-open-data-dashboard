@@ -174,58 +174,6 @@ class campaign_model extends CI_Model {
         $model->cb_date_of_omb_approval_of_implementation_plan->indent = 1;
         $model->cb_date_of_omb_approval_of_implementation_plan->active = "3";//active for milestone 3 and forward
 
-        /*
-        $model->cb_overall_status_comment = clone $field;
-        $model->cb_overall_status_comment->label = "Implemenation Plan Overall Status Comment";
-        $model->cb_overall_status_comment->type = "textarea";
-        $model->cb_overall_status_comment->maxlength = 500;
-        $model->cb_overall_status_comment->indent = 1;
-
-        $model->cb_budget_formulation_rating = clone $field;
-        $model->cb_budget_formulation_rating->label = "Budget Formulation Rating";
-        $model->cb_budget_formulation_rating->type = "traffic";
-        $model->cb_budget_formulation_rating->indent = 1;
-
-        $model->cb_budget_formulation_rating_comment = clone $field;
-        $model->cb_budget_formulation_rating_comment->label = "Budget Formulation Rating Comment";
-        $model->cb_budget_formulation_rating_comment->type = "textarea";
-        $model->cb_budget_formulation_rating_comment->maxlength = 500;
-        $model->cb_budget_formulation_rating_comment->indent = 2;
-
-        $model->cb_execution_rating = clone $field;
-        $model->cb_execution_rating->label = "Execution Rating";
-        $model->cb_execution_rating->type = "traffic";
-        $model->cb_execution_rating->indent = 1;
-
-        $model->cb_execution_rating_comment = clone $field;
-        $model->cb_execution_rating_comment->label = "Execution Rating Comment";
-        $model->cb_execution_rating_comment->type = "textarea";
-        $model->cb_execution_rating_comment->maxlength = 500;
-        $model->cb_execution_rating_comment->indent = 2;
-
-        $model->cb_acquisition_rating = clone $field;
-        $model->cb_acquisition_rating->label = "Acquisition Rating";
-        $model->cb_acquisition_rating->type = "traffic";
-        $model->cb_acquisition_rating->indent = 1;
-
-        $model->cb_acquisition_rating_comment = clone $field;
-        $model->cb_acquisition_rating_comment->label = "Acquisition Rating Comment";
-        $model->cb_acquisition_rating_comment->type = "textarea";
-        $model->cb_acquisition_rating_comment->maxlength = 500;
-        $model->cb_acquisition_rating_comment->indent = 2;
-
-        $model->cb_org_workforce_rating = clone $field;
-        $model->cb_org_workforce_rating->label = "Org/Workforce Rating";
-        $model->cb_org_workforce_rating->type = "traffic";
-        $model->cb_org_workforce_rating->indent = 1;
-
-        $model->cb_org_workforce_rating_comment = clone $field;
-        $model->cb_org_workforce_rating_comment->label = "Org/Workforce Rating Comment";
-        $model->cb_org_workforce_rating_comment->type = "textarea";
-        $model->cb_org_workforce_rating_comment->maxlength = 500;
-        $model->cb_org_workforce_rating_comment->indent = 2;
-        */
-
         $model->cb_cio_assignment_plan = clone $field;
         $model->cb_cio_assignment_plan->dashboard = true;
         $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (Optional)";
@@ -335,49 +283,41 @@ class campaign_model extends CI_Model {
             $model->ci_listserv_members = clone $field;
             $model->ci_listserv_members->dashboard = true;
             $model->ci_listserv_members->label = "# of Listserv Members";
-            $model->ci_listserv_members->type = "integer";            
-            
+            $model->ci_listserv_members->type = "integer";
+
         }
 
         return $model;
     }
 
+    /**
+     * Returns array of section breakdown for the dashboard office table headers.
+     *
+     * @param <date> $milestone
+     * @return <array>
+     */
      public function tracker_sections_model($milestone = null) {
 
-        $milestones = $this->campaign->milestones_model();
-        $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1;
-
-        $cb = $milestone_index === 3 ?  'Common Baseline: OMB Approval' : 'Common Baseline Submission Status';
-
-        $section_breakdown = array(
-            'cb' => $cb,
-            'pa' => 'Published Artifacts Submission Status',
-            //'gr' => 'GAO Recommendations'
-        );
-
-        if ($milestone_index >= 3) {
-            $section_breakdown['ci'] = 'Community Involvement';
-        }
+        $this->load->model('milestone_setting_model', 'settings', TRUE);
+        $section_breakdown = $this->settings->get_sections($milestone);
 
         return $section_breakdown;
     }
 
+    /**
+     * Returns an array of subsections for the office table subheader.
+     * Returns the tracker_model objects that have a dashboard setting
+     * of true.
+     *
+     * @param <date> $milestone
+     * @return <array>
+     */
     public function tracker_subsections_model($milestone = null) {
-
-        $section_breakdown = $this->tracker_sections_model($milestone);
-
-        $sections = array_keys($section_breakdown);
 
         $subsection_breakdown = array();
 
-        $tracker = $this->tracker_model($milestone);
-
-        foreach ($tracker as $key => $item) {
-            $section = substr($key, 0, 2);
-            if (isset($item->dashboard) && $item->dashboard === true) {
-                $subsection_breakdown[$section][] = $item;
-            }
-        }
+        $this->load->model('milestone_setting_model', 'settings', TRUE);
+        $subsection_breakdown = $this->settings->get_subsections($milestone);
 
         return $subsection_breakdown;
     }
