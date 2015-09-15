@@ -101,6 +101,11 @@ body { padding-top: 50px; }
 
 }
 
+
+th.tilt div span {
+	display: block;
+}
+
 .dashboard-meta-heading td.section-gr span {
     visibility: hidden;
 }

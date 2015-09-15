@@ -132,6 +132,7 @@ class campaign_model extends CI_Model {
         $field->value = null;
         $field->label = null;
         $field->placeholder = null;
+        $field->due_date = null;
 
         // Common Baseline
 
@@ -139,6 +140,7 @@ class campaign_model extends CI_Model {
         $model->cb_self_assessment->dashboard = true;
         $model->cb_self_assessment->label = "Self-Assessment";
         $model->cb_self_assessment->type = $milestone_index === 3 ? "approval" : "select";
+        $model->cb_self_assessment->due_date = ($milestone_index < 3) ? '2015-08-15' : "";
 
         $model->cb_self_assessment_url = clone $field;
         $model->cb_self_assessment_url->dashboard = false;
@@ -147,18 +149,13 @@ class campaign_model extends CI_Model {
         $model->cb_self_assessment_url->indent = 1;
         $model->cb_self_assessment_url->active = "3";//active for milestone 3 and forward
 
-        /*
-        $model->cb_sa_overall_status_comment = clone $field;
-        $model->cb_sa_overall_status_comment->label = "Self-Assessment Overall Status Comment";
-        $model->cb_sa_overall_status_comment->type = "textarea";
-        $model->cb_sa_overall_status_comment->maxlength = 500;
-        $model->cb_sa_overall_status_comment->indent = 1;
-        */
 
         $model->cb_implementation_plan = clone $field;
         $model->cb_implementation_plan->dashboard = true;
         $model->cb_implementation_plan->label = "Implementation Plan";
         $model->cb_implementation_plan->type = $milestone_index === 3 ? "approval" : "select";
+        $model->cb_implementation_plan->due_date = ($milestone_index < 3) ? '2015-08-15' : "";
+
 
         $model->cb_implementation_plan_url = clone $field;
         $model->cb_implementation_plan_url->dashboard = false;
@@ -178,6 +175,7 @@ class campaign_model extends CI_Model {
         $model->cb_cio_assignment_plan->dashboard = true;
         $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (If Applicable)";
         $model->cb_cio_assignment_plan->type = $milestone_index === 3 ? "approval" : "select";
+        $model->cb_cio_assignment_plan->due_date = ($milestone_index < 3) ? '2015-08-15' : "";
 
         $model->cb_cio_assign_plan_url = clone $field;
         $model->cb_cio_assign_plan_url->dashboard = false;
@@ -193,28 +191,7 @@ class campaign_model extends CI_Model {
         $model->pa_bureau_it_leadership->label = "Bureau IT Leadership";
         $model->pa_bureau_it_leadership->description = "Bureau IT Leadership file exists and conforms to schema?";
         $model->pa_bureau_it_leadership->type = "select";
-
-        /*
-        $model->pa_bureau_it_leaders = clone $field;
-        $model->pa_bureau_it_leaders->indent = 1;
-        $model->pa_bureau_it_leaders->label = "# Bureau IT Leaders";
-        $model->pa_bureau_it_leaders->type = "integer";
-
-        $model->pa_key_bureau_it_leaders = clone $field;
-        $model->pa_key_bureau_it_leaders->indent = 1;
-        $model->pa_key_bureau_it_leaders->label = "# Key Bureau IT Leaders";
-        $model->pa_key_bureau_it_leaders->type = "integer";
-
-        $model->pa_political_appointees = clone $field;
-        $model->pa_political_appointees->indent = 1;
-        $model->pa_political_appointees->label = "# Political Appointees";
-        $model->pa_political_appointees->type = "integer";
-
-        $model->pa_bureau_it_leadership_link = clone $field;
-        $model->pa_bureau_it_leadership_link->indent = 1;
-        $model->pa_bureau_it_leadership_link->label = "Link to Bureau IT Leadership directory";
-        $model->pa_bureau_it_leadership_link->type = "url";
-        */
+        $model->pa_bureau_it_leadership->due_date = ($milestone_index <= 3) ? '2015-08-15' : "";
 
         $model->pa_bureau_it_leadership_table = clone $field;
         $model->pa_bureau_it_leadership_table->indent = 1;
@@ -226,18 +203,7 @@ class campaign_model extends CI_Model {
         $model->pa_cio_governance_board->label = "CIO Governance Board List";
         $model->pa_cio_governance_board->description = "CIO Governance Board file exists and conforms to schema?";
         $model->pa_cio_governance_board->type = "select";
-
-        /*
-        $model->pa_mapped_to_program_inventory = clone $field;
-        $model->pa_mapped_to_program_inventory->indent = 1;
-        $model->pa_mapped_to_program_inventory->label = "% Mapped to Federal Program Inventory";
-        $model->pa_mapped_to_program_inventory->type = "percent";
-
-        $model->pa_cio_governance_board_link = clone $field;
-        $model->pa_cio_governance_board_link->indent = 1;
-        $model->pa_cio_governance_board_link->label = "Link to CIO Governance Board directory";
-        $model->pa_cio_governance_board_link->type = "url";
-        */
+        $model->pa_cio_governance_board->due_date = ($milestone_index <= 3) ? '2015-08-31' : "";
 
         $model->pa_cio_governance_board_table = clone $field;
         $model->pa_cio_governance_board_table->indent = 1;
@@ -249,25 +215,7 @@ class campaign_model extends CI_Model {
         $model->pa_it_policy_archive->label = "IT Policy Archive";
         $model->pa_it_policy_archive->description = "IT Policy Archive file exists with expected file extension?";
         $model->pa_it_policy_archive->type = "select";
-
-        /*
-        $model->pa_it_policy_archive_files = clone $field;
-        $model->pa_it_policy_archive_files->indent = 1;
-        $model->pa_it_policy_archive_files->label = "# Files in policy archive";
-        $model->pa_it_policy_archive_files->type = "integer";
-
-        $model->pa_it_policy_archive_filenames = clone $field;
-        $model->pa_it_policy_archive_filenames->indent = 1;
-        $model->pa_it_policy_archive_filenames->label = "File names in policy archive";
-        $model->pa_it_policy_archive_filenames->type = "textarea";
-        $model->pa_it_policy_archive_filenames->cols = 30;
-        $model->pa_it_policy_archive_filenames->rows = 3;
-
-        $model->pa_it_policy_archive_link = clone $field;
-        $model->pa_it_policy_archive_link->indent = 1;
-        $model->pa_it_policy_archive_link->label = "Link to policy archive directory";
-        $model->pa_it_policy_archive_link->type = "url";
-        */
+        $model->pa_it_policy_archive->due_date = ($milestone_index <= 3) ? '2015-08-31' : "";
 
         // GAO Recommendations
         /*
@@ -298,8 +246,19 @@ class campaign_model extends CI_Model {
      */
      public function tracker_sections_model($milestone = null) {
 
-        $this->load->model('milestone_setting_model', 'settings', TRUE);
-        $section_breakdown = $this->settings->get_sections($milestone);
+       $milestones = $this->campaign->milestones_model();
+       $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1;
+       $cb = $milestone_index === 3 ?  'Common Baseline: OMB Approval' : 'Common Baseline Submission Status';
+
+       $section_breakdown = array(
+            'cb' => $cb,
+            'pa' => 'Published Artifacts Submission Status',
+            //'gr' => 'GAO Recommendations'
+        );
+
+        if ($milestone_index >= 3) {
+            $section_breakdown['ci'] = 'Community Involvement';
+        }
 
         return $section_breakdown;
     }
@@ -314,12 +273,27 @@ class campaign_model extends CI_Model {
      */
     public function tracker_subsections_model($milestone = null) {
 
-        $subsection_breakdown = array();
+      $section_breakdown = $this->tracker_sections_model($milestone);
 
-        $this->load->model('milestone_setting_model', 'settings', TRUE);
-        $subsection_breakdown = $this->settings->get_subsections($milestone);
+      $sections = array_keys($section_breakdown);
 
-        return $subsection_breakdown;
+      $tracker = $this->tracker_model($milestone);
+
+      foreach ($tracker as $key => $item) {
+        $section = substr($key, 0, 2);
+        if (isset($item->dashboard) && $item->dashboard === true) {
+          if(!property_exists($item, "due_date") || !isset($item->due_date) || !strtotime($item->due_date)) {
+            $item->due_date = "";
+          }
+          if(strtotime($item->due_date)) {
+             $date = new DateTime($item->due_date);
+             $item->due_date = $date->format("m/d/Y");
+          }
+          $subsection_breakdown[$section][] = $item;
+        }
+      }
+
+      return $subsection_breakdown;
     }
 
     public function tracker_review_model() {

@@ -5,6 +5,10 @@
  *
  * Allows for configurable or custom sections, subsections, and
  * metrics for each milestone.
+ *
+ * 9/15 Not currently in use. Custom settings per milestone will be
+ * continue to be set in tracker_model using code branching,
+ * unless/until the number of custom settings becomes unmanageable.
  */
 class milestone_setting_model extends CI_Model {
 
