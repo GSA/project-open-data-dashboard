@@ -61,7 +61,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                                 $status = @$office->tracker_fields->cb_self_assessment;
                             } elseif ($subsection->label === 'Implementation Plan') {
                                 $status = @$office->tracker_fields->cb_implementation_plan;
-                            } else if ($subsection->label === 'CIO Assignment Plan (Optional)') {
+                            } else if ($subsection->label === 'CIO Assignment Plan (If Applicable)') {
                                 $status = @$office->tracker_fields->cb_cio_assignment_plan;
                             } elseif ($subsection->label === 'Bureau IT Leadership') {
                                 $status = @$office->tracker_fields->pa_bureau_it_leadership;
