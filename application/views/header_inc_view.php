@@ -39,7 +39,6 @@
 
 
         <li><a href="<?php echo site_url('offices')?>" title="Link to Agency Offices" tabindex="2">Agencies</a></li>
-        <!--<li><a href="<?php echo site_url('validate')?>">Validator</a></li>-->
 
         <!--<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Converters <b class="caret"></b></a>

@@ -382,7 +382,7 @@ class Campaign extends CI_Controller {
 
         if ($query->num_rows() > 0) {
             $offices = $query->result();
-            
+
             // make sure to update any defunct, older in_progress records to aborted
             $this->db->where('crawl_status', 'in_progress');
             $this->db->where("(`ciogov_campaign`.`crawl_start` < NOW() - INTERVAL 20 MINUTE)");
@@ -1029,8 +1029,20 @@ class Campaign extends CI_Controller {
         redirect('offices/detail/' . $ciogov_model_fields->office_id . '/' . $ciogov_model_fields->milestone);
     }
 
+    /**
+     * The validate method for checking json is not fully functional at this time. Left in in case
+     * the feature is resurrected but redirecting to the dashboard just in case the url is entered in the
+     * browser.
+     *
+     * @param string $url
+     * @param string $json
+     * @param string $headers
+     * @param string $schema
+     * @param string $output
+     */
     public function validate($url = null, $json = null, $headers = null, $schema = null, $output = 'browser') {
 
+        redirect('offices');
         $this->load->model('campaign_model', 'campaign');
 
         $json = htmlspecialchars(($this->input->post('json')) ? $this->input->post('json') : $json);
@@ -1323,11 +1335,11 @@ public function track_policyarchive($archive, $url) {
             redirect('/');
             exit;
         }
-        
+
         $this->load->model('campaign_model', 'campaign');
-        
+
         $update = (object) $this->input->post(NULL, TRUE);
-        
+
         $milestone = isset($update->milestone) && !empty($update->milestone) ? $update->milestone : "";
         $baseline = isset($update->baseline) && !empty($update->baseline) ? $update->baseline : "";
         $closed = isset($update->closed) && !empty($update->closed) ? $update->closed : "";
@@ -1337,7 +1349,7 @@ public function track_policyarchive($archive, $url) {
         $note_model_fields->milestone = $milestone;
         $note_model_fields->field_name = 'gao_recommendations';
         $note_model_fields->note = json_encode(array('baseline' => $baseline, 'closed' => $closed));
-        
+
         $this->campaign->update_note($note_model_fields);
 
         $this->session->set_flashdata('outcome_gao', 'success');
@@ -1345,7 +1357,7 @@ public function track_policyarchive($archive, $url) {
 
         $this->load->helper('url');
         redirect('offices/' . $note_model_fields->milestone . '#gao_recs');
-        
+
     }
 
 }
