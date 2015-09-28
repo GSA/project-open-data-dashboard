@@ -286,6 +286,10 @@ class campaign_model extends CI_Model {
         $model->pdl_apis->label                     = "Number of APIs";
         $model->pdl_apis->type                      = "string";	
 
+		$model->pdl_collections						= clone $field;
+		$model->pdl_collections->label	 			= "Number of Collections";
+		$model->pdl_collections->type 				= "string";
+		
 		$model->pdl_link_total						= clone $field;
 		$model->pdl_link_total->label 				= "Total number of access and download links";
 		$model->pdl_link_total->type 				= "string";
