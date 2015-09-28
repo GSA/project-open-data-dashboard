@@ -409,7 +409,7 @@ class campaign_model extends CI_Model {
 		$model->ui_selected_best_practice->type 	= "select";
 
 		$model->ui_identified_users					= clone $field;
-		$model->ui_identified_users->label 			= "Identified 5 data users";
+		$model->ui_identified_users->label 			= "Identified 5 data improvements this quarter";
 		$model->ui_identified_users->type 			= "select";
 
 		$model->ui_primary_uses						= clone $field;
