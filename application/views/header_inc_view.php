@@ -18,11 +18,15 @@
   </script>
 <?php endif; ?>
 
-<script id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=OMB"></script>
-<div class="skipnav">
+<?php if($this->config->item('enable_analytics')): ?>
+  <script id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=OMB"></script>
+<?php endif; ?>
+
+  <div class="skipnav">
     <a href="#main-container">Skip to main content</a> 
     <a href="#main-footer">Skip to footer site map</a>
 </div>
+
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container <?php if(!empty($container_class)) echo $container_class; ?>">
     <!-- Brand and toggle get grouped for better mobile display -->
