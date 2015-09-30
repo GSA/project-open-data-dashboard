@@ -18,7 +18,7 @@
   </script>
 <?php endif; ?>
 
-<script id="_fed_an_ua_tag" src="https://analytics.usa.gov/dap/dap.min.js?agency=GSA"></script>
+<script id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=OMB"></script>
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container <?php if(!empty($container_class)) echo $container_class; ?>">
