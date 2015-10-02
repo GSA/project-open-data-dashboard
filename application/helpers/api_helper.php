@@ -85,7 +85,7 @@ function curl_header($url, $follow_redirect = true, $tmp_dir = null) {
 
   // If the server didn't support HTTP HEAD, use the shim.
   if( (!empty($info['header']['X-Error-Message']) && trim($info['header']['X-Error-Message']) == 'HEAD is not supported')
-      OR empty($info['header']['Content-Type'])) {
+      OR (empty($info['header']['Content-Type']) && empty($info['header']['Content-type']))) {
     return curl_head_shim($url, $follow_redirect, $tmp_dir);
   } else {
     return $info;
