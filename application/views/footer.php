@@ -1,7 +1,7 @@
 </div> <!-- /#main-container -->
 
 <hr>
-      <footer class="footer">
+      <footer class="footer" id='main-footer'>
         <div class="container <?php if(!empty($container_class)) echo $container_class; ?>">
         <?php /*<div class="pull-left"><a href="https://github.com/GSA/project-open-data-dashboard/issues">Fork me on Github</a></div>*/ ?>
 

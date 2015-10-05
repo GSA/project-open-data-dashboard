@@ -6,6 +6,25 @@
 
 body { padding-top: 50px; }
 
+.skipnav { 
+    text-align: left; 
+}
+.skipnav a { 
+    position: absolute; 
+    left: -10000px; 
+    width: 1px; 
+    height: 1px; 
+    overflow: hidden; 
+}
+.skipnav a:focus, .skipnav a:active { 
+    position: static; 
+    left: 0; 
+    width: auto; 
+    height: auto; 
+    overflow: visible; 
+    text-decoration: underline; 
+}
+  
 .glyphicon-info-sign {
     display: none;
 }
