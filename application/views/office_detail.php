@@ -79,6 +79,8 @@
                                     'pdl_valid_metadata', 
                                     'pdl_datasets', 
                                     'pdl_link_check', 
+                                    'pdl_apis',
+                                    'pdl_collections',
                                     'pe_feedback_specified', 
                                     'edi_schedule_delivered', 
                                     'ps_publication_process',
@@ -1127,12 +1129,28 @@
                     Total APIs
                 </th>                 
                 <td>
+                    <a name="pdl_apis" class="anchor-point"></a>
                     <?php echo $office_campaign->datajson_status->qa->API_total; ?>
                 </td>
             </tr> 
             <?php endif; ?>              
 
-            
+            <?php if(isset($office_campaign->datajson_status->qa->collections_total)): ?>
+            <tr>
+                <th id="metrics_collections_total">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_collections_total' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Number of Collections
+                </th>                 
+                <td>
+                    <a name="pdl_collections" class="anchor-point"></a>
+                    <?php echo $office_campaign->datajson_status->qa->collections_total; ?>
+                </td>
+            </tr> 
+            <?php endif; ?>               
+
+
             <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx) && $office_campaign->datajson_status->qa->validation_counts->http_2xx > 0): ?>
 
 

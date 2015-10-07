@@ -821,6 +821,7 @@ class campaign_model extends CI_Model {
 							}
 
 							$sum_array_fields = array('API_total', 
+													  'collections_total',
 													  'downloadURL_present', 
 													  'downloadURL_total', 
 													  'accessURL_present', 
@@ -1237,6 +1238,7 @@ class campaign_model extends CI_Model {
 
 		$programCode = array();
 		$bureauCode = array();
+		$collections_list = array();
 
 		$this->validation_counts = $this->validation_count_model();
 
@@ -1246,6 +1248,7 @@ class campaign_model extends CI_Model {
 
 		$accessURL_total			= 0;
 		$API_total					= 0;
+		$collections_total			= 0;
 		$downloadURL_total			= 0;		
 		$accessURL_present 			= 0;
 		$downloadURL_present		= 0;
@@ -1293,6 +1296,9 @@ class campaign_model extends CI_Model {
 				}				
 			}
 		
+			if (!empty($dataset->isPartOf)) {
+				$collections_list[$dataset->isPartOf] = true;
+			}
 
 
 			$has_accessURL = false;
@@ -1397,6 +1403,7 @@ class campaign_model extends CI_Model {
 		$qa['accessURL_present'] 			= $accessURL_present;
 		$qa['accessURL_total'] 				= $accessURL_total;
 		$qa['API_total'] 					= $API_total;	
+		$qa['collections_total']			= count($collections_list);	
 		$qa['validation_counts']			= $this->validation_counts;
 		$qa['license_present'] 				= $license_present;
 		$qa['redaction_present'] 			= $redaction_present;
