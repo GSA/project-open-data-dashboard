@@ -63,10 +63,10 @@
                             <table class="table table-striped table-hover" id="note-expander-parent">
 
                                 <tr class="table-header">
-                                    <th>Indicator</th>
-                                    <th>Status</th>
+                                    <th scope='col'>Indicator</th>
+                                    <th scope='col'>Status</th>
 
-                                    <th>Automated Metrics</th>
+                                    <th scope='col'>Automated Metrics</th>
                                     <!--
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                             <th></th>
@@ -123,7 +123,7 @@
                                         <tr <?php //if(!empty($status_class)) echo "class=\"$status_class\"";  ?>>
 
                                         <!-- Indicator Column below  -->
-                                            <td class="tracker-field<?php if (isset($tracker_field_meta->indent)) echo " tracker-field-indent" . $tracker_field_meta->indent; ?>">
+                                            <td scope='row' class="tracker-field<?php if (isset($tracker_field_meta->indent)) echo " tracker-field-indent" . $tracker_field_meta->indent; ?>">
                                                 <a name="tracker_<?php echo $tracker_field_name ?>" class="anchor-point"></a>
                                                 <strong>
                                                     <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
@@ -298,7 +298,7 @@
 
                                     <?php if (isset($overflow_text) && $overflow_text): ?>
                                         <tr>
-                                            <td colspan="3" class="overflow-row">
+                                            <td colspan="3" class="overflow-row" scope='row'>
                                                 <?php echo $office_campaign->tracker_fields->$tracker_field_name; ?>
                                             </td>
                                         </tr>

@@ -30,7 +30,7 @@
                     <table class="table table-striped table-hover">
 
                         <tr>
-                            <th>Expected bureaudirectory.json URL</th>
+                            <th scope="row">Expected bureaudirectory.json URL</th>
                             <td>
                                 <?php if (!empty($office_campaign->bureaudirectory_status->expected_url)): ?>
                                     <a href="<?php echo $office_campaign->bureaudirectory_status->expected_url ?>"><?php echo $office_campaign->bureaudirectory_status->expected_url ?></a>
@@ -68,14 +68,14 @@
                         </tr>
 
                         <tr>
-                            <th>Resolved bureaudirectory.json URL</th>
+                            <th scope="row">Resolved bureaudirectory.json URL</th>
                             <td>
                                 <a href="<?php echo $office_campaign->bureaudirectory_status->url ?>"><?php echo $office_campaign->bureaudirectory_status->url ?></a>
                             </td>
                         </tr>
 
                         <tr>
-                            <th>Redirects</th>
+                            <th scope="row">Redirects</th>
                             <td>
                                 <?php if (!empty($office_campaign->bureaudirectory_status->redirect_count)): ?>
                                                             <span class="text-<?php echo ($office_campaign->bureaudirectory_status->redirect_count > 5) ? 'danger' : 'warning' ?>">
@@ -89,7 +89,7 @@
                         </tr>
 
                         <tr class="<?php echo $status_color; ?>">
-                            <th>HTTP Status</th>
+                            <th scope="row">HTTP Status</th>
                             <td>
                                 <span class="text-<?php echo $status_color; ?>">
                                     <?php echo $office_campaign->bureaudirectory_status->http_code ?>
@@ -98,7 +98,7 @@
                         </tr>
 
                         <tr class="<?php echo $mime_color; ?>">
-                            <th>Content Type</th>
+                            <th scope="row">Content Type</th>
                             <td>
                                 <span class="text-<?php echo $mime_color; ?>">
                                     <?php echo $office_campaign->bureaudirectory_status->content_type ?>
@@ -118,7 +118,7 @@
                         ?>
 
                         <tr class="<?php echo ($bureaudirectory_valid_json == true) ? 'success' : 'danger' ?>">
-                            <th>Valid JSON</th>
+                            <th scope="row">Valid JSON</th>
                             <td>
                                 <span class="text-<?php echo ($bureaudirectory_valid_json == true) ? 'success' : 'danger' ?>">
                                 <?php
@@ -132,7 +132,7 @@
 
                         <?php if (!empty($office_campaign->bureaudirectory_status->filetime) && $office_campaign->bureaudirectory_status->filetime > 0): ?>
                             <tr>
-                                <th>Last modified</th>
+                                <th scope="row">Last modified</th>
                                 <td>
                                     <span>
                                         <?php echo date("l, d-M-Y H:i:s T", $office_campaign->bureaudirectory_status->filetime) ?>
@@ -143,7 +143,7 @@
 
                         <?php if (!empty($office_campaign->bureaudirectory_status->last_crawl)): ?>
                             <tr>
-                                <th>Last crawl</th>
+                                <th scope="row">Last crawl</th>
                                 <td>
                                     <span>
                                         <?php echo date("l, d-M-Y H:i:s T", $office_campaign->bureaudirectory_status->last_crawl) ?>
@@ -153,7 +153,7 @@
                         <?php endif; ?>
 
                         <tr class="<?php echo (isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership) && $office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership && ($bureaudirectory_http_code == 200) && ($bureaudirectory_valid_json == true) && empty($office_campaign->bureaudirectory_status->errors) && empty($office_campaign->bureaudirectory_status->schema_errors)) ? 'success' : 'danger' ?>">
-                            <th id="pa_bureau_it_leadership">
+                            <th scope="row" id="pa_bureau_it_leadership">
                                 <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
@@ -180,7 +180,7 @@
                         </tr>
                         <?php if ($this->session->userdata('permissions') == $permission_level && !(empty($office_campaign->bureaudirectory_status->errors))) : ?>
                         <tr class='danger'>
-                        <th>Download errors</th>
+                        <th scope="row">Download errors</th>
                             <td><span class='text-danger'><?php
                                 for ($x = 0; $x < count($office_campaign->bureaudirectory_status->errors); $x++) {
                                     if ($x) {
@@ -194,7 +194,7 @@
 
                         <?php if ($this->session->userdata('permissions') == $permission_level && !(empty($office_campaign->bureaudirectory_status->schema_errors))) : ?>
                         <tr class='danger'>
-                        <th>JSON Schema errors</th>
+                        <th scope="row">JSON Schema errors</th>
                             <td><span class='text-danger'><?php
                                 for ($x = 0; $x < count($office_campaign->bureaudirectory_status->schema_errors); $x++) {
                                     if ($x) {
@@ -209,7 +209,7 @@
 
                         <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leaders)): ?>
                             <tr>
-                                <th id="pa_bureau_it_leaders">
+                                <th scope="row" id="pa_bureau_it_leaders">
                                     <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leaders' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
@@ -226,7 +226,7 @@
 
                         <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_key_bureau_it_leaders)): ?>
                             <tr>
-                                <th id="pa_key_bureau_it_leaders">
+                                <th scope="row" id="pa_key_bureau_it_leaders">
                                     <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_key_bureau_it_leaders' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
@@ -243,7 +243,7 @@
 
                         <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_political_appointees)): ?>
                             <tr>
-                                <th id="pa_political_appointees">
+                                <th scope="row" id="pa_political_appointees">
                                     <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_political_appointees' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
@@ -261,7 +261,7 @@
 
                         <?php if(isset($office_campaign->bureaudirectory_status->tracker_fields->pa_bureau_it_leadership_link)): ?>
                             <tr>
-                                <th id="pa_bureau_it_leadership_link">
+                                <th scope="row" id="pa_bureau_it_leadership_link">
                                     <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_bureau_it_leadership_link' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
@@ -298,7 +298,7 @@
                     <table class="table table-striped table-hover">
 
                         <tr>
-                            <th>Expected governanceboards.json URL</th>
+                            <th scope="row">Expected governanceboards.json URL</th>
                             <td>
                                 <?php if (!empty($office_campaign->governanceboard_status->expected_url)): ?>
                                     <a href="<?php echo $office_campaign->governanceboard_status->expected_url ?>"><?php echo $office_campaign->governanceboard_status->expected_url ?></a>
@@ -336,14 +336,14 @@
                         </tr>
 
                         <tr>
-                            <th>Resolved governanceboards.json URL</th>
+                            <th scope="row">Resolved governanceboards.json URL</th>
                             <td>
                                 <a href="<?php echo $office_campaign->governanceboard_status->url ?>"><?php echo $office_campaign->governanceboard_status->url ?></a>
                             </td>
                         </tr>
 
                         <tr>
-                            <th>Redirects</th>
+                            <th scope="row">Redirects</th>
                             <td>
                                 <?php if (!empty($office_campaign->governanceboard_status->redirect_count)): ?>
                                                             <span class="text-<?php echo ($office_campaign->governanceboard_status->redirect_count > 5) ? 'danger' : 'warning' ?>">
@@ -357,7 +357,7 @@
                         </tr>
 
                         <tr class="<?php echo $status_color; ?>">
-                            <th>HTTP Status</th>
+                            <th scope="row">HTTP Status</th>
                             <td>
                                 <span class="text-<?php echo $status_color; ?>">
                                     <?php echo $office_campaign->governanceboard_status->http_code ?>
@@ -366,7 +366,7 @@
                         </tr>
 
                         <tr class="<?php echo $mime_color; ?>">
-                            <th>Content Type</th>
+                            <th scope="row">Content Type</th>
                             <td>
                                 <span class="text-<?php echo $mime_color; ?>">
                                     <?php echo $office_campaign->governanceboard_status->content_type ?>
@@ -387,7 +387,7 @@
                         ?>
 
                         <tr class="<?php echo ($governanceboard_valid_json == true) ? 'success' : 'danger' ?>">
-                            <th>Valid JSON</th>
+                            <th scope="row">Valid JSON</th>
                             <td>
                                 <span class="text-<?php echo ($governanceboard_valid_json == true) ? 'success' : 'danger' ?>">
                                 <?php
@@ -401,7 +401,7 @@
 
                         <?php if (!empty($office_campaign->governanceboard_status->filetime) && $office_campaign->governanceboard_status->filetime > 0): ?>
                             <tr>
-                                <th>Last modified</th>
+                                <th scope="row">Last modified</th>
                                 <td>
                                     <span>
                                         <?php echo date("l, d-M-Y H:i:s T", $office_campaign->governanceboard_status->filetime) ?>
@@ -412,7 +412,7 @@
 
                         <?php if (!empty($office_campaign->governanceboard_status->last_crawl)): ?>
                             <tr>
-                                <th>Last crawl</th>
+                                <th scope="row">Last crawl</th>
                                 <td>
                                     <span>
                                         <?php echo date("l, d-M-Y H:i:s T", $office_campaign->governanceboard_status->last_crawl) ?>
@@ -422,7 +422,7 @@
                         <?php endif; ?>
 
                         <tr class="<?php echo (isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board) && $office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board && ($governanceboard_http_code == 200) && ($governanceboard_valid_json == true) && empty($office_campaign->governanceboard_status->errors) && empty($office_campaign->governanceboard_status->schema_errors)) ? 'success' : 'danger' ?>">
-                            <th id="pa_cio_governance_board">
+                            <th scope="row" id="pa_cio_governance_board">
                                 <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
@@ -449,7 +449,7 @@
                         </tr>
                         <?php if ($this->session->userdata('permissions') == $permission_level && !(empty($office_campaign->governanceboard_status->errors))) : ?>
                         <tr class='danger'>
-                        <th>Download errors</th>
+                        <th scope="row">Download errors</th>
                             <td><span class='text-danger'><?php
                                 for ($x = 0; $x < count($office_campaign->governanceboard_status->errors); $x++) {
                                     if ($x) {
@@ -463,7 +463,7 @@
 
                         <?php if ($this->session->userdata('permissions') == $permission_level && !(empty($office_campaign->governanceboard_status->schema_errors))) : ?>
                         <tr class='danger'>
-                        <th>JSON Schema errors</th>
+                        <th scope="row">JSON Schema errors</th>
                             <td><span class='text-danger'><?php
                                 for ($x = 0; $x < count($office_campaign->governanceboard_status->schema_errors); $x++) {
                                     if ($x) {
@@ -479,7 +479,7 @@
 
                         <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_mapped_to_program_inventory)): ?>
                             <tr>
-                                <th id="pa_mapped_to_program_inventory">
+                                <th scope="row" id="pa_mapped_to_program_inventory">
                                     <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_mapped_to_program_inventory' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
@@ -496,7 +496,7 @@
 
                         <?php if(isset($office_campaign->governanceboard_status->tracker_fields->pa_cio_governance_board_link)): ?>
                             <tr>
-                                <th id="pa_cio_governance_board_link">
+                                <th scope="row" id="pa_cio_governance_board_link">
                                     <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_cio_governance_board_link' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
@@ -534,7 +534,7 @@
                     <table class="table table-striped table-hover">
 
                         <tr>
-                            <th>Expected policyarchive.zip URL</th>
+                            <th scope="row">Expected policyarchive.zip URL</th>
                             <td>
                                 <?php if (!empty($office_campaign->policyarchive_status->expected_url)): ?>
                                     <a href="<?php echo $office_campaign->policyarchive_status->expected_url ?>"><?php echo $office_campaign->policyarchive_status->expected_url ?></a>
@@ -576,14 +576,14 @@
                         </tr>
 
                         <tr>
-                            <th>Resolved policyarchive.zip URL</th>
+                            <th scope="row">Resolved policyarchive.zip URL</th>
                             <td>
                                 <a href="<?php echo $office_campaign->policyarchive_status->url ?>"><?php echo $office_campaign->policyarchive_status->url ?></a>
                             </td>
                         </tr>
 
                         <tr>
-                            <th>Redirects</th>
+                            <th scope="row">Redirects</th>
                             <td>
                                 <?php if (!empty($office_campaign->policyarchive_status->redirect_count)): ?>
                                                             <span class="text-<?php echo ($office_campaign->policyarchive_status->redirect_count > 5) ? 'danger' : 'warning' ?>">
@@ -597,7 +597,7 @@
                         </tr>
 
                         <tr class="<?php echo $status_color; ?>">
-                            <th>HTTP Status</th>
+                            <th scope="row">HTTP Status</th>
                             <td>
                                 <span class="text-<?php echo $status_color; ?>">
                                     <?php echo $office_campaign->policyarchive_status->http_code ?>
@@ -606,7 +606,7 @@
                         </tr>
 
                         <tr class="<?php echo $policyarchive_mime_color; ?>">
-                            <th>Content Type</th>
+                            <th scope="row">Content Type</th>
                             <td>
                                 <span class="text-<?php echo $policyarchive_mime_color; ?>">
                                     <?php echo $office_campaign->policyarchive_status->content_type ?>
@@ -616,7 +616,7 @@
 
                         <?php if (!empty($office_campaign->policyarchive_status->filetime) && $office_campaign->policyarchive_status->filetime > 0): ?>
                             <tr>
-                                <th>Last modified</th>
+                                <th scope="row">Last modified</th>
                                 <td>
                                     <span>
                                         <?php echo date("l, d-M-Y H:i:s T", $office_campaign->policyarchive_status->filetime) ?>
@@ -627,7 +627,7 @@
 
                         <?php if (!empty($office_campaign->policyarchive_status->last_crawl)): ?>
                             <tr>
-                                <th>Last crawl</th>
+                                <th scope="row">Last crawl</th>
                                 <td>
                                     <span>
                                         <?php echo date("l, d-M-Y H:i:s T", $office_campaign->policyarchive_status->last_crawl) ?>
@@ -637,7 +637,7 @@
                         <?php endif; ?>
 
                         <tr class="<?php echo (isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive) && $office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive && ($policyarchive_http_code == 200)) ? 'success' : 'danger' ?>">
-                            <th id="pa_it_policy_archive">
+                            <th scope="row" id="pa_it_policy_archive">
                                 <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                 <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive' ?>">
                                     <span class="glyphicon glyphicon-info-sign"></span>
@@ -653,7 +653,7 @@
 
                         <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_filenames)): ?>
                             <tr>
-                                <th id="pa_it_policy_archive_filenames">
+                                <th scope="row" id="pa_it_policy_archive_filenames">
                                     <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive_filenames' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>
@@ -670,7 +670,7 @@
 
                         <?php if(isset($office_campaign->policyarchive_status->tracker_fields->pa_it_policy_archive_link)): ?>
                             <tr>
-                                <th id="pa_it_policy_archive_link">
+                                <th scope="row" id="pa_it_policy_archive_link">
                                     <!-- Remove visually-hidden unused info link so as not to confuse visually-challenged users
                                     <a class="info-icon" href="<?php echo site_url('docs') . '#pa_it_policy_archive_link' ?>">
                                         <span class="glyphicon glyphicon-info-sign"></span>

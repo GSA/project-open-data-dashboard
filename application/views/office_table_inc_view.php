@@ -291,21 +291,21 @@ function getBureauITLeadershipTable($archive_dir, $office_id, $office_campaign, 
             if (!empty($bureau_directory->leaders)) {
                 $retval .= '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
                 $retval .= "<tr>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>Bureau Code</th>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>First Name</th>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Last Name</th>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Key Bureau CIO</th>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Employment Type</th>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Employment Type Other</th>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Type of Appointment</th>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Other Responsibilities</th>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Rating Official Title</th>";
-                $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Reviewing Official Title</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>Bureau Code</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>First Name</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Last Name</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Key Bureau CIO</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Employment Type</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Employment Type Other</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Type of Appointment</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Other Responsibilities</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Rating Official Title</th>";
+                $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Reviewing Official Title</th>";
                 $retval .= "</tr>\n";
                 foreach($bureau_directory->leaders as $leader) {
                     $retval .= "<tr>";
-                    $retval .= "<td class='col-sm-11 col-md-11 col-lg-11' style='width: 1%'>" . (isset($leader->bureauCode) ? $leader->bureauCode : "") . "</td>";
+                    $retval .= "<td scope='row' class='col-sm-11 col-md-11 col-lg-11' style='width: 1%'>" . (isset($leader->bureauCode) ? $leader->bureauCode : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->bureauCode) ? getBureauNameByBureauCode($agency_code, $leader->bureauCode, $db_obj) : "")  . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->firstName) ? $leader->firstName : "") . "</td>";
                     $retval .= "<td class='col-sm-11 col-md-11 col-lg-11'>" . (isset($leader->lastName) ? $leader->lastName : "") . "</td>";
@@ -376,16 +376,16 @@ function getGovernanceBoardTable($archive_dir, $office_id, $office_campaign, $ag
                 if (!empty($gb_directory->boards)) {
                     $retval .= '<table class="table table-striped table-hover" style="border-bottom : 3px solid #ccc">';
                     $retval .= "<tr>";
-                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>Bureau Code</th>";
-                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
-                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Governance Board Name</th>";
-                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Code</th>";
-                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Name</th>";
-                    $retval .= "<th class='col-sm-2 col-md-2 col-lg-2'>CIO Involvement Description</th>";
+                    $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>Bureau Code</th>";
+                    $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Bureau Name</th>";
+                    $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Governance Board Name</th>";
+                    $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Code</th>";
+                    $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>Federal Program Inventory Name</th>";
+                    $retval .= "<th scope='col' class='col-sm-2 col-md-2 col-lg-2'>CIO Involvement Description</th>";
                     $retval .= "</tr>";
                     foreach ($gb_directory->boards as $board) {
                         $retval .= "<tr>";
-                        $retval .= "<td class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>" . (isset($board->bureauCode) ? $board->bureauCode : "") . "</td>";
+                        $retval .= "<td scope='row' class='col-sm-2 col-md-2 col-lg-2' style='width: 1%'>" . (isset($board->bureauCode) ? $board->bureauCode : "") . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->bureauCode) ? getBureauNameByBureauCode($agency_code, $board->bureauCode, $db_obj) : "")  . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-6 col-lg-2'>" . (isset($board->governanceBoardName) ? $board->governanceBoardName : "") . "</td>";
                         $retval .= "<td class='col-sm-2 col-md-2 col-lg-2'>" . (isset($board->programCodeFPI) ? $board->programCodeFPI : "") . "</td>";
