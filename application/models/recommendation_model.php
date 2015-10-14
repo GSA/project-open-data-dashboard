@@ -185,7 +185,7 @@ class Recommendation_model extends CI_Model {
   {
     $html = '<thead><tr class="table-header" style="border: 1px solid #000000; background-color: #e6e6e6">';
     foreach($properties as $field => $property) {
-         $html .= '<th style="border: 1px solid #000000">' . $property->title . "</th>\n";
+         $html .= '<th scope="col" style="border: 1px solid #000000">' . $property->title . "</th>\n";
     }
 
     $html .= "</tr></thead>\n";

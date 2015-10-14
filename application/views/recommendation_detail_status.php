@@ -14,7 +14,7 @@
                     <?php  if(!empty($office_campaign->recommendation_status) && (!property_exists($office_campaign->recommendation_status, "empty") || $office_campaign->recommendation_status->empty == false)) { ?>
                     <table class="table table-striped table-hover">
                         <tr>
-                            <th>Expected GAO Recommendation json URL for office</th>
+                            <th scope='row'>Expected GAO Recommendation json URL for office</th>
                             <td>recommendaton.json
                                 <?php
                                 if (!empty($office_campaign->recommendation_status->content_type)) {
@@ -32,7 +32,7 @@
                         </tr>
 
                         <tr class="success">
-                            <th>Content Type</th>
+                            <th scope='row'>Content Type</th>
                             <td>
                                 <span class="text-success">
                                     <?php echo $office_campaign->recommendation_status->content_type ?>
@@ -40,7 +40,7 @@
                             </td>
                         </tr>
                         <tr class="success">
-                            <th>Valid JSON</th>
+                            <th scope='row'>Valid JSON</th>
                             <td>
                                 <span class="text-success">Valid</span>
                             </td>
@@ -48,7 +48,7 @@
 
                         <?php if (!empty($office_campaign->recommendation_status->filetime)): ?>
                             <tr>
-                                <th>Last modified</th>
+                                <th scope='row'>Last modified</th>
                                 <td>
                                     <span>
                                         <?php echo $office_campaign->recommendation_status->filetime ?>
@@ -59,7 +59,7 @@
 
                         <?php if (!empty($office_campaign->recommendation_status->last_crawl)): ?>
                             <tr>
-                                <th>Last crawl</th>
+                                <th scope='row'>Last crawl</th>
                                 <td>
                                     <span>
                                         <?php echo $office_campaign->recommendation_status->last_crawl ?>
@@ -68,14 +68,14 @@
                             </tr>
 
                              <tr>
-                                <th>GAO Recommendations file exists and conforms to schema?</th>
+                                <th scope='row'>GAO Recommendations file exists and conforms to schema?</th>
                                 <td>
                                     <span>Yes</span>
                                 </td>
                             </tr>
 
                              <tr>
-                                <th># Open GAO Recommendations</th>
+                                <th scope='row'># Open GAO Recommendations</th>
                                 <td>
                                     <span><?php echo $office_campaign->recommendation_status->tracker_fields->gr_open_gao_recommendations ?></span>
                                 </td>

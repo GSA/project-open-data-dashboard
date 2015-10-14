@@ -7,9 +7,9 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 	<table class="dashboard table table-striped table-hover table-bordered">
 
             <tr class="dashboard-meta-heading">
-                <td><?php echo $title ?></td>
+                <td scope="col"><?php echo $title ?></td>
                 <?php foreach ($sections_breakdown as $key => $name): ?>
-                    <td colspan="<?php echo count($subsections_breakdown[$key]); ?>" class="section-<?php echo $key; ?>">
+                    <td scope="colgroup" colspan="<?php echo count($subsections_breakdown[$key]); ?>" class="section-<?php echo $key; ?>">
                         <span><?php echo $name; ?>
                         </span>
                     </td>

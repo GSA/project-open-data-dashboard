@@ -10,17 +10,17 @@
           <h2>Account</h2>
            <table class="table table-bordered table-hover">
                 <tr>
-                    <th>Name</th>
+                    <th scope='row'>Name</th>
                     <td><?php echo ($this->session->userdata('name_full')); ?></td>
                 </tr>
 
                 <tr>
-                    <th>Username</th>
+                    <th scope='row'>Username</th>
                     <td><a href="<?php echo ($this->session->userdata('provider_url')); ?>"><?php echo ($this->session->userdata('username')); ?></a></td>
                 </tr>
 
                 <tr>
-                    <th>Permissions</th>
+                    <th scope='row'>Permissions</th>
                     <td><?php echo ($this->session->userdata('permissions')); ?></td>
                 </tr>
 

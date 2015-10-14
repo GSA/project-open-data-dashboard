@@ -24,19 +24,19 @@
 
                         <?php if(!empty($url)) : ?>
                             <tr>
-                                <th>Source</th> <td><?php echo $url; ?> </td>
+                                <th scope='row'>Source</th> <td><?php echo $url; ?> </td>
                             </tr>
                         <?php endif; ?>
 
                         <?php if(!empty($schema)) : ?>
                             <tr>
-                                <th>Schema</th> <td><?php echo $schema; ?></td>
+                                <th scope='row'>Schema</th> <td><?php echo $schema; ?></td>
                             </tr>
                         <?php endif; ?> 
 
                        <?php if(isset($validation['valid_json'])) : ?>
                             <tr <?php if ($validation['valid_json'] === false) echo 'class="danger"' ?>>
-                                <th>Valid JSON</th> <td><?php var_export($validation['valid_json']); ?></td>
+                                <th scope='row'>Valid JSON</th> <td><?php var_export($validation['valid_json']); ?></td>
                             </tr>
                         <?php endif; ?>                          
 
@@ -56,14 +56,14 @@
 
                         <?php if(!empty($dataset_count)) : ?>
                             <tr>
-                                <th>Total datasets</th> <td><?php echo $dataset_count; ?></td>
+                                <th scope='row'>Total datasets</th> <td><?php echo $dataset_count; ?></td>
                             </tr>
                         <?php endif; ?>                       
 
 
                         <?php if(!empty($validation['fail'])) : ?>
                             <tr>
-                                <th>Errors</th>
+                                <th scope='row'>Errors</th>
                                 <td>
                                     <?php foreach ($validation['fail'] as $fail) {   ?>
 
@@ -77,7 +77,7 @@
 
                         <?php if(!empty($validation['errors'])) : ?>                
                             <tr class="danger">
-                                <th>Datasets with invalid metadata</th> <td><span class="text-danger"><?php echo count($validation['errors'])?></span></td>
+                                <th scope='row'>Datasets with invalid metadata</th> <td><span class="text-danger"><?php echo count($validation['errors'])?></span></td>
                             </tr>
                         <?php endif; ?> 
 
@@ -157,12 +157,12 @@
 
                             <table class="table table-striped">
                                 <tr>
-                                    <th>Field</th>
-                                    <th>Errors</th>
+                                    <th scope='col'>Field</th>
+                                    <th scope='col'>Errors</th>
                                 </tr>
                                 <?php foreach ($error as $field => $description) { ?>
                                     <tr>
-                                        <td>
+                                        <td scope='row'>
 
                                         <?php
                                             $base_url = 'https://project-open-data.cio.gov';

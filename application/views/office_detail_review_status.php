@@ -3,7 +3,7 @@
 
 
                     <tr>
-                        <th>Review Status</th>
+                        <th scope="row">Review Status</th>
                         <td>                                
                         <?php
                         if (!empty($office_campaign->tracker_status->status)) {
@@ -30,7 +30,7 @@
 
 
                     <tr>
-                        <th>Reviewer</th>
+                        <th scope="row">Reviewer</th>
                         <td>                                
                         <?php if (!empty($office_campaign->tracker_status->reviewer_email)) echo $office_campaign->tracker_status->reviewer_email ?>
                         </td>
@@ -47,7 +47,7 @@
 
 
                     <tr>
-                        <th>Last Updated</th>
+                        <th scope="row">Last Updated</th>
                         <td>
                         <?php if (!empty($office_campaign->tracker_status->last_updated)): ?>
                             <?php echo $office_campaign->tracker_status->last_updated ?>
