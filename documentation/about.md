@@ -1,6 +1,6 @@
 # About
 
-This website shows how Federal agencies are performing on the latest Open Data Policy ([M-13-13](https://project-open-data.cio.gov/policy-memo/)) using the guidance provided by [Project Open Data](http://project-open-data.cio.gov/). It also provides many other other tools and resources to help agencies and other interested parties implement their open data programs. Features include:
+This website shows how Federal agencies are performing on the Open Data Policy ([M-13-13](https://project-open-data.cio.gov/policy-memo/)) using the guidance provided by [Project Open Data](http://project-open-data.cio.gov/). It also provides many other tools and resources to help agencies and other interested parties implement their open data programs. Features include:
 
 - A [dashboard](../offices) to track the progress of agencies implementing Project Open Data on a quarterly basis
 - Automated analysis of URLs provided within metadata to see if the links work as expected
