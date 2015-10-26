@@ -203,6 +203,8 @@ class Campaign extends CI_Controller {
 
                     $count = 0;
                     $json_row = clone $dataset_model;
+                    $json_row->contactPoint = clone $dataset_model->contactPoint;
+                    $json_row->publisher = clone $dataset_model->publisher;
                     $distribution_row = clone $dataset_model->distribution[0];                    
                     foreach($row as $key => $value) {
                         if($mapping[$count] !== 'null') {
