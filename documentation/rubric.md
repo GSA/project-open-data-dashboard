@@ -5,7 +5,7 @@ The Leading Indicators Strategy Rubric is intended to provide clarity and transp
 
 This Rubric may be updated as new Leading Indicators are informed by [Project Open Data](https://project-open-data.cio.gov/), the [Open Data Cross-Agency Priority (CAP) Goal](http://www.performance.gov/node/3396/view?view=public#overview), and the [Integrated Data Collection Open Data Progress, Use, and Impact](https://www.whitehouse.gov/sites/default/files/omb/memoranda/2013/m-13-09.pdf) questions. 
 
-table>
+<table>
   <thead>
     <tr>
       <th>## Enterprise Data Inventory</th>
