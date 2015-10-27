@@ -1,5 +1,5 @@
 # Leading Indicators Strategy Rubric
-_Updated for clarity ahead of Milestone 9: November 31, 2015_
+_Updated for clarity ahead of Milestone 9: November 30, 2015_
 
 The Leading Indicators Strategy Rubric is intended to provide clarity and transparency on how OMB Staff review Leading Indicators in six categories: Enterprise Data Inventory, Public Data Listing, Public Engagement, Privacy & Security, Human Capital, and Use & Impact. 
 
@@ -12,7 +12,7 @@ Agency provided a public EDI for this quarter that was of a high quality and ind
 #### Yellow
 Agency provided a public EDI for this quarter but the agency EDI had **one or more** minor deficiencies listed below: <uL><li>Provides a public EDI file, but fails to: update it for this quarter, provide it in the correct format, provide it as a dataset, redact it in accordance with Project Open Data reaction guidance, or include explanations for redacted material</li><li>Fails to document any outstanding APIs</li><li>Fails to document any outstanding Licensing information</li><li>Fails to organize data assets in to Collections</li><li>Fails to document all non-public and restricted datasets, redactions, restrictive licenses and provides an explanation for non-disclosure (in the `rights` field)</li></ul>
 #### Red
-Agency did not provide an updated public EDI for this quarter or the EDI had **any** of the serious deficiencies listed below: <ul><li>EDL is less than PDL</li><li>Fails to document non-public, and restricted public datasets</li><li>Fails to provide a public EDI as a dataset in your data.json file.</li><li>Fails to make progress adding outstanding non-public, restricted public datasets for more than 1 quarter</li></ul>
+Agency did not provide an updated public EDI for this quarter or the EDI had **any** of the serious deficiencies listed below: <ul><li>EDI is less than PDL</li><li>Fails to document non-public, and restricted public datasets</li><li>Fails to provide a public EDI as a dataset in your data.json file.</li><li>Fails to make progress adding outstanding non-public, restricted public datasets for more than 1 quarter</li></ul>
 #### Best Practice
 Shows substantial growth (>10%) in cataloging non-public, restricted public, and public datasets.
 
