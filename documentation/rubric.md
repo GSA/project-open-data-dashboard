@@ -16,7 +16,7 @@ Agency provided a public EDI for this quarter but the agency EDI had **one or mo
 #### Red
 Agency did not provide an updated public EDI for this quarter or the EDI had **any** of the serious deficiencies listed below: <ul><li>EDL is less than PDL</li><li>Fails to document non-public, and restricted public datasets</li><li>Fails to provide a public EDI as a dataset in your data.json file.</li><li>Fails to make progress adding outstanding non-public, restricted public datasets for more than 1 quarter</li></ul>
 
-### Best Practice
+#### Best Practice
 Shows substantial growth (>10%) in cataloging non-public, restricted public, and public datasets
 
 ## Public Data Listing
@@ -107,4 +107,4 @@ Agency did not provide a response to any of the required IDC questions or failed
 
 Agency has demonstrated that one or more dataset improvements has had a significant impact to agency or to the public
 
-_You can help [edit this page on GitHub](https://github.com/project-open-data/project-open-data-dashboard/edit/master/documentation/about.md)._ 
+_See a typo? You can help [edit this page on GitHub](https://github.com/project-open-data/project-open-data-dashboard/edit/master/documentation/rubric.md)._ 
