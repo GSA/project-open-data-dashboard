@@ -17,7 +17,7 @@ Agency provided a public EDI for this quarter but the agency EDI had **one or mo
 Agency did not provide an updated public EDI for this quarter or the EDI had **any** of the serious deficiencies listed below: <ul><li>EDL is less than PDL</li><li>Fails to document non-public, and restricted public datasets</li><li>Fails to provide a public EDI as a dataset in your data.json file.</li><li>Fails to make progress adding outstanding non-public, restricted public datasets for more than 1 quarter</li></ul>
 
 #### Best Practice
-Shows substantial growth (>10%) in cataloging non-public, restricted public, and public datasets
+Shows substantial growth (>10%) in cataloging non-public, restricted public, and public datasets.
 
 ## Public Data Listing
 
@@ -34,52 +34,52 @@ Agency didn’t provide a PDL for this quarter or provided a PDL that was not up
 
 #### Best Practice 
 
-Shows substantial growth (>10%) in cataloging public datasets
+Shows substantial growth (>10%) in cataloging public datasets.
 
 ## Public Engagement
 
 #### Green
 
-Agency provides a transparent two-way feedback mechanism and shows evidence of this mechanism on their digital strategy page
+Agency provides a transparent two-way feedback mechanism and shows evidence of this mechanism on their digital strategy page.
 
 #### Yellow
 
-Agency provides a transparent two-way feedback mechanism but shows no evidence of active engagement
+Agency provides a transparent two-way feedback mechanism but shows no evidence of active engagement.
 
 #### Red
 
-Fails to provide a transparent two-way feedback mechanism; e.g. only provides an email or contact form to engage public
+Fails to provide a transparent two-way feedback mechanism; e.g. only provides an email or contact form to engage public.
 
 #### Best Practice  
-Agency has demonstrated evidence that two-way feedback mechanism has transformed existing process within agency
+Agency has demonstrated evidence that two-way feedback mechanism has transformed existing process within agency.
 
 ## Privacy and Security
 
 #### Green
 
-Provides an up-to-date Data Publication Process on the /digitalstrategy page 
-
+Provides an up-to-date Data Publication Process on the /digitalstrategy page.
+.
 #### Yellow
 
-Fails to provide an up-to-date Data Publication Process on the /digitalstrategy page
+Fails to provide an up-to-date Data Publication Process on the /digitalstrategy page.
 
 #### Red
 
-Fails to provide an up-to-date Data Publication Process on the /digitalstrategy page for more than 1 quarter
+Fails to provide an up-to-date Data Publication Process on the /digitalstrategy page for more than 1 quarter.
 
 #### Best Pratice  
 
-Agency demonstrates a robust privacy and security plan to support M-13-13 implementation
+Agency demonstrates a robust privacy and security plan to support M-13-13 implementation.
 
 ## Human Capital 
 
 #### Green 
 
-Agency provided a person and current contact information for all six required data points of contact
+Agency provided a person and current contact information for all six required data points of contact.
 
 #### Yellow
 
-Agency provided a person and contact information for some but not all of the required data points of contact
+Agency provided a person and contact information for some but not all of the required data points of contact.
 
 ### Red
 
@@ -87,24 +87,26 @@ Agency did not provided a person and contact information for any of the required
 
 #### Best Practice  
 
-Agency demonstrates strong human capital in the area of data management (e.g. has a Chief Data Officer, data working group)
+Agency demonstrates strong human capital in the area of data management (e.g. has a Chief Data Officer, data working group).
 
 ## Use & Impact 
 
 #### Green
 
-Agency provided answers for all IDC questions reflecting progress this quarter including a list of 5 dataset improvements
+Agency provided answers for all IDC questions reflecting progress this quarter including a list of 5 dataset improvements.
 
 #### Yellow
 
-Agency provides a poor quality responses to required IDC questions
+Agency provides a poor quality responses to required IDC questions.
 
 #### Red
 
-Agency did not provide a response to any of the required IDC questions or failed to provide responses that reflect progress this quarter
+Agency did not provide a response to any of the required IDC questions or failed to provide responses that reflect progress this quarter.
 
 #### Best Practice   
 
-Agency has demonstrated that one or more dataset improvements has had a significant impact to agency or to the public
+Agency has demonstrated that one or more dataset improvements has had a significant impact to agency or to the public.
+
+
 
 _You can help [edit this page on GitHub](https://github.com/project-open-data/project-open-data-dashboard/edit/master/documentation/rubric.md)._ 
