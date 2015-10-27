@@ -228,10 +228,12 @@ class campaign_model extends CI_Model {
 
         if ($milestone_index >= 3) {
 
+            /*
             $model->ci_listserv_members = clone $field;
             $model->ci_listserv_members->dashboard = true;
             $model->ci_listserv_members->label = "# of Listserv Members";
             $model->ci_listserv_members->type = "integer";
+             */
 
         }
 
@@ -257,7 +259,7 @@ class campaign_model extends CI_Model {
         );
 
         if ($milestone_index >= 3) {
-            $section_breakdown['ci'] = 'Community Involvement';
+           // $section_breakdown['ci'] = 'Community Involvement';
         }
 
         return $section_breakdown;
