@@ -107,4 +107,4 @@ Agency did not provide a response to any of the required IDC questions or failed
 
 Agency has demonstrated that one or more dataset improvements has had a significant impact to agency or to the public
 
-_See a typo? You can help [edit this page on GitHub](https://github.com/project-open-data/project-open-data-dashboard/edit/master/documentation/rubric.md)._ 
+_You can help [edit this page on GitHub](https://github.com/project-open-data/project-open-data-dashboard/edit/master/documentation/rubric.md)._ 
