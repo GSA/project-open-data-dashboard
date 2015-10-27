@@ -1,14 +1,26 @@
-# About
 
-This website shows how Federal agencies are performing on the Open Data Policy ([M-13-13](https://project-open-data.cio.gov/policy-memo/)) using the guidance provided by [Project Open Data](http://project-open-data.cio.gov/). It also provides many other tools and resources to help agencies and other interested parties implement their open data programs. Features include:
+# Project Open Data Dashboard
 
-- A [dashboard](../offices) to track the progress of agencies implementing Project Open Data on a quarterly basis
-- Automated analysis of URLs provided within metadata to see if the links work as expected
-- A [validator](../validate) for v1.0 and v1.1 of the Project Open Data Metadata Schema
-- A [converter](../datagov/csv_to_json) to transform CSV files into JSON as defined by the Project Open Data Metadata Schema
-- An [export API](../export) to export from the CKAN API and transform the metadata into JSON as defined by the Project Open Data Metadata Schema
-- A [changeset](../changeset) viewer to compare a data.json file to the metadata currently available in CKAN (eg catalog.data.gov)
+## About
 
-You can learn more by reading the main [documentation page](./main). 
+The [Project Open Data Dashboard](http://labs.data.gov/dashboard/offices) is a website enabling Federal agencies, industry, and the general public and other stakeholders to view details on how Federal agencies are progressing on implementing [M-13-13 Open Data Policy—Managing Information as an Asset](https://project-open-data.cio.gov/policy-memo/) on a quarterly basis. 
 
-You can help [edit this page on GitHub](https://github.com/GSA/project-open-data-dashboard/edit/master/documentation/about.md). 
+## Metrics 
+
+The Project Open Data Dashboard is informed by [M-13-13](https://project-open-data.cio.gov/policy-memo/), the [Project Open Data Implementation Guide](https://project-open-data.cio.gov/implementation-guide/), the [Open Data Cross-Agency Priority (CAP) Goal](http://www.performance.gov/node/3396/view?view=public#overview), and the [Integrated Data Collection](https://www.whitehouse.gov/sites/default/files/omb/memoranda/2013/m-13-09.pdf) Open Data Progress, Use, and Impact questions. The Project Open Dashboard tracks progress in two ways:
+ 1.	Quarterly review by OMB staff of Leading Indicators in six categories: Enterprise Data Inventory, the Public Data Listing, Public Engagement, Privacy & Security, Human Capital, and Use & Impact. For more information see _Leading Indicators Strategy Rubric_.
+ 2.	Automated metrics determined by a script that analyzes [agency.gov] /data.json, /digitalstrategy.json, and /data files every 24 hours until the end of the quarter when a historic snapshot is generated. For more information see _[Documentation](./main)_. 
+
+## Open Source 
+The Project Open Data Dashboard is an open source project. Some ways you can contribute are: by reporting bugs, by suggesting new features, by translating content to a new language, by writing or editing documentation, by writing specifications, by writing code and documentation (no pull request is too small: fix typos, add code comments, clean up inconsistent whitespace), by reviewing pull requests, and by closing issues. Before contributing, we encourage you to read our CONTRIBUTING guide, our LICENSE, and our README.
+
+## Resources and Tools 
+To support Federal agency implementation of M-13-13 the following resources and tools have been provided:   
+* [Project Open Data Metadata Schema Validator](../validate) – Conform your Federal (or Non-federal) data.json is validate against the current Project Open Data Metadata Schema.  
+* [Project Open Data Converter](../datagov/csv_to_json) - Transform CSV files into JSON as defined by the Project Open Data Metadata Schema.  
+* [CKAN Project Open Data Export API](../export) - Export from the CKAN API and transform the metadata into JSON as defined by the Project Open Data Metadata Schema.  
+* [Project Open Data Changeset](../changeset) - Compare your new data.json file to the data.json metadata currently cached on Data.gov.   
+
+For additional resources and tools see: [Project Open Data](https://project-open-data.cio.gov/) and [Project Open Data on GitHub](https://github.com/project-open-data). 
+
+_You can help [edit this page on GitHub](https://github.com/project-open-data/project-open-data-dashboard/edit/master/documentation/about.md)._ 
