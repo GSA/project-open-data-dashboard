@@ -17,7 +17,7 @@ The Project Open Data Dashboard is an open source project. Some ways you can con
 To support Federal agency implementation of M-13-13 and success the following resources and tools have been provided:   
 * [Project Open Data Metadata Schema Validator](../validate) – Conform your Federal (or Non-federal) data.json is validate against the current Project Open Data Metadata Schema.  
 * [Project Open Data Converter](../datagov/csv_to_json) - Transform CSV files into JSON as defined by the Project Open Data Metadata Schema.  
-* [Legacy Data.gov Export API](../export) - Export legacy data from Data.gov as a Project Open Data Schema JSON or CSV file. Note: This tool was designed for agencies that used to log directly into Data.gov to maintain their datasets.
+* [Legacy Data.gov Export API](../export) - Export legacy data from Data.gov as a Project Open Data Schema JSON or CSV file. Note: This tool was designed for agencies that used to log directly into Data.gov to maintain their datasets.  
 * [Project Open Data Changeset](../changeset) - Compare your new data.json file to the data.json metadata currently cached on Data.gov.   
 
 For additional resources and tools see: [Project Open Data](https://project-open-data.cio.gov/) and [Project Open Data on GitHub](https://github.com/project-open-data). 
