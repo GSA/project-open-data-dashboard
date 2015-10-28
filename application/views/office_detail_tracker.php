@@ -146,7 +146,7 @@
 
                                                    <?php
 
-                                                    if (!empty($status_icon) && ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "approval" || $tracker_field_meta->type == "traffic")) {
+                                                    if (!empty($status_icon) && ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "approval" || $tracker_field_meta->type == "submitted" || $tracker_field_meta->type == "traffic")) {
                                                         echo $status_icon;
                                                     } elseif ($tracker_field_meta->type == "status") {
                                                         if ($office_campaign->tracker_fields->$tracker_field_name === "not-submitted") {
@@ -197,6 +197,13 @@
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "green") ? 'selected = "selected"' : '' ?> value="green">Approved</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "red") ? 'selected = "selected"' : '' ?> value="red">Not Received</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "none") ? 'selected = "selected"' : '' ?> value="none">Not Yet Approved</option>
+                                                        </select>
+                                                    <?php endif; ?>
+                                                    
+                                                    <?php if ($tracker_field_meta->type == "submitted") : ?>
+                                                        <select name="<?php echo $tracker_field_name ?>" id="<?php echo $tracker_field_name ?>">
+                                                            <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Not Submitted</option>
+                                                            <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "green") ? 'selected = "selected"' : '' ?> value="green">Submitted</option>
                                                         </select>
                                                     <?php endif; ?>
 

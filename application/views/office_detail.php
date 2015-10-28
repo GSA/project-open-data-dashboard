@@ -82,8 +82,13 @@
                 'pa_it_policy_archive_link',
                 'gr_open_gao_recommendations'
             );
-
-            $active_section = (!empty($selected_category)) ? $selected_category : 'cb';
+            if(isset($section_breakdown['ss'])){
+              $default = 'ss';
+            }
+            else{
+              $default = 'cb';
+            }
+            $active_section = (!empty($selected_category)) ? $selected_category : $default;
             ?>
 
 

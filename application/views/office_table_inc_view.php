@@ -79,6 +79,8 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                                 $status = @$office->tracker_fields->pa_it_policy_archive;
                             } else if ($subsection->label === '# of Listserv Members') {
                                 $status = @$office->tracker_fields->ci_listserv_members;
+                            } else if($subsection->label === 'Submission Status'){
+                                $status = @$office->tracker_fields->ss_submission_status;
                             }
 
                             $column_anchor = $section_name . '_tab';

@@ -134,6 +134,13 @@ class campaign_model extends CI_Model {
         $field->placeholder = null;
         $field->due_date = null;
 
+        if($milestone_index >= 3){
+            $model->ss_submission_status = clone $field;
+            $model->ss_submission_status->dashboard = true;
+            $model->ss_submission_status->label = "Submission Status";
+            $model->ss_submission_status->type = "submitted";
+        }
+        
         // Common Baseline
 
         $model->cb_self_assessment = clone $field;
@@ -227,7 +234,7 @@ class campaign_model extends CI_Model {
         */
 
         if ($milestone_index >= 3) {
-
+            
             /*
             $model->ci_listserv_members = clone $field;
             $model->ci_listserv_members->dashboard = true;
@@ -259,6 +266,8 @@ class campaign_model extends CI_Model {
 
         if ($milestone_index >= 3) {
            // $section_breakdown['ci'] = 'Community Involvement';
+          $section_breakdown_prepend['ss'] = 'Common Baseline: Submission Status';
+          $section_breakdown = $section_breakdown_prepend + $section_breakdown;
         }
 
         return $section_breakdown;
