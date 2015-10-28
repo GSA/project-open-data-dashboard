@@ -375,6 +375,10 @@ p+h4, p+h5 {
     margin-top : 2em;
 }
 
+.ss_custom_width{
+    width:155px;
+}
+
 @media (min-width: 1600px) {
     .container.full-width {
         width : 95%;

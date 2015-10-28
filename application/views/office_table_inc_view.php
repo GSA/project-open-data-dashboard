@@ -30,7 +30,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
                     <?php foreach ($subsections_breakdown as $section_name => $subsections): ?>
                         <?php foreach ($subsections as $subsection): ?>
-                            <th scope="col" class="tilt">
+                            <th scope="col" class="tilt <?php if($subsection->label=='Submission Status'){ echo 'ss_custom_width';}?>">
                               <div>
                                 <?php echo $subsection->label;?>
                                 <?php if($subsection->due_date) echo "<span>{$subsection->due_date}</span>" ?>

@@ -259,7 +259,7 @@ class campaign_model extends CI_Model {
        $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1;
        
        $section_breakdown = array(
-            'cb' => 'Common Baseline: OMB Approval',
+            'cb' => 'Common Baseline: OMB Approval Status',
             'pa' => 'Published Artifacts Submission Status',
             //'gr' => 'GAO Recommendations'
         );
