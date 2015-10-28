@@ -140,7 +140,7 @@ class campaign_model extends CI_Model {
             $model->ss_submission_status->label = "Submission Status";
             $model->ss_submission_status->type = "submitted";
         }
-        
+
         // Common Baseline
 
         $model->cb_self_assessment = clone $field;
@@ -234,7 +234,7 @@ class campaign_model extends CI_Model {
         */
 
         if ($milestone_index >= 3) {
-            
+
             /*
             $model->ci_listserv_members = clone $field;
             $model->ci_listserv_members->dashboard = true;
@@ -257,7 +257,7 @@ class campaign_model extends CI_Model {
 
        $milestones = $this->campaign->milestones_model();
        $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1;
-       
+
        $section_breakdown = array(
             'cb' => 'Common Baseline: OMB Approval Status',
             'pa' => 'Published Artifacts Submission Status',
@@ -1593,7 +1593,4 @@ class campaign_model extends CI_Model {
 
         return json_encode($tracker_fields);
     }
-
 }
-
-?>
