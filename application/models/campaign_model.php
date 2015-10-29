@@ -258,8 +258,10 @@ class campaign_model extends CI_Model {
        $milestones = $this->campaign->milestones_model();
        $milestone_index = intval(array_search($milestone, array_keys($milestones))) + 1;
 
+       $cb = $milestone_index >= 3 ?  'Common Baseline: OMB Approval Status' : 'Common Baseline Submission Status';
+
        $section_breakdown = array(
-            'cb' => 'Common Baseline: OMB Approval Status',
+            'cb' => $cb,
             'pa' => 'Published Artifacts Submission Status',
             //'gr' => 'GAO Recommendations'
         );
