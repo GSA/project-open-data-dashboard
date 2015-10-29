@@ -42,7 +42,7 @@ class OAuth2_Provider_Github extends OAuth2_Provider
 			),
 		);
 	}
-	
+
 	public function curl_to_json($url) {
 
 		$ch = curl_init();
@@ -50,13 +50,16 @@ class OAuth2_Provider_Github extends OAuth2_Provider
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 		curl_setopt($ch, CURLOPT_USERAGENT, 'databeam.org');
-		
+
 		$data=curl_exec($ch);
 		curl_close($ch);
 
+		$curl_error = curl_error($ch);
+		error_log("GitHub curl_to_json: curl_error ". $curl_error);
+		error_log("GitHub curl_to_json: data ". $data);
 
-		return json_decode($data, false);	
+		return json_decode($data, false);
 
-	}	
-	
+	}
+
 }
