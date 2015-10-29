@@ -1596,3 +1596,4 @@ class campaign_model extends CI_Model {
         return json_encode($tracker_fields);
     }
 }
+
