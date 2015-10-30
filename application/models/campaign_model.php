@@ -146,7 +146,7 @@ class campaign_model extends CI_Model {
         $model->cb_self_assessment = clone $field;
         $model->cb_self_assessment->dashboard = true;
         $model->cb_self_assessment->label = "Self-Assessment";
-        $model->cb_self_assessment->type = $milestone_index === 3 ? "approval" : "select";
+        $model->cb_self_assessment->type = $milestone_index >= 3 ? "approval" : "select";
         $model->cb_self_assessment->due_date = ($milestone_index < 3) ? '2015-08-15' : "";
 
         $model->cb_self_assessment_url = clone $field;
@@ -160,7 +160,7 @@ class campaign_model extends CI_Model {
         $model->cb_implementation_plan = clone $field;
         $model->cb_implementation_plan->dashboard = true;
         $model->cb_implementation_plan->label = "Implementation Plan";
-        $model->cb_implementation_plan->type = $milestone_index === 3 ? "approval" : "select";
+        $model->cb_implementation_plan->type = $milestone_index >= 3 ? "approval" : "select";
         $model->cb_implementation_plan->due_date = ($milestone_index < 3) ? '2015-08-15' : "";
 
 
@@ -181,7 +181,7 @@ class campaign_model extends CI_Model {
         $model->cb_cio_assignment_plan = clone $field;
         $model->cb_cio_assignment_plan->dashboard = true;
         $model->cb_cio_assignment_plan->label = "CIO Assignment Plan (If Applicable)";
-        $model->cb_cio_assignment_plan->type = $milestone_index === 3 ? "approval" : "select";
+        $model->cb_cio_assignment_plan->type = $milestone_index >= 3 ? "approval" : "select";
         $model->cb_cio_assignment_plan->due_date = ($milestone_index < 3) ? '2015-08-15' : "";
 
         $model->cb_cio_assign_plan_url = clone $field;
