@@ -17,6 +17,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                         if(isset($milestone) && strtotime($milestone->selected_milestone)) {
                           $milestone_index = intval(array_search($milestone->selected_milestone, array_keys($milestone->milestones))) + 1;
                         }
+                        echo "milestone index: $milestone_index";
                        if($key=="cb" && $milestone_index >= 3):?><br/><span class="subColHeaderText">(Blank indicates in-progress)</span><?php endif;?>
                     </td>
                 <?php endforeach; ?>
