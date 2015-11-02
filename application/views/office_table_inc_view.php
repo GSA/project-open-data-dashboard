@@ -1,7 +1,7 @@
 <?php
 
 function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $subsections_breakdown, $milestone = null) {
-  
+
     ?>
 	<div class="panel panel-default panel-dashboard">
 	<table class="dashboard table table-striped table-hover table-bordered">
@@ -12,14 +12,13 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                     <td scope="colgroup" colspan="<?php echo count($subsections_breakdown[$key]); ?>" class="section-<?php echo $key; ?>">
                         <span><?php echo $name; ?>
                         </span>
-                        <?php 
-                        //only display for third milestone and onwards, $milestone->milestones is ordered from latest to earliest milestone
-                        end($milestone->milestones);
-                        prev($milestone->milestones);
-                        prev($milestone->milestones);
-                        prev($milestone->milestones);
-                        $third_milestone_key = key($milestone->milestones);
-                        if($key=="cb" && isset($milestone) && strtotime($milestone->selected_milestone) >=  strtotime($third_milestone_key)):?><br/><span class="subColHeaderText">(Blank indicates in-progress)</span><?php endif;?>
+                        <?php
+                        //only display for third milestone and onwards
+                        $milestone_index = 0;
+                        if(isset($milestone) && strtotime($milestone->selected_milestone)) {
+                          $milestone_index = intval(array_search($milestone->selected_milestone, array_keys($milestone->milestones))) + 1;
+                        }
+                       if($key=="cb" && $milestone_index >= 3):?><br/><span class="subColHeaderText">(Blank indicates in-progress)</span><?php endif;?>
                     </td>
                 <?php endforeach; ?>
 
