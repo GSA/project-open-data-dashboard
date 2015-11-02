@@ -1,7 +1,6 @@
 <?php
 
 function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $subsections_breakdown, $milestone = null) {
-
     ?>
 	<div class="panel panel-default panel-dashboard">
 	<table class="dashboard table table-striped table-hover table-bordered">
