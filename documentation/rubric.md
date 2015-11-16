@@ -21,9 +21,9 @@ Shows substantial growth (>10%) in cataloging non-public, restricted public, and
 #### Green
 Agency provided a PDL for this quarter that was of a high quality and indicated substantial progress towards completeness meeting **all** the requirements listed below: <ul><li>Has 100% valid data.json</li><li>Successfully provides a human-readable list of all datasets at [agency].gov/data</li></ul>
 #### Yellow
-Agency provided a PDL for this quarter but PDL had **one or more** minor deficiencies listed below: <ul><li>Fails to have 100% valid data.json</li><li>Provides some datasets in human-readable form on /data, but not all</li><li>Insufficient link quality (20% or more broken links this quarter)</li></ul>
+Agency provided a PDL for this quarter but PDL had **one or more** minor deficiencies listed below: <ul><li>Fails to have 100% valid data.json</li><li>Provides some datasets in human-readable form on /data, but not all</li><li>Insufficient link quality (20% or more broken and error links this quarter)</li></ul>
 #### Red
-Agency didn’t provide a PDL for this quarter or provided a PDL that was not updated or **any** serious deficiencies: <ul><li>PDL does not validate against current schema/ Does not have a valid data.json file successfully harvesting to Data.gov </li><li>Fails to create a human-readable list of all datasets</li><li>Insufficient link quality (20% or more broken links for more than 1 quarter)</li></ul>
+Agency didn’t provide a PDL for this quarter or provided a PDL that was not updated or **any** serious deficiencies: <ul><li>PDL does not validate against current schema/ Does not have a valid data.json file successfully harvesting to Data.gov </li><li>Fails to create a human-readable list of all datasets</li><li>Insufficient link quality (20% or more broken or error links for more than 1 quarter)</li></ul>
 #### Best Practice 
 Shows substantial growth (>10%) in cataloging public datasets.
 
