@@ -51,6 +51,8 @@
           </ul>
         </li>
 
+        <li><a href="<?php echo site_url('docs/rubric')?>">Rubric</a></li>
+
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
           <ul class="dropdown-menu">
