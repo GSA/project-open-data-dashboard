@@ -371,7 +371,7 @@ class Import extends CI_Controller {
 
 		if (php_sapi_name() != 'cli') return;
 
-		$agency_slug_api = 'https://idm.data.gov/fed_agency.json';
+		$agency_slug_api = 'https://www.data.gov/app/themes/roots-nextdatagov/assets/Json/fed_agency.json';
 		$agency_slugs = curl_from_json($agency_slug_api, true);
 		$agency_slugs = $agency_slugs["taxonomies"];
 
@@ -446,6 +446,133 @@ class Import extends CI_Controller {
 			echo "no-match, $update_id, $office_name, null" . PHP_EOL;
 		}		
 	}
+
+	public function match_bureaus () {
+		
+		$this->load->helper('csv');
+
+		$bureaus_url = 'http://project-open-data.cio.gov/data/omb_bureau_codes.csv';
+		
+		$importer = new CsvImporter($bureaus_url, $parse_header = true, $delimiter = ",");
+		$csv = $importer->get();
+
+		$parent_offices = array();
+
+		foreach($csv as $row) {
+			if ($row["Bureau Code"] == "00") {
+				
+				// Search for org
+				$this->db->select('id, name');
+				$this->db->where('name', $row["Bureau Name"]);
+				$office_query = $this->db->get('offices');	
+
+				if ($office_query->num_rows() > 0) {
+				   $office_matches = $office_query->result();
+
+					foreach ($office_matches as $office_match) {						
+						$parent_offices[$row["Agency Code"]] = $office_match->id;
+					}
+				}	
+			}
+		}
+
+		reset($csv);
+		$bureaus_mapped = array();
+
+		foreach($csv as $row) {
+
+			$bureau_mapped = array('agency_name' => '', 
+								   'bureau_name' => '', 
+								   'agency_code' => '', 
+								   'bureau_code' => '', 
+								   'treasury_code' => '',
+								   'cgac_code' => '', 
+								   'usagov_directory_id' => '',
+								   'parent_match' => '');
+
+			// Search for org
+			$this->db->select('id, name');
+			$this->db->where('name', $row["Bureau Name"]);
+
+			if(!empty($parent_offices[$row["Agency Code"]])) {
+				$where = "(parent_office_id='" . $parent_offices[$row["Agency Code"]] . "' OR no_parent = 'true')";
+				$this->db->where($where);
+
+				$bureau_mapped['parent_match'] = 'true';
+			} else {
+				$bureau_mapped['parent_match'] = 'false';
+			}
+
+			$office_query = $this->db->get('offices');	
+
+			if ($office_query->num_rows() > 0) {
+			   $office_matches = $office_query->result();
+
+				foreach ($office_matches as $office_match) {						
+					$bureau_mapped['usagov_directory_id'] = $office_match->id;					
+				}
+
+			}
+
+			$bureau_mapped['agency_name'] = $row["Agency Name"];
+			$bureau_mapped['bureau_name'] = $row['Bureau Name'];
+			$bureau_mapped['agency_code'] = $row['Agency Code'];
+			$bureau_mapped['bureau_code'] = $row['Bureau Code'];
+			$bureau_mapped['treasury_code'] = $row['Treasury Code'];
+			$bureau_mapped['cgac_code'] = $row['CGAC Code'];
+
+			$bureaus_mapped[] = $bureau_mapped;
+
+		}
+
+
+		$headings = array_keys($bureaus_mapped[0]);
+
+		// Open the output stream
+        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+            $filepath = realpath('./downloads/bureaus_mapped.csv');
+            $fh = fopen($filepath, 'w');
+            echo 'Attempting to save csv to ' . $filepath .  PHP_EOL;
+        } else {
+            $fh = fopen('php://output', 'w');
+        }
+
+
+		// Start output buffering (to capture stream contents)
+		ob_start();
+		fputcsv($fh, $headings);
+
+		// Loop over the * to export
+		if (!empty($bureaus_mapped)) {
+			foreach ($bureaus_mapped as $row) {
+				fputcsv($fh, $row);
+			}
+		}
+
+        if ($this->environment !== 'terminal') {
+    		// Get the contents of the output buffer
+    		$string = ob_get_clean();
+    		$filename = 'bureaus_mapped_' . date('Ymd') .'_' . date('His');
+    		// Output CSV-specific headers
+
+    		header("Pragma: public");
+    		header("Expires: 0");
+    		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    		header("Cache-Control: private",false);
+    		header('Content-type: text/csv');
+    		header("Content-Disposition: attachment; filename=\"$filename.csv\";" );
+    		header("Content-Transfer-Encoding: binary");
+
+    		exit($string);
+        } else {
+            echo 'Done' . PHP_EOL;
+            exit;
+        }
+
+
+	}
+
+
 
 
 }

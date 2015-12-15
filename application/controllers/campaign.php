@@ -1468,7 +1468,7 @@ class Campaign extends CI_Controller {
 
 	public function assemble_org_structure() {
 
-		$url = 'https://idm.data.gov/fed_agency.json';
+		$url = 'https://www.data.gov/app/themes/roots-nextdatagov/assets/Json/fed_agency.json';
 		$agency_list = curl_from_json($url, $array=true, $decode=true);
 
 		$taxonomies = $agency_list['taxonomies'];
