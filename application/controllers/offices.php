@@ -27,7 +27,7 @@ class Offices extends CI_Controller {
      * @see http://codeigniter.com/user_guide/general/urls.html
      */
     public function index($selected_milestone = null, $output = null, $show_all_offices = false, $show_all_fields = false, $show_qa_fields = false) {
-
+        $selected_milestone=null;//milestones can no longer be selected
 
         $this->load->model('campaign_model', 'campaign');
         $milestones = $this->campaign->milestones_model();
@@ -52,7 +52,7 @@ class Offices extends CI_Controller {
         $view_data = array();
 
         $view_data['cfo_offices'] = $this->get_dashboard_office_list($milestone->selected_milestone, $crawl_status_filter);
-
+        
         if ($this->config->item('show_all_offices') || $show_all_offices) {
 
             $this->db->select('*');
@@ -94,7 +94,7 @@ class Offices extends CI_Controller {
         $view_data['tracker'] = $this->campaign->tracker_model($milestone->selected_milestone);
         $view_data['section_breakdown'] = $this->campaign->tracker_sections_model($milestone->selected_milestone);
         $view_data['subsection_breakdown'] = $this->campaign->tracker_subsections_model($milestone->selected_milestone);
-
+        
         // pass config variables
         $view_data['max_remote_size'] = $this->config->item('max_remote_size');
 
@@ -108,7 +108,7 @@ class Offices extends CI_Controller {
         if ($output == 'json') {
             return $view_data;
         }
-
+        
         $this->load->view('office_list', $view_data);
     }
 
@@ -123,6 +123,7 @@ class Offices extends CI_Controller {
      */
     public function get_dashboard_office_list($selected_milestone, $crawl_status_filter)
     {
+      $selected_milestone=$this->get_default_milestone();//milestones can no longer be selected
       $cfo_offices = array();
       $cfo_offices2 = array();
 
@@ -205,20 +206,20 @@ class Offices extends CI_Controller {
     }
 
     public function detail($id, $milestone = null, $status = null, $status_id = null) {
-
+      
         $this->load->helper('api');
         $this->load->model('campaign_model', 'campaign');
         $markdown_extra = new Michelf\MarkdownExtra();
 
         $milestones = $this->campaign->milestones_model();
-        $selected_milestone = ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $milestone;
-
+        //$selected_milestone = ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $milestone;
+        $selected_milestone = $this->get_default_milestone();
         $selected_category = ($this->input->get_post('highlight', TRUE)) ? $this->input->get_post('highlight', TRUE) : null;
 
         $milestone = $this->campaign->milestone_filter($selected_milestone, $milestones);
         $selected_milestone_index = array_search($selected_milestone,array_keys($milestones))+1;
         
-        
+
         $view_data = array();
 
         // pass milestones data model
@@ -346,6 +347,7 @@ class Offices extends CI_Controller {
      */
     public function getRecommendationDetail($view_data, $selected_milestone)
     {
+      $selected_milestone=null;//milestones can no longer be selected
       $office_id = $view_data['office']->id;
       $office = $this->campaign->ciogov_office_recommendations($office_id, $selected_milestone);
 
@@ -409,10 +411,10 @@ class Offices extends CI_Controller {
      */
     public function get_default_milestone() {
         $this->load->model('campaign_model', 'campaign');
-        $milestones = array_reverse($this->campaign->milestones_model());//reverse since milestones will always as ascending dates
+        $milestones = $this->campaign->milestones_model();
         foreach ($milestones as $date => $name) {
-          //return first date that is before today
-          if (date(strtotime($date)) < date('U')) {
+          //return first date that is today or after
+          if (date(strtotime($date)) >= date('U')) {
             return $date; 
           }
         }

@@ -349,7 +349,8 @@ class Campaign extends CI_Controller {
      * @param string $selected_milestone
      */
     public function status($id = null, $component = null, $selected_milestone = null) {
-
+        $selected_milestone=null;//milestones can no longer be selected
+        
         // enforce explicit component selection
         if (empty($component)) {
             show_404('status', false);
@@ -954,7 +955,7 @@ class Campaign extends CI_Controller {
             exit;
         }
 
-
+        
         $this->load->model('campaign_model', 'campaign');
 
         $update = (object) $this->input->post(NULL, TRUE);
@@ -975,7 +976,7 @@ class Campaign extends CI_Controller {
         $tracker_review_model->reviewer_email = (!empty($update->reviewer_email)) ? $update->reviewer_email : null;
 
         $ciogov_model_fields->tracker_status = json_encode($tracker_review_model);
-
+        
 
 
         // add fake field for general notes
@@ -1356,7 +1357,7 @@ public function track_policyarchive($archive, $url) {
         $this->session->set_flashdata('status_gao', 'GAO recommendation status updated');
 
         $this->load->helper('url');
-        redirect('offices/' . $note_model_fields->milestone . '#gao_recs');
+        redirect('offices/#gao_recs');
 
     }
 

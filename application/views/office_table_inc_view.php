@@ -41,7 +41,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
             <?php
             if($milestone && !empty($milestone->selected_milestone)) {
-                    $milestone_url = '/' . $milestone->selected_milestone;
+                    $milestone_url = '/' ;//. $milestone->selected_milestone;
             }
             ?>
 
