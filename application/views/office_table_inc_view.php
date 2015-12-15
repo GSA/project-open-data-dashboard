@@ -149,7 +149,9 @@ function status_color($status) {
 		return 'success';
 	} else if ($status == 'no' || $status == 'red') {
 		return 'danger';
-	} else {
+	} else if($status == 'na') {
+        return 'gray';
+    } else {
 		return 'warning';
 	}
 
@@ -182,6 +184,9 @@ function page_status($data_status, $status_color = null) {
 	if ($data_status == 'unknown') {
 		$status_color = (!empty($status_color)) ? 'text-'. $status_color : '';
 		 $icon = '<i class="unknown-value ' . $status_color . ' fa fa-question-circle"></i><span class="sr-only">Unknown status</span>';
+	}
+    if ($data_status == 'na') {
+	    $icon = 'N/A';
 	}
 
 	if(empty($icon) && !empty($data_status))  $icon = '<i class="text-' . $status_color . ' fa fa-question-circle"></i><span class="sr-only">Unknown status</span>';

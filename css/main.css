@@ -379,6 +379,14 @@ p+h4, p+h5 {
     width:155px;
 }
 
+td.gray{
+    background:#e0e0e0;
+}
+td.gray a span, td.gray a:visited span, td.gray a:hover span{
+    opacity:1!important;
+    color:#000!important;
+}
+
 @media (min-width: 1600px) {
     .container.full-width {
         width : 95%;

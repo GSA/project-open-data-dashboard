@@ -93,7 +93,7 @@
                                         if (strpos($tracker_field_name, 'selected_best_practice') !== false && !$this->session->userdata('permissions') == $permission_level)
                                             continue;
 
-                                        if (!empty($office_campaign->tracker_fields->$tracker_field_name) && $office_campaign->tracker_fields->$tracker_field_name != 'none') {
+                                        if (!empty($office_campaign->tracker_fields->$tracker_field_name) && $office_campaign->tracker_fields->$tracker_field_name != 'none' && $office_campaign->tracker_fields->$tracker_field_name != 'na') {
                                             if ($office_campaign->tracker_fields->$tracker_field_name == 'yes' || $office_campaign->tracker_fields->$tracker_field_name == 'green') {
                                                 $status_icon = '<i class="text-success fa fa-check-square"></i><span class="sr-only">OK</span>';
                                                 $status_class = 'success';
@@ -101,9 +101,12 @@
                                                 $status_icon = '<i class="text-danger fa fa-times-circle"></i><span class="sr-only">Error</span>';
                                                 $status_class = 'danger';
                                             } else {
-                                                $status_icon = '<i class="text-warning fa fa-exclamation-triangle"></i><span class="sr-only">Warning</span>';
+                                                $status_icon = '?<i class="text-warning fa fa-exclamation-triangle"></i><span class="sr-only">Warning</span>';
                                                 $status_class = '';
                                             }
+                                        } elseif ($office_campaign->tracker_fields->$tracker_field_name == 'na') {
+                                            $status_icon = '||N/A';
+                                            $status_class = '';
                                         } else {
                                             //$office_campaign->tracker_fields->$tracker_field_name = '';
                                             $status_icon = '';
@@ -197,6 +200,7 @@
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "green") ? 'selected = "selected"' : '' ?> value="green">Approved</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "red") ? 'selected = "selected"' : '' ?> value="red">Not Received</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "none") ? 'selected = "selected"' : '' ?> value="none">Not Yet Approved</option>
+                                                            <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "na") ? 'selected = "selected"' : '' ?> value="na">Not Applicable</option>
                                                         </select>
                                                     <?php endif; ?>
 
