@@ -105,7 +105,7 @@
                                                 $status_class = '';
                                             }
                                         } elseif ($office_campaign->tracker_fields->$tracker_field_name == 'na') {
-                                            $status_icon = '||N/A';
+                                            $status_icon = 'N/A';
                                             $status_class = '';
                                         } else {
                                             //$office_campaign->tracker_fields->$tracker_field_name = '';
