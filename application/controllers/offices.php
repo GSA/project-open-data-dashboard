@@ -109,6 +109,10 @@ class Offices extends CI_Controller {
 		$view_data['tracker'] = $this->campaign->tracker_model();
 		$view_data['section_breakdown'] = $this->campaign->tracker_sections_model();
 
+		if(!empty($view_data['cfo_offices'])) {
+			$view_data['office_totals'] = $this->calculate_totals($view_data['cfo_offices']);	
+		}		
+
 		// pass config variables
 		$view_data['max_remote_size'] = $this->config->item('max_remote_size');
 
@@ -315,6 +319,56 @@ class Offices extends CI_Controller {
 
 		
 	}
+
+	public function calculate_totals($offices) {
+		$totals = array();
+		$valid_metadata = array();
+		foreach ($offices as $office) {
+			if (!empty($office->tracker_fields)) {
+				$tracker = json_decode($office->tracker_fields);
+				$valid_metadata[] = $tracker->pdl_valid_metadata;
+				foreach ($tracker as $field => $value) {
+					if (!isset($totals[$field])) {
+						$totals[$field] = array('office_count' => 0, 'total' => 0, 'average' => 0, 'type' => null, 'errors' => '');
+					}
+
+					if (is_numeric($value) OR strpos($value, '%') !== false) {
+						
+						if (strpos($value, '%') !== false) {
+							if(empty($totals[$field]['type'])) $totals[$field]['type'] = 'percent';
+							$value = $value * 0.01;
+
+							if($totals[$field]['type'] == 'integer') {
+								$totals[$field]['errors'] .= 'Inconsistent data type found on ' . $office->id . ' ';
+							}
+
+						} else {							
+							if(empty($totals[$field]['type'])) $totals[$field]['type'] = 'integer';
+							if($totals[$field]['type'] == 'percent') {
+								$totals[$field]['errors'] .= 'Inconsistent data type found on ' . $office->id . ' ';
+							}
+						}
+
+						$totals[$field]['office_count']++;
+						$totals[$field]['total'] = $totals[$field]['total'] + $value;
+					}					
+				}
+
+			}			
+
+		}
+
+		foreach ($totals as $field => $total) {
+			if ($total["office_count"] == 0) {
+				unset($totals[$field]);
+			} else {
+				$totals[$field]["average"] = round(($total["total"] / $total["office_count"]), 2);
+			}
+		}
+
+		return $totals;
+
+	} 
 
 
 

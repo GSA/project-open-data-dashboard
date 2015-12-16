@@ -76,7 +76,43 @@ if($show_all_fields) {
 				status_table('Other Independent Offices', $independent_offices, $config, $milestone->selected_milestone, $milestone->specified);
 			}
 
+      if(!empty($office_totals) && $_REQUEST['show_totals'] == 'true') {
+      ?>
+        <table class="table">          
+            <tr>
+              <th>Field</th>
+              <th>Total</th>
+              <th>Average</th>
+              <th>Offices</th>
+              <th>Errors</th>
+            </tr>
+
+            <?php foreach ($office_totals as $field => $total): 
+
+            if ($total['type'] == 'percent') {
+              if ($total['average'] > 1) {
+                $average = 'See errors';
+              } else {
+                $average = $total['average']  * 100 . '%';
+              }              
+            } else {
+              $average = $total['average'];
+            }
+
+            ?>
+              <tr>
+                <td><?php echo $tracker->$field->label; ?></td>
+                <td><?php if($total['type'] !== 'percent') echo $total['total']; ?></td>
+                <td><?php echo $average; ?></td>
+                <td><?php echo $total['office_count']; ?></td>
+                <td><?php echo $total['errors']; ?></td>
+              </tr>
+            <?php endforeach; ?>
+        </table>
+      <?php
+      }
 			?>
+
 
         </div>
       </div>
