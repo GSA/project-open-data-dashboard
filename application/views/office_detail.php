@@ -589,7 +589,7 @@
 
 
                                                 <?php if ($tracker_field_meta->type == "string") : ?>
-                                                    <input type="text" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name;?>">
+                                                    <input type="text" id="input-<?php echo $tracker_field_name ?>" name="<?php echo $tracker_field_name ?>" value="<?php echo $office_campaign->tracker_fields->$tracker_field_name;?>">
                                                 <?php endif; ?>
                                             </td>
                                         <?php endif; ?>
@@ -608,6 +608,10 @@
                                             <?php if (array_search($tracker_field_name, $crawl_details) !== false):?> 
 
                                                 <a href="#<?php echo $tracker_field_name ?>">Crawl details</a>
+
+                                                <?php if ($this->session->userdata('permissions') == $permission_level && $tracker_field_meta->type == 'string') : ?>
+                                                    <button type="button" id="autofill-<?php echo $tracker_field_name ?>" class="autofill-button" data-value="<?php echo $tracker_field_name ?>">Autofill</button>
+                                                <?php endif; ?>
 
                                             <?php endif; ?>
 
@@ -901,12 +905,10 @@
                 </a>
                 Datasets with Valid Metadata
             </th>              
-            <td>
-                <a name="pdl_valid_metadata" class="anchor-point"></a>
-
+            <td id="pdl_valid_metadata">
                 <?php if(!empty($percent_valid)): ?>
                     <span class="text-<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
-                        <?php echo $percent_valid;?> <span id="metrics_valid_count" style="color:#666">(<?php echo $valid_count . ' of ' . $total_records?>)</span>
+                        <span class="core-metric-value"><?php echo $percent_valid;?></span><span id="metrics_valid_count" style="color:#666">(<?php echo $valid_count . ' of ' . $total_records?>)</span>
                         <?php if($valid_json !== true):?>
                            - <span class="text-danger">The <a href="./#valid_json">JSON file is invalid</a> and can't be parsed without special processing</span>
                         <?php endif; ?>
@@ -1046,9 +1048,8 @@
                 </a>
                 Datasets
             </th>             
-            <td>      
-                <a name="pdl_datasets" class="anchor-point"></a>          
-                <?php echo $total_records;?>                
+            <td id="pdl_datasets">      
+                <span class="core-metric-value"><?php echo $total_records;?></span>
             </td>
         </tr> 
 
@@ -1064,10 +1065,9 @@
                     </a>
                     Datasets with Distribution URLs
                 </th>                  
-                <td>
-                    <a name="pdl_downloadable" class="anchor-point"></a>
-                    <?php echo process_percentage($office_campaign->datajson_status->qa->accessURL_present, $total_records); ?>
-                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->accessURL_present . ' of ' . $total_records; ?>)</span>
+                <td id="pdl_downloadable">
+                    <?php echo process_percentage($office_campaign->datajson_status->qa->accessURL_present, $total_records); ?> 
+                    <span style="color:#666">(<span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessURL_present . '</span> of ' . $total_records; ?>)</span>
                 </td>
             </tr> 
             <?php endif; ?>
@@ -1128,9 +1128,8 @@
                     </a>
                     Total APIs
                 </th>                 
-                <td>
-                    <a name="pdl_apis" class="anchor-point"></a>
-                    <?php echo $office_campaign->datajson_status->qa->API_total; ?>
+                <td id="pdl_apis">
+                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->API_total; ?></span>
                 </td>
             </tr> 
             <?php endif; ?>              
@@ -1143,9 +1142,8 @@
                     </a>
                     Number of Collections
                 </th>                 
-                <td>
-                    <a name="pdl_collections" class="anchor-point"></a>
-                    <?php echo $office_campaign->datajson_status->qa->collections_total; ?>
+                <td id="pdl_collections">
+                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->collections_total; ?></span>
                 </td>
             </tr> 
             <?php endif; ?>               
@@ -1323,9 +1321,8 @@
                     </a>
                     Bureaus Represented
                 </th>                
-                <td>
-                    <a name="pdl_bureaus" class="anchor-point"></a>
-                    <?php echo count($office_campaign->datajson_status->qa->bureauCodes); ?>
+                <td id="pdl_bureaus">
+                    <span class="core-metric-value"><?php echo count($office_campaign->datajson_status->qa->bureauCodes); ?></span>
                 </td>
             </tr> 
             <?php endif; ?>
@@ -1338,9 +1335,8 @@
                     </a>
                     Programs Represented
                 </th>                 
-                <td>
-                    <a name="pdl_programs" class="anchor-point"></a>
-                    <?php echo count($office_campaign->datajson_status->qa->programCodes); ?>
+                <td id="pdl_programs">
+                    <span class="core-metric-value"><?php echo count($office_campaign->datajson_status->qa->programCodes); ?></span>
                 </td>
             </tr> 
             <?php endif; ?>
@@ -1354,7 +1350,7 @@
                     License Specified
                 </th>                 
                 <td id="edi_license_present">
-                    <?php echo process_percentage($office_campaign->datajson_status->qa->license_present, $total_records); ?>
+                    <span class="core-metric-value"><?php echo process_percentage($office_campaign->datajson_status->qa->license_present, $total_records); ?></span>
                     <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->license_present . ' of ' . $total_records; ?>)</span>                    
                 </td>
             </tr> 

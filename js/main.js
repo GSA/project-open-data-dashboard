@@ -24,6 +24,18 @@ $(function() {
 
 	});
 
+    $(".autofill-button").each( function() {    
+
+        $(this).click(function() {
+          var value;
+          var id = $(this).data( "value" );
+
+          value = $( "#" + id ).parent().find('.core-metric-value').first().html().trim();
+
+          $( "#input-" + id ).val(value);
+        });        
+
+    });
 
 
 $('#accShow').on('click', function() {
