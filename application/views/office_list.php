@@ -29,20 +29,16 @@ if($show_all_fields) {
 
           <p class="intro-blurb">This is a public dashboard showing Federal agency progress towards implementing the Federal Information Technology Acquisition Reform Act (FITARA). <a href="https://management.cio.gov/" tabindex="5">Learn more</a></p>
 
-           <?php  //removed for 2217
-           /*if($milestone->selected_milestone == $milestone->current): ?>
+           <?php if($this->session->userdata('permissions') === 'admin' && $milestone->selected_milestone == $milestone->current): ?>
                 <p class="form-flash text-danger bg-danger"><strong>Current Milestone:</strong> The milestone selected is still in progress. The status of each field will be updated as frequently as possible, but won't be final until the milestone has passed</p>
-            <?php endif; */ ?>
+            <?php endif; ?>
 
 
-           <?php  //removed for 2217
-           /*if($milestone->selected_milestone == $milestone->previous): ?>
+           <?php if($this->session->userdata('permissions') === 'admin' && $milestone->selected_milestone == $milestone->previous): ?>
                 <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The status of each field won't be final until a few weeks after the milestone has passed</p>
-            <?php endif; */ ?>
+            <?php endif; ?>
             
-            <?php 
-            //removed for 2217
-            /*?>
+            <?php if($this->session->userdata('permissions') === 'admin'): ?>
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="milestone drop down" tabindex="6">
@@ -55,8 +51,7 @@ if($show_all_fields) {
                     </ul>
                 </li>
             </ul>
-            */
-            ?>
+            <?php endif; ?>
             <?php
 
             $config = (!empty($max_remote_size)) ? array('max_remote_size' => $max_remote_size) : null;

@@ -27,8 +27,10 @@ class Offices extends CI_Controller {
      * @see http://codeigniter.com/user_guide/general/urls.html
      */
     public function index($selected_milestone = null, $output = null, $show_all_offices = false, $show_all_fields = false, $show_qa_fields = false) {
-        $selected_milestone=null;//milestones can no longer be selected
-
+        if ($this->session->userdata('permissions') !== 'admin') {
+          $selected_milestone=null;//milestones can no longer be selected
+        }
+        
         $this->load->model('campaign_model', 'campaign');
         $milestones = $this->campaign->milestones_model();
 
@@ -123,7 +125,9 @@ class Offices extends CI_Controller {
      */
     public function get_dashboard_office_list($selected_milestone, $crawl_status_filter)
     {
-      $selected_milestone=$this->get_default_milestone();//milestones can no longer be selected
+      if($this->session->userdata('permissions') !== 'admin'){
+        $selected_milestone=$this->get_default_milestone();//milestones can no longer be selected
+      }
       $cfo_offices = array();
       $cfo_offices2 = array();
 
@@ -184,7 +188,7 @@ class Offices extends CI_Controller {
 
          usort($cfo_offices, 'cmp');
       }
-
+      
       return $cfo_offices;
     }
 
@@ -212,8 +216,13 @@ class Offices extends CI_Controller {
         $markdown_extra = new Michelf\MarkdownExtra();
 
         $milestones = $this->campaign->milestones_model();
-        //$selected_milestone = ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $milestone;
-        $selected_milestone = $this->get_default_milestone();
+        
+        if ($this->session->userdata('permissions') !== 'admin') {
+          $selected_milestone = $this->get_default_milestone();
+        }
+        else{
+          $selected_milestone = ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $milestone;
+        }
         $selected_category = ($this->input->get_post('highlight', TRUE)) ? $this->input->get_post('highlight', TRUE) : null;
 
         $milestone = $this->campaign->milestone_filter($selected_milestone, $milestones);
@@ -347,7 +356,9 @@ class Offices extends CI_Controller {
      */
     public function getRecommendationDetail($view_data, $selected_milestone)
     {
-      $selected_milestone=null;//milestones can no longer be selected
+      if ($this->session->userdata('permissions') !== 'admin') {
+        $selected_milestone=null;//milestones can no longer be selected
+      }
       $office_id = $view_data['office']->id;
       $office = $this->campaign->ciogov_office_recommendations($office_id, $selected_milestone);
 

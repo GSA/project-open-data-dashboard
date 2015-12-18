@@ -28,8 +28,12 @@
                 <p class="form-flash bg-<?php echo $this->session->flashdata('outcome'); ?>"><?php echo $this->session->flashdata('status'); ?></p>
             <?php endif; ?>
 
-            <h2><?php echo $office->name ?></h2>
-
+            <?php if ($this->session->userdata('permissions') !== 'admin') :?>
+              <h2><?php echo $office->name ?></h2>
+            <?php else: ?>
+              <h2><?php echo $office->name ?> - <?php echo $milestone->milestones[$milestone->selected_milestone]; ?> - <?php echo date("F jS Y", strtotime($milestone->selected_milestone)) ?></h2>
+            <?php endif; ?>
+            
             <div><a href="<?php echo $office->url ?>" tabindex="4"><?php echo $office->url ?></a></div>
 
             <div><?php echo $office->notes ?></div>
@@ -103,15 +107,13 @@
               <?php endif; */ ?>
 
 
-            <?php //removed for 2217 
-            /*if ($milestone->selected_milestone == $milestone->current): ?>
+            <?php if ($this->session->userdata('permissions') === 'admin' && $milestone->selected_milestone == $milestone->current): ?>
                 <p class="form-flash text-danger bg-danger"><strong>Current Milestone:</strong> The milestone selected is still in progress. The Automated Metrics will update daily until the milestone date.</p>
-            <?php endif;*/ ?>
+            <?php endif; ?>
 
-            <?php //removed for 2217 
-            /*if ($milestone->selected_milestone == $milestone->previous): ?>
+            <?php if ($this->session->userdata('permissions') === 'admin' && $milestone->selected_milestone == $milestone->previous): ?>
                 <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The Automated Metrics are a snapshot from the milestone date.</p>
-            <?php endif;*/ ?>
+            <?php endif; ?>
 
             <?php /*if (empty($office_campaign->tracker_status->status) OR $office_campaign->tracker_status->status == 'not-started'): ?>
                 <p class="form-flash text-danger bg-danger"><strong>OMB Review Has Not Begun:</strong> OMB has not begun reviewing the agency for this milestone. The review will begin after the milestone date.</p>
@@ -125,9 +127,7 @@
                 <p class="form-flash text-success bg-success"><strong>OMB Review Complete:</strong> OMB has completed the agency review for this milestone. Agencies should contact their OMB desk officer if anything looks incorrect.</p>
             <?php endif;*/ ?>
 
-            <?php 
-            //removed for 2217
-            /*
+            <?php if($this->session->userdata('permissions') === 'admin'): ?>
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Milestone selector" tabindex="4">
@@ -140,7 +140,7 @@
                     </ul>
                 </li>
             </ul>
-            */ ?>
+            <?php endif; ?>
 
             <!--
             <a name="general_indicators" class="anchor-point" tabindex="-1"></a>

@@ -1,7 +1,7 @@
 <?php
 
-function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $subsections_breakdown, $milestone = null) {
-    ?>
+function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $subsections_breakdown, $milestone = null) {  
+  ?>
 	<div class="panel panel-default panel-dashboard">
 	<table class="dashboard table table-striped table-hover table-bordered">
 
@@ -41,7 +41,12 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
             <?php
             if($milestone && !empty($milestone->selected_milestone)) {
-                    $milestone_url = '/' ;//. $milestone->selected_milestone;
+                    $milestone_url = '/' ;
+                    $ci = get_instance();//get code igniter instance
+                    if($ci->session->userdata('permissions') === 'admin'){
+                      $milestone_url = '/' . $milestone->selected_milestone;
+                    }
+                    unset($ci);
             }
             ?>
 

@@ -349,7 +349,9 @@ class Campaign extends CI_Controller {
      * @param string $selected_milestone
      */
     public function status($id = null, $component = null, $selected_milestone = null) {
-        $selected_milestone=null;//milestones can no longer be selected
+        if ($this->session->userdata('permissions') !== 'admin') {
+          //$selected_milestone=null;//milestones can no longer be selected
+        }
         
         // enforce explicit component selection
         if (empty($component)) {
@@ -1357,7 +1359,7 @@ public function track_policyarchive($archive, $url) {
         $this->session->set_flashdata('status_gao', 'GAO recommendation status updated');
 
         $this->load->helper('url');
-        redirect('offices/#gao_recs');
+        redirect('offices/' . $note_model_fields->milestone . '#gao_recs');
 
     }
 
