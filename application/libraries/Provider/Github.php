@@ -54,9 +54,9 @@ class OAuth2_Provider_Github extends OAuth2_Provider
 		$data=curl_exec($ch);
 		curl_close($ch);
 
-		//$curl_error = curl_error($ch);
-		//error_log("GitHub curl_to_json: curl_error ". $curl_error);
-		//error_log("GitHub curl_to_json: data ". $data);
+		$curl_error = curl_error($ch);
+		error_log("GitHub curl_to_json: curl_error ". $curl_error);
+		error_log("GitHub curl_to_json: data ". $data);
 
 		return json_decode($data, false);
 
