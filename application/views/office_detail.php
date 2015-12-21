@@ -107,13 +107,13 @@
               <?php endif; */ ?>
 
 
-            <?php if ($this->session->userdata('permissions') === 'admin' && $milestone->selected_milestone == $milestone->current): ?>
+            <?php /*if ($this->session->userdata('permissions') === 'admin' && $milestone->selected_milestone == $milestone->current): ?>
                 <p class="form-flash text-danger bg-danger"><strong>Current Milestone:</strong> The milestone selected is still in progress. The Automated Metrics will update daily until the milestone date.</p>
-            <?php endif; ?>
+            <?php endif;*/ ?>
 
-            <?php if ($this->session->userdata('permissions') === 'admin' && $milestone->selected_milestone == $milestone->previous): ?>
+            <?php /*if ($this->session->userdata('permissions') === 'admin' && $milestone->selected_milestone == $milestone->previous): ?>
                 <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The Automated Metrics are a snapshot from the milestone date.</p>
-            <?php endif; ?>
+            <?php endif;*/ ?>
 
             <?php /*if (empty($office_campaign->tracker_status->status) OR $office_campaign->tracker_status->status == 'not-started'): ?>
                 <p class="form-flash text-danger bg-danger"><strong>OMB Review Has Not Begun:</strong> OMB has not begun reviewing the agency for this milestone. The review will begin after the milestone date.</p>
