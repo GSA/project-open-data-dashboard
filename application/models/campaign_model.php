@@ -275,7 +275,7 @@ class campaign_model extends CI_Model {
 		$model->pdl_selected_best_practice->type 	= "select";
 
 		$model->pdl_datasets						= clone $field;
-		$model->pdl_datasets->label 				= "Number of Datasets";
+		$model->pdl_datasets->label 				= "Number of Public Datasets";
 		$model->pdl_datasets->type 					= "string";
 
 		$model->pdl_downloadable					= clone $field;
@@ -283,15 +283,15 @@ class campaign_model extends CI_Model {
 		$model->pdl_downloadable->type 				= "string";
 
         $model->pdl_apis                            = clone $field;
-        $model->pdl_apis->label                     = "Number of APIs";
+        $model->pdl_apis->label                     = "Number of Public APIs";
         $model->pdl_apis->type                      = "string";	
 
 		$model->pdl_collections						= clone $field;
-		$model->pdl_collections->label	 			= "Number of Collections";
+		$model->pdl_collections->label	 			= "Number of Public Collections";
 		$model->pdl_collections->type 				= "string";
 		
 		$model->pdl_link_total						= clone $field;
-		$model->pdl_link_total->label 				= "Total number of access and download links";
+		$model->pdl_link_total->label 				= "Total number of Public access and download links (Note: There can be more than 1 per dataset.)";
 		$model->pdl_link_total->type 				= "string";
 
 		$model->pdl_link_check						= clone $field;
