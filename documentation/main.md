@@ -133,11 +133,11 @@ This element captures the count of publicly listed data sets via the published P
 This element captures the count of downloadable publicly listed datasets (`"accessLevel":"public"`) via the published Public Data Listing, and corresponds to the number captured during the dashboard's automated crawl. This should correspond with `downloadURL` in the PDL JSON file that is the URL providing direct access to the downloadable distribution of a dataset. In version 1.0 of the POD Schema, this metric was based on the `accessloadURL`, but since v1.1 it has been based on the `downloadURL`. *(Quantitative)*
 
 <span id="pdl_apis"></span>
-#####Number of APIs
+#####Number of Public APIs
 This element captures the count of publicly listed datasets where (`"format":"API"`). For more information on how to document APIs, see [Project Open Data's Documenting APIs](https://project-open-data.cio.gov/v1.1/api/). *(Quantitative)*
 
 <span id="pdl_collections"></span>
-#####Number of Collections
+#####Number of Public Collections
 This element captures the count of publicly listed collections of data. Datasets that belong to a larger collection of data should use the `isPartOf` field to reference the `identifier` of a parent dataset. For more information on how to document collections of data, see [Project Open Data's Data Collections](https://project-open-data.cio.gov/v1.1/collections/). *(Quantitative)*
 
 <span id="pdl_link_total"></span>
