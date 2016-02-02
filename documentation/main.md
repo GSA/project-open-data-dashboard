@@ -125,7 +125,7 @@ This is a check by OMB eGov for SORNs (**System of Records Notices**), PIAs (**P
 This element is a collection of the qualitative and quantitative measures and an objective assessment of meeting this milestone is compiled and rated (Green = On Schedule to Complete Milestone, Yellow = Possible Milestone Delivery Problem, Red = Will Miss Milestone) *(Qualitative)* 
 
 <span id="pdl_datasets"></span>
-#####Number of Datasets
+#####Number of Public Datasets
 This element captures the count of publically listed data sets via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. *(Quantitative)*
 
 <span id="pdl_downloadable"></span>
@@ -133,7 +133,7 @@ This element captures the count of publically listed data sets via the published
 This element captures the count of downloadable publicaly listed datasets (`"accessLevel":"public"`) via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. This should correspond with `downloadURL` in the PDL JSON file that is the URL providing direct access to the downloadable distribution of a dataset. In version 1.0 of the POD Schema, this metric was based on the `accessloadURL`, but since v1.1 it has been based on the `downloadURL`. *(Quantitative)*
 
 <span id="pdl_link_total"></span>
-#####Total number of access and download links 
+#####Total number of Public access and download links (Note: There can be more than 1 per dataset.)
 The total number of `accessURL` and `downloadURL` URLs in distributions for public datasets (`"accessLevel":"public"`). 
 
 <span id="quality_check_analysis"></span>
