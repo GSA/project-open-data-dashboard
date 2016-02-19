@@ -393,6 +393,11 @@ td.LightGray{
 }
 
 
+.dashboard .metrics-row  td.boolean-metric a span.in-progress {
+	width: 4em;
+}
+
+
 @media (min-width: 1600px) {
     .container.full-width {
         width : 95%;

@@ -96,7 +96,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 
                             <td class="<?php echo $metric_type; ?> <?php if (!empty($status) && !is_numeric($status)) echo status_color($status); ?> <?php if($status) echo $status; ?>">
                                 <a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?><?php echo $subsection_selection . '#' . $column_anchor; ?>" title="Link to <?php echo $subsection->label ?>">
-                                    <span>
+                                    <span class="<?php echo $status ?>">
                                         <?php
                                         // TO DO - once the gr_open_gao_recommendations value is set correctly
                                         // in tracker_fields, use that instead.
@@ -188,7 +188,7 @@ function page_status($data_status, $status_color = null) {
 	}
 
 	if ($data_status == 'in-progress' || $status_color == 'LightGray') {
-	    $icon = '<img style="border: none" alt="in-progress" src="img/icons/in-progress-dot.gif"></img>';
+	    $icon = 'In Progress';
 	}
 
 	if ($data_status == 'unknown') {
