@@ -76,7 +76,7 @@ if($show_all_fields) {
 				status_table('Other Independent Offices', $independent_offices, $config, $milestone->selected_milestone, $milestone->specified);
 			}
 
-      if(!empty($office_totals) && $_REQUEST['show_totals'] == 'true') {
+      if(!empty($office_totals) && !empty($_REQUEST['show_totals']) && $_REQUEST['show_totals'] == 'true') {
       ?>
         <table class="table">          
             <tr>
