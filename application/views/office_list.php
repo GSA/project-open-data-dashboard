@@ -27,7 +27,20 @@ if($show_all_fields) {
       <div class="row">
         <div>
 
-          <p class="intro-blurb">This is a public dashboard showing Federal agency progress towards implementing the Federal Information Technology Acquisition Reform Act (FITARA). <a href="https://management.cio.gov/" tabindex="5">Learn more</a></p>
+          <p class="intro-blurb">This is a public dashboard showing Federal progress in implementing FITARA and OMB’s
+          FITARA implementation guidance. The backbone of the guidance is the “Common Baseline,” which provides direction
+          on the roles and responsibilities of CIOs and other senior leaders for the management of IT. Each agency below
+          was required to submit a self-assessment to OMB describing their current operations compared to the Common
+          Baseline and an implementation plan describing the actions the agency will take to address any gaps. If any
+          Common Baseline authorities were assigned from the CIO to other agency officials, the agency also had to
+          document this in a CIO Assignment Plan. OMB worked closely with agencies to review, and as appropriate,
+          approve their plans. In addition to the plans, agencies are required to maintain several artifacts on their
+          public websites in human-readable and machine-readable formats: a Bureau IT Leadership Directory, and CIO
+          Governance Board List, and an IT Policy Archive. By clicking on an individual agency, you can view these
+          artifacts as well as additional details on agency progress. Collectively, these plans and artifacts allow
+          for transparent and consistent oversight of FITARA implementation. Please see
+          <a href="https://management.cio.gov/" tabindex="5">management.cio.gov</a> for more information.
+           </p>
 
            <?php /*if($this->session->userdata('permissions') === 'admin' && $milestone->selected_milestone == $milestone->current): ?>
                 <p class="form-flash text-danger bg-danger"><strong>Current Milestone:</strong> The milestone selected is still in progress. The status of each field will be updated as frequently as possible, but won't be final until the milestone has passed</p>
@@ -37,7 +50,7 @@ if($show_all_fields) {
            <?php /*if($this->session->userdata('permissions') === 'admin' && $milestone->selected_milestone == $milestone->previous): ?>
                 <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The status of each field won't be final until a few weeks after the milestone has passed</p>
             <?php endif;*/ ?>
-            
+
             <?php if($this->session->userdata('permissions') === 'admin'): ?>
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">
