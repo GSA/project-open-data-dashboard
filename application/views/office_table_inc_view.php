@@ -1,6 +1,6 @@
 <?php
 
-function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $subsections_breakdown, $milestone = null) {  
+function status_table($title, $rows, $tracker, $config = null, $sections_breakdown, $subsections_breakdown, $milestone = null) {
   ?>
 	<div class="panel panel-default panel-dashboard">
 	<table class="dashboard table table-striped table-hover table-bordered">
@@ -17,8 +17,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                         if(isset($milestone) && strtotime($milestone->selected_milestone)) {
                           $milestone_index = intval(array_search($milestone->selected_milestone, array_keys($milestone->milestones))) + 1;
                         }
-                       if($key=="cb" && $milestone_index >= 3):?><br/><span class="subColHeaderText">(Blank indicates in-progress)</span><?php endif;?>
-                    </td>
+                    ?></td>
                 <?php endforeach; ?>
 
             </tr>
@@ -156,7 +155,9 @@ function status_color($status) {
 		return 'danger';
 	} else if($status == 'na') {
         return 'gray';
-    } else {
+	} else if($status == 'in-progress') {
+        return 'LightGray';
+	} else {
 		return 'warning';
 	}
 
@@ -186,6 +187,10 @@ function page_status($data_status, $status_color = null) {
         $icon = '<i class="text-warning fa fa-exclamation-triangle"></i><span class="sr-only">Warning</span>';
 	}
 
+	if ($data_status == 'in-progress' || $status_color == 'LightGray') {
+	    $icon = '<img style="border: none" alt="in-progress" src="img/icons/in-progress.gif"></img>';
+	}
+
 	if ($data_status == 'unknown') {
 		$status_color = (!empty($status_color)) ? 'text-'. $status_color : '';
 		 $icon = '<i class="unknown-value ' . $status_color . ' fa fa-question-circle"></i><span class="sr-only">Unknown status</span>';
@@ -193,6 +198,8 @@ function page_status($data_status, $status_color = null) {
     if ($data_status == 'na') {
 	    $icon = 'N/A';
 	}
+
+
 
 	if(empty($icon) && !empty($data_status))  $icon = '<i class="text-' . $status_color . ' fa fa-question-circle"></i><span class="sr-only">Unknown status</span>';
 

@@ -200,6 +200,7 @@
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "green") ? 'selected = "selected"' : '' ?> value="green">Approved</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "red") ? 'selected = "selected"' : '' ?> value="red">Not Received</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "none") ? 'selected = "selected"' : '' ?> value="none">Not Yet Approved</option>
+                                                            <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "in-progress") ? 'selected = "selected"' : '' ?> value="in-progress">In Progress</option>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "na") ? 'selected = "selected"' : '' ?> value="na">Not Applicable</option>
                                                         </select>
                                                     <?php endif; ?>

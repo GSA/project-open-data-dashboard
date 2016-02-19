@@ -387,6 +387,12 @@ td.gray a span, td.gray a:visited span, td.gray a:hover span{
     color:#000!important;
 }
 
+/* In Progress */
+td.LightGray{
+    background: #ededed;
+}
+
+
 @media (min-width: 1600px) {
     .container.full-width {
         width : 95%;
