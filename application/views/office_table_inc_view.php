@@ -188,7 +188,7 @@ function page_status($data_status, $status_color = null) {
 	}
 
 	if ($data_status == 'in-progress' || $status_color == 'LightGray') {
-	    $icon = '<img style="border: none" alt="in-progress" src="img/icons/in-progress.gif"></img>';
+	    $icon = '<img style="border: none" alt="in-progress" src="img/icons/in-progress-dot.gif"></img>';
 	}
 
 	if ($data_status == 'unknown') {
