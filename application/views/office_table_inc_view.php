@@ -156,7 +156,7 @@ function status_color($status) {
 	} else if($status == 'na') {
         return 'gray';
 	} else if($status == 'in-progress') {
-        return 'LightGray';
+        return 'light-gray';
 	} else {
 		return 'warning';
 	}
@@ -187,7 +187,7 @@ function page_status($data_status, $status_color = null) {
         $icon = '<i class="text-warning fa fa-exclamation-triangle"></i><span class="sr-only">Warning</span>';
 	}
 
-	if ($data_status == 'in-progress' || $status_color == 'LightGray') {
+	if ($data_status == 'in-progress' || $status_color == 'light-gray') {
 	    $icon = 'In Progress';
 	}
 

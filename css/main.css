@@ -388,7 +388,7 @@ td.gray a span, td.gray a:visited span, td.gray a:hover span{
 }
 
 /* In Progress */
-td.LightGray{
+td.light-gray {
     background: #ededed;
 }
 
