@@ -83,6 +83,9 @@
                                     'pdl_collections',
                                     'pdl_non_collections',
                                     'pdl_link_total',
+                                    'pdl_access_public',
+                                    'pdl_access_restricted',
+                                    'pdl_access_nonpublic',
                                     'pdl_link_2xx',
                                     'pdl_link_3xx',
                                     'pdl_link_4xx',
@@ -1078,6 +1081,34 @@
         <?php if(!empty($office_campaign->datajson_status->qa)): ?>
 
 
+            <?php if(isset($office_campaign->datajson_status->qa->collections_total)): ?>
+            <tr>
+                <th id="metrics_collections_total">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_collections_total' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Number of Collections
+                </th>                 
+                <td id="pdl_collections">
+                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->collections_total; ?></span>
+                </td>
+            </tr> 
+            <?php endif; ?> 
+
+            <?php if(isset($office_campaign->datajson_status->qa->non_collection_total)): ?>
+            <tr>
+                <th id="metrics_non_collection_total">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_non_collection_total' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Number of datasets not in a collection
+                </th>                 
+                <td id="pdl_non_collections">
+                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->non_collection_total ?></span>
+                </td>
+            </tr> 
+            <?php endif; ?>
+
             <?php if(isset($office_campaign->datajson_status->qa->accessURL_present)): ?>
             <tr>
                 <th id="metrics_accessURL_present">
@@ -1159,20 +1190,47 @@
             </tr> 
             <?php endif; ?>              
 
-            <?php if(isset($office_campaign->datajson_status->qa->collections_total)): ?>
+            <?php if(isset($office_campaign->datajson_status->qa->accessLevel_public)): ?>
             <tr>
-                <th id="metrics_collections_total">
-                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_collections_total' ?>">
+                <th id="metrics_accessLevel_public">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessLevel_public' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
-                    Number of Collections
+                    Number of public datasets
                 </th>                 
-                <td id="pdl_collections">
-                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->collections_total; ?></span>
+                <td id="pdl_access_public">
+                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessLevel_public; ?></span>
                 </td>
             </tr> 
-            <?php endif; ?>               
+            <?php endif; ?>  
 
+            <?php if(isset($office_campaign->datajson_status->qa->accessLevel_restricted)): ?>
+            <tr>
+                <th id="metrics_accessLevel_restricted">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessLevel_restricted' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Number of restricted public datasets
+                </th>                 
+                <td id="pdl_access_restricted">
+                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessLevel_restricted; ?></span>
+                </td>
+            </tr> 
+            <?php endif; ?>  
+
+            <?php if(isset($office_campaign->datajson_status->qa->accessLevel_nonpublic)): ?>
+            <tr>
+                <th id="metrics_accessLevel_nonpublic">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessLevel_nonpublic' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Number of non-public datasets
+                </th>                 
+                <td id="pdl_access_nonpublic">
+                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessLevel_nonpublic; ?></span>
+                </td>
+            </tr> 
+            <?php endif; ?> 
 
             <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx) && $office_campaign->datajson_status->qa->validation_counts->http_2xx > 0): ?>
 
@@ -1915,7 +1973,7 @@
              ?>
              </div>
              </div>
- 		
+
  		<?php endif;?>       
                 
                 

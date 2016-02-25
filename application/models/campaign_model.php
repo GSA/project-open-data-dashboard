@@ -331,14 +331,6 @@ class campaign_model extends CI_Model {
 		$model->pdl_datasets->label 				= "Number of Datasets";
 		$model->pdl_datasets->type 					= "string";
 
-		$model->pdl_downloadable					= clone $field;
-		$model->pdl_downloadable->label 			= "Number of Public Datasets with File Downloads";
-		$model->pdl_downloadable->type 				= "string";
-
-        $model->pdl_apis                            = clone $field;
-        $model->pdl_apis->label                     = "Number of APIs";
-        $model->pdl_apis->type                      = "string";	
-
 		$model->pdl_collections						= clone $field;
 		$model->pdl_collections->label	 			= "Number of Collections";
 		$model->pdl_collections->type 				= "string";
@@ -347,7 +339,34 @@ class campaign_model extends CI_Model {
 		$model->pdl_non_collections->label 								= "Number of datasets not contained in a collection";
 		$model->pdl_non_collections->type 								= "string";
 		$model->pdl_non_collections->milestones_start 					= '2016-02-29';
-		$model->pdl_non_collections->milestones_end 					= '2099-11-30';		
+		$model->pdl_non_collections->milestones_end 					= '2099-11-30';
+
+		$model->pdl_downloadable					= clone $field;
+		$model->pdl_downloadable->label 			= "Number of Public Datasets with File Downloads";
+		$model->pdl_downloadable->type 				= "string";
+
+        $model->pdl_apis                            = clone $field;
+        $model->pdl_apis->label                     = "Number of APIs";
+        $model->pdl_apis->type                      = "string";	
+
+		$model->pdl_api_access_public							= clone $field;
+		$model->pdl_api_access_public->label 					= "Number of public APIs";
+		$model->pdl_api_access_public->type 					= "string";
+		$model->pdl_api_access_public->milestones_start 		= '2016-02-29';
+		$model->pdl_api_access_public->milestones_end 			= '2099-11-30';		
+
+		$model->pdl_api_access_restricted						= clone $field;
+		$model->pdl_api_access_restricted->label 				= "Number of restricted public APIs";
+		$model->pdl_api_access_restricted->type 				= "string";
+		$model->pdl_api_access_restricted->milestones_start 	= '2016-02-29';
+		$model->pdl_api_access_restricted->milestones_end 		= '2099-11-30';		
+
+		$model->pdl_api_access_nonpublic						= clone $field;
+		$model->pdl_api_access_nonpublic->label 				= "Number of non-public APIs";
+		$model->pdl_api_access_nonpublic->type 					= "string";
+		$model->pdl_api_access_nonpublic->milestones_start 		= '2016-02-29';
+		$model->pdl_api_access_nonpublic->milestones_end 		= '2099-11-30';	
+		
 		
 		$model->pdl_link_total						= clone $field;
 		$model->pdl_link_total->label 				= "Total number of access and download links";
@@ -440,24 +459,6 @@ class campaign_model extends CI_Model {
 		$model->pdl_access_nonpublic->type 					= "string";
 		$model->pdl_access_nonpublic->milestones_start 		= '2016-02-29';
 		$model->pdl_access_nonpublic->milestones_end 		= '2099-11-30';		
-
-		$model->pdl_api_access_public							= clone $field;
-		$model->pdl_api_access_public->label 					= "Number of public APIs";
-		$model->pdl_api_access_public->type 					= "string";
-		$model->pdl_api_access_public->milestones_start 		= '2016-02-29';
-		$model->pdl_api_access_public->milestones_end 			= '2099-11-30';		
-
-		$model->pdl_api_access_restricted						= clone $field;
-		$model->pdl_api_access_restricted->label 				= "Number of restricted public APIs";
-		$model->pdl_api_access_restricted->type 				= "string";
-		$model->pdl_api_access_restricted->milestones_start 	= '2016-02-29';
-		$model->pdl_api_access_restricted->milestones_end 		= '2099-11-30';		
-
-		$model->pdl_api_access_nonpublic						= clone $field;
-		$model->pdl_api_access_nonpublic->label 				= "Number of non-public APIs";
-		$model->pdl_api_access_nonpublic->type 					= "string";
-		$model->pdl_api_access_nonpublic->milestones_start 		= '2016-02-29';
-		$model->pdl_api_access_nonpublic->milestones_end 		= '2099-11-30';	
 
 		$model->pdl_dataset_growth_public							= clone $field;
 		$model->pdl_dataset_growth_public->label 					= "Percent growth of public datasets";
@@ -1052,6 +1053,7 @@ class campaign_model extends CI_Model {
 
 							$sum_array_fields = array('API_total', 
 													  'collections_total',
+													  'non_collection_total',
 													  'downloadURL_present', 
 													  'downloadURL_total', 
 													  'accessURL_present', 
@@ -1468,7 +1470,7 @@ class campaign_model extends CI_Model {
 
 		$programCode = array();
 		$bureauCode = array();
-		$collections_list = array();
+		$collections_list = array();		
 
 		$this->validation_counts = $this->validation_count_model();
 
@@ -1479,6 +1481,7 @@ class campaign_model extends CI_Model {
 		$accessURL_total			= 0;
 		$API_total					= 0;
 		$collections_total			= 0;
+		$non_collection_total 		= 0;
 		$downloadURL_total			= 0;		
 		$accessURL_present 			= 0;
 		$downloadURL_present		= 0;
@@ -1528,6 +1531,8 @@ class campaign_model extends CI_Model {
 		
 			if (!empty($dataset->isPartOf)) {
 				$collections_list[$dataset->isPartOf] = true;
+			} else {
+				$non_collection_total++;
 			}
 
 
@@ -1634,6 +1639,7 @@ class campaign_model extends CI_Model {
 		$qa['accessURL_total'] 				= $accessURL_total;
 		$qa['API_total'] 					= $API_total;	
 		$qa['collections_total']			= count($collections_list);	
+		$qa['non_collection_total']			= $non_collection_total;	
 		$qa['validation_counts']			= $this->validation_counts;
 		$qa['license_present'] 				= $license_present;
 		$qa['redaction_present'] 			= $redaction_present;
