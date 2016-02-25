@@ -110,12 +110,12 @@ window.addEventListener("hashchange", shiftWindow);
 doDashboardTotals();
 
 
-
-
-$('.datepicker').datepicker({
-    format:'yyyy-mm-dd',
-    autoclose:true
-});
+if (typeof($('.datepicker').datepicker) == "function") {
+    $('.datepicker').datepicker({
+        format:'yyyy-mm-dd',
+        autoclose:true
+    });
+}
 
 var isValidDate = function(date){
     var d = new Date(date);
