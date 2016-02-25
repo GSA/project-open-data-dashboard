@@ -227,9 +227,21 @@ class campaign_model extends CI_Model {
 		$model->edi_bureaus->label 					= "Bureaus represented";
 		$model->edi_bureaus->type 					= "string";
 
+		$model->edi_bureaus_percent						= clone $field;
+		$model->edi_bureaus_percent->label 				= "Percentage of bureaus represented";
+		$model->edi_bureaus_percent->type 				= "string";
+		$model->edi_bureaus_percent->milestones_start 	= '2016-02-29';
+		$model->edi_bureaus_percent->milestones_end 	= '2099-11-30';
+
 		$model->edi_programs						= clone $field;
 		$model->edi_programs->label 				= "Programs represented";
 		$model->edi_programs->type 					= "string";
+
+		$model->edi_programs_percent						= clone $field;
+		$model->edi_programs_percent->label 				= "Percentage of programs represented";
+		$model->edi_programs_percent->type 					= "string";
+		$model->edi_programs_percent->milestones_start 		= '2016-02-29';
+		$model->edi_programs_percent->milestones_end 		= '2099-11-30';		
 
 		$model->edi_access_public					= clone $field;
 		$model->edi_access_public->label 			= "Number of public datasets";
@@ -359,6 +371,24 @@ class campaign_model extends CI_Model {
 		$model->pdl_link_4xx->label 				= "Quality Check: Broken links";
 		$model->pdl_link_4xx->type 					= "string";
 
+		$model->pdl_link_format_match						= clone $field;
+		$model->pdl_link_format_match->label 				= "Quality Check: Percentage of download links in correct format as specified in metadata";
+		$model->pdl_link_format_match->type 				= "string";
+		$model->pdl_link_format_match->milestones_start 	= '2016-02-29';
+		$model->pdl_link_format_match->milestones_end 		= '2099-11-30';	
+
+		$model->pdl_link_format_html						= clone $field;
+		$model->pdl_link_format_html->label 				= "Quality Check: Percentage of download links in HTML";
+		$model->pdl_link_format_html->type 					= "string";
+		$model->pdl_link_format_html->milestones_start 		= '2016-02-29';
+		$model->pdl_link_format_html->milestones_end 		= '2099-11-30';	
+
+		$model->pdl_link_format_pdf							= clone $field;
+		$model->pdl_link_format_pdf->label 					= "Quality Check: Percentage of download links in PDF";
+		$model->pdl_link_format_pdf->type 					= "string";
+		$model->pdl_link_format_pdf->milestones_start 		= '2016-02-29';
+		$model->pdl_link_format_pdf->milestones_end 		= '2099-11-30';	
+
 		$model->pdl_growth							= clone $field;
 		$model->pdl_growth->label 					= "Percentage growth in records since last quarter";
 		$model->pdl_growth->type 					= "string";
@@ -451,11 +481,11 @@ class campaign_model extends CI_Model {
 		$model->pdl_license_cc0->milestones_start 					= '2016-02-29';
 		$model->pdl_license_cc0->milestones_end 					= '2099-11-30';			
 
-		$model->pdl_license_cc0										= clone $field;
-		$model->pdl_license_cc0->label 								= "Percent datasets with other licenses";
-		$model->pdl_license_cc0->type 								= "string";
-		$model->pdl_license_cc0->milestones_start 					= '2016-02-29';
-		$model->pdl_license_cc0->milestones_end 					= '2099-11-30';	
+		$model->pdl_license_other									= clone $field;
+		$model->pdl_license_other->label 							= "Percent datasets with other licenses";
+		$model->pdl_license_other->type 							= "string";
+		$model->pdl_license_other->milestones_start 				= '2016-02-29';
+		$model->pdl_license_other->milestones_end 					= '2099-11-30';	
 
 		$model->pdl_license_none									= clone $field;
 		$model->pdl_license_none->label 							= "Percent datasets with no license";
@@ -494,6 +524,12 @@ class campaign_model extends CI_Model {
 		$model->pe_reference						= clone $field;
 		$model->pe_reference->label 				= "Link to or description of Feedback Mechanism";
 		$model->pe_reference->type 					= "string";
+
+		$model->pe_dataset_contact_point					= clone $field;
+		$model->pe_dataset_contact_point->label 			= "Provides valid contact point information for all datasets";
+		$model->pe_dataset_contact_point->type 				= "select";
+		$model->pe_dataset_contact_point->milestones_start 	= '2016-02-29';
+		$model->pe_dataset_contact_point->milestones_end 	= '2099-11-30'; 
 
 
 		// Privacy & Security
@@ -598,6 +634,12 @@ class campaign_model extends CI_Model {
 		$model->ui_datagov_view_count->type 				= "string";
 		$model->ui_datagov_view_count->milestones_start 	= '2016-02-29';
 		$model->ui_datagov_view_count->milestones_end 		= '2099-11-30';  
+
+		$model->ui_datagov_view_count_percent						= clone $field;
+		$model->ui_datagov_view_count_percent->label 				= "Percentage growth in views on data.gov this quarter";
+		$model->ui_datagov_view_count_percent->type 				= "string";
+		$model->ui_datagov_view_count_percent->milestones_start 	= '2016-02-29';
+		$model->ui_datagov_view_count_percent->milestones_end 		= '2099-11-30';  
 
 		$model->ui_slashdata_view_count						= clone $field;
 		$model->ui_slashdata_view_count->label 				= "Views on agency /data page this quarter";
