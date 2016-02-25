@@ -501,8 +501,19 @@
                                         // Skip this field if it's not part of current section
                                         if (substr($tracker_field_name, 0, strlen($section_abbreviation)) !== $section_abbreviation) continue;                        
                                         
-                                        // Skip this field if it's no longer relevant in later milestones
-                                        if ($tracker_field_name == 'edi_schedule_risk' && $milestone->selected_milestone > '2014-11-30') continue;   
+                                        // Skip this field if it's not used for this milestone
+                                        if (!empty($tracker_field_meta->milestones_start) && 
+                                            !empty($tracker_field_meta->milestones_end) ) {
+
+                                            $milestone_start = strtotime($tracker_field_meta->milestones_start);
+                                            $milestone_end = strtotime($tracker_field_meta->milestones_end);
+                                            $milestone_selected = strtotime($milestone->selected_milestone);
+
+                                            if(($milestone_selected > $milestone_end) OR ($milestone_selected < $milestone_start)) {
+                                                continue;
+                                            }
+
+                                        }  
 
                                         // If this is a best practice highlight field, don't show it unless logged in
                                         if(strpos($tracker_field_name, 'selected_best_practice') !== false && !$this->session->userdata('permissions') == $permission_level) continue;

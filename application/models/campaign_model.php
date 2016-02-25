@@ -265,9 +265,11 @@ class campaign_model extends CI_Model {
 		$model->edi_progress_evaluation->label 		= "Percentage growth in records since last quarter";
 		$model->edi_progress_evaluation->type 		= "string";
 
-		$model->edi_schedule_risk					= clone $field;
-		$model->edi_schedule_risk->label 			= "Schedule Risk for Nov 30, 2014";
-		$model->edi_schedule_risk->type 			= "traffic";
+		$model->edi_schedule_risk						= clone $field;
+		$model->edi_schedule_risk->label 				= "Schedule Risk for Nov 30, 2014";
+		$model->edi_schedule_risk->type 				= "traffic";
+		$model->edi_schedule_risk->milestones_start 	= '2013-11-30';
+		$model->edi_schedule_risk->milestones_end 		= '2014-11-30';		
 
         $model->edi_completeness                 		= clone $field;
         $model->edi_completeness->label          		= "To what extent is your agency’s Enterprise Data Inventory (EDI) complete?";
