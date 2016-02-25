@@ -159,7 +159,7 @@ width : 2em;
 
 .note-metadata {
 	font-style: italic;
-	color : #ccc;
+	color : #666;
 }
 
 .dashboard .metrics-row td {
@@ -226,7 +226,7 @@ table.dashboard-list .info td a {
 
 .general-notes, .section-notes {
 	border : 1px solid #F0F0F0;
-	margin : 3em 0;
+	margin : 0 0 3em 0;
 }
 
 .section-notes {

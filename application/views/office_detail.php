@@ -238,8 +238,9 @@
                 <form method="post" action="<?php echo site_url(); ?>datagov/status-update" role="form">
             <?php endif;?>
 
+            <h3>Assessment Summary</h3> 
                 <div class="general-notes">
-                    
+                   
                     <?php 
                         $status_field_name = 'office_general';
                         $note_field = "note_office_general";
@@ -255,7 +256,7 @@
                     <?php if(empty($note_data->current->note)): ?>
                         <div class="note-heading">
                             <span class="note-metadata">
-                                No general notes have been added yet
+                                No summary has been provided yet
                             </span>                                    
                         </div>
                     <?php endif;?>
