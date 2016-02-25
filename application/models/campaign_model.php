@@ -193,6 +193,7 @@ class campaign_model extends CI_Model {
 		$field->placeholder							= null;
 		$field->milestones_start					= null;
 		$field->milestones_end						= null;
+		$field->choices								= null;
 
 		// Enterprise Data Inventory
 
@@ -255,6 +256,19 @@ class campaign_model extends CI_Model {
 		$model->edi_schedule_risk					= clone $field;
 		$model->edi_schedule_risk->label 			= "Schedule Risk for Nov 30, 2014";
 		$model->edi_schedule_risk->type 			= "traffic";
+
+        $model->edi_completeness                 		= clone $field;
+        $model->edi_completeness->label          		= "To what extent is your agency’s Enterprise Data Inventory (EDI) complete?";
+        $model->edi_completeness->type           		= "choices";
+        $model->edi_completeness->choices           	= array("To a very great extent (>75%)", "To a great extent (50-75%)", "To some extent (25-50%)"; "To a very little extent (<25%)", "No response");
+		$model->edi_completeness->milestones_start 		= '2016-02-29';
+		$model->edi_completeness->milestones_end 		= '2099-11-30';
+
+        $model->edi_completeness_steps                 		= clone $field;
+        $model->edi_completeness_steps->label          		= "What steps have you taken to ensure your Enterprise Data Inventory is complete";
+        $model->edi_completeness_steps->type           		= "string";       
+		$model->edi_completeness_steps->milestones_start 	= '2016-02-29';
+		$model->edi_completeness_steps->milestones_end 		= '2099-11-30';
 
         $model->edi_quality_check                   = clone $field;
         $model->edi_quality_check->label            = "Spot Check - datasets listed by search engine";
@@ -467,6 +481,12 @@ class campaign_model extends CI_Model {
 		$model->pe_prioritization->label 			= "Data release is prioritized through public engagement";
 		$model->pe_prioritization->type 			= "traffic";
 
+		$model->pe_identified_users						= clone $field;
+		$model->pe_identified_users->label 				= "Provided narrative evidence of data improvements based on public feedback this quarter";
+		$model->pe_identified_users->type 				= "select";
+		$model->pe_identified_users->milestones_start 	= '2016-02-29';
+		$model->pe_identified_users->milestones_end 	= '2099-11-30'; 
+
 		$model->pe_dialogue							= clone $field;
 		$model->pe_dialogue->label 					= "Feedback loop is closed, 2 way communication";
 		$model->pe_dialogue->type 					= "traffic";
@@ -494,6 +514,14 @@ class campaign_model extends CI_Model {
 		$model->ps_publication_process_qa->label 	= "Information that should not to be made public is documented with agency's OGC";
 		$model->ps_publication_process_qa->type 	= "traffic";
 
+		$model->ps_publication_process_description						= clone $field;
+		$model->ps_publication_process_description->label 				= "Describe the agency's data publication process";
+		$model->ps_publication_process_description->type 				= "string";
+		$model->ps_publication_process_description->milestones_start 	= '2016-02-29';
+		$model->ps_publication_process_description->milestones_end 		= '2099-11-30'; 
+
+
+
 
 		// Human Capital
 
@@ -513,6 +541,12 @@ class campaign_model extends CI_Model {
 		$model->hc_contacts->label 					= "POCs identified for required responsibilities";
 		$model->hc_contacts->type 					= "traffic";
 
+		$model->hc_cdo								= clone $field;
+		$model->hc_cdo->label 						= "Chief Data Officer (if applicable)";
+		$model->hc_cdo->type 						= "string";
+		$model->hc_cdo->milestones_start 			= '2016-02-29';
+		$model->hc_cdo->milestones_end 				= '2099-11-30'; 
+
 		// Use & Impact
 
 		$model->ui_aggregate_score					= clone $field;
@@ -523,13 +557,21 @@ class campaign_model extends CI_Model {
 		$model->ui_selected_best_practice->label	= "Selected to highlight a best practice";
 		$model->ui_selected_best_practice->type 	= "select";
 
-		$model->ui_identified_users					= clone $field;
-		$model->ui_identified_users->label 			= "Identified 5 data improvements this quarter";
-		$model->ui_identified_users->type 			= "select";
+		$model->ui_identified_users						= clone $field;
+		$model->ui_identified_users->label 				= "Identified 5 data improvements this quarter";
+		$model->ui_identified_users->type 				= "select";
+		$model->ui_identified_users->milestones_start 	= '2013-11-30';
+		$model->ui_identified_users->milestones_end 	= '2015-11-30'; 		
 
 		$model->ui_primary_uses						= clone $field;
 		$model->ui_primary_uses->label 				= "Primary Uses";
 		$model->ui_primary_uses->type 				= "string";
+
+		$model->ui_value_impact_documented						= clone $field;
+		$model->ui_value_impact_documented->label 				= "Provided narrative evidence of open data impacts to this quarter";
+		$model->ui_value_impact_documented->type 				= "select";
+		$model->ui_value_impact_documented->milestones_start 	= '2016-02-29';
+		$model->ui_value_impact_documented->milestones_end 		= '2099-11-30'; 		
 
 		$model->ui_value_impact						= clone $field;
 		$model->ui_value_impact->label 				= "Value or impact of data";
