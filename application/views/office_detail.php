@@ -81,6 +81,15 @@
                                     'pdl_link_check', 
                                     'pdl_apis',
                                     'pdl_collections',
+                                    'pdl_non_collections',
+                                    'pdl_link_total',
+                                    'pdl_link_2xx',
+                                    'pdl_link_3xx',
+                                    'pdl_link_4xx',
+                                    'pdl_link_5xx',
+                                    'pdl_link_format_match',
+                                    'pdl_link_format_html',
+                                    'pdl_link_format_pdf',
                                     'pe_feedback_specified', 
                                     'edi_schedule_delivered', 
                                     'ps_publication_process',
@@ -1108,11 +1117,15 @@
                     Total Distribution URLs
                 </th>                 
                 <td id="metrics_accessURL_working">
-                    <?php echo $office_campaign->datajson_status->qa->accessURL_total; ?>
+                    <span id="pdl_link_total"> 
+                        <span class="core-metric-value">
+                            <?php echo $office_campaign->datajson_status->qa->accessURL_total; ?>
+                        </span>
 
                     <?php if(!empty($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
                         <span class="text-danger">(but only <?php echo $office_campaign->datajson_status->qa->validation_counts->http_2xx; ?> accessible)</span>
                     <?php endif; ?>
+                    </span>
                 </td>
             </tr> 
             <?php endif; ?>            
@@ -1204,6 +1217,24 @@
                 <?php endif;?>
 
                 <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
+                <tr>
+                    <th id="metrics-datajson-download-urls-2xx">
+                        <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_2xx' ?>">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                        </a>
+                        Working links (HTTP 2xx)
+                    </th>                 
+                    <td id="pdl_link_2xx">
+                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_2xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
+                         
+                        <span style="color:#666">
+                        <?php echo '(<span class="core-metric-value">' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . '</span> of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                        </span>
+                    </td>
+                </tr> 
+                <?php endif;?>
+
+                <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
                 <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_4xx > 0) ? 'danger' : 'success'?>">
                     <th id="metrics-datajson-download-urls-4xx">
                         <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_downloadable_4xx' ?>">
@@ -1211,11 +1242,11 @@
                         </a>
                         Broken links (HTTP 4xx)
                     </th>                 
-                    <td>
+                    <td id="pdl_link_4xx">
                        <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_4xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
                          
                         <span style="color:#666">
-                        <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->http_4xx . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                        <?php echo '(<span class="core-metric-value">' . $office_campaign->datajson_status->qa->validation_counts->http_4xx . '</span> of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
                         </span>
                     </td>
                 </tr> 
@@ -1229,11 +1260,11 @@
                         </a>
                         Error Links (HTTP 5xx)
                     </th>                 
-                    <td>
+                    <td id="pdl_link_5xx">
                        <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_5xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
                          
                         <span style="color:#666">
-                        <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->http_5xx . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                        <?php echo '(<span class="core-metric-value">' . $office_campaign->datajson_status->qa->validation_counts->http_5xx . '</span> of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
                         </span>
                     </td>
                 </tr>  
@@ -1247,11 +1278,11 @@
                         </a>
                         Redirected Links (HTTP 3xx)
                     </th>                 
-                    <td>
+                    <td id="pdl_link_3xx">
                        <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_3xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
                          
                         <span style="color:#666">
-                        <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->http_3xx . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
+                        <?php echo '(<span class="core-metric-value">' . $office_campaign->datajson_status->qa->validation_counts->http_3xx . '</span> of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
                         </span>
                     </td>
                 </tr>             
@@ -1265,11 +1296,11 @@
                         </a>
                         Correct format
                     </th>                 
-                    <td>
+                    <td id="pdl_link_format_match">
 
                         <?php 
                         $correct_format_count = $office_campaign->datajson_status->qa->validation_counts->http_2xx - $office_campaign->datajson_status->qa->validation_counts->format_mismatch;
-                        echo process_percentage($correct_format_count, $office_campaign->datajson_status->qa->validation_counts->http_2xx); 
+                        echo '<span class="core-metric-value">' . process_percentage($correct_format_count, $office_campaign->datajson_status->qa->validation_counts->http_2xx) . '</span>'; 
                         ?> 
                         <span style="color:#666">
                         <?php echo '(' . $correct_format_count . ' of ' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . ')' ?>
@@ -1286,8 +1317,8 @@
                         </a>
                         PDF for raw data
                     </th>                 
-                    <td>
-                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->pdf, $office_campaign->datajson_status->qa->validation_counts->http_2xx);?> 
+                    <td id="pdl_link_format_pdf">
+                       <?php echo '<span class="core-metric-value">' . process_percentage($office_campaign->datajson_status->qa->validation_counts->pdf, $office_campaign->datajson_status->qa->validation_counts->http_2xx) . '</span>';?> 
                          
                         <span style="color:#666">
                         <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->pdf . ' of ' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . ')' ?>
@@ -1304,8 +1335,8 @@
                         </a>
                         HTML for raw data
                     </th>                 
-                    <td>
-                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->html, $office_campaign->datajson_status->qa->validation_counts->http_2xx);?> 
+                    <td id="pdl_link_format_html">
+                       <?php echo '<span class="core-metric-value">' . process_percentage($office_campaign->datajson_status->qa->validation_counts->html, $office_campaign->datajson_status->qa->validation_counts->http_2xx) . '</span>';?> 
                          
                         <span style="color:#666">
                         <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->html . ' of ' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . ')' ?>
