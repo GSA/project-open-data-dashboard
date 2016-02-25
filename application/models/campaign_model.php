@@ -400,8 +400,14 @@ class campaign_model extends CI_Model {
 		$model->pdl_valid_metadata->type 			= "string";
 
 		$model->pdl_slashdata						= clone $field;
-		$model->pdl_slashdata->label 				= "Provides datasets in human-readable form on /data";
+		$model->pdl_slashdata->label 				= "/data exists";
 		$model->pdl_slashdata->type 				= "select";
+
+		$model->pdl_slashdata_catalog						= clone $field;
+		$model->pdl_slashdata_catalog->label 				= "Provides datasets in human-readable form on /data";
+		$model->pdl_slashdata_catalog->type 				= "select";
+		$model->pdl_slashdata_catalog->milestones_start 	= '2016-02-29';
+		$model->pdl_slashdata_catalog->milestones_end 		= '2099-11-30';			
 
 		$model->pdl_datajson						= clone $field;
 		$model->pdl_datajson->label 				= "/data.json";
@@ -513,11 +519,11 @@ class campaign_model extends CI_Model {
 		$model->pe_prioritization->label 			= "Data release is prioritized through public engagement";
 		$model->pe_prioritization->type 			= "traffic";
 
-		$model->pe_identified_users						= clone $field;
-		$model->pe_identified_users->label 				= "Provided narrative evidence of data improvements based on public feedback this quarter";
-		$model->pe_identified_users->type 				= "select";
-		$model->pe_identified_users->milestones_start 	= '2016-02-29';
-		$model->pe_identified_users->milestones_end 	= '2099-11-30'; 
+		$model->pe_improvements_from_feedback						= clone $field;
+		$model->pe_improvements_from_feedback->label 				= "Provided narrative evidence of data improvements based on public feedback this quarter";
+		$model->pe_improvements_from_feedback->type 				= "select";
+		$model->pe_improvements_from_feedback->milestones_start 	= '2016-02-29';
+		$model->pe_improvements_from_feedback->milestones_end 		= '2099-11-30'; 
 
 		$model->pe_dialogue							= clone $field;
 		$model->pe_dialogue->label 					= "Feedback loop is closed, 2 way communication";
@@ -596,55 +602,65 @@ class campaign_model extends CI_Model {
 		$model->ui_selected_best_practice->type 	= "select";
 
 		$model->ui_identified_users						= clone $field;
-		$model->ui_identified_users->label 				= "Identified 5 data improvements this quarter";
+		$model->ui_identified_users->label 				= "Identified 5 data improvements for this quarter";
 		$model->ui_identified_users->type 				= "select";
 		$model->ui_identified_users->milestones_start 	= '2013-11-30';
 		$model->ui_identified_users->milestones_end 	= '2015-11-30'; 		
 
-		$model->ui_primary_uses						= clone $field;
-		$model->ui_primary_uses->label 				= "Primary Uses";
-		$model->ui_primary_uses->type 				= "string";
+		$model->ui_primary_uses							= clone $field;
+		$model->ui_primary_uses->label 					= "Primary Uses";
+		$model->ui_primary_uses->type 					= "string";
+		$model->ui_primary_uses->milestones_start 		= '2013-11-30';
+		$model->ui_primary_uses->milestones_end 		= '2015-11-30';		
 
 		$model->ui_value_impact_documented						= clone $field;
-		$model->ui_value_impact_documented->label 				= "Provided narrative evidence of open data impacts to this quarter";
+		$model->ui_value_impact_documented->label 				= "Provided narrative evidence of open data impacts for this quarter";
 		$model->ui_value_impact_documented->type 				= "select";
 		$model->ui_value_impact_documented->milestones_start 	= '2016-02-29';
 		$model->ui_value_impact_documented->milestones_end 		= '2099-11-30'; 		
 
-		$model->ui_value_impact						= clone $field;
-		$model->ui_value_impact->label 				= "Value or impact of data";
-		$model->ui_value_impact->type 				= "string";
+		$model->ui_value_impact									= clone $field;
+		$model->ui_value_impact->label 							= "Value or impact of data";
+		$model->ui_value_impact->type 							= "string";
+		$model->ui_value_impact->milestones_start 				= '2013-11-30';
+		$model->ui_value_impact->milestones_end 				= '2015-11-30';					
 
-		$model->ui_primary_discovery				= clone $field;
-		$model->ui_primary_discovery->label 		= "Primary data discovery channels";
-		$model->ui_primary_discovery->type 			= "string";
+		$model->ui_primary_discovery							= clone $field;
+		$model->ui_primary_discovery->label 					= "Primary data discovery channels";
+		$model->ui_primary_discovery->type 						= "string";
+		$model->ui_primary_discovery->milestones_start 			= '2013-11-30';
+		$model->ui_primary_discovery->milestones_end 			= '2015-11-30'; 
 
-		$model->ui_user_suggest_usability			= clone $field;
-		$model->ui_user_suggest_usability->label 	= "User suggestions on improving data usability";
-		$model->ui_user_suggest_usability->type 	= "string";
+		$model->ui_user_suggest_usability						= clone $field;
+		$model->ui_user_suggest_usability->label 				= "User suggestions on improving data usability";
+		$model->ui_user_suggest_usability->type 				= "string";
+		$model->ui_user_suggest_usability->milestones_start 	= '2013-11-30';
+		$model->ui_user_suggest_usability->milestones_end 		= '2015-11-30'; 
 
-		$model->ui_user_suggest_releases			= clone $field;
-		$model->ui_user_suggest_releases->label 	= "User suggestions on additional data releases";
-		$model->ui_user_suggest_releases->type 		= "string";
+		$model->ui_user_suggest_releases						= clone $field;
+		$model->ui_user_suggest_releases->label 				= "User suggestions on additional data releases";
+		$model->ui_user_suggest_releases->type 					= "string";
+		$model->ui_user_suggest_releases->milestones_start 		= '2013-11-30';
+		$model->ui_user_suggest_releases->milestones_end 		= '2015-11-30';
 
         $model->ui_dap_tracking                     = clone $field;
         $model->ui_dap_tracking->label              = "Digital Analytics Program on /data";
         $model->ui_dap_tracking->type               = "select"; 
 
 		$model->ui_datagov_view_count						= clone $field;
-		$model->ui_datagov_view_count->label 				= "Views on data.gov for the quarter";
+		$model->ui_datagov_view_count->label 				= "Views on data.gov for this quarter";
 		$model->ui_datagov_view_count->type 				= "string";
 		$model->ui_datagov_view_count->milestones_start 	= '2016-02-29';
 		$model->ui_datagov_view_count->milestones_end 		= '2099-11-30';  
 
 		$model->ui_datagov_view_count_percent						= clone $field;
-		$model->ui_datagov_view_count_percent->label 				= "Percentage growth in views on data.gov this quarter";
+		$model->ui_datagov_view_count_percent->label 				= "Percentage growth in views on data.gov for this quarter";
 		$model->ui_datagov_view_count_percent->type 				= "string";
 		$model->ui_datagov_view_count_percent->milestones_start 	= '2016-02-29';
 		$model->ui_datagov_view_count_percent->milestones_end 		= '2099-11-30';  
 
 		$model->ui_slashdata_view_count						= clone $field;
-		$model->ui_slashdata_view_count->label 				= "Views on agency /data page this quarter";
+		$model->ui_slashdata_view_count->label 				= "Views on agency /data page for this quarter";
 		$model->ui_slashdata_view_count->type 				= "string";
 		$model->ui_slashdata_view_count->milestones_start 	= '2016-02-29';
 		$model->ui_slashdata_view_count->milestones_end 	= '2099-11-30'; 
