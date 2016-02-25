@@ -191,7 +191,8 @@ class campaign_model extends CI_Model {
 		$field->value								= null;
 		$field->label								= null;
 		$field->placeholder							= null;
-
+		$field->milestones_start					= null;
+		$field->milestones_end						= null;
 
 		// Enterprise Data Inventory
 
@@ -215,9 +216,11 @@ class campaign_model extends CI_Model {
         $model->edi_apis->label                     = "Number of APIs";
         $model->edi_apis->type                      = "string";		
 
-		$model->edi_schedule_delivered				= clone $field;
-		$model->edi_schedule_delivered->label 		= "Schedule Delivered";
-		$model->edi_schedule_delivered->type 		= "select";
+		$model->edi_schedule_delivered						= clone $field;
+		$model->edi_schedule_delivered->label 				= "Schedule Delivered";
+		$model->edi_schedule_delivered->type 				= "select";
+		$model->edi_schedule_delivered->milestones_start 	= '2013-11-30';
+		$model->edi_schedule_delivered->milestones_end 		= '2015-11-30';		
 
 		$model->edi_bureaus							= clone $field;
 		$model->edi_bureaus->label 					= "Bureaus represented";
@@ -228,20 +231,22 @@ class campaign_model extends CI_Model {
 		$model->edi_programs->type 					= "string";
 
 		$model->edi_access_public					= clone $field;
-		$model->edi_access_public->label 			= "Access Level = Public";
+		$model->edi_access_public->label 			= "Number of public datasets";
 		$model->edi_access_public->type 			= "string";
 
 		$model->edi_access_restricted				= clone $field;
-		$model->edi_access_restricted->label 		= "Access Level = Restricted";
+		$model->edi_access_restricted->label 		= "Number of restricted public datasets";
 		$model->edi_access_restricted->type 		= "string";
 
 		$model->edi_access_nonpublic				= clone $field;
-		$model->edi_access_nonpublic->label 		= "Access Level = Non-Public";
+		$model->edi_access_nonpublic->label 		= "Number of non-public datasets";
 		$model->edi_access_nonpublic->type 			= "string";
 
 		$model->edi_superset						= clone $field;
 		$model->edi_superset->label 				= "Inventory > Public listing";
 		$model->edi_superset->type 					= "select";
+		$model->edi_superset->milestones_start 		= '2013-11-30';
+		$model->edi_superset->milestones_end 		= '2015-11-30';
 
 		$model->edi_progress_evaluation				= clone $field;
 		$model->edi_progress_evaluation->label 		= "Percentage growth in records since last quarter";
@@ -254,14 +259,34 @@ class campaign_model extends CI_Model {
         $model->edi_quality_check                   = clone $field;
         $model->edi_quality_check->label            = "Spot Check - datasets listed by search engine";
         $model->edi_quality_check->type             = "string";
+		$model->edi_quality_check->milestones_start = '2013-11-30';
+		$model->edi_quality_check->milestones_end 	= '2015-11-30';        
 
         $model->edi_public_release                  = clone $field;
-        $model->edi_public_release->label           = "PDL includes non-public datasets and no redactions";
+        $model->edi_public_release->label           = "Agency provides a public Enterprise Data Inventory on Data.gov";
         $model->edi_public_release->type            = "select";
+
+        $model->edi_sent_to_omb                 		= clone $field;
+        $model->edi_sent_to_omb->label          		= "Agency provided updated Enterprise Data Inventory to OMB";
+        $model->edi_sent_to_omb->type           		= "select";
+		$model->edi_sent_to_omb->milestones_start 		= '2016-02-29';
+		$model->edi_sent_to_omb->milestones_end 		= '2099-11-30';
 
         $model->edi_license_present                 = clone $field;
         $model->edi_license_present->label          = "License specified";
         $model->edi_license_present->type           = "string";
+
+        $model->edi_redaction_count                 		= clone $field;
+        $model->edi_redaction_count->label          		= "Number of datasets with redactions";
+        $model->edi_redaction_count->type           		= "string";
+		$model->edi_redaction_count->milestones_start 		= '2016-02-29';
+		$model->edi_redaction_count->milestones_end 		= '2099-11-30';
+
+        $model->edi_redaction_percentage                 	= clone $field;
+        $model->edi_redaction_percentage->label          	= "Percent of datasets with redactions";
+        $model->edi_redaction_percentage->type           	= "string";
+		$model->edi_redaction_percentage->milestones_start 	= '2016-02-29';
+		$model->edi_redaction_percentage->milestones_end 	= '2099-11-30';
 
 
 		// Public Data Listing
@@ -289,6 +314,12 @@ class campaign_model extends CI_Model {
 		$model->pdl_collections						= clone $field;
 		$model->pdl_collections->label	 			= "Number of Collections";
 		$model->pdl_collections->type 				= "string";
+
+		$model->pdl_non_collections										= clone $field;
+		$model->pdl_non_collections->label 								= "Number of datasets not contained in a collection";
+		$model->pdl_non_collections->type 								= "string";
+		$model->pdl_non_collections->milestones_start 					= '2016-02-29';
+		$model->pdl_non_collections->milestones_end 					= '2099-11-30';		
 		
 		$model->pdl_link_total						= clone $field;
 		$model->pdl_link_total->label 				= "Total number of access and download links";
@@ -323,7 +354,7 @@ class campaign_model extends CI_Model {
 		$model->pdl_valid_metadata->type 			= "string";
 
 		$model->pdl_slashdata						= clone $field;
-		$model->pdl_slashdata->label 				= "/data";
+		$model->pdl_slashdata->label 				= "Provides datasets in human-readable form on /data";
 		$model->pdl_slashdata->type 				= "select";
 
 		$model->pdl_datajson						= clone $field;
@@ -334,9 +365,89 @@ class campaign_model extends CI_Model {
 		$model->pdl_datagov_harvested->label 		= "Harvested by data.gov";
 		$model->pdl_datagov_harvested->type 		= "select";
 
-		$model->pdl_datagov_view_count				= clone $field;
-		$model->pdl_datagov_view_count->label 		= "Views on data.gov for the quarter";
-		$model->pdl_datagov_view_count->type 		= "string";
+		$model->pdl_datagov_view_count						= clone $field;
+		$model->pdl_datagov_view_count->label 				= "Views on data.gov for the quarter";
+		$model->pdl_datagov_view_count->type 				= "string";
+		$model->pdl_datagov_view_count->milestones_start 	= '2013-11-30';
+		$model->pdl_datagov_view_count->milestones_end 		= '2015-11-30';
+
+		$model->pdl_access_public							= clone $field;
+		$model->pdl_access_public->label 					= "Number of public datasets";
+		$model->pdl_access_public->type 					= "string";
+		$model->pdl_access_public->milestones_start 		= '2016-02-29';
+		$model->pdl_access_public->milestones_end 			= '2099-11-30';		
+
+		$model->pdl_access_restricted						= clone $field;
+		$model->pdl_access_restricted->label 				= "Number of restricted public datasets";
+		$model->pdl_access_restricted->type 				= "string";
+		$model->pdl_access_restricted->milestones_start 	= '2016-02-29';
+		$model->pdl_access_restricted->milestones_end 		= '2099-11-30';		
+
+		$model->pdl_access_nonpublic						= clone $field;
+		$model->pdl_access_nonpublic->label 				= "Number of non-public datasets";
+		$model->pdl_access_nonpublic->type 					= "string";
+		$model->pdl_access_nonpublic->milestones_start 		= '2016-02-29';
+		$model->pdl_access_nonpublic->milestones_end 		= '2099-11-30';		
+
+		$model->pdl_api_access_public							= clone $field;
+		$model->pdl_api_access_public->label 					= "Number of public APIs";
+		$model->pdl_api_access_public->type 					= "string";
+		$model->pdl_api_access_public->milestones_start 		= '2016-02-29';
+		$model->pdl_api_access_public->milestones_end 			= '2099-11-30';		
+
+		$model->pdl_api_access_restricted						= clone $field;
+		$model->pdl_api_access_restricted->label 				= "Number of restricted public APIs";
+		$model->pdl_api_access_restricted->type 				= "string";
+		$model->pdl_api_access_restricted->milestones_start 	= '2016-02-29';
+		$model->pdl_api_access_restricted->milestones_end 		= '2099-11-30';		
+
+		$model->pdl_api_access_nonpublic						= clone $field;
+		$model->pdl_api_access_nonpublic->label 				= "Number of non-public APIs";
+		$model->pdl_api_access_nonpublic->type 					= "string";
+		$model->pdl_api_access_nonpublic->milestones_start 		= '2016-02-29';
+		$model->pdl_api_access_nonpublic->milestones_end 		= '2099-11-30';	
+
+		$model->pdl_dataset_growth_public							= clone $field;
+		$model->pdl_dataset_growth_public->label 					= "Percent growth of public datasets";
+		$model->pdl_dataset_growth_public->type 					= "string";
+		$model->pdl_dataset_growth_public->milestones_start 		= '2016-02-29';
+		$model->pdl_dataset_growth_public->milestones_end 			= '2099-11-30';		
+
+		$model->pdl_dataset_growth_restricted						= clone $field;
+		$model->pdl_dataset_growth_restricted->label 				= "Percent growth of restricted public datasets";
+		$model->pdl_dataset_growth_restricted->type 				= "string";
+		$model->pdl_dataset_growth_restricted->milestones_start 	= '2016-02-29';
+		$model->pdl_dataset_growth_restricted->milestones_end 		= '2099-11-30';		
+
+		$model->pdl_dataset_growth_nonpublic						= clone $field;
+		$model->pdl_dataset_growth_nonpublic->label 				= "Percent growth of non-public datasets";
+		$model->pdl_dataset_growth_nonpublic->type 					= "string";
+		$model->pdl_dataset_growth_nonpublic->milestones_start 		= '2016-02-29';
+		$model->pdl_dataset_growth_nonpublic->milestones_end 		= '2099-11-30';	
+
+		$model->pdl_license_usg_works								= clone $field;
+		$model->pdl_license_usg_works->label 						= "Percent datasets licensed as U.S. Public Domain";
+		$model->pdl_license_usg_works->type 						= "string";
+		$model->pdl_license_usg_works->milestones_start 			= '2016-02-29';
+		$model->pdl_license_usg_works->milestones_end 				= '2099-11-30';	
+
+		$model->pdl_license_cc0										= clone $field;
+		$model->pdl_license_cc0->label 								= "Percent datasets licensed as Creative Commons Zero";
+		$model->pdl_license_cc0->type 								= "string";
+		$model->pdl_license_cc0->milestones_start 					= '2016-02-29';
+		$model->pdl_license_cc0->milestones_end 					= '2099-11-30';			
+
+		$model->pdl_license_cc0										= clone $field;
+		$model->pdl_license_cc0->label 								= "Percent datasets with other licenses";
+		$model->pdl_license_cc0->type 								= "string";
+		$model->pdl_license_cc0->milestones_start 					= '2016-02-29';
+		$model->pdl_license_cc0->milestones_end 					= '2099-11-30';	
+
+		$model->pdl_license_none									= clone $field;
+		$model->pdl_license_none->label 							= "Percent datasets with no license";
+		$model->pdl_license_none->type 								= "string";
+		$model->pdl_license_none->milestones_start 					= '2016-02-29';
+		$model->pdl_license_none->milestones_end 					= '2099-11-30';
 
 		// Public Engagement
 
@@ -438,7 +549,20 @@ class campaign_model extends CI_Model {
 
         $model->ui_dap_tracking                     = clone $field;
         $model->ui_dap_tracking->label              = "Digital Analytics Program on /data";
-        $model->ui_dap_tracking->type               = "select"; 		
+        $model->ui_dap_tracking->type               = "select"; 
+
+		$model->ui_datagov_view_count						= clone $field;
+		$model->ui_datagov_view_count->label 				= "Views on data.gov for the quarter";
+		$model->ui_datagov_view_count->type 				= "string";
+		$model->ui_datagov_view_count->milestones_start 	= '2016-02-29';
+		$model->ui_datagov_view_count->milestones_end 		= '2099-11-30';  
+
+		$model->ui_slashdata_view_count						= clone $field;
+		$model->ui_slashdata_view_count->label 				= "Views on agency /data page this quarter";
+		$model->ui_slashdata_view_count->type 				= "string";
+		$model->ui_slashdata_view_count->milestones_start 	= '2016-02-29';
+		$model->ui_slashdata_view_count->milestones_end 	= '2099-11-30'; 
+
 
 		return $model;
 }
@@ -488,10 +612,14 @@ class campaign_model extends CI_Model {
 							"2015-05-31" => "Milestone 7",
 							"2015-08-31" => "Milestone 8",
 							"2015-11-30" => "Milestone 9",
-							"2016-02-28" => "Milestone 10",
+							"2016-02-29" => "Milestone 10",
 							"2016-05-31" => "Milestone 11",
 							"2016-08-31" => "Milestone 12",
-							"2016-11-30" => "Milestone 13"
+							"2016-11-30" => "Milestone 13",
+							"2017-02-28" => "Milestone 14",
+							"2017-05-31" => "Milestone 15",
+							"2017-08-31" => "Milestone 16",
+							"2017-11-30" => "Milestone 17"							
 							);
 
 		return $milestones;
