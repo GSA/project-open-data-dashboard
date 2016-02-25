@@ -272,7 +272,7 @@ class campaign_model extends CI_Model {
         $model->edi_completeness                 		= clone $field;
         $model->edi_completeness->label          		= "To what extent is your agency’s Enterprise Data Inventory (EDI) complete?";
         $model->edi_completeness->type           		= "choices";
-        $model->edi_completeness->choices           	= array("To a very great extent (>75%)", "To a great extent (50-75%)", "To some extent (25-50%)"; "To a very little extent (<25%)", "No response");
+        $model->edi_completeness->choices           	= array("To a very great extent (>75%)", "To a great extent (50-75%)", "To some extent (25-50%)", "To a very little extent (<25%)", "No response");
 		$model->edi_completeness->milestones_start 		= '2016-02-29';
 		$model->edi_completeness->milestones_end 		= '2099-11-30';
 
