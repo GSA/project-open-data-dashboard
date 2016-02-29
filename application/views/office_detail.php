@@ -1241,7 +1241,7 @@
                     <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessLevel_public' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
-                    Number of public datasets
+                    Public Datasets
                 </th>                 
                 <td id="pdl_access_public">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessLevel_public; ?></span>
@@ -1255,7 +1255,7 @@
                     <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessLevel_restricted' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
-                    Number of restricted public datasets
+                    Restricted Public Datasets
                 </th>                 
                 <td id="pdl_access_restricted">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessLevel_restricted; ?></span>
@@ -1269,7 +1269,7 @@
                     <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_accessLevel_nonpublic' ?>">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
-                    Number of non-public datasets
+                    Non-public Datasets
                 </th>                 
                 <td id="pdl_access_nonpublic">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessLevel_nonpublic; ?></span>
