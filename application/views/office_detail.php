@@ -1277,8 +1277,13 @@
             </tr> 
             <?php endif; ?> 
 
-            <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx)): ?>
-
+            <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx) && 
+                    ($office_campaign->datajson_status->qa->validation_counts->http_0 + 
+                     $office_campaign->datajson_status->qa->validation_counts->http_2xx + 
+                     $office_campaign->datajson_status->qa->validation_counts->http_3xx +
+                     $office_campaign->datajson_status->qa->validation_counts->http_4xx +
+                     $office_campaign->datajson_status->qa->validation_counts->http_5xx 
+                    ) > 0): ?>
 
                 <tr class="info" id="pdl_link_check">
                     <td colspan="2">
