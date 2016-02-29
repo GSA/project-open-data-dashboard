@@ -1052,6 +1052,9 @@ class campaign_model extends CI_Model {
 							}
 
 							$sum_array_fields = array('API_total', 
+													  'API_public', 
+													  'API_restricted', 
+													  'API_nonpublic', 
 													  'collections_total',
 													  'non_collection_total',
 													  'downloadURL_present', 
@@ -1480,6 +1483,9 @@ class campaign_model extends CI_Model {
 
 		$accessURL_total			= 0;
 		$API_total					= 0;
+		$API_public					= 0;
+		$API_restricted				= 0;
+		$API_nonpublic				= 0;		
 		$collections_total			= 0;
 		$non_collection_total 		= 0;
 		$downloadURL_total			= 0;		
@@ -1580,6 +1586,13 @@ class campaign_model extends CI_Model {
 				   			&& strtolower($distribution->format) == 'api' ) {
 				   			$API_total++;
 
+							if ($dataset->accessLevel == 'public') {
+								$API_public++;
+							} else if ($dataset->accessLevel == 'restricted public') {
+								$API_restricted++;
+							} else if ($dataset->accessLevel == 'non-public') {
+								$API_nonpublic++;
+							}
 				   		}
 
 				   		if($component === 'full-scan') $this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $media_type);
@@ -1638,6 +1651,9 @@ class campaign_model extends CI_Model {
 		$qa['accessURL_present'] 			= $accessURL_present;
 		$qa['accessURL_total'] 				= $accessURL_total;
 		$qa['API_total'] 					= $API_total;	
+		$qa['API_public']					= $API_public;
+		$qa['API_restricted']				= $API_restricted;
+		$qa['API_nonpublic']				= $API_nonpublic;
 		$qa['collections_total']			= count($collections_list);	
 		$qa['non_collection_total']			= $non_collection_total;	
 		$qa['validation_counts']			= $this->validation_counts;

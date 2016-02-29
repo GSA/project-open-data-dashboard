@@ -80,6 +80,9 @@
                                     'pdl_datasets', 
                                     'pdl_link_check', 
                                     'pdl_apis',
+                                    'pdl_api_access_public',
+                                    'pdl_api_access_restricted',
+                                    'pdl_api_access_nonpublic',
                                     'pdl_collections',
                                     'pdl_non_collections',
                                     'pdl_link_total',
@@ -1188,7 +1191,49 @@
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->API_total; ?></span>
                 </td>
             </tr> 
-            <?php endif; ?>              
+            <?php endif; ?>  
+
+            <?php if(isset($office_campaign->datajson_status->qa->API_public)): ?>
+            <tr>
+                <th id="metrics_API_public">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_API_public' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Public APIs
+                </th>                 
+                <td id="pdl_api_access_public">
+                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->API_public; ?></span>
+                </td>
+            </tr> 
+            <?php endif; ?>  
+
+            <?php if(isset($office_campaign->datajson_status->qa->API_restricted)): ?>
+            <tr>
+                <th id="metrics_API_restricted">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_API_restricted' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Restricted Public APIs
+                </th>                 
+                <td id="pdl_api_access_restricted">
+                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->API_restricted; ?></span>
+                </td>
+            </tr> 
+            <?php endif; ?>  
+
+            <?php if(isset($office_campaign->datajson_status->qa->API_nonpublic)): ?>
+            <tr>
+                <th id="metrics_API_nonpublic">
+                    <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_API_nonpublic' ?>">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                    Non-public APIs
+                </th>                 
+                <td id="pdl_api_access_nonpublic">
+                    <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->API_nonpublic; ?></span>
+                </td>
+            </tr> 
+            <?php endif; ?>                                                  
 
             <?php if(isset($office_campaign->datajson_status->qa->accessLevel_public)): ?>
             <tr>
