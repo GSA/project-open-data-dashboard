@@ -1277,7 +1277,7 @@
             </tr> 
             <?php endif; ?> 
 
-            <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx) && $office_campaign->datajson_status->qa->validation_counts->http_2xx > 0): ?>
+            <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx)): ?>
 
 
                 <tr class="info" id="pdl_link_check">
