@@ -562,14 +562,22 @@
                                                 } else {
                                                     if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
                                                         if(strlen($office_campaign->tracker_fields->$tracker_field_name) < 20) {
-                                                            echo $office_campaign->tracker_fields->$tracker_field_name;
+                                                            if ($tracker_field_meta->type == "choices" && !empty($tracker_field_meta->choices)) {
+                                                                foreach ($tracker_field_meta->choices as $option_name => $option_label) {
+                                                                    if ($office_campaign->tracker_fields->$tracker_field_name == $option_name) {
+                                                                        echo $option_label; 
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                echo $office_campaign->tracker_fields->$tracker_field_name;    
+                                                            }
                                                         } else {
                                                             $overflow_text = true;
                                                             echo '<em>See below</em>';
                                                         }
-                                                        
                                                     }
-                                                }                       
+                                                }
                                             ?>
                                         </td>
 
@@ -613,6 +621,15 @@
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "green") ? 'selected = "selected"' : '' ?> value="green">Green</option>
                                                     </select>
                                                 <?php endif; ?>  
+
+                                                <?php if ($tracker_field_meta->type == "choices" && !empty($tracker_field_meta->choices)) : ?>
+                                                    <select name="<?php echo $tracker_field_name ?>">
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
+                                                        <?php foreach ($tracker_field_meta->choices as $option_name => $option_label): ?>
+                                                            <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == $option_name) ? 'selected = "selected"' : '' ?> value="<?php echo $option_name; ?>"><?php echo $option_label; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                <?php endif; ?>                                                  
 
 
                                                 <?php if ($tracker_field_meta->type == "string") : ?>
