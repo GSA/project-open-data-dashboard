@@ -118,6 +118,12 @@ class campaign_model extends CI_Model {
 		$field->success_weight					= null;
 		$field->value							= null;
 
+		$model->last_crawl 								=   clone $field;
+		$model->last_crawl->label 						=   'Last Crawl';
+
+		$model->last_modified 							=   clone $field;
+		$model->last_modified->label 					=   'Last Modified';
+
 		$model->total_records 							=   clone $field;
 		$model->total_records->label 					=   'Public Datasets';
 		

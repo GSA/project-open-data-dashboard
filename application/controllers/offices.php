@@ -29,7 +29,7 @@ class Offices extends CI_Controller {
 	public function index($selected_milestone = null, $output=null, $show_all_offices = false, $show_all_fields = false, $show_qa_fields = false)
 	{
 
-
+		
 		$this->load->model('campaign_model', 'campaign');
 		$milestones = $this->campaign->milestones_model();	
 

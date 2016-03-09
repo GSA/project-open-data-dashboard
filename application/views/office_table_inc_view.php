@@ -284,7 +284,7 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 			if(!empty($office->datajson_status)) {
 				$office->datajson_status = json_decode($office->datajson_status);
 			}
-	
+
 			if(!empty($office->datajson_status->qa->validation_counts)) {
 
 				$error_count 		= (!empty($office->datajson_status->error_count)) ? $office->datajson_status->error_count : 0;
@@ -292,8 +292,8 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 
 				$percent_valid		= (!empty($total_records)) ? process_percentage(($total_records - $error_count), $total_records) : '';
 
-				//var_dump($office->datajson_status->qa); exit;
-
+				$model->last_modified->value 			= (!empty($office->datajson_status->filetime) && $office->datajson_status->filetime > 0) ? date("d-M-Y H:i:s T", $office->datajson_status->filetime) : '';
+				$model->last_crawl->value 				= date("d-M-Y H:i:s T", $office->datajson_status->last_crawl);
 				$model->total_records->value 			= $office->datajson_status->total_records;
 	    		$model->valid_count->value 				= $office->datajson_status->total_records - $office->datajson_status->error_count;
 				$model->programs->value 				= count($office->datajson_status->qa->programCodes);
