@@ -87,14 +87,15 @@ if($show_all_fields) {
 				status_table('Other Independent Offices', $independent_offices, $config, $milestone->selected_milestone, $milestone->specified);
 			}
 
-      if(!empty($office_totals) && !empty($_REQUEST['show_totals']) && $_REQUEST['show_totals'] == 'true') {
+      if(!empty($office_totals)) {
       ?>
+        <h4>Totals for CFO-Act Agencies</h4>
         <table class="table">          
             <tr>
               <th>Field</th>
               <th>Total</th>
               <th>Average</th>
-              <th>Offices</th>
+              <th>Agencies</th>
               <th>Errors</th>
             </tr>
 
