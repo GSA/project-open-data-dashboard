@@ -34,10 +34,21 @@ if($show_all_fields) {
             <?php endif; ?>
 
 
-           <?php if($milestone->selected_milestone == $milestone->previous): ?>
-                <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The status of each field won't be final until a few weeks after the milestone has passed</p>
+           <?php if($milestone->selected_milestone == $milestone->previous && empty($review_status)): ?>
+                <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently completed one. The status of each field won't be final until a few weeks after the milestone has passed</p>
             <?php endif; ?>  
 
+           <?php if($milestone->selected_milestone == $milestone->previous && !empty($review_status) && $review_status == "in-progress"): ?>
+                <p class="form-flash text-warning bg-warning"><strong>Under Review:</strong> The milestone selected is the most recently completed one but OMB is still review some agencies</p>
+            <?php endif; ?>     
+
+           <?php if(!empty($review_status) && $review_status == "complete"): ?>
+                <p class="form-flash text-success bg-success"><strong>Reviews Complete:</strong> 
+                  <?php if($milestone->selected_milestone == $milestone->previous): ?>
+                    The milestone selected is the most recently completed one and 
+                  <?php endif; ?>
+                  OMB has completed all agency reviews</p>
+            <?php endif; ?>       
 
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">

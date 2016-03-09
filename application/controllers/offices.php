@@ -114,6 +114,8 @@ class Offices extends CI_Controller {
 			$view_data['office_totals'] = $this->calculate_totals($view_data['cfo_offices']);	
 		}		
 
+
+
 		// pass config variables
 		$view_data['max_remote_size'] = $this->config->item('max_remote_size');
 
@@ -123,6 +125,34 @@ class Offices extends CI_Controller {
 		// override section model if we're just showing QA
 		if($show_qa_fields) $view_data['section_breakdown'] = $this->campaign->qa_sections_model();	
 
+
+		// Calculate collective review status
+		$review_status = "";
+		$complete_count = 0;
+		if(!empty($view_data["cfo_offices"])) {
+			foreach ($view_data["cfo_offices"] as $office_data) {
+				if (!empty($office_data->tracker_status)) {
+					$tracker_status = json_decode($office_data->tracker_status);
+					if (!empty($tracker_status->status) && $tracker_status->status == "in-progress") {
+						$review_status = "in-progress";
+						break;
+					}
+					if (!empty($tracker_status->status) && $tracker_status->status == "complete") {
+						$complete_count++;
+					}
+				}
+			}
+	
+			$view_data['review_status'] = $review_status;
+
+			if($complete_count == count($view_data["cfo_offices"])) {
+				$view_data['review_status'] = "complete";
+			}
+
+		}
+
+
+		// For raw JSON output
 		if ($output == 'json') {
 
 			$json_fields = array("datajson_status", "datapage_status", "digitalstrategy_status", "tracker_fields", "tracker_status");
