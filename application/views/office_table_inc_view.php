@@ -79,12 +79,6 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
                 </a>			
 			</td>
 			
-			<td colspan="2" class="pdl-heading">
-				Public Data Listing Metrics
-                <a href="<?php echo site_url('docs') . '#automated_metrics' ?>">
-                    <span class="glyphicon glyphicon-info-sign"></span>
-                </a>				
-			</td>
 		</tr>
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
@@ -93,9 +87,6 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 				<?php if ($milestone->selected_milestone < '2014-11-30' && $section_name == 'ui') continue; ?>
 				<th class="tilt"><div><?php echo $section_title;?></div></th>
 			<?php endforeach; reset($sections_breakdown); ?>
-
-			<th class="tilt pdl-heading"><div>Public Datasets</div></th>
-			<th class="tilt pdl-heading"><div>Valid Metadata</div></th>
 
 		</tr>
 
@@ -246,19 +237,6 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 				</td>
 
 			<?php endforeach; reset($sections_breakdown); ?>
-
-			<?php 
-				if ( ($milestone->selected_milestone > '2014-11-30') && !empty($office->datajson_status->schema_version) && ($office->datajson_status->schema_version == 'federal') ) {
-					$version_flag = '<sup>&#10013;</sup>';
-				} else {
-					$version_flag = '';
-				}
-
-			?>
-
-
-			<td class="content-metric <?php echo $json_status?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_datasets"><span><?php echo $total_records; ?>&nbsp;</span></a></td>
-			<td class="content-metric" style="<?php echo metric_status_color($percent_valid, 'high', 20); ?>"><a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?>#pdl_valid_metadata"><span><?php echo (!empty($percent_valid)) ? $percent_valid : page_status('unknown'); echo $version_flag; ?>&nbsp;</span></a> </td>
 
 		</tr>
 		<?php endforeach;?>
