@@ -29,7 +29,8 @@ class Offices extends CI_Controller {
 	public function index($selected_milestone = null, $output=null, $show_all_offices = false, $show_all_fields = false, $show_qa_fields = false)
 	{
 
-		
+		$output = $this->input->get_post('output', TRUE);
+
 		$this->load->model('campaign_model', 'campaign');
 		$milestones = $this->campaign->milestones_model();	
 
@@ -123,7 +124,30 @@ class Offices extends CI_Controller {
 		if($show_qa_fields) $view_data['section_breakdown'] = $this->campaign->qa_sections_model();	
 
 		if ($output == 'json') {
-			return $view_data;
+
+			$json_fields = array("datajson_status", "datapage_status", "digitalstrategy_status", "tracker_fields", "tracker_status");
+
+
+			
+			if(!empty($view_data["cfo_offices"])) {
+				$converted_data = array();
+				foreach ($view_data["cfo_offices"] as $office_data) {
+
+					foreach($json_fields as $json_field) {
+						if(!empty($office_data->$json_field)) {
+							$office_data->$json_field = json_decode($office_data->$json_field);
+						}
+					}
+					$converted_data[] = $office_data;					
+				}
+				$view_data["cfo_offices"] = $converted_data;
+				
+			}
+			
+
+			header('Content-type: application/json');
+			print json_encode($view_data);
+			exit;
 		}
 
 		$this->load->view('office_list', $view_data);
