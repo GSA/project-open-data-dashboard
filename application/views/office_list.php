@@ -39,7 +39,7 @@ if($show_all_fields) {
             <?php endif; ?>  
 
            <?php if($milestone->selected_milestone == $milestone->previous && !empty($review_status) && $review_status == "in-progress"): ?>
-                <p class="form-flash text-warning bg-warning"><strong>Under Review:</strong> The milestone selected is the most recently completed one but OMB is still review some agencies</p>
+                <p class="form-flash text-warning bg-warning"><strong>Under Review:</strong> The milestone selected is the most recently completed one, but OMB is still reviewing some agencies</p>
             <?php endif; ?>     
 
            <?php if(!empty($review_status) && $review_status == "complete"): ?>
