@@ -27,7 +27,7 @@
             <?php endif; ?>
 
 
-              <h2><?php echo $office->name ?> - <?php echo $milestone->milestones[$milestone->selected_milestone];?> - <?php echo date("F jS Y", strtotime($milestone->selected_milestone)) ?></h2>
+              <h2><?php echo $office->name ?></h2>
 
         
 			<div><a href="<?php echo $office->url ?>"><?php echo $office->url ?></a></div>
@@ -42,6 +42,40 @@
 		
         </div>
 
+
+        <div class='agency-trends'>
+            <?php
+                //$edi_public         = !empty($office_campaign->tracker_fields->edi_access_public) ? $office_campaign->tracker_fields->edi_access_public : 0;
+            ?>
+            
+            <div id="inventory-trends" style="height: 200px;"></div>
+            <div class="figcaption">Enterprise Data Inventory - Volume and composition over time</div>
+
+            <script>
+                 new Morris.Area({
+                    element: 'inventory-trends',
+                    data: <?php echo json_encode($trends); ?>,
+                    xkey: 'milestone',
+                    ykeys: ['edi_access_public', 'edi_access_restricted', 'edi_access_nonpublic'],
+                    labels: ['Public', 'Restricted Public', 'Non-Public'],
+                    parseTime: false,
+                    pointSize: 2,
+                    hideHover: 'auto',
+                    lineColors: [
+                      '#5cb85c',
+                      '#5bc0de',
+                      '#f0ad4e',
+                      '#95D7BB'
+                    ]                    
+                  });
+            </script>
+
+
+
+        </div>
+
+
+        <h2><?php echo $milestone->milestones[$milestone->selected_milestone];?> - <?php echo date("F jS Y", strtotime($milestone->selected_milestone)) ?></h2>        
 
 
         <?php if(!empty($office_campaign)): ?>

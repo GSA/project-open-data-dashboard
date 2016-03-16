@@ -315,5 +315,18 @@ p+h4, p+h5 {
 	}
 }
 
+.agency-trends {
+	margin : 1em 0 4em 0;
+	border : 1px solid #EBEBEB;
+	
+	padding : .5em;
+}
+
+.agency-trends .figcaption {
+	text-align: right;
+	font-style: italic;
+	color : #666;
+}
+
 
 

@@ -317,6 +317,26 @@ class Offices extends CI_Controller {
 
 		}
 
+		$milestone_trends = $this->get_trends($id);
+		if ($milestone_trends) {
+			$periods = array();
+			foreach ($milestone_trends as $milestone_trend) {
+				$tracker_fields = json_decode($milestone_trend->tracker_fields);	
+
+				$edi_access_public 		= (!empty($tracker_fields->edi_access_public)) ? $tracker_fields->edi_access_public : null;
+				$edi_access_restricted 	= (!empty($tracker_fields->edi_access_restricted)) ? $tracker_fields->edi_access_restricted : null;
+				$edi_access_nonpublic 	= (!empty($tracker_fields->edi_access_nonpublic)) ? $tracker_fields->edi_access_nonpublic : null;
+
+				$period = array('milestone' => $milestone_trend->milestone, 
+								'edi_access_public' => 		$edi_access_public,
+								'edi_access_restricted' =>  $edi_access_restricted,
+								'edi_access_nonpublic' => 	$edi_access_nonpublic);
+				$periods[] = $period;
+			}
+			$view_data['trends'] = $periods;
+		} else {
+			$view_data['trends'] = null;
+		}
 
 
 		// selected tab
@@ -327,8 +347,6 @@ class Offices extends CI_Controller {
 
 		// pass config variable
 		$view_data['config'] = array('max_remote_size' => $this->config->item('max_remote_size'), 'archive_dir' => $this->config->item('archive_dir'));
-
-		//var_dump($view_data['office_campaign']); exit;
 
 		$this->load->view('office_detail', $view_data);
 
@@ -423,6 +441,29 @@ class Offices extends CI_Controller {
 		return $totals;
 
 	} 
+
+
+
+	public function get_trends($office_id) {
+
+		$this->db->select('tracker_fields');
+		$this->db->select('milestone');
+		$this->db->from('datagov_campaign');
+		$this->db->where('datagov_campaign.office_id', $office_id);
+		$this->db->where("(datagov_campaign.crawl_status IS NULL OR datagov_campaign.crawl_status = 'final')");
+		$query = $this->db->get();
+
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+
+	}	
+
+
+
+
 
 
 
