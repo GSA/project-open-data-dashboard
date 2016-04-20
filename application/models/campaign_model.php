@@ -82,6 +82,53 @@ class campaign_model extends CI_Model {
 
 	}	
 
+	public function prioritize_crawl($offices, $milestone) {
+
+		$this->db->select('office_id, crawl_status, crawl_start, crawl_end');
+		$this->db->where('milestone', $milestone);
+
+		$this->db->where('crawl_status <> ', 'archive');
+
+		$this->db->order_by('crawl_status', 'ASC');
+		$this->db->order_by('crawl_start', 'ASC');
+
+		$query = $this->db->get('datagov_campaign');
+
+		if ($query->num_rows() > 0) {
+			$crawls = $query->result_array();
+
+			$prioritize = array();
+			$de_prioritize = array();
+
+			foreach ($crawls as $crawl) {
+				if ($crawl['crawl_status'] == 'current') {
+					$prioritize[$crawl['office_id']] = true;
+				}
+				if ($crawl['crawl_status'] == 'in_progress' && empty($prioritize[$crawl['office_id']])) {
+					$de_prioritize[$crawl['office_id']] = true;
+				}
+			}
+
+			$start = array();
+			$middle = array();
+			$end = array();
+
+			foreach ($offices as $office) {
+				if (!empty($prioritize[$office->id])) {
+					$middle[] = $office;
+				} else if (!empty($de_prioritize[$office->id])) {
+					$end[] = $office;
+				} else {
+					$start[] = $office;
+				}
+			}
+
+			return array_merge($start, $middle, $end);
+
+		}
+
+	}
+
 
 	public function datagov_model() {
 

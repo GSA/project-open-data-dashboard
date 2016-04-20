@@ -755,6 +755,8 @@ class Campaign extends CI_Controller {
 		if ($query->num_rows() > 0) {
 		   	$offices = $query->result();
 
+            $offices = $this->campaign->prioritize_crawl($offices, $milestone->current);
+
 			foreach ($offices as $office) {
 
 				// Set current office id
