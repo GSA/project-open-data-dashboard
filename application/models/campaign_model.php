@@ -114,14 +114,33 @@ class campaign_model extends CI_Model {
 			$end = array();
 
 			foreach ($offices as $office) {
-				if (!empty($prioritize[$office->id])) {
-					$middle[] = $office;
-				} else if (!empty($de_prioritize[$office->id])) {
-					$end[] = $office;
-				} else {
+
+				// Start with offices that have never been crawled
+				if (empty($prioritize[$office->id]) && empty($de_prioritize[$office->id])) {
 					$start[] = $office;
 				}
+
+				// End with offices that didn't complete last crawl
+				if (!empty($de_prioritize[$office->id])) {
+					$end[] = $office;
+				} 
+
 			}
+			reset($offices);
+
+			// In the middle prioritize finished crawls starting with oldest ones first
+			if (!empty($prioritize[$office->id])) {
+				
+				foreach ($prioritize as $office_id => $priority) {
+					foreach ($offices as $office) {
+						if ($office_id == $office->id) {
+							$middle[] = $office;
+						}
+					}
+					reset($offices);
+				}
+
+			} 
 
 			return array_merge($start, $middle, $end);
 
