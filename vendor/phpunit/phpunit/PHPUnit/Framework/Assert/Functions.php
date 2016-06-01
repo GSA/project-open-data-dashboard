@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2013, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.5.0
@@ -1488,13 +1488,13 @@ function assertStringStartsWith($prefix, $string, $message = '')
  * match criteria for the assertion:
  *
  *  - `id`   : the node with the given id attribute must match the
- * corresponsing value.
+ * corresponding value.
  *  - `tag`  : the node type must match the corresponding value.
- *  - `attributes`   : a hash. The node's attributres must match the
- * corresponsing values in the hash.
+ *  - `attributes`   : a hash. The node's attributes must match the
+ * corresponding values in the hash.
  *  - `content`  : The text content must match the given value.
  *  - `parent`   : a hash. The node's parent must match the
- * corresponsing hash.
+ * corresponding hash.
  *  - `child`: a hash. At least one of the node's immediate children
  * must meet the criteria described by the hash.
  *  - `ancestor` : a hash. At least one of the node's ancestors must

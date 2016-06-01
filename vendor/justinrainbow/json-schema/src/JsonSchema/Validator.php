@@ -9,13 +9,8 @@
 
 namespace JsonSchema;
 
-use JsonSchema\Constraints\Schema;
+use JsonSchema\Constraints\SchemaConstraint;
 use JsonSchema\Constraints\Constraint;
-
-use JsonSchema\Exception\InvalidSchemaMediaTypeException;
-use JsonSchema\Exception\JsonDecodingException;
-
-use JsonSchema\Uri\Retrievers\UriRetrieverInterface;
 
 /**
  * A JsonSchema Constraint
@@ -37,7 +32,7 @@ class Validator extends Constraint
      */
     public function check($value, $schema = null, $path = null, $i = null)
     {
-        $validator = new Schema($this->checkMode, $this->uriRetriever);
+        $validator = $this->getFactory()->createInstanceFor('schema');
         $validator->check($value, $schema);
 
         $this->addErrors(array_unique($validator->getErrors(), SORT_REGULAR));

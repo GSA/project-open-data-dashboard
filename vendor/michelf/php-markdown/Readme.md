@@ -1,13 +1,13 @@
 PHP Markdown
 ============
 
-PHP Markdown Lib 1.4.1 - 4 May 2013
+PHP Markdown Lib 1.6.0 - 23 Dec 2015
 
 by Michel Fortin  
-<http://michelf.ca/>
+<https://michelf.ca/>
 
 based on Markdown by John Gruber  
-<http://daringfireball.net/>
+<https://daringfireball.net/>
 
 
 Introduction
@@ -25,10 +25,10 @@ software tool, originally written in Perl, that converts the plain text
 markup to HTML. PHP Markdown is a port to PHP of the original Markdown 
 program by John Gruber.
 
-*	[Full documentation of the Markdown syntax](<http://daringfireball.net/projects/markdown/>)
-	- Daring Fireball (John Gruber)
-*	[Markdown Extra syntax additions](<http://michelf.ca/projects/php-markdown/extra/>)
-	- Michel Fortin
+*	[Full documentation of the Markdown syntax](<https://daringfireball.net/projects/markdown/>)  
+	— Daring Fireball (John Gruber)
+*	[Markdown Extra syntax additions](<https://michelf.ca/projects/php-markdown/extra/>)  
+	— Michel Fortin
 
 
 Requirement
@@ -83,7 +83,7 @@ configuration variables:
 
 To learn more, see the full list of [configuration variables].
 
- [configuration variables]: http://michelf.ca/projects/php-markdown/configuration/
+ [configuration variables]: https://michelf.ca/projects/php-markdown/configuration/
 
 
 ### Usage without an autoloader
@@ -174,6 +174,59 @@ PHP Markdown, please visit [michelf.ca/donate] or send Bitcoin to
 Version History
 ---------------
 
+PHP Markdown Lib 1.6.0 (23 Dec 2015)  
+
+Note: this version was incorrectly released as 1.5.1 on Dec 22, a number 
+that contradicted the versioning policy.
+
+*	For fenced code blocks in Markdown Extra, can now set a class name for the 
+	code block's language before the special attribute block. Previously, this 
+	class name was only allowed in the absence of the special attribute block.
+
+*	Added a `code_block_content_func` configuration variable which takes a 
+	function that will convert the content of the code block to HTML. This is 
+	most useful for syntax highlighting. For fenced code blocks in Markdown 
+	Extra, the function has access to the language class name (the one outside 
+	of the special attribute block). Credits to Mario Konrad for providing the 
+	implementation.
+
+*	The curled arrow character for the backlink in footnotes is now followed
+	by a Unicode variant selector to prevent it from being displayed in emoji
+	form on iOS.
+
+	Note that in older browsers the variant selector is often interpreted as a 
+	separate character, making it visible after the arrow. So there is now a 
+	also a `fn_backlink_html` configuration variable that can be used to set 
+	the link text to something else. Credits to Dana for providing the 
+	implementation.
+
+*	Fixed an issue in MarkdownExtra where long header lines followed by a
+	special attribute block would hit the backtrack limit an cause an empty
+	string to be returned.
+
+
+PHP Markdown Lib 1.5.0 (1 Mar 2015)
+
+*	Added the ability start ordered lists with a number different from 1 and
+	and have that reflected in the HTML output. This can be enabled with
+	the `enhanced_ordered_lists` configuration variable for the Markdown 
+	parser; it is enabled by default for Markdown Extra.
+	Credits to Matt Gorle for providing the implementation.
+
+*	Added the ability to insert custom HTML attributes with simple values 
+	everywhere an extra attribute block is allowed (links, images, headers).
+	The value must be unquoted, cannot contains spaces and is limited to 
+	alphanumeric ASCII characters.
+	Credits to Peter Droogmans for providing the implementation.
+
+*	Added a `header_id_func` configuration variable which takes a function
+	that can generate an `id` attribute value from the header text.
+	Credits to Evert Pot for providing the implementation.
+
+*	Added a `url_filter_func` configuration variable which takes a function
+	that can rewrite any link or image URL to something different.
+
+
 PHP Markdown Lib 1.4.1 (4 May 2014)
 
 *	The HTML block parser will now treat `<figure>` as a block-level element
@@ -229,7 +282,7 @@ PHP Markdown Extra 1.2.6:
 
 *	Plugin interface for WordPress and other systems is no longer present in
 	the Lib package. The classic package is still available if you need it:
-	<http://michelf.ca/projects/php-markdown/classic/>
+	<https://michelf.ca/projects/php-markdown/classic/>
 
 *	Added `public` and `protected` protection attributes, plus a section about
 	what is "public API" and what isn't in the Readme file.
@@ -267,13 +320,13 @@ Copyright and License
 ---------------------
 
 PHP Markdown Lib
-Copyright (c) 2004-2014 Michel Fortin
-<http://michelf.ca/>  
+Copyright (c) 2004-2015 Michel Fortin
+<https://michelf.ca/>  
 All rights reserved.
 
 Based on Markdown  
 Copyright (c) 2003-2005 John Gruber   
-<http://daringfireball.net/>   
+<https://daringfireball.net/>   
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

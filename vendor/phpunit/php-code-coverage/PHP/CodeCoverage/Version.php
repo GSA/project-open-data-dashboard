@@ -2,7 +2,7 @@
 /**
  * PHP_CodeCoverage
  *
- * Copyright (c) 2009-2013, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2009-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,26 +37,26 @@
  * @category   PHP
  * @package    CodeCoverage
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2009-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      File available since Release 1.2.1
  */
 
 /**
- * 
+ *
  *
  * @category   PHP
  * @package    CodeCoverage
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2009-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      Class available since Release 1.2.1
  */
 class PHP_CodeCoverage_Version
 {
-    const VERSION = '1.2.13';
+    const VERSION = '1.2.18';
     protected static $version;
 
     /**
@@ -72,7 +72,7 @@ class PHP_CodeCoverage_Version
             if (is_dir(dirname(dirname(__DIR__)) . '/.git')) {
                 $dir = getcwd();
                 chdir(__DIR__);
-                $version = exec('git describe --tags');
+                $version = @exec('git describe --tags');
                 chdir($dir);
 
                 if ($version) {

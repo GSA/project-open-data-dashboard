@@ -6,8 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Michelf' => array($vendorDir . '/michelf/php-markdown'),
-    'JsonStreamingParser' => array($vendorDir . '/salsify/json-streaming-parser/src'),
-    'JsonSchema' => array($baseDir . '/src', $vendorDir . '/justinrainbow/json-schema/src'),
+    'JsonSchema' => array($baseDir . '/src'),
 );

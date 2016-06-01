@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2013, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.6.0
@@ -47,7 +47,7 @@
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.6.0
@@ -217,7 +217,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_Diff::diff
      */
-    public function testComparisonErrorOverlapingMatches()
+    public function testComparisonErrorOverlappingMatches()
     {
         $this->assertEquals(
           "--- Expected\n+++ Actual\n@@ @@\n-abc\n+abbc\n",
@@ -228,7 +228,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_Diff::diffToArray
      */
-    public function testComparisonErrorOverlapingMatches_toArray()
+    public function testComparisonErrorOverlappingMatches_toArray()
     {
         $diff = array();
         $diff[] = array('abc', self::REMOVED);
@@ -243,7 +243,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_Diff::diff
      */
-    public function testComparisonErrorOverlapingMatches2()
+    public function testComparisonErrorOverlappingMatches2()
     {
         $this->assertEquals(
           "--- Expected\n+++ Actual\n@@ @@\n-abcdde\n+abcde\n",
@@ -254,7 +254,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_Diff::diffToArray
      */
-    public function testComparisonErrorOverlapingMatches2_toArray()
+    public function testComparisonErrorOverlappingMatches2_toArray()
     {
         $diff = array();
         $diff[] = array('abcdde', self::REMOVED);

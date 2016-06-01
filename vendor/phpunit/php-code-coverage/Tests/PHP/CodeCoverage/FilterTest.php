@@ -2,7 +2,7 @@
 /**
  * PHP_CodeCoverage
  *
- * Copyright (c) 2009-2013, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2009-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@
  * @package    CodeCoverage
  * @subpackage Tests
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2009-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      File available since Release 1.0.0
@@ -59,7 +59,7 @@ if (!defined('TEST_FILES_PATH')) {
  * @package    CodeCoverage
  * @subpackage Tests
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2009-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      Class available since Release 1.0.0
@@ -267,6 +267,8 @@ class PHP_CodeCoverage_FilterTest extends PHPUnit_Framework_TestCase
      */
     public function testIsFile()
     {
+        $this->assertFalse($this->filter->isFile('vfs://root/a/path'));
+        $this->assertFalse($this->filter->isFile('xdebug://debug-eval'));
         $this->assertFalse($this->filter->isFile('eval()\'d code'));
         $this->assertFalse($this->filter->isFile('runtime-created function'));
         $this->assertFalse($this->filter->isFile('assert code'));
