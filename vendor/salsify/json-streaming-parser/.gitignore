@@ -1,7 +1,0 @@
-test-data
-tmp
-/.idea
-/composer.lock
-/vendor
-/build
-phpunit.xml
