@@ -144,6 +144,8 @@ class campaign_model extends CI_Model {
 
 			return array_merge($start, $middle, $end);
 
+		} else {
+			return $offices;
 		}
 
 	}
