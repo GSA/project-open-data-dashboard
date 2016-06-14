@@ -329,7 +329,11 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 				<?php 
 
 						if(!empty($qa_field->total_field)) {
-							$metric = process_percentage($qa_field->value, $model->{$qa_field->total_field}->value);
+							if ($qa_field_name == 'accessURL_working' && empty($qa_field->value)) {
+								$metric = ''; 
+							} else {
+								$metric = process_percentage($qa_field->value, $model->{$qa_field->total_field}->value);
+							}							
 						} else {
 							$metric = $qa_field->value; 	
 						}
