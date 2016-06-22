@@ -102,11 +102,11 @@ This is calculated by subtracting the last quarter's EDI count of data sets from
 
 <span id="edi_schedule_risk"></span>
 #####Schedule Risk for Nov 30, 2014
-This is an objective evaluation (Green = On Schedule, Yellow = Possible Schedule Issues, Red = Schedule Miss/Incomplete) if an agency will be able to make/deliver on their published deigital strategy deliverables for Open Data milestones that were outlined in OMB M-13-13. *(Qualitative)*
+This is an objective evaluation (Green = On Schedule, Yellow = Possible Schedule Issues, Red = Schedule Miss/Incomplete) if an agency will be able to make/deliver on their published digital strategy deliverables for Open Data milestones that were outlined in OMB M-13-13. *(Qualitative)*
 
 <span id="edi_quality_check"></span>
 #####Spot Check - Site search, SORNs, PIAs, FOIA
-This is a check by OMB eGov for SORNs (**System of Records Notices**), PIAs (**Privacy Imapct Assessments**), FOIA (**Freedom of Information Act**) statements, and through a search for typical data file types, for example (the number in parenthesis indicates how many files matched in the search were returned - the example below is via Google):
+This is a check by OMB eGov for SORNs (**System of Records Notices**), PIAs (**Privacy Impact Assessments**), FOIA (**Freedom of Information Act**) statements, and through a search for typical data file types, for example (the number in parenthesis indicates how many files matched in the search were returned - the example below is via Google):
 
 `allinanchor:  site:agencydomain.gov filetype:xls`  (5,000)
 
@@ -221,10 +221,10 @@ This element is a collection of the qualitative and quantitative measures and an
 
 <span id="ps_publication_process"></span>
 #####Data Publication Process Delivered
-This element captures the state of the Open Data publication process deliverable. The process is often located within the Digital Strategy for an agency, and is usually contained and updated within the JSON file. Some agencies have indepdently published this schedule on their websites separate from the Digital Strategy site, which is not recommended.
+This element captures the state of the Open Data publication process deliverable. The process is often located within the Digital Strategy for an agency, and is usually contained and updated within the JSON file. Some agencies have independently published this schedule on their websites separate from the Digital Strategy site, which is not recommended.
 
 <span id="ps_publication_process_qa"></span>
-#####Information that should not to be made public is documented with agency's OGC
+#####Information that should not be made public is documented with agency's OGC
 As part of the Data Publication Process (this element can't be "Green" without the previous element existing), the Office of General Counsel (OGC) or the agency's Office of the Solicitor, is listed as part of the process for determining which data sets are to be released publically. *(Qualitative)*
 
 ---
