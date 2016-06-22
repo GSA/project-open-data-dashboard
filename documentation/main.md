@@ -130,7 +130,7 @@ This element captures the count of publically listed data sets via the published
 
 <span id="pdl_downloadable"></span>
 #####Number of Public Datasets with File Downloads
-This element captures the count of downloadable publicaly listed datasets (`"accessLevel":"public"`) via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. This should correspond with `downloadURL` in the PDL JSON file that is the URL providing direct access to the downloadable distribution of a dataset. In version 1.0 of the POD Schema, this metric was based on the `accessloadURL`, but since v1.1 it has been based on the `downloadURL`. *(Quantitative)*
+This element captures the count of downloadable publically listed datasets (`"accessLevel":"public"`) via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. This should correspond with `downloadURL` in the PDL JSON file that is the URL providing direct access to the downloadable distribution of a dataset. In version 1.0 of the POD Schema, this metric was based on the `accessloadURL`, but since v1.1 it has been based on the `downloadURL`. *(Quantitative)*
 
 <span id="pdl_link_total"></span>
 #####Total number of access and download links 
@@ -200,7 +200,7 @@ This element is a narrative provided by the agency, through the Digital Strategy
 
 <span id="pe_prioritization"></span>
 #####Data release is prioritized through public engagement
-This is a measure, based on information provided to OMB for review, or gathered from the agency Open Data websites and public engagement mechanisms, that data sets have been identieid by the public and been prioritized for release based on that engagement (such as e-mail, public open data events, IdeaScale/GitHub/Twitter, etc.) activity. This may include those that were requested via FOIA mechanisms or other formal requests. *(Qualitative)*
+This is a measure, based on information provided to OMB for review, or gathered from the agency Open Data websites and public engagement mechanisms, that data sets have been identified by the public and been prioritized for release based on that engagement (such as e-mail, public open data events, IdeaScale/GitHub/Twitter, etc.) activity. This may include those that were requested via FOIA mechanisms or other formal requests. *(Qualitative)*
 
 <span id="pe_dialogue"></span>
 #####Feedback loop is closed, 2 way communication
