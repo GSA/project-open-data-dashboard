@@ -102,11 +102,11 @@ This is calculated by subtracting the last quarter's EDI count of data sets from
 
 <span id="edi_schedule_risk"></span>
 #####Schedule Risk for Nov 30, 2014
-This is an objective evaluation (Green = On Schedule, Yellow = Possible Schedule Issues, Red = Schedule Miss/Incomplete) if an agency will be able to make/deliver on their published deigital strategy deliverables for Open Data milestones that were outlined in OMB M-13-13. *(Qualitative)*
+This is an objective evaluation (Green = On Schedule, Yellow = Possible Schedule Issues, Red = Schedule Miss/Incomplete) if an agency will be able to make/deliver on their published digital strategy deliverables for Open Data milestones that were outlined in OMB M-13-13. *(Qualitative)*
 
 <span id="edi_quality_check"></span>
 #####Spot Check - Site search, SORNs, PIAs, FOIA
-This is a check by OMB eGov for SORNs (**System of Records Notices**), PIAs (**Privacy Imapct Assessments**), FOIA (**Freedom of Information Act**) statements, and through a search for typical data file types, for example (the number in parenthesis indicates how many files matched in the search were returned - the example below is via Google):
+This is a check by OMB eGov for SORNs (**System of Records Notices**), PIAs (**Privacy Impact Assessments**), FOIA (**Freedom of Information Act**) statements, and through a search for typical data file types, for example (the number in parenthesis indicates how many files matched in the search were returned - the example below is via Google):
 
 `allinanchor:  site:agencydomain.gov filetype:xls`  (5,000)
 
@@ -130,7 +130,7 @@ This element captures the count of publically listed data sets via the published
 
 <span id="pdl_downloadable"></span>
 #####Number of Public Datasets with File Downloads
-This element captures the count of downloadable publicaly listed datasets (`"accessLevel":"public"`) via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. This should correspond with `downloadURL` in the PDL JSON file that is the URL providing direct access to the downloadable distribution of a dataset. In version 1.0 of the POD Schema, this metric was based on the `accessloadURL`, but since v1.1 it has been based on the `downloadURL`. *(Quantitative)*
+This element captures the count of downloadable publically listed datasets (`"accessLevel":"public"`) via the published Public Data List, and corresponds to the number captured during the dashboard's automated crawl. This should correspond with `downloadURL` in the PDL JSON file that is the URL providing direct access to the downloadable distribution of a dataset. In version 1.0 of the POD Schema, this metric was based on the `accessloadURL`, but since v1.1 it has been based on the `downloadURL`. *(Quantitative)*
 
 <span id="pdl_link_total"></span>
 #####Total number of access and download links 
@@ -200,7 +200,7 @@ This element is a narrative provided by the agency, through the Digital Strategy
 
 <span id="pe_prioritization"></span>
 #####Data release is prioritized through public engagement
-This is a measure, based on information provided to OMB for review, or gathered from the agency Open Data websites and public engagement mechanisms, that data sets have been identieid by the public and been prioritized for release based on that engagement (such as e-mail, public open data events, IdeaScale/GitHub/Twitter, etc.) activity. This may include those that were requested via FOIA mechanisms or other formal requests. *(Qualitative)*
+This is a measure, based on information provided to OMB for review, or gathered from the agency Open Data websites and public engagement mechanisms, that data sets have been identified by the public and been prioritized for release based on that engagement (such as e-mail, public open data events, IdeaScale/GitHub/Twitter, etc.) activity. This may include those that were requested via FOIA mechanisms or other formal requests. *(Qualitative)*
 
 <span id="pe_dialogue"></span>
 #####Feedback loop is closed, 2 way communication
@@ -221,10 +221,10 @@ This element is a collection of the qualitative and quantitative measures and an
 
 <span id="ps_publication_process"></span>
 #####Data Publication Process Delivered
-This element captures the state of the Open Data publication process deliverable. The process is often located within the Digital Strategy for an agency, and is usually contained and updated within the JSON file. Some agencies have indepdently published this schedule on their websites separate from the Digital Strategy site, which is not recommended.
+This element captures the state of the Open Data publication process deliverable. The process is often located within the Digital Strategy for an agency, and is usually contained and updated within the JSON file. Some agencies have independently published this schedule on their websites separate from the Digital Strategy site, which is not recommended.
 
 <span id="ps_publication_process_qa"></span>
-#####Information that should not to be made public is documented with agency's OGC
+#####Information that should not be made public is documented with agency's OGC
 As part of the Data Publication Process (this element can't be "Green" without the previous element existing), the Office of General Counsel (OGC) or the agency's Office of the Solicitor, is listed as part of the process for determining which data sets are to be released publically. *(Qualitative)*
 
 ---
