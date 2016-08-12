@@ -23,3 +23,6 @@ application/config/upload.php
 index.php
 
 composer.phar
+
+# Intellij
+.idea
