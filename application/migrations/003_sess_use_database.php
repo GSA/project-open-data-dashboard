@@ -7,7 +7,8 @@ class Migration_Sess_use_database extends CI_Migration
 
     public function up()
     {
-        $this->db->query("CREATE TABLE IF NOT EXISTS  `ci_sessions` (
+        $this->db->query("
+          CREATE TABLE IF NOT EXISTS  `ci_sessions` (
             session_id varchar(40) DEFAULT '0' NOT NULL,
             ip_address varchar(45) DEFAULT '0' NOT NULL,
             user_agent varchar(120) NOT NULL,
@@ -17,7 +18,6 @@ class Migration_Sess_use_database extends CI_Migration
             KEY `last_activity_idx` (`last_activity`)
         );");
     }
-
 }
 
 
