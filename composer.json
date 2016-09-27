@@ -27,7 +27,8 @@
         "php": ">=5.3.0",
         "justinrainbow/json-schema": "~1.3",
         "michelf/php-markdown": "*",
-        "salsify/json-streaming-parser": "*"
+        "salsify/json-streaming-parser": "*",
+        "vlucas/phpdotenv": "^2.4"
     },
     "require-dev": {
         "json-schema/JSON-Schema-Test-Suite": "1.1.0",
