@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "efa762cf716e6e750694bdbfcbe32f12",
-    "content-hash": "af0dda9a9ff3cfdf88e23c24aa9b5f8e",
+    "hash": "f7ed93aeb6830d75fe0cf3721001a004",
+    "content-hash": "8ab33201ccd81c5a7337adc118a7e74c",
     "packages": [
         {
             "name": "justinrainbow/json-schema",
@@ -126,30 +126,28 @@
         },
         {
             "name": "salsify/json-streaming-parser",
-            "version": "v6.0.1",
+            "version": "v5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/salsify/jsonstreamingparser.git",
-                "reference": "a037cd97c06f1d04eb6397ad70c37447cce024dd"
+                "reference": "62b6e1481915471958a61f68de51cba6fa8b9bf7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/salsify/jsonstreamingparser/zipball/a037cd97c06f1d04eb6397ad70c37447cce024dd",
-                "reference": "a037cd97c06f1d04eb6397ad70c37447cce024dd",
+                "url": "https://api.github.com/repos/salsify/jsonstreamingparser/zipball/62b6e1481915471958a61f68de51cba6fa8b9bf7",
+                "reference": "62b6e1481915471958a61f68de51cba6fa8b9bf7",
                 "shasum": ""
             },
             "require": {
-                "ext-mbstring": "*",
-                "php": "^5.4 | ^7.0"
+                "php": ">=5.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "~3.7.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "JsonStreamingParser\\": "src",
-                    "JsonStreamingParser\\Test\\": "tests"
+                    "JsonStreamingParser\\": "src/JsonStreamingParser"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -165,11 +163,6 @@
                     "name": "Rob Gonzalez",
                     "email": "rob@salsify.com",
                     "homepage": "http://salsify.com/"
-                },
-                {
-                    "name": "Max Grigorian",
-                    "email": "maxakawizard@gmail.com",
-                    "homepage": "http://wizardcat.com/"
                 }
             ],
             "description": "A streaming parser for JSON in PHP.",
@@ -179,7 +172,7 @@
                 "parser",
                 "streaming"
             ],
-            "time": "2016-04-02 18:11:14"
+            "time": "2016-03-13 13:24:27"
         },
         {
             "name": "vlucas/phpdotenv",
