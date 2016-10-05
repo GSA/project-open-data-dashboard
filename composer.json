@@ -29,7 +29,7 @@
         "michelf/php-markdown": "*",
         "salsify/json-streaming-parser": "~5",
         "vlucas/phpdotenv": "^2.4",
-        "simplesamlphp/simplesamlphp": "^1.14"
+        "onelogin/php-saml": "^2.9"
     },
     "require-dev": {
         "json-schema/JSON-Schema-Test-Suite": "1.1.0",
