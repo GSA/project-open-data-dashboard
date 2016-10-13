@@ -10,7 +10,8 @@
 
         <?php if (!$this->session->userdata('username')) : ?>
           <div class="pull-right">
-            <a class="btn btn-default btn-auth btn-github" href="<?php echo site_url('login')?>">Sign in with <b>GitHub</b></a>
+<!--            <a class="btn btn-default btn-auth btn-github" href="--><?php //echo site_url('login')?><!--">Sign in with <b>GitHub</b></a>-->
+            <a class="btn btn-default btn-auth" href="<?php echo site_url('saml/login')?>">Sign in with <b>MAX</b></a>
           </div>
         <?php endif; ?>
 
