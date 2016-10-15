@@ -40,7 +40,7 @@ class Saml extends CI_Controller
 //		$auth = new OneLogin_Saml2_Auth(config_item('saml'));
 //		$auth->login();
 
-        $as = new SimpleSAML_Auth_Simple('default-sp');
+        $as = new SimpleSAML_Auth_Simple('max');
         $as->requireAuth();
 
         $attributes = $as->getAttributes();
