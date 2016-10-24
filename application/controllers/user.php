@@ -1,18 +1,18 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Saml extends CI_Controller
+class User extends CI_Controller
 {
 
-	function __construct()
-	{
-		parent::__construct();
+    function __construct()
+    {
+        parent::__construct();
 
-		$this->load->helper('url');
-	}
+        $this->load->helper('url');
+    }
 
 
-	public function metadata()
-	{
+    public function metadata()
+    {
 
 //		try {
 //			#$auth = new OneLogin_Saml2_Auth($settingsInfo);
@@ -33,22 +33,27 @@ class Saml extends CI_Controller
 //		} catch (Exception $e) {
 //			echo $e->getMessage();
 //		}
-	}
+    }
 
-	public function login()
-	{
+    public function login()
+    {
 //		$auth = new OneLogin_Saml2_Auth(config_item('saml'));
 //		$auth->login();
 
         $as = new SimpleSAML_Auth_Simple('max');
         $as->requireAuth();
+    }
+
+    public function acs()
+    {
+        $as = new SimpleSAML_Auth_Simple('max');
 
         $attributes = $as->getAttributes();
         print_r($attributes);
     }
 
-	public function logout()
-	{
+    public function logout()
+    {
 //		$auth = new OneLogin_Saml2_Auth(config_item('saml'));
 //
 //		$returnTo = null;
@@ -63,5 +68,5 @@ class Saml extends CI_Controller
 //		}
 //
 //		$auth->logout($returnTo, $paramters, $nameId, $sessionIndex);
-	}
+    }
 }

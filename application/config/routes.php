@@ -65,6 +65,5 @@ $route['login'] = "auth/session/github";
 $route['logout'] = "auth/logout";
 $route['account'] = "docs/routes/user";
 
-
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
