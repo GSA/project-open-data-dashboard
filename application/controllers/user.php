@@ -284,6 +284,7 @@ class User extends CI_Controller
             $userdata['permissions'] = 'admin';
         }
         $userdata['provider_url'] = 'max.gov';
+        $this->session->set_userdata($userdata);
         $this->session->set_userdata($attributes);
 
 
