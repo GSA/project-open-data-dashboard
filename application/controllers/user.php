@@ -363,5 +363,7 @@ class User extends CI_Controller
 //		}
 //
 //		$auth->logout($returnTo, $paramters, $nameId, $sessionIndex);
+
+        $this->session->sess_destroy();
     }
 }
