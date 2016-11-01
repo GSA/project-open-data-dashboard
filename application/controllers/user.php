@@ -21,7 +21,9 @@ class User extends CI_Controller
     public function login()
     {
         $as = new SimpleSAML_Auth_Simple('max');
-        $as->requireAuth();
+        $as->requireAuth(array(
+            'saml:AuthnContextClassRef' => 'https://max.gov/icam/2015/10/securityLevels/securePlus2',
+        ));
 
         $attributes = $as->getAttributes();
 
