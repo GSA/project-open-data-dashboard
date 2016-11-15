@@ -1029,7 +1029,7 @@ class campaign_model extends CI_Model {
 					}
 
 			        try {
-			            $parser = new JsonStreamingParser_Parser($stream, $listener);
+			            $parser = new \JsonStreamingParser\Parser($stream, $listener);
 			            $parser->parse();
 			        } catch (Exception $e) {
 			            fclose($stream);
@@ -1883,6 +1883,58 @@ class campaign_model extends CI_Model {
 
 	}	
 
+	private function archive_to_s3($filetype, $office_id, $url) {
+		$s3_bucket = $this->config->item('s3_bucket');
+
+		if($filetype == 'datajson-lines') {
+			$directory = "datajson-lines";
+			$filepath = $directory . '/' . $office_id . '.raw';
+		} else {
+			$crawl_date = date("Y-m-d");
+			$directory = "$filetype/$crawl_date";
+			$filepath = $directory . '/' . $office_id . '.json';
+		}
+
+		// Instantiate an Amazon S3 client.
+		$s3 = new Aws\S3\S3Client();
+
+		// Upload a file.
+		$result = $s3->putObject(array(
+			'Bucket'       => $s3_bucket,
+			'Key'          => $filepath,
+			'SourceFile'   => $filepath,
+			'ContentType'  => 'text/plain',
+			'ACL'          => 'public-read',
+			'StorageClass' => 'REDUCED_REDUNDANCY',
+			'Metadata'     => array(
+				'param1' => 'value 1',
+				'param2' => 'value 2'
+			)
+		));
+
+		echo $result['ObjectURL'];
+
+
+
+		// Upload a publicly accessible file. The file size and type are determined by the SDK.
+		try {
+			$s3->putObject([
+				'Bucket' => $s3_bucket,
+				'Key'    => 'my-object',
+				'Body'   => fopen('/path/to/file', 'r'),
+				'ACL'    => 'public-read',
+			]);
+		} catch (Aws\Exception\S3Exception $e) {
+			echo "There was an error uploading the file.\n";
+		}
+
+
+		$bucket = '*** Your Bucket Name ***';
+		$keyname = '*** Your Object Key ***';
+// $filepath should be absolute path to a file on disk
+		$filepath = '*** Your File Path ***';
+
+	}
 
 	public function archive_file($filetype, $office_id, $url) {
 
