@@ -1896,8 +1896,10 @@ class campaign_model extends CI_Model {
 		}
 
 		// Instantiate an Amazon S3 client.
-		$s3 = new Aws\S3\S3Client();
-
+		$s3 = new Aws\S3\S3Client(array(
+			'version' => 'latest',
+			'region'  => 'us-east-1'
+		));
 
 		// Upload a publicly accessible file. The file size and type are determined by the SDK.
 		try {
