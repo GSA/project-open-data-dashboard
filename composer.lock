@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "38193276db6e70aafc1fa39568568fac",
-    "content-hash": "3c8a5f8b4ee8af5d9ab893be3cdde9bd",
+    "hash": "cac3652655cc6ccd55db65971cafb1ba",
+    "content-hash": "d69f151971879699a91ef2634eb4117d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.24",
+            "version": "3.19.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fa18e76a05fca7866044b8d4564c8a5d0b161805"
+                "reference": "b3657b6d2519bc8838be072c759ca5e272527877"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fa18e76a05fca7866044b8d4564c8a5d0b161805",
-                "reference": "fa18e76a05fca7866044b8d4564c8a5d0b161805",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b3657b6d2519bc8838be072c759ca5e272527877",
+                "reference": "b3657b6d2519bc8838be072c759ca5e272527877",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-11-10 22:35:46"
+            "time": "2016-11-14 22:45:48"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -260,25 +260,25 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "1.6.1",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "cc84765fb7317f6b07bd8ac78364747f95b86341"
+                "reference": "10d1f6977f6be5f177dded8f585a11debdc27591"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/cc84765fb7317f6b07bd8ac78364747f95b86341",
-                "reference": "cc84765fb7317f6b07bd8ac78364747f95b86341",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/10d1f6977f6be5f177dded8f585a11debdc27591",
+                "reference": "10d1f6977f6be5f177dded8f585a11debdc27591",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.29"
+                "php": ">=5.3.3"
             },
             "require-dev": {
-                "json-schema/json-schema-test-suite": "1.1.0",
+                "json-schema/json-schema-test-suite": "1.2.0",
                 "phpdocumentor/phpdocumentor": "~2",
-                "phpunit/phpunit": "~3.7"
+                "phpunit/phpunit": "^4.8.22"
             },
             "bin": [
                 "bin/validate-json"
@@ -286,7 +286,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -296,7 +296,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+                "MIT"
             ],
             "authors": [
                 {
@@ -322,7 +322,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2016-01-25 15:43:01"
+            "time": "2016-11-09 16:32:33"
         },
         {
             "name": "michelf/php-markdown",
