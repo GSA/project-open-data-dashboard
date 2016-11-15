@@ -1883,7 +1883,7 @@ class campaign_model extends CI_Model {
 
 	}	
 
-	private function archive_to_s3($filetype, $office_id, $url) {
+	private function archive_to_s3($filetype, $office_id, $local_filepath) {
 		$s3_bucket = $this->config->item('s3_bucket');
 
 		if($filetype == 'datajson-lines') {
@@ -1898,42 +1898,18 @@ class campaign_model extends CI_Model {
 		// Instantiate an Amazon S3 client.
 		$s3 = new Aws\S3\S3Client();
 
-		// Upload a file.
-		$result = $s3->putObject(array(
-			'Bucket'       => $s3_bucket,
-			'Key'          => $filepath,
-			'SourceFile'   => $filepath,
-			'ContentType'  => 'text/plain',
-			'ACL'          => 'public-read',
-			'StorageClass' => 'REDUCED_REDUNDANCY',
-			'Metadata'     => array(
-				'param1' => 'value 1',
-				'param2' => 'value 2'
-			)
-		));
-
-		echo $result['ObjectURL'];
-
-
 
 		// Upload a publicly accessible file. The file size and type are determined by the SDK.
 		try {
 			$s3->putObject([
 				'Bucket' => $s3_bucket,
-				'Key'    => 'my-object',
-				'Body'   => fopen('/path/to/file', 'r'),
+				'Key'    => $filepath,
+				'Body'   => fopen($local_filepath, 'r'),
 				'ACL'    => 'public-read',
 			]);
 		} catch (Aws\Exception\S3Exception $e) {
 			echo "There was an error uploading the file.\n";
 		}
-
-
-		$bucket = '*** Your Bucket Name ***';
-		$keyname = '*** Your Object Key ***';
-// $filepath should be absolute path to a file on disk
-		$filepath = '*** Your File Path ***';
-
 	}
 
 	public function archive_file($filetype, $office_id, $url) {
@@ -1950,7 +1926,7 @@ class campaign_model extends CI_Model {
 		}
 
 
-		if(!get_dir_file_info($directory)) {
+		if(!is_dir($directory)) {
 
 			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 				echo 'Creating directory ' . $directory . PHP_EOL;
@@ -2014,6 +1990,8 @@ class campaign_model extends CI_Model {
 
 		fclose($copy);
 		fclose($paste);
+
+		$this->archive_to_s3($filetype, $office_id, $filepath);
 
 		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			echo 'Done' . PHP_EOL . PHP_EOL;
