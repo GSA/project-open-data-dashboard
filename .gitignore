@@ -8,6 +8,7 @@ application/config/config.php
 application/config/gearman.php
 
 .htaccess
+.DS_Store
 
 application/config/database.php
 downloads/*
