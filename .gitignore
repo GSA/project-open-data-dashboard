@@ -21,6 +21,6 @@ archive/curl_header
 
 application/config/upload.php
 
-index.php
+/index.php
 
 composer.phar
