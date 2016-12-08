@@ -61,10 +61,9 @@ $route['datagov/(:any)/(:any)/(:any)'] = "campaign/$1/$2/$3";
 $route['offices/(:any)'] = "offices/routes/$1";
 $route['docs/(:any)'] = "docs/routes/$1";
 
-$route['login'] = "auth/session/github";
-$route['logout'] = "auth/logout";
+//$route['login'] = "auth/session/github";
+$route['logout'] = "user/logout";
 $route['account'] = "docs/routes/user";
-
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

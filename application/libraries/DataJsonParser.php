@@ -1,6 +1,6 @@
 <?php 
 
-class DataJsonParser implements JsonStreamingParser_Listener {
+class DataJsonParser implements \JsonStreamingParser\Listener {
     private $_json;
 
     private $_dataset_stack;
@@ -118,5 +118,3 @@ class DataJsonParser implements JsonStreamingParser_Listener {
         // do nothing
     }
 }
-
-?>

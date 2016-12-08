@@ -1029,7 +1029,7 @@ class campaign_model extends CI_Model {
 					}
 
 			        try {
-			            $parser = new JsonStreamingParser_Parser($stream, $listener);
+			            $parser = new \JsonStreamingParser\Parser($stream, $listener);
 			            $parser->parse();
 			        } catch (Exception $e) {
 			            fclose($stream);
@@ -1883,6 +1883,36 @@ class campaign_model extends CI_Model {
 
 	}	
 
+	private function archive_to_s3($filetype, $office_id, $local_filepath) {
+		$s3_bucket = $this->config->item('s3_bucket');
+
+		if($filetype == 'datajson-lines') {
+			$directory = "datajson-lines";
+			$filepath = $directory . '/' . $office_id . '.raw';
+		} else {
+			$crawl_date = date("Y-m-d");
+			$directory = "$filetype/$crawl_date";
+			$filepath = $directory . '/' . $office_id . '.json';
+		}
+
+		// Instantiate an Amazon S3 client.
+		$s3 = new Aws\S3\S3Client(array(
+			'version' => 'latest',
+			'region'  => 'us-east-1'
+		));
+
+		// Upload a publicly accessible file. The file size and type are determined by the SDK.
+		try {
+			$s3->putObject([
+				'Bucket' => $s3_bucket,
+				'Key'    => $filepath,
+				'Body'   => fopen($local_filepath, 'r'),
+				'ACL'    => 'public-read',
+			]);
+		} catch (Aws\Exception\S3Exception $e) {
+			echo "There was an error uploading the file.\n";
+		}
+	}
 
 	public function archive_file($filetype, $office_id, $url) {
 
@@ -1898,7 +1928,7 @@ class campaign_model extends CI_Model {
 		}
 
 
-		if(!get_dir_file_info($directory)) {
+		if(!is_dir($directory)) {
 
 			if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 				echo 'Creating directory ' . $directory . PHP_EOL;
@@ -1962,6 +1992,8 @@ class campaign_model extends CI_Model {
 
 		fclose($copy);
 		fclose($paste);
+
+		$this->archive_to_s3($filetype, $office_id, $filepath);
 
 		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			echo 'Done' . PHP_EOL . PHP_EOL;
