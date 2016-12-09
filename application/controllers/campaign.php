@@ -157,6 +157,11 @@ class Campaign extends CI_Controller {
                     $datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);    
                 }
 
+                $this->campaign->put_to_s3(
+                    $this->upload->upload_path.$data['file_name'],
+                    'uploads/'.$data['file_name']
+                );
+
 				$output = array();
 				$output['headings'] 		= $headings;
 				$output['datajson_model'] 	= $datajson_model;
@@ -179,6 +184,13 @@ class Campaign extends CI_Controller {
 	 		$upload_config = $this->config->item('upload');
 
 			$full_path = $upload_config['upload_path'] . $csv_id;
+
+            if (!is_file($full_path)) {
+                $this->campaign->get_from_s3(
+                    'uploads/'.$csv_id,
+                    $full_path
+                );
+            }
 
 			$this->load->helper('csv');
 			ini_set("auto_detect_line_endings", true);

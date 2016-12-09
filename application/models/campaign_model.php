@@ -1881,38 +1881,75 @@ class campaign_model extends CI_Model {
 
 		return $error;
 
-	}	
-
-	private function archive_to_s3($filetype, $office_id, $local_filepath) {
-		$s3_bucket = $this->config->item('s3_bucket');
-
-		if($filetype == 'datajson-lines') {
-			$directory = "datajson-lines";
-			$filepath = $directory . '/' . $office_id . '.raw';
-		} else {
-			$crawl_date = date("Y-m-d");
-			$directory = "$filetype/$crawl_date";
-			$filepath = $directory . '/' . $office_id . '.json';
-		}
-
-		// Instantiate an Amazon S3 client.
-		$s3 = new Aws\S3\S3Client(array(
-			'version' => 'latest',
-			'region'  => 'us-east-1'
-		));
-
-		// Upload a publicly accessible file. The file size and type are determined by the SDK.
-		try {
-			$s3->putObject([
-				'Bucket' => $s3_bucket,
-				'Key'    => $filepath,
-				'Body'   => fopen($local_filepath, 'r'),
-				'ACL'    => 'public-read',
-			]);
-		} catch (Aws\Exception\S3Exception $e) {
-			echo "There was an error uploading the file.\n";
-		}
 	}
+
+	private function init_s3(){
+
+        // Instantiate an Amazon S3 client.
+        $s3 = new Aws\S3\S3Client(array(
+            'version' => 'latest',
+            'region'  => 'us-east-1'
+        ));
+
+		return $s3;
+	}
+
+	public function put_to_s3($local_filepath, $s3_filepath, $acl = 'private'){
+        $s3_bucket = $this->config->item('s3_bucket');
+        $s3_prefix = $this->config->item('s3_prefix');
+
+        $s3 = $this->init_s3();
+
+        // Upload a publicly accessible file. The file size and type are determined by the SDK.
+        try {
+            $s3->putObject([
+                'Bucket' => $s3_bucket,
+                'Key'    => $s3_prefix.$s3_filepath,
+                'Body'   => fopen($local_filepath, 'r'),
+                'ACL'    => $acl,
+            ]);
+        } catch (Aws\Exception\S3Exception $e) {
+            echo "There was an error uploading the file.\n";
+        }
+	}
+
+	public function get_from_s3($s3_filepath, $local_filepath){
+        $s3_bucket = $this->config->item('s3_bucket');
+        $s3_prefix = $this->config->item('s3_prefix');
+
+		$s3 = $this->init_s3();
+
+        // Get resource body and store it locally
+        try {
+            $result = $s3->getObject([
+                'Bucket' => $s3_bucket,
+                'Key'    => $s3_prefix.$s3_filepath,
+            ]);
+
+			if (isset($result['Body']) && $result['Body']) {
+                file_put_contents($local_filepath, $result['Body']);
+			}
+
+        } catch (Aws\Exception\S3Exception $e) {
+            echo "There was an error uploading the file.\n";
+        }
+
+
+	}
+
+    private function archive_to_s3($filetype, $office_id, $local_filepath) {
+        if($filetype == 'datajson-lines') {
+            $directory = "datajson-lines";
+            $filepath = $directory . '/' . $office_id . '.raw';
+        } else {
+            $crawl_date = date("Y-m-d");
+            $directory = "$filetype/$crawl_date";
+            $filepath = $directory . '/' . $office_id . '.json';
+        }
+
+		$this->put_to_s3($local_filepath, $filepath, 'public-read');
+
+    }
 
 	public function archive_file($filetype, $office_id, $url) {
 
