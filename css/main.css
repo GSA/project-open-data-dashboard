@@ -336,6 +336,7 @@ p+h4, p+h5 {
 	color: #333;
 	text-align: center;
 	background-color: #efefef;
+	margin: 20px 0;
 }
 .updates-tease:hover {
 	color: #333;
