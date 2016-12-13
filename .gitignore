@@ -24,3 +24,6 @@ application/config/upload.php
 /index.php
 
 composer.phar
+
+vendor
+.idea
