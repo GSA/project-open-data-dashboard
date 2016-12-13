@@ -4,6 +4,12 @@
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
 
+<?php if(time()<strtotime("January 15 2017")): ?>
+<a href="https://www.data.gov/migration-notification/" class="updates-tease">
+    Updates to Data.gov will be temporarily suspended between December 13, 9 PM EST and approximately December 27. <em>Learn More.</em>
+</a>
+<?php endif; ?>
+
 <?php if(($this->config->item('google_analytics_id'))): ?>
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

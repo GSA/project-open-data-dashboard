@@ -328,5 +328,20 @@ p+h4, p+h5 {
 	color : #666;
 }
 
+/* Updates disclaimer / tease */
+.updates-tease {
+	display: block;
+	padding: 15px 20px;
+	font-weight: bold;
+	color: #333;
+	text-align: center;
+	background-color: #efefef;
+}
+.updates-tease:hover {
+	color: #333;
+	text-decoration: none;
+	background-color: #9d9d9d;
+}
+
 
 
