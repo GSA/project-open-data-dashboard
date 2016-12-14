@@ -1954,6 +1954,7 @@ class campaign_model extends CI_Model {
             $directory = "$filetype/$crawl_date";
             $filepath = $directory . '/' . $office_id . '.json';
         }
+        $filepath = 'archive/'.$filepath;
 
         $this->put_to_s3($local_filepath, $filepath, 'public-read');
 
