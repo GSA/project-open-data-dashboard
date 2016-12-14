@@ -2030,6 +2030,9 @@ class campaign_model extends CI_Model {
 
 			       }
 			}
+            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                echo 'Success' . PHP_EOL;
+            }
 		} else {
 
 			return false;
