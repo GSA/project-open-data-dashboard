@@ -42,11 +42,11 @@ class campaign_model extends CI_Model {
 		if(!empty($status_id)){
 			$this->db->where('status_id', $status_id);
 		} else {
-		// otherwise see if we need to filter by crawl status	
+		// otherwise see if we need to filter by crawl status
 			if(!empty($crawl_status)) {
 				$this->db->where('crawl_status', $crawl_status);
 			} else {
-				$this->db->where("(crawl_status IS NULL OR crawl_status='current' OR crawl_status='final')");	
+				$this->db->where("(crawl_status IS NULL OR crawl_status='current' OR crawl_status='final')");
 			}
 		}
 
@@ -69,7 +69,7 @@ class campaign_model extends CI_Model {
 		$this->db->select('status_id, crawl_start, crawl_end');
 		$this->db->where('office_id', $office_id);
 		$this->db->where('milestone', $milestone);
-		$this->db->where('status_id ' . $direction, $status_id);	
+		$this->db->where('status_id ' . $direction, $status_id);
 
 		if ($direction == '<') $order_dir = 'DESC';
 		if ($direction == '>') $order_dir = 'ASC';
@@ -80,7 +80,7 @@ class campaign_model extends CI_Model {
 
 		return $query->result_array();
 
-	}	
+	}
 
 	public function prioritize_crawl($offices, $milestone) {
 
@@ -123,14 +123,14 @@ class campaign_model extends CI_Model {
 				// End with offices that didn't complete last crawl
 				if (!empty($de_prioritize[$office->id])) {
 					$end[] = $office;
-				} 
+				}
 
 			}
 			reset($offices);
 
 			// In the middle prioritize finished crawls starting with oldest ones first
 			if (!empty($prioritize[$office->id])) {
-				
+
 				foreach ($prioritize as $office_id => $priority) {
 					foreach ($offices as $office) {
 						if ($office_id == $office->id) {
@@ -140,7 +140,7 @@ class campaign_model extends CI_Model {
 					reset($offices);
 				}
 
-			} 
+			}
 
 			return array_merge($start, $middle, $end);
 
@@ -194,16 +194,16 @@ class campaign_model extends CI_Model {
 
 		$model->total_records 							=   clone $field;
 		$model->total_records->label 					=   'Public Datasets';
-		
+
 		$model->valid_count 							=   clone $field;
 		$model->valid_count->label 						=   'Valid Metadata';
 		$model->valid_count->total_field 				=   'total_records';
 		$model->valid_count->success_basis				= 	'high';
 		$model->valid_count->success_weight				=	70;
-			
+
 		$model->programs 								=   clone $field;
 		$model->programs->label 						=   'Programs';
-		
+
 		$model->bureaus 								=   clone $field;
 		$model->bureaus->label 							=   'Bureaus';
 
@@ -222,22 +222,22 @@ class campaign_model extends CI_Model {
 		$model->accessURL_present 						=   clone $field;
 		$model->accessURL_present->label 				=   'Datasets with downloads';
 		$model->accessURL_present->total_field 			=   'total_records';
-	
+
 		$model->accessURL_total 						=   clone $field;
 		$model->accessURL_total->label 					=   'Total Download URLs';
-	
+
 		$model->accessURL_working 						=   clone $field;
 		$model->accessURL_working->label 				=   'Working Download URLs';
 		$model->accessURL_working->total_field 			=   'accessURL_total';
 		$model->accessURL_working->success_basis		= 	'high';
 		$model->accessURL_working->success_weight		=	30;
-	
+
 		$model->accessURL_format 						=   clone $field;
 		$model->accessURL_format->label 				=   'Correct Format';
 		$model->accessURL_format->total_field 			=   'accessURL_working';
 		$model->accessURL_format->success_basis			= 	'high';
 		$model->accessURL_format->success_weight		=	20;
-		
+
 		$model->accessURL_html 							=   clone $field;
 		$model->accessURL_html->label 					=   'HTML Downloads';
 		$model->accessURL_html->total_field 			=   'accessURL_working';
@@ -289,13 +289,13 @@ class campaign_model extends CI_Model {
 
         $model->edi_apis                            = clone $field;
         $model->edi_apis->label                     = "Number of APIs";
-        $model->edi_apis->type                      = "string";		
+        $model->edi_apis->type                      = "string";
 
 		$model->edi_schedule_delivered						= clone $field;
 		$model->edi_schedule_delivered->label 				= "Schedule Delivered";
 		$model->edi_schedule_delivered->type 				= "select";
 		$model->edi_schedule_delivered->milestones_start 	= '2013-11-30';
-		$model->edi_schedule_delivered->milestones_end 		= '2015-11-30';		
+		$model->edi_schedule_delivered->milestones_end 		= '2015-11-30';
 
 		$model->edi_bureaus							= clone $field;
 		$model->edi_bureaus->label 					= "Bureaus represented";
@@ -315,7 +315,7 @@ class campaign_model extends CI_Model {
 		$model->edi_programs_percent->label 				= "Percentage of programs represented";
 		$model->edi_programs_percent->type 					= "string";
 		$model->edi_programs_percent->milestones_start 		= '2016-02-29';
-		$model->edi_programs_percent->milestones_end 		= '2099-11-30';		
+		$model->edi_programs_percent->milestones_end 		= '2099-11-30';
 
 		$model->edi_access_public					= clone $field;
 		$model->edi_access_public->label 			= "Number of public datasets";
@@ -343,7 +343,7 @@ class campaign_model extends CI_Model {
 		$model->edi_schedule_risk->label 				= "Schedule Risk for Nov 30, 2014";
 		$model->edi_schedule_risk->type 				= "traffic";
 		$model->edi_schedule_risk->milestones_start 	= '2013-11-30';
-		$model->edi_schedule_risk->milestones_end 		= '2014-11-30';		
+		$model->edi_schedule_risk->milestones_end 		= '2014-11-30';
 
         $model->edi_completeness                 		= clone $field;
         $model->edi_completeness->label          		= "To what extent is your agency’s Enterprise Data Inventory (EDI) complete?";
@@ -354,7 +354,7 @@ class campaign_model extends CI_Model {
 
         $model->edi_completeness_steps                 		= clone $field;
         $model->edi_completeness_steps->label          		= "What steps have you taken to ensure your Enterprise Data Inventory is complete";
-        $model->edi_completeness_steps->type           		= "string";       
+        $model->edi_completeness_steps->type           		= "string";
 		$model->edi_completeness_steps->milestones_start 	= '2016-02-29';
 		$model->edi_completeness_steps->milestones_end 		= '2099-11-30';
 
@@ -362,7 +362,7 @@ class campaign_model extends CI_Model {
         $model->edi_quality_check->label            = "Spot Check - datasets listed by search engine";
         $model->edi_quality_check->type             = "string";
 		$model->edi_quality_check->milestones_start = '2013-11-30';
-		$model->edi_quality_check->milestones_end 	= '2015-11-30';        
+		$model->edi_quality_check->milestones_end 	= '2015-11-30';
 
         $model->edi_public_release                  = clone $field;
         $model->edi_public_release->label           = "Agency provides a public Enterprise Data Inventory on Data.gov";
@@ -421,34 +421,34 @@ class campaign_model extends CI_Model {
 
         $model->pdl_apis                            = clone $field;
         $model->pdl_apis->label                     = "Number of APIs";
-        $model->pdl_apis->type                      = "string";	
+        $model->pdl_apis->type                      = "string";
 
 		$model->pdl_api_access_public							= clone $field;
 		$model->pdl_api_access_public->label 					= "Number of public APIs";
 		$model->pdl_api_access_public->type 					= "string";
 		$model->pdl_api_access_public->milestones_start 		= '2016-02-29';
-		$model->pdl_api_access_public->milestones_end 			= '2099-11-30';		
+		$model->pdl_api_access_public->milestones_end 			= '2099-11-30';
 
 		$model->pdl_api_access_restricted						= clone $field;
 		$model->pdl_api_access_restricted->label 				= "Number of restricted public APIs";
 		$model->pdl_api_access_restricted->type 				= "string";
 		$model->pdl_api_access_restricted->milestones_start 	= '2016-02-29';
-		$model->pdl_api_access_restricted->milestones_end 		= '2099-11-30';		
+		$model->pdl_api_access_restricted->milestones_end 		= '2099-11-30';
 
 		$model->pdl_api_access_nonpublic						= clone $field;
 		$model->pdl_api_access_nonpublic->label 				= "Number of non-public APIs";
 		$model->pdl_api_access_nonpublic->type 					= "string";
 		$model->pdl_api_access_nonpublic->milestones_start 		= '2016-02-29';
-		$model->pdl_api_access_nonpublic->milestones_end 		= '2099-11-30';	
-		
-		
+		$model->pdl_api_access_nonpublic->milestones_end 		= '2099-11-30';
+
+
 		$model->pdl_link_total						= clone $field;
 		$model->pdl_link_total->label 				= "Total number of access and download links";
 		$model->pdl_link_total->type 				= "string";
 
 		$model->pdl_link_check						= clone $field;
 		$model->pdl_link_check->label 				= "Quality Check: Links are sufficiently working";
-		$model->pdl_link_check->type 				= "traffic";	
+		$model->pdl_link_check->type 				= "traffic";
 
 		$model->pdl_link_2xx						= clone $field;
 		$model->pdl_link_2xx->label 				= "Quality Check: Accessible links";
@@ -456,7 +456,7 @@ class campaign_model extends CI_Model {
 
 		$model->pdl_link_3xx						= clone $field;
 		$model->pdl_link_3xx->label 				= "Quality Check: Redirected links";
-		$model->pdl_link_3xx->type 					= "string";		
+		$model->pdl_link_3xx->type 					= "string";
 
 		$model->pdl_link_5xx						= clone $field;
 		$model->pdl_link_5xx->label 				= "Quality Check: Error links";
@@ -470,19 +470,19 @@ class campaign_model extends CI_Model {
 		$model->pdl_link_format_match->label 				= "Quality Check: Percentage of download links in correct format as specified in metadata";
 		$model->pdl_link_format_match->type 				= "string";
 		$model->pdl_link_format_match->milestones_start 	= '2016-02-29';
-		$model->pdl_link_format_match->milestones_end 		= '2099-11-30';	
+		$model->pdl_link_format_match->milestones_end 		= '2099-11-30';
 
 		$model->pdl_link_format_html						= clone $field;
 		$model->pdl_link_format_html->label 				= "Quality Check: Percentage of download links in HTML";
 		$model->pdl_link_format_html->type 					= "string";
 		$model->pdl_link_format_html->milestones_start 		= '2016-02-29';
-		$model->pdl_link_format_html->milestones_end 		= '2099-11-30';	
+		$model->pdl_link_format_html->milestones_end 		= '2099-11-30';
 
 		$model->pdl_link_format_pdf							= clone $field;
 		$model->pdl_link_format_pdf->label 					= "Quality Check: Percentage of download links in PDF";
 		$model->pdl_link_format_pdf->type 					= "string";
 		$model->pdl_link_format_pdf->milestones_start 		= '2016-02-29';
-		$model->pdl_link_format_pdf->milestones_end 		= '2099-11-30';	
+		$model->pdl_link_format_pdf->milestones_end 		= '2099-11-30';
 
 		$model->pdl_growth							= clone $field;
 		$model->pdl_growth->label 					= "Percentage growth in records since last quarter";
@@ -500,7 +500,7 @@ class campaign_model extends CI_Model {
 		$model->pdl_slashdata_catalog->label 				= "Provides datasets in human-readable form on /data";
 		$model->pdl_slashdata_catalog->type 				= "select";
 		$model->pdl_slashdata_catalog->milestones_start 	= '2016-02-29';
-		$model->pdl_slashdata_catalog->milestones_end 		= '2099-11-30';			
+		$model->pdl_slashdata_catalog->milestones_end 		= '2099-11-30';
 
 		$model->pdl_datajson						= clone $field;
 		$model->pdl_datajson->label 				= "/data.json";
@@ -520,55 +520,55 @@ class campaign_model extends CI_Model {
 		$model->pdl_access_public->label 					= "Number of public datasets";
 		$model->pdl_access_public->type 					= "string";
 		$model->pdl_access_public->milestones_start 		= '2016-02-29';
-		$model->pdl_access_public->milestones_end 			= '2099-11-30';		
+		$model->pdl_access_public->milestones_end 			= '2099-11-30';
 
 		$model->pdl_access_restricted						= clone $field;
 		$model->pdl_access_restricted->label 				= "Number of restricted public datasets";
 		$model->pdl_access_restricted->type 				= "string";
 		$model->pdl_access_restricted->milestones_start 	= '2016-02-29';
-		$model->pdl_access_restricted->milestones_end 		= '2099-11-30';		
+		$model->pdl_access_restricted->milestones_end 		= '2099-11-30';
 
 		$model->pdl_access_nonpublic						= clone $field;
 		$model->pdl_access_nonpublic->label 				= "Number of non-public datasets";
 		$model->pdl_access_nonpublic->type 					= "string";
 		$model->pdl_access_nonpublic->milestones_start 		= '2016-02-29';
-		$model->pdl_access_nonpublic->milestones_end 		= '2099-11-30';		
+		$model->pdl_access_nonpublic->milestones_end 		= '2099-11-30';
 
 		$model->pdl_dataset_growth_public							= clone $field;
 		$model->pdl_dataset_growth_public->label 					= "Percent growth of public datasets";
 		$model->pdl_dataset_growth_public->type 					= "string";
 		$model->pdl_dataset_growth_public->milestones_start 		= '2016-02-29';
-		$model->pdl_dataset_growth_public->milestones_end 			= '2099-11-30';		
+		$model->pdl_dataset_growth_public->milestones_end 			= '2099-11-30';
 
 		$model->pdl_dataset_growth_restricted						= clone $field;
 		$model->pdl_dataset_growth_restricted->label 				= "Percent growth of restricted public datasets";
 		$model->pdl_dataset_growth_restricted->type 				= "string";
 		$model->pdl_dataset_growth_restricted->milestones_start 	= '2016-02-29';
-		$model->pdl_dataset_growth_restricted->milestones_end 		= '2099-11-30';		
+		$model->pdl_dataset_growth_restricted->milestones_end 		= '2099-11-30';
 
 		$model->pdl_dataset_growth_nonpublic						= clone $field;
 		$model->pdl_dataset_growth_nonpublic->label 				= "Percent growth of non-public datasets";
 		$model->pdl_dataset_growth_nonpublic->type 					= "string";
 		$model->pdl_dataset_growth_nonpublic->milestones_start 		= '2016-02-29';
-		$model->pdl_dataset_growth_nonpublic->milestones_end 		= '2099-11-30';	
+		$model->pdl_dataset_growth_nonpublic->milestones_end 		= '2099-11-30';
 
 		$model->pdl_license_usg_works								= clone $field;
 		$model->pdl_license_usg_works->label 						= "Percent datasets licensed as U.S. Public Domain";
 		$model->pdl_license_usg_works->type 						= "string";
 		$model->pdl_license_usg_works->milestones_start 			= '2016-02-29';
-		$model->pdl_license_usg_works->milestones_end 				= '2099-11-30';	
+		$model->pdl_license_usg_works->milestones_end 				= '2099-11-30';
 
 		$model->pdl_license_cc0										= clone $field;
 		$model->pdl_license_cc0->label 								= "Percent datasets licensed as Creative Commons Zero";
 		$model->pdl_license_cc0->type 								= "string";
 		$model->pdl_license_cc0->milestones_start 					= '2016-02-29';
-		$model->pdl_license_cc0->milestones_end 					= '2099-11-30';			
+		$model->pdl_license_cc0->milestones_end 					= '2099-11-30';
 
 		$model->pdl_license_other									= clone $field;
 		$model->pdl_license_other->label 							= "Percent datasets with other licenses";
 		$model->pdl_license_other->type 							= "string";
 		$model->pdl_license_other->milestones_start 				= '2016-02-29';
-		$model->pdl_license_other->milestones_end 					= '2099-11-30';	
+		$model->pdl_license_other->milestones_end 					= '2099-11-30';
 
 		$model->pdl_license_none									= clone $field;
 		$model->pdl_license_none->label 							= "Percent datasets with no license";
@@ -598,7 +598,7 @@ class campaign_model extends CI_Model {
 		$model->pe_improvements_from_feedback->label 				= "Provided narrative evidence of data improvements based on public feedback this quarter";
 		$model->pe_improvements_from_feedback->type 				= "select";
 		$model->pe_improvements_from_feedback->milestones_start 	= '2016-02-29';
-		$model->pe_improvements_from_feedback->milestones_end 		= '2099-11-30'; 
+		$model->pe_improvements_from_feedback->milestones_end 		= '2099-11-30';
 
 		$model->pe_dialogue							= clone $field;
 		$model->pe_dialogue->label 					= "Feedback loop is closed, 2 way communication";
@@ -612,7 +612,7 @@ class campaign_model extends CI_Model {
 		$model->pe_dataset_contact_point->label 			= "Provides valid contact point information for all datasets";
 		$model->pe_dataset_contact_point->type 				= "select";
 		$model->pe_dataset_contact_point->milestones_start 	= '2016-02-29';
-		$model->pe_dataset_contact_point->milestones_end 	= '2099-11-30'; 
+		$model->pe_dataset_contact_point->milestones_end 	= '2099-11-30';
 
 
 		// Privacy & Security
@@ -637,7 +637,7 @@ class campaign_model extends CI_Model {
 		$model->ps_publication_process_description->label 				= "Describe the agency's data publication process";
 		$model->ps_publication_process_description->type 				= "string";
 		$model->ps_publication_process_description->milestones_start 	= '2016-02-29';
-		$model->ps_publication_process_description->milestones_end 		= '2099-11-30'; 
+		$model->ps_publication_process_description->milestones_end 		= '2099-11-30';
 
 
 
@@ -650,7 +650,7 @@ class campaign_model extends CI_Model {
 
 		$model->hc_selected_best_practice			= clone $field;
 		$model->hc_selected_best_practice->label	= "Selected to highlight a best practice";
-		$model->hc_selected_best_practice->type 	= "select";		
+		$model->hc_selected_best_practice->type 	= "select";
 
 		$model->hc_lead								= clone $field;
 		$model->hc_lead->label 						= "Open Data Primary Point of Contact";
@@ -664,7 +664,7 @@ class campaign_model extends CI_Model {
 		$model->hc_cdo->label 						= "Chief Data Officer (if applicable)";
 		$model->hc_cdo->type 						= "string";
 		$model->hc_cdo->milestones_start 			= '2016-02-29';
-		$model->hc_cdo->milestones_end 				= '2099-11-30'; 
+		$model->hc_cdo->milestones_end 				= '2099-11-30';
 
 		// Use & Impact
 
@@ -680,37 +680,37 @@ class campaign_model extends CI_Model {
 		$model->ui_identified_users->label 				= "Identified 5 data improvements for this quarter";
 		$model->ui_identified_users->type 				= "select";
 		$model->ui_identified_users->milestones_start 	= '2013-11-30';
-		$model->ui_identified_users->milestones_end 	= '2015-11-30'; 		
+		$model->ui_identified_users->milestones_end 	= '2015-11-30';
 
 		$model->ui_primary_uses							= clone $field;
 		$model->ui_primary_uses->label 					= "Primary Uses";
 		$model->ui_primary_uses->type 					= "string";
 		$model->ui_primary_uses->milestones_start 		= '2013-11-30';
-		$model->ui_primary_uses->milestones_end 		= '2015-11-30';		
+		$model->ui_primary_uses->milestones_end 		= '2015-11-30';
 
 		$model->ui_value_impact_documented						= clone $field;
 		$model->ui_value_impact_documented->label 				= "Provided narrative evidence of open data impacts for this quarter";
 		$model->ui_value_impact_documented->type 				= "select";
 		$model->ui_value_impact_documented->milestones_start 	= '2016-02-29';
-		$model->ui_value_impact_documented->milestones_end 		= '2099-11-30'; 		
+		$model->ui_value_impact_documented->milestones_end 		= '2099-11-30';
 
 		$model->ui_value_impact									= clone $field;
 		$model->ui_value_impact->label 							= "Value or impact of data";
 		$model->ui_value_impact->type 							= "string";
 		$model->ui_value_impact->milestones_start 				= '2013-11-30';
-		$model->ui_value_impact->milestones_end 				= '2015-11-30';					
+		$model->ui_value_impact->milestones_end 				= '2015-11-30';
 
 		$model->ui_primary_discovery							= clone $field;
 		$model->ui_primary_discovery->label 					= "Primary data discovery channels";
 		$model->ui_primary_discovery->type 						= "string";
 		$model->ui_primary_discovery->milestones_start 			= '2013-11-30';
-		$model->ui_primary_discovery->milestones_end 			= '2015-11-30'; 
+		$model->ui_primary_discovery->milestones_end 			= '2015-11-30';
 
 		$model->ui_user_suggest_usability						= clone $field;
 		$model->ui_user_suggest_usability->label 				= "User suggestions on improving data usability";
 		$model->ui_user_suggest_usability->type 				= "string";
 		$model->ui_user_suggest_usability->milestones_start 	= '2013-11-30';
-		$model->ui_user_suggest_usability->milestones_end 		= '2015-11-30'; 
+		$model->ui_user_suggest_usability->milestones_end 		= '2015-11-30';
 
 		$model->ui_user_suggest_releases						= clone $field;
 		$model->ui_user_suggest_releases->label 				= "User suggestions on additional data releases";
@@ -720,25 +720,25 @@ class campaign_model extends CI_Model {
 
         $model->ui_dap_tracking                     = clone $field;
         $model->ui_dap_tracking->label              = "Digital Analytics Program on /data";
-        $model->ui_dap_tracking->type               = "select"; 
+        $model->ui_dap_tracking->type               = "select";
 
 		$model->ui_datagov_view_count						= clone $field;
 		$model->ui_datagov_view_count->label 				= "Views on data.gov for this quarter";
 		$model->ui_datagov_view_count->type 				= "string";
 		$model->ui_datagov_view_count->milestones_start 	= '2016-02-29';
-		$model->ui_datagov_view_count->milestones_end 		= '2099-11-30';  
+		$model->ui_datagov_view_count->milestones_end 		= '2099-11-30';
 
 		$model->ui_datagov_view_count_percent						= clone $field;
 		$model->ui_datagov_view_count_percent->label 				= "Percentage growth in views on data.gov for this quarter";
 		$model->ui_datagov_view_count_percent->type 				= "string";
 		$model->ui_datagov_view_count_percent->milestones_start 	= '2016-02-29';
-		$model->ui_datagov_view_count_percent->milestones_end 		= '2099-11-30';  
+		$model->ui_datagov_view_count_percent->milestones_end 		= '2099-11-30';
 
 		$model->ui_slashdata_view_count						= clone $field;
 		$model->ui_slashdata_view_count->label 				= "Views on agency /data page for this quarter";
 		$model->ui_slashdata_view_count->type 				= "string";
 		$model->ui_slashdata_view_count->milestones_start 	= '2016-02-29';
-		$model->ui_slashdata_view_count->milestones_end 	= '2099-11-30'; 
+		$model->ui_slashdata_view_count->milestones_end 	= '2099-11-30';
 
 
 		return $model;
@@ -749,13 +749,13 @@ class campaign_model extends CI_Model {
 	public function tracker_sections_model() {
 
         $section_breakdown = array(
-                                    "edi" => "Enterprise Data Inventory", 
-                                    "pdl" => "Public Data Listing", 
-                                    "pe" => "Public Engagement", 
-                                    "ps" => "Privacy &amp; Security", 
+                                    "edi" => "Enterprise Data Inventory",
+                                    "pdl" => "Public Data Listing",
+                                    "pe" => "Public Engagement",
+                                    "ps" => "Privacy &amp; Security",
                                     "hc" => "Human Capital",
                                     "ui" => "Use &amp; Impact"
-                                );  
+                                );
 
         return $section_breakdown;
 
@@ -796,7 +796,7 @@ class campaign_model extends CI_Model {
 							"2017-02-28" => "Milestone 14",
 							"2017-05-31" => "Milestone 15",
 							"2017-08-31" => "Milestone 16",
-							"2017-11-30" => "Milestone 17"							
+							"2017-11-30" => "Milestone 17"
 							);
 
 		return $milestones;
@@ -808,19 +808,19 @@ class campaign_model extends CI_Model {
 		// Sets the first milestone in the future as the current and last available milestone
 	    foreach ($milestones as $milestone_date => $milestone) {
 	        if (strtotime($milestone_date) >= strtotime(date('Y-m-d'))) {
-	            
+
 	        	if(empty($current_milestone)) {
-	        		$current_milestone = $milestone_date;	
+	        		$current_milestone = $milestone_date;
 	        	} else {
 	        		unset($milestones[$milestone_date]);
-	        	}	            
-	        } 
+	        	}
+	        }
 	    }
 
 	    // if we didn't explicitly select a milestone, use the current one
 		if(empty($selected_milestone)) {
 			$selected_milestone = $current_milestone;
-			$specified = "false";			
+			$specified = "false";
 		} else {
 			$specified = "true";
 		}
@@ -968,10 +968,10 @@ class campaign_model extends CI_Model {
 
 
 			// Only download the data.json if we need to
-			if(empty($datajson_header['download_content_length']) || 
-				$datajson_header['download_content_length'] < 0 || 
-				(!empty($datajson_header['download_content_length']) && 
-				$datajson_header['download_content_length'] > 0 && 
+			if(empty($datajson_header['download_content_length']) ||
+				$datajson_header['download_content_length'] < 0 ||
+				(!empty($datajson_header['download_content_length']) &&
+				$datajson_header['download_content_length'] > 0 &&
 				$datajson_header['download_content_length'] < $max_remote_size)) {
 
 				// Load the JSON
@@ -983,7 +983,7 @@ class campaign_model extends CI_Model {
 							);
 
 				$context = stream_context_create($opts);
-				
+
 				$datajson = @file_get_contents($datajson_url, false, $context, -1, $max_remote_size+1);
 
 				if ($datajson == false) {
@@ -991,10 +991,10 @@ class campaign_model extends CI_Model {
 					$datajson = curl_from_json($datajson_url, false, false);
 
 					if(!$datajson) {
-						$errors[] = "File not found or couldn't be downloaded";	
+						$errors[] = "File not found or couldn't be downloaded";
 					}
-					
-				} 
+
+				}
 
 			}
 
@@ -1007,18 +1007,18 @@ class campaign_model extends CI_Model {
 			if($datajson_header['download_content_length'] > $max_remote_size) {
 
 				//$filesize = human_filesize($datajson_header['download_content_length']);
-				//$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";				
+				//$errors[] = "The data.json file is " . $filesize . " which is currently too large to parse with this tool. Sorry.";
 
 				// Increase the timeout limit
-			    @set_time_limit(6000);	
-			
+			    @set_time_limit(6000);
+
 				$this->load->helper('file');
 
-				if ($rawfile = $this->archive_file('datajson-lines', $this->current_office_id, $datajson_url)) {	
+				if ($rawfile = $this->archive_file('datajson-lines', $this->current_office_id, $datajson_url)) {
 
 			        $outfile = $rawfile . '.lines.json';
 
-			        $stream = fopen($rawfile, 'r'); 
+			        $stream = fopen($rawfile, 'r');
 			        $out_stream = fopen($outfile, 'w+');
 
 			        $listener = new DataJsonParser();
@@ -1042,27 +1042,27 @@ class campaign_model extends CI_Model {
 			        // Delete temporary raw source file
 			        unlink($rawfile);
 
-			        $out_stream = fopen($outfile, 'r+');	
+			        $out_stream = fopen($outfile, 'r+');
 
 					$chunk_cycle = 0;
-					$chunk_size = 200;					
+					$chunk_size = 200;
 					$chunk_count = intval(ceil($datajson_lines_count/$chunk_size));
 					$buffer = '';
-		
+
 					$response = array();
-					$response['errors'] = array();		
+					$response['errors'] = array();
 
 					if($quality !== false) {
 						$response['qa'] = array();
-					}			
+					}
 
 					echo "Analyzing $datajson_lines_count lines in $chunk_count chunks of $chunk_size lines each" . PHP_EOL;
 
 					while($chunk_cycle < $chunk_count) {
-					
+
 						$buffer = '';
 						$datajson_qa = null;
-						$counter = 0; 				
+						$counter = 0;
 
 						if ($chunk_cycle > 0) {
 							$key_offset = $chunk_size * $chunk_cycle;
@@ -1080,12 +1080,12 @@ class campaign_model extends CI_Model {
 
 						while (($buffer .= fgets($out_stream)) && $counter < $chunk_size) {
 					        $counter++;
-					    }		
+					    }
 
 					    $buffer = $json_header . $buffer;
 					    $buffer = substr($buffer, 0, strlen($buffer) - 2) . ']}';
 
-						$validator = $this->campaign->jsonschema_validator($buffer, 'federal-v1.1');				
+						$validator = $this->campaign->jsonschema_validator($buffer, 'federal-v1.1');
 
 						if(!empty($validator['errors']) ) {
 
@@ -1094,26 +1094,26 @@ class campaign_model extends CI_Model {
 						}
 
 						if($quality !== false) {
-							$datajson_qa = $this->campaign->datajson_qa($buffer, 'federal-v1.1', $quality, $component);	
+							$datajson_qa = $this->campaign->datajson_qa($buffer, 'federal-v1.1', $quality, $component);
 
 							if(!empty($datajson_qa)) {
-								$response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);	
-							}	
+								$response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);
+							}
 
-						}						
+						}
 
-					    $chunk_cycle++;				
+					    $chunk_cycle++;
 					}
 
 			        // Delete json lines file
-			        unlink($outfile);					
+			        unlink($outfile);
 
 					// ###################################################################
 					// Needs to be refactored into separate function
 					// ###################################################################
 
 
-						// Sum QA counts 
+						// Sum QA counts
 						if(!empty($response['qa'])) {
 
 
@@ -1125,27 +1125,27 @@ class campaign_model extends CI_Model {
 								$response['qa']['programCodes'] = array_keys($response['qa']['programCodes']);
 							}
 
-							$sum_array_fields = array('API_total', 
-													  'API_public', 
-													  'API_restricted', 
-													  'API_nonpublic', 
+							$sum_array_fields = array('API_total',
+													  'API_public',
+													  'API_restricted',
+													  'API_nonpublic',
 													  'collections_total',
 													  'non_collection_total',
-													  'downloadURL_present', 
-													  'downloadURL_total', 
-													  'accessURL_present', 
-													  'accessURL_total', 
-													  'accessLevel_public', 
-													  'accessLevel_restricted', 
+													  'downloadURL_present',
+													  'downloadURL_total',
+													  'accessURL_present',
+													  'accessURL_total',
+													  'accessLevel_public',
+													  'accessLevel_restricted',
 													  'accessLevel_nonpublic',
 													  'license_present',
 													  'redaction_present',
 													  'redaction_no_explanation');
 
 							foreach ($sum_array_fields as $array_field) {
-								if(!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {					
-									$response['qa'][$array_field] = array_sum($response['qa'][$array_field]);					 
-								}	
+								if(!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {
+									$response['qa'][$array_field] = array_sum($response['qa'][$array_field]);
+								}
 							}
 
 							// Sum validation counts
@@ -1160,12 +1160,12 @@ class campaign_model extends CI_Model {
 							}
 
 						}
-						
+
 
 						$response['valid'] = (empty($response['errors'])) ? true : false;
 						$response['valid_json'] = true;
 
-						$response['total_records'] = $datajson_lines_count;		
+						$response['total_records'] = $datajson_lines_count;
 
 						if(!empty($datajson_header['download_content_length'])) {
 							$response['download_content_length'] = $datajson_header['download_content_length'];
@@ -1174,7 +1174,7 @@ class campaign_model extends CI_Model {
 						if(empty($response['errors'])) {
 							$response['errors'] = false;
 						}
-						
+
 						return $response;
 
 
@@ -1183,14 +1183,14 @@ class campaign_model extends CI_Model {
 
 
 				} else {
-					$errors[] = "File not found or couldn't be downloaded";	
-				}				
-		
+					$errors[] = "File not found or couldn't be downloaded";
+				}
+
 			}
 
 
 
-			// See if it's valid JSON 
+			// See if it's valid JSON
 			if(!empty($datajson) && $datajson_header['download_content_length'] < $max_remote_size) {
 
 				// See if raw file is valid
@@ -1206,7 +1206,7 @@ class campaign_model extends CI_Model {
 
 				if ($valid_json !== true) {
 					$errors[] = 'The validator was unable to determine if this was valid JSON';
-				}				
+				}
 			}
 
 			if(!empty($errors)) {
@@ -1216,9 +1216,9 @@ class campaign_model extends CI_Model {
 
 				$response = array(
 								'raw_valid_json' => $raw_valid_json,
-								'valid_json' => $valid_json, 
-								'valid' => false, 
-								'fail' => $errors, 
+								'valid_json' => $valid_json,
+								'valid' => false,
+								'fail' => $errors,
 								'download_content_length' => $datajson_header['download_content_length']
 								);
 
@@ -1232,9 +1232,9 @@ class campaign_model extends CI_Model {
 						$response['total_records'] = count($catalog);
 					}
 
-					
+
 				}
-								
+
 				return $response;
 			}
 
@@ -1259,14 +1259,14 @@ class campaign_model extends CI_Model {
 
 			$datajson_decode = json_decode($datajson_processed);
 
-			if(!empty($datajson_decode->conformsTo) 
+			if(!empty($datajson_decode->conformsTo)
 				&& $datajson_decode->conformsTo == 'https://project-open-data.cio.gov/v1.1/schema') {
 
 
 				if($schema !== 'federal-v1.1' && $schema !== 'non-federal-v1.1' ) {
 
 					if ($schema == 'federal') {
-						$schema = 'federal-v1.1';						
+						$schema = 'federal-v1.1';
 					} else if ($schema == 'non-federal') {
 						$schema = 'non-federal-v1.1';
 					} else {
@@ -1279,25 +1279,25 @@ class campaign_model extends CI_Model {
 
 			}
 
-			if($schema == 'federal-v1.1' && empty($datajson_decode->dataset)) {				
-				$errors[] = "This file does not appear to be using the federal-v1.1 schema";	
+			if($schema == 'federal-v1.1' && empty($datajson_decode->dataset)) {
+				$errors[] = "This file does not appear to be using the federal-v1.1 schema";
 				$response = array(
 								'raw_valid_json' => $raw_valid_json,
-								'valid_json' => $valid_json, 
-								'valid' => false, 
+								'valid_json' => $valid_json,
+								'valid' => false,
 								'fail' => $errors
 								);
-				return $response;				
+				return $response;
 			}
 
 
 			if($schema !== 'federal-v1.1' && $schema !== 'non-federal-v1.1' ) {
-				$chunk_size = 500;				
+				$chunk_size = 500;
 				$datajson_chunks = array_chunk($datajson_decode, $chunk_size);
 			} else {
 				$datajson_chunks = array($datajson_decode);
 			}
-			
+
 
 			$response = array();
 			$response['errors'] = array();
@@ -1307,13 +1307,13 @@ class campaign_model extends CI_Model {
 			}
 
 			// save detected schema version to output
-			$response['schema_version'] = $schema;			
+			$response['schema_version'] = $schema;
 
 			foreach ($datajson_chunks as $chunk_count => $chunk) {
 
 				$chunk = json_encode($chunk);
 				$validator = $this->campaign->jsonschema_validator($chunk, $schema);
-			
+
 				if(!empty($validator['errors']) ) {
 
 					if ($chunk_count) {
@@ -1324,22 +1324,22 @@ class campaign_model extends CI_Model {
 					}
 
 					$response['errors'] = $response['errors'] + $this->process_validation_errors($validator['errors'], $key_offset);
-					
+
 				}
 
 				if($quality !== false) {
-					$datajson_qa = $this->campaign->datajson_qa($chunk, $schema, $quality, $component);	
+					$datajson_qa = $this->campaign->datajson_qa($chunk, $schema, $quality, $component);
 
 					if(!empty($datajson_qa)) {
-						$response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);	
-					}	
+						$response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);
+					}
 
 				}
-								
+
 			}
 
 
-			// Sum QA counts 
+			// Sum QA counts
 			if(!empty($response['qa'])) {
 
 
@@ -1354,9 +1354,9 @@ class campaign_model extends CI_Model {
 				$sum_array_fields = array('accessURL_present', 'accessURL_total', 'accessLevel_public', 'accessLevel_restricted', 'accessLevel_nonpublic');
 
 				foreach ($sum_array_fields as $array_field) {
-					if(!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {					
-						$response['qa'][$array_field] = array_sum($response['qa'][$array_field]);					 
-					}	
+					if(!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {
+						$response['qa'][$array_field] = array_sum($response['qa'][$array_field]);
+					}
 				}
 
 				// Sum validation counts
@@ -1382,7 +1382,7 @@ class campaign_model extends CI_Model {
 				$response['total_records'] = count($datajson_decode->dataset);
 			} else {
 				$response['total_records'] = count($datajson_decode);
-			}			
+			}
 
 
 			if(!empty($datajson_header['download_content_length'])) {
@@ -1393,20 +1393,20 @@ class campaign_model extends CI_Model {
 				$response['errors'] = false;
 			}
 
-			if ($return_source) {	
+			if ($return_source) {
 				$dataset_array = ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') ? true : false;
-				$datajson_decode = filter_json($datajson_decode, $dataset_array);			
+				$datajson_decode = filter_json($datajson_decode, $dataset_array);
 				$response['source'] = $datajson_decode;
 			}
-			
+
 			return $response;
 
-		} else {			
+		} else {
 			$errors[] = "This does not appear to be valid JSON";
 			$response = array(
-							'valid_json' => false, 
-							'valid' => false, 
-							'fail' => $errors 
+							'valid_json' => false,
+							'valid' => false,
+							'fail' => $errors
 							);
 			if(!empty($datajson_header['download_content_length'])) {
 				$response['download_content_length'] = $datajson_header['download_content_length'];
@@ -1426,9 +1426,9 @@ class campaign_model extends CI_Model {
 
 			$schema_variant = (!empty($schema)) ? "$schema/" : "";
 
-			$schema_module = ($schema == 'federal-v1.1' && $chunked == true) ? 'dataset.json' : 'catalog.json'; 
+			$schema_module = ($schema == 'federal-v1.1' && $chunked == true) ? 'dataset.json' : 'catalog.json';
 
-			$path = './schema/' . $schema_variant . $schema_module;		
+			$path = './schema/' . $schema_variant . $schema_module;
 
 			//echo $path; exit;
 
@@ -1484,12 +1484,12 @@ class campaign_model extends CI_Model {
 
 		foreach ($errors as $error) {
 
-            if ( !is_numeric($error['property']) AND  
-                ($error['property'] === '') OR 
-                 ($error['property'] === '@context') OR 
-                 ($error['property'] === '@type') OR 
-                 ($error['property'] === '@id') OR 
-                 ($error['property'] === 'describedBy') OR 
+            if ( !is_numeric($error['property']) AND
+                ($error['property'] === '') OR
+                 ($error['property'] === '@context') OR
+                 ($error['property'] === '@type') OR
+                 ($error['property'] === '@id') OR
+                 ($error['property'] === 'describedBy') OR
                  ($error['property'] === 'conformsTo')) {
                 $error['property'] = 'catalog.' . $error['property'];
             }
@@ -1497,7 +1497,7 @@ class campaign_model extends CI_Model {
 			if(is_numeric($error['property']) OR strpos($error['property'], '.') === false OR $error['property'] === 'catalog.') {
 				$key = ($error['property'] === 'catalog.') ? 'catalog' : $error['property'];
 				$field = 'ALL';
-			} 
+			}
             else {
 
             	if (strpos($error['property'], 'dataset[') !== false) {
@@ -1506,7 +1506,7 @@ class campaign_model extends CI_Model {
 					$full_field 	= substr($error['property'], strpos($error['property'], '.') + 1);
             	} else {
 					$key = substr($error['property'], 0, strpos($error['property'], '.'));
-					$full_field = substr($error['property'], strpos($error['property'], '.') + 1);            		
+					$full_field = substr($error['property'], strpos($error['property'], '.') + 1);
             	}
 
 
@@ -1547,7 +1547,7 @@ class campaign_model extends CI_Model {
 
 		$programCode = array();
 		$bureauCode = array();
-		$collections_list = array();		
+		$collections_list = array();
 
 		$this->validation_counts = $this->validation_count_model();
 
@@ -1559,15 +1559,15 @@ class campaign_model extends CI_Model {
 		$API_total					= 0;
 		$API_public					= 0;
 		$API_restricted				= 0;
-		$API_nonpublic				= 0;		
+		$API_nonpublic				= 0;
 		$collections_total			= 0;
 		$non_collection_total 		= 0;
-		$downloadURL_total			= 0;		
+		$downloadURL_total			= 0;
 		$accessURL_present 			= 0;
 		$downloadURL_present		= 0;
 		$license_present			= 0;
-		$redaction_present			= 0;	
-		$redaction_no_explanation	= 0;	
+		$redaction_present			= 0;
+		$redaction_no_explanation	= 0;
 
 		$json = json_decode($json);
 
@@ -1588,27 +1588,27 @@ class campaign_model extends CI_Model {
 					$accessLevel_nonpublic++;
 				}
 
-			} 
+			}
 
-			if($schema == 'federal' OR $schema == 'federal-v1.1') {				
+			if($schema == 'federal' OR $schema == 'federal-v1.1') {
 
 
 				if(!empty($dataset->programCode) && is_array($dataset->programCode)) {
 
 					foreach ($dataset->programCode as $program) {
-						$programCode[$program] = true;	
+						$programCode[$program] = true;
 					}
-					
+
 				}
 
 				if(!empty($dataset->bureauCode) && is_array($dataset->bureauCode)) {
 
 					foreach ($dataset->bureauCode as $bureau) {
-						$bureauCode[$bureau] = true;	
+						$bureauCode[$bureau] = true;
 					}
-				}				
+				}
 			}
-		
+
 			if (!empty($dataset->isPartOf)) {
 				$collections_list[$dataset->isPartOf] = true;
 			} else {
@@ -1620,7 +1620,7 @@ class campaign_model extends CI_Model {
 			$has_downloadURL = false;
 
 			if( ($schema == 'federal' OR $schema == 'non-federal')
-				&& !empty($dataset->accessURL) 
+				&& !empty($dataset->accessURL)
 				&& filter_var($dataset->accessURL, FILTER_VALIDATE_URL)) {
 
 				$accessURL_total++;
@@ -1631,8 +1631,8 @@ class campaign_model extends CI_Model {
 
 			}
 
-			if( ($schema == 'federal' OR $schema == 'non-federal') 
-				&& !empty($dataset->webService) 
+			if( ($schema == 'federal' OR $schema == 'non-federal')
+				&& !empty($dataset->webService)
 				&& filter_var($dataset->webService, FILTER_VALIDATE_URL)) {
 
 				$accessURL_total++;
@@ -1641,10 +1641,10 @@ class campaign_model extends CI_Model {
 
 				if($component === 'full-scan') $this->validation_check($dataset->identifier, $dataset->title, $dataset->webService);
 
-			}			
+			}
 
 			if(!empty($dataset->distribution) && is_array($dataset->distribution)) {
-				
+
 				foreach ($dataset->distribution as $distribution) {
 
 					if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
@@ -1654,9 +1654,9 @@ class campaign_model extends CI_Model {
 					}
 
 				   if(!empty($distribution->accessURL) && filter_var($distribution->accessURL, FILTER_VALIDATE_URL)) {
-				   		
-				   		if (($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') 
-				   			&& !empty($distribution->format) 
+
+				   		if (($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1')
+				   			&& !empty($distribution->format)
 				   			&& strtolower($distribution->format) == 'api' ) {
 				   			$API_total++;
 
@@ -1671,17 +1671,17 @@ class campaign_model extends CI_Model {
 
 				   		if($component === 'full-scan') $this->validation_check($dataset->identifier, $dataset->title, $distribution->accessURL, $media_type);
 						$accessURL_total++;
-						$has_accessURL = true;					   		
+						$has_accessURL = true;
 				   }
 
 				   if(!empty($distribution->downloadURL) && filter_var($distribution->downloadURL, FILTER_VALIDATE_URL)) {
 				   		if($component === 'full-scan') $this->validation_check($dataset->identifier, $dataset->title, $distribution->downloadURL, $media_type);
 						$accessURL_total++;
 						$downloadURL_total++;
-						$has_accessURL = true;	
-						$has_downloadURL = true;	
-				   }	
-			
+						$has_accessURL = true;
+						$has_downloadURL = true;
+				   }
+
 				}
 
 			}
@@ -1692,9 +1692,9 @@ class campaign_model extends CI_Model {
 				$redaction_present++;
 
 				if(empty($dataset->rights)) {
-					$redaction_no_explanation++;	
+					$redaction_no_explanation++;
 				}
-				
+
 			}
 			unset($json_text);
 
@@ -1724,20 +1724,20 @@ class campaign_model extends CI_Model {
 
 		$qa['accessURL_present'] 			= $accessURL_present;
 		$qa['accessURL_total'] 				= $accessURL_total;
-		$qa['API_total'] 					= $API_total;	
+		$qa['API_total'] 					= $API_total;
 		$qa['API_public']					= $API_public;
 		$qa['API_restricted']				= $API_restricted;
 		$qa['API_nonpublic']				= $API_nonpublic;
-		$qa['collections_total']			= count($collections_list);	
-		$qa['non_collection_total']			= $non_collection_total;	
+		$qa['collections_total']			= count($collections_list);
+		$qa['non_collection_total']			= $non_collection_total;
 		$qa['validation_counts']			= $this->validation_counts;
 		$qa['license_present'] 				= $license_present;
 		$qa['redaction_present'] 			= $redaction_present;
 		$qa['redaction_no_explanation'] 	= $redaction_no_explanation;
 
 		if ($schema == 'federal-v1.1' OR $schema == 'non-federal-v1.1') {
-			$qa['downloadURL_present'] 	= $downloadURL_present;	
-			$qa['downloadURL_total'] 	= $downloadURL_total;				
+			$qa['downloadURL_present'] 	= $downloadURL_present;
+			$qa['downloadURL_total'] 	= $downloadURL_total;
 		}
 
 
@@ -1755,11 +1755,11 @@ class campaign_model extends CI_Model {
 
 		if(!empty($header['info']['http_code']) && preg_match('/[5]\d{2}\z/', $header['info']['http_code']) ){
 			$this->validation_counts['http_5xx']++;
-		}	
+		}
 
 		if(!empty($header['info']['http_code']) && preg_match('/[4]\d{2}\z/', $header['info']['http_code']) ){
 			$this->validation_counts['http_4xx']++;
-		}	
+		}
 
 		if(!empty($header['info']['http_code']) && preg_match('/[3]\d{2}\z/', $header['info']['http_code']) ){
 			$this->validation_counts['http_3xx']++;
@@ -1768,16 +1768,16 @@ class campaign_model extends CI_Model {
 		if(!empty($header['info']['http_code']) && preg_match('/[2]\d{2}\z/', $header['info']['http_code']) ){
 			$this->validation_counts['http_2xx']++;
 			$good_link = true;
-		}	
+		}
 
 		if(empty($header['info']['http_code'])){
 			$this->validation_counts['http_0']++;
-		}			
+		}
 
 		if($good_link && !empty($format) && !empty($header['info']['content_type']) && stripos($header['info']['content_type'], $format) === false){
 			$this->validation_counts['format_mismatch']++;
 			$good_format = false;
-		}		
+		}
 
 		if($good_link && !empty($header['info']['content_type']) && stripos($header['info']['content_type'], 'application/pdf') !== false){
 			$this->validation_counts['pdf']++;
@@ -1785,7 +1785,7 @@ class campaign_model extends CI_Model {
 
 		if($good_link && !empty($format) && !empty($header['info']['content_type']) && stripos($header['info']['content_type'], 'text/html') !== false){
 			$this->validation_counts['html']++;
-		}	
+		}
 
 		if($good_link === false OR $good_format === false) {
 			$error_report = $this->error_report_model();
@@ -1856,7 +1856,7 @@ class campaign_model extends CI_Model {
 			'http_4xx' => 0,
 			'http_3xx' => 0,
 			'http_2xx' => 0,
-			'http_0' => 0,			
+			'http_0' => 0,
 			'pdf' => 0,
 			'html' => 0,
 			'format_mismatch' => 0
@@ -1900,6 +1900,10 @@ class campaign_model extends CI_Model {
 
         $s3 = $this->init_s3();
 
+        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+            echo 'Adding to S3:   ' . $s3_bucket . ' : ' . $s3_prefix . ' : ' . $local_filepath . PHP_EOL;
+        }
+
         // Upload a publicly accessible file. The file size and type are determined by the SDK.
         try {
             $s3->putObject([
@@ -1909,7 +1913,9 @@ class campaign_model extends CI_Model {
                 'ACL'    => $acl,
             ]);
         } catch (Aws\Exception\S3Exception $e) {
-            echo "There was an error uploading the file.\n";
+            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                echo "There was an error uploading the file.\n";
+            }
         }
 	}
 
@@ -1938,6 +1944,8 @@ class campaign_model extends CI_Model {
 	}
 
     private function archive_to_s3($filetype, $office_id, $local_filepath) {
+
+
         if($filetype == 'datajson-lines') {
             $directory = "datajson-lines";
             $filepath = $directory . '/' . $office_id . '.raw';
@@ -1947,7 +1955,7 @@ class campaign_model extends CI_Model {
             $filepath = $directory . '/' . $office_id . '.json';
         }
 
-		$this->put_to_s3($local_filepath, $filepath, 'public-read');
+        $this->put_to_s3($local_filepath, $filepath, 'public-read');
 
     }
 
@@ -1957,11 +1965,11 @@ class campaign_model extends CI_Model {
 
 		if($filetype == 'datajson-lines') {
 			$directory = "$download_dir/datajson-lines";
-			$filepath = $directory . '/' . $office_id . '.raw';			
+			$filepath = $directory . '/' . $office_id . '.raw';
 		} else {
 			$crawl_date = date("Y-m-d");
 			$directory = "$download_dir/$filetype/$crawl_date";
-			$filepath = $directory . '/' . $office_id . '.json';			
+			$filepath = $directory . '/' . $office_id . '.json';
 		}
 
 
@@ -2000,7 +2008,7 @@ class campaign_model extends CI_Model {
 				echo 'Could not read from ' . $url . PHP_EOL;
 			}
 
-			
+
 		}
 
 		// If we can't write to this file, skip
@@ -2021,7 +2029,7 @@ class campaign_model extends CI_Model {
 						}
 
 			       }
-			}			
+			}
 		} else {
 
 			return false;
@@ -2049,7 +2057,7 @@ class campaign_model extends CI_Model {
 
 		// Determine current milestone
 		$selected_milestone	= (!empty($update->milestone)) ? $update->milestone : null;
-		$milestones 			= $this->milestones_model();	
+		$milestones 			= $this->milestones_model();
 		$milestone 				= $this->milestone_filter($selected_milestone, $milestones);
 
 		$update->milestone 		= $milestone->selected_milestone;
@@ -2057,7 +2065,7 @@ class campaign_model extends CI_Model {
 		// Check if this is to update tracker fields
 		if (!empty($update->status_id)) {
 			$existing_status['status_id'] = $update->status_id;
-			$this->db->where('status_id', $update->status_id);			
+			$this->db->where('status_id', $update->status_id);
 
 			if (empty($update->crawl_status)){
 				$tracker_update = true;
@@ -2081,19 +2089,19 @@ class campaign_model extends CI_Model {
 				$update->crawl_status		 	 = 	$row->crawl_status;
 			}
 
-		} 
+		}
 
 		// if this is to update tracker fields (crawl_status would be empty)
-		if (!empty($existing_status)) {			
-			
+		if (!empty($existing_status)) {
+
 			// if this is to update tracker fields
 			if (empty($update->crawl_status)) {
-				
+
 				$this->db->where('status_id', $existing_status['status_id']);
 				$this->db->where('office_id', $update->office_id);
 				$this->db->where('milestone', $update->milestone);
 
-				$this->db->update('datagov_campaign', $update);				
+				$this->db->update('datagov_campaign', $update);
 			}
 
 			// if this is just an old record, change the crawl_status
@@ -2110,13 +2118,13 @@ class campaign_model extends CI_Model {
 				if(!empty($old_status)) {
 					$reset = array( 'crawl_status' => $old_status );
 
-					$this->db->where('status_id', $existing_status['status_id']);			
-					$this->db->update('datagov_campaign', $reset); 
+					$this->db->where('status_id', $existing_status['status_id']);
+					$this->db->update('datagov_campaign', $reset);
 				}
 
 			}
 
-		} 
+		}
 
 
 		// Check if this is an in-progress crawl to update or a mid-quarter tracker update
@@ -2129,12 +2137,12 @@ class campaign_model extends CI_Model {
 
 		// Otherwise this is an insert
 		} else {
-			
+
 
 			if(isset($update->status_id)) {
-				unset($update->status_id);	
+				unset($update->status_id);
 			}
-			
+
 			if ($this->environment == 'terminal') {
 				echo 'Adding ' . $update->office_id . PHP_EOL . PHP_EOL;
 			}
@@ -2145,7 +2153,7 @@ class campaign_model extends CI_Model {
 
 		// reset previous "current" crawl
 		if (!empty($update->crawl_status) && $update->crawl_status == 'current') {
-			
+
 			$this->db->select('status_id');
 			$this->db->where('office_id', $update->office_id);
 			$this->db->where('milestone', $update->milestone);
@@ -2160,8 +2168,8 @@ class campaign_model extends CI_Model {
 				$row = $query->row();
 				$reset = array( 'crawl_status' => 'archive' );
 
-				$this->db->where('status_id', $row->status_id);			
-				$this->db->update('datagov_campaign', $reset); 
+				$this->db->where('status_id', $row->status_id);
+				$this->db->update('datagov_campaign', $reset);
 
 			}
 
@@ -2172,12 +2180,12 @@ class campaign_model extends CI_Model {
 	}
 
 	public function finalize_milestone($milestone) {
-		
+
 		$this->db->where('milestone', $milestone);
 		$this->db->where('crawl_status', 'current');
-		
+
 		$finalize = array( 'crawl_status' => 'final' );
-		$this->db->update('datagov_campaign', $finalize); 
+		$this->db->update('datagov_campaign', $finalize);
 
 		return;
 	}
@@ -2189,7 +2197,7 @@ class campaign_model extends CI_Model {
 		$this->db->where('office_id', $update->office_id);
 		$this->db->where('milestone', $update->milestone);
 		$this->db->where('field_name', $update->field_name);
-		
+
 		$query = $this->db->get('notes');
 
 		if ($query->num_rows() > 0) {
@@ -2239,7 +2247,7 @@ class campaign_model extends CI_Model {
 
 		$prefix = 'fitara';
 
-		if (!empty($version)) {			
+		if (!empty($version)) {
 			if (substr($version, 0, strlen($prefix)) == $prefix) {
 				$version_path = $prefix . '/' . substr($version, strlen($prefix)+1) . '.json';
 			} else {
@@ -2249,11 +2257,11 @@ class campaign_model extends CI_Model {
 			$version_path = 'catalog.json';
 		}
 
-		$path = './schema/' . $version_path; 
+		$path = './schema/' . $version_path;
 
 		// Get the schema and data as objects
         $retriever = new JsonSchema\Uri\UriRetriever;
-        $schema = $retriever->retrieve('file://' . realpath($path));	
+        $schema = $retriever->retrieve('file://' . realpath($path));
 
         $refResolver = new JsonSchema\RefResolver($retriever);
         $refResolver->resolve($schema, 'file://' . __DIR__ . '/../../schema/' . $version_path);
@@ -2268,23 +2276,23 @@ class campaign_model extends CI_Model {
 
 		$model = new stdClass();
 
-		
+
 		foreach ($schema as $key => $value) {
 
 
 			if(!empty($value->type) && $value->type == 'object') {
-	
+
 				// This is just hard coded to prevent recursion, but should be replaced with proper recursion detection
 				if($key == 'subOrganizationOf') {
 					$model->$key = null;
 				} else {
-					$model->$key = $this->schema_to_model($value->properties);	
+					$model->$key = $this->schema_to_model($value->properties);
 				}
 
 			} else if(!empty($value->items) && $value->type == 'array') {
 
 				 $model->$key = array();
-	
+
 				if (!empty($value->items->properties)) {
 					$model->$key = array($this->schema_to_model($value->items->properties));
 				}
@@ -2298,7 +2306,7 @@ class campaign_model extends CI_Model {
 
 						$model->$key = array();
 
-						if (!empty($anyOptions->items) && !empty($anyOptions->items->type) && $anyOptions->items->type == 'object') {							
+						if (!empty($anyOptions->items) && !empty($anyOptions->items->type) && $anyOptions->items->type == 'object') {
 							$model->$key = array($this->schema_to_model($anyOptions->items->properties));
 
 						}
@@ -2310,7 +2318,7 @@ class campaign_model extends CI_Model {
 				}
 
 			} else {
-				
+
 				if($key == '@type' && !empty($value->enum)) {
 					$model->$key = $value->enum[0];
 				} else {
@@ -2515,7 +2523,7 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 				$distribution = $this->unset_nulls($distribution);
 
 				$distributions[] = $distribution;
-			}		
+			}
 
 		}
 
@@ -2524,11 +2532,11 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 			$distribution = clone $datajson_model->distribution[0];
 
 			$distribution->accessURL 		= $raw_data->webService;
-			$distribution->format			= 'API';	
+			$distribution->format			= 'API';
 
 			$distribution = $this->unset_nulls($distribution);
 
-			$distributions[] = $distribution;		
+			$distributions[] = $distribution;
 
 		}
 
@@ -2536,8 +2544,8 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 		if(!empty($raw_data->license)) {
 
 			if(!filter_var($raw_data->license, FILTER_VALIDATE_URL)) {
-				$license = urlencode($raw_data->license); 
-				$license = 'https://project-open-data.cio.gov/unknown-license/#v1-legacy/' . $license;				
+				$license = urlencode($raw_data->license);
+				$license = 'https://project-open-data.cio.gov/unknown-license/#v1-legacy/' . $license;
 			} else {
 				$license = $raw_data->license;
 			}
@@ -2553,7 +2561,7 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 			        break;
 			    case "Quadrennial":
 			        $accrualPeriodicity = 'R/P4Y';
-			        break;			        
+			        break;
 			    case "Annual":
 			        $accrualPeriodicity = 'R/P1Y';
 			        break;
@@ -2583,13 +2591,13 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 			        break;
 			    case "Three times a month":
 			        $accrualPeriodicity = 'R/P0.33M';
-			        break;	
+			        break;
 			    case "Continuously updated":
 			        $accrualPeriodicity = 'R/PT1S';
 			        break;
 			    case "Monthly":
 			        $accrualPeriodicity = 'R/P1M';
-			        break;			
+			        break;
 			    case "Quarterly":
 			        $accrualPeriodicity = 'R/P3M';
 			        break;
@@ -2601,12 +2609,12 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 			        break;
 			    case "Weekly":
 			        $accrualPeriodicity = 'R/P1W';
-			        break;     
+			        break;
 			    case "Completely irregular":
 			        $accrualPeriodicity = 'irregular';
-			        break; 		
+			        break;
 			    default: $accrualPeriodicity = $raw_data->accrualPeriodicity;
-			}			
+			}
 
 		} else {
 			$accrualPeriodicity = null;
@@ -2629,23 +2637,23 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 
 		$datajson_model->contactPoint->hasEmail 			= $hasEmail;
 		$datajson_model->contactPoint->fn                   = (!empty($raw_data->contactPoint)) ? $raw_data->contactPoint : null;
-	    
+
 		$datajson_model->accessLevel                        = (!empty($raw_data->accessLevel)) ? $raw_data->accessLevel : null;
 		$datajson_model->rights 			                = (!empty($raw_data->accessLevelComment)) ? $raw_data->accessLevelComment : null;
 		$datajson_model->accrualPeriodicity                 = $accrualPeriodicity;
-		$datajson_model->bureauCode                         = (!empty($raw_data->bureauCode)) ? $raw_data->bureauCode : null;	
+		$datajson_model->bureauCode                         = (!empty($raw_data->bureauCode)) ? $raw_data->bureauCode : null;
 		$datajson_model->describedBy                     	= (!empty($raw_data->dataDictionary)) ? $raw_data->dataDictionary : null;
 		$datajson_model->dataQuality                        = (!empty($raw_data->dataQuality)) ? $raw_data->dataQuality : null;
 		$datajson_model->description                        = (!empty($raw_data->description)) ? $raw_data->description : null;
-		
+
 		$datajson_model->distribution                       = (!empty($distributions)) ? $distributions : null;
-		
+
 		$datajson_model->identifier                         = (!empty($raw_data->identifier)) ? $raw_data->identifier : null;
 		$datajson_model->issued                             = (!empty($raw_data->issued)) ? $raw_data->issued : null;
 		$datajson_model->keyword                            = (!empty($raw_data->keyword)) ? $raw_data->keyword : null;
 		$datajson_model->landingPage                        = (!empty($raw_data->landingPage)) ? $raw_data->landingPage : null;
-		$datajson_model->language                           = (!empty($raw_data->language)) ? $raw_data->language : null;	
-		
+		$datajson_model->language                           = (!empty($raw_data->language)) ? $raw_data->language : null;
+
 		$datajson_model->license                            = (!empty($license)) ? $license : null;
 
 		$datajson_model->modified                           = (!empty($raw_data->modified)) ? $raw_data->modified : null;
@@ -2657,7 +2665,7 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 		$datajson_model->systemOfRecords                    = (!empty($raw_data->systemOfRecords)) ? $raw_data->systemOfRecords : null;
 		$datajson_model->temporal                           = (!empty($raw_data->temporal)) ? $raw_data->temporal : null;
 		$datajson_model->theme                              = (!empty($raw_data->theme)) ? $raw_data->theme : null;
-		$datajson_model->title                              = (!empty($raw_data->title)) ? $raw_data->title : null;	
+		$datajson_model->title                              = (!empty($raw_data->title)) ? $raw_data->title : null;
 
 		$datajson_model = $this->unset_nulls($datajson_model);
 
@@ -2667,7 +2675,7 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 	function unset_nulls($object) {
 
 		foreach($object as $key => $property) {
-			
+
 			if (is_null($property)) {
 				unset($object->$key);
 			}
@@ -2683,13 +2691,13 @@ public function datajson_schema_crosswalk($raw_data, $datajson_model) {
 				} else {
 					foreach ($property as $row => $value) {
 						if(is_object($value) OR is_array($value)) {
-							$property[$row] = $this->unset_nulls($value);	
-						}						
+							$property[$row] = $this->unset_nulls($value);
+						}
 					}
 				}
 
-			}			
-			
+			}
+
 		}
 
 		return $object;
