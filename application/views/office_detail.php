@@ -526,7 +526,7 @@
                             
                            <table class="table table-striped table-hover" id="note-expander-parent">
 
-                                <tr class="table-header">
+                                <th class="table-header">
                                     <th>Status</th>
 
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
@@ -1664,7 +1664,7 @@
 //                $archive_path_url = site_url('archive' . $archive_path);
 //                $archive_path_url = 'https://s3.amazonaws.com/bsp-ocsit-dev-east-appdata/datagov/dashboard/'
                 $archive_path_url = 'https://s3.amazonaws.com/' . $s3_bucket . '/' . $s3_prefix . 'archive' . $archive_path;
-                https://s3.amazonaws.com/bsp-ocsit-dev-east-appdata/datagov/dashboard/
+//                https://s3.amazonaws.com/bsp-ocsit-dev-east-appdata/datagov/dashboard/
                 $archive_validation = site_url('validate?schema=' . $schema_version . '&output=browser&qa=true&datajson_url=') . urlencode($archive_path_url );
         ?>
 
