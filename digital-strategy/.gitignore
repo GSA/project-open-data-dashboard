@@ -3,4 +3,3 @@ data/*.xml
 data/*.ttl
 .DS_Store
 import.php
-config/config.php
