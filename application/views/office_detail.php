@@ -1657,7 +1657,7 @@
             $schema_version = (!empty($schema_version)) ? $schema_version : 'federal-v1.1';
 
 //            if(file_exists($archive_path_local)):
-            if(True):
+            if(time() > strtotime($origin_date)):
                 $s3_bucket = $config['s3_bucket'];
                 $s3_prefix = $config['s3_prefix'];
 
