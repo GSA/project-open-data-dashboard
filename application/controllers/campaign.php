@@ -805,7 +805,7 @@ class Campaign extends CI_Controller {
 
                     $page_status = $this->campaign->uri_header($page_status_url);
                     $page_status['expected_url'] = $page_status_url;
-                    $page_status['last_crawl']  = mktime();
+                    $page_status['last_crawl']  = time();
 
                     $update->datapage_status = (!empty($page_status)) ? json_encode($page_status) : null;
 
@@ -839,7 +839,7 @@ class Campaign extends CI_Controller {
 
                     $page_status = $this->campaign->uri_header($digitalstrategy_status_url);
                     $page_status['expected_url'] = $digitalstrategy_status_url;
-                    $page_status['last_crawl']  = mktime();
+                    $page_status['last_crawl']  = time();
 
                     $update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status) : null;
 
@@ -940,7 +940,7 @@ class Campaign extends CI_Controller {
 	        			}
 
 	        			$status['expected_url'] = $expected_datajson_url;
-						$status['last_crawl']	= mktime();
+						$status['last_crawl']	= time();
 
 		
 						if(is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
