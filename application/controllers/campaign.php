@@ -95,12 +95,12 @@ class Campaign extends CI_Controller {
 				echo 'Creating file at ' . $filepath . PHP_EOL . PHP_EOL;
 
 				$export_file = fopen($filepath, 'w');
-				fwrite($export_file, json_encode($convert));
+				fwrite($export_file, json_encode($convert, JSON_PRETTY_PRINT));
 				fclose($export_file);
 			} else {
 
 			    header('Content-type: application/json');
-			    print json_encode($convert);
+			    print json_encode($convert, JSON_PRETTY_PRINT);
 				exit;
 			}
 
@@ -314,7 +314,7 @@ class Campaign extends CI_Controller {
     		header("Content-Disposition: attachment; filename=\"$csv_id.json\";" );
     		header("Content-Transfer-Encoding: binary");
 
-    		print json_encode($json);
+    		print json_encode($json, JSON_PRETTY_PRINT);
     		exit;
 		}
 
@@ -807,7 +807,7 @@ class Campaign extends CI_Controller {
                     $page_status['expected_url'] = $page_status_url;
                     $page_status['last_crawl']  = time();
 
-                    $update->datapage_status = (!empty($page_status)) ? json_encode($page_status) : null;
+                    $update->datapage_status = (!empty($page_status)) ? json_encode($page_status, JSON_PRETTY_PRINT) : null;
 
                     if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                         echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datapage_status . PHP_EOL . PHP_EOL;
@@ -841,7 +841,7 @@ class Campaign extends CI_Controller {
                     $page_status['expected_url'] = $digitalstrategy_status_url;
                     $page_status['last_crawl']  = time();
 
-                    $update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status) : null;
+                    $update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status, JSON_PRETTY_PRINT) : null;
 
                     if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                         echo 'Attempting to set ' . $update->office_id . ' with ' . $update->digitalstrategy_status . PHP_EOL . PHP_EOL;
@@ -919,7 +919,7 @@ class Campaign extends CI_Controller {
 	    			if ($component == 'full-scan' || $component == 'all' || $component == 'datajson') {
 
 	    				// Save current update status in case things break during json_status
-						$update->datajson_status = (!empty($status)) ? json_encode($status) : null;
+						$update->datajson_status = (!empty($status)) ? json_encode($status, JSON_PRETTY_PRINT) : null;
 
 						if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 							echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
@@ -953,7 +953,7 @@ class Campaign extends CI_Controller {
 
 						$status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;
 
-						$update->datajson_status = (!empty($status)) ? json_encode($status) : null;
+						$update->datajson_status = (!empty($status)) ? json_encode($status, JSON_PRETTY_PRINT) : null;
 						//$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode(array_slice($status['schema_errors'], 0, 10, true)) : null;
 						if(!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);
 
@@ -1071,7 +1071,7 @@ class Campaign extends CI_Controller {
 		$tracker_review_model->status 				= $update->status;
 		$tracker_review_model->reviewer_email 		= $update->reviewer_email;
 
-		$datagov_model_fields->tracker_status = json_encode($tracker_review_model);
+		$datagov_model_fields->tracker_status = json_encode($tracker_review_model, JSON_PRETTY_PRINT);
 
 		// remove blank fields from update
 		foreach ($datagov_model_fields as $field => $data) {
@@ -1120,7 +1120,7 @@ class Campaign extends CI_Controller {
 		$tracker_review_model->status 				= (!empty($update->status)) ? $update->status : null;
 		$tracker_review_model->reviewer_email 		= (!empty($update->reviewer_email)) ? $update->reviewer_email : null;
 
-		$datagov_model_fields->tracker_status = json_encode($tracker_review_model);
+		$datagov_model_fields->tracker_status = json_encode($tracker_review_model, JSON_PRETTY_PRINT);
 
 
 
@@ -1136,7 +1136,7 @@ class Campaign extends CI_Controller {
 				$note_data = array("note" => $update->$field_name, "date" =>  date("F j, Y, g:i a T"), "author" => $author_name);
 				$note_data = array("current" => $note_data, "previous" => null);
 
-				$note_data = json_encode($note_data);
+				$note_data = json_encode($note_data, JSON_PRETTY_PRINT);
 
 				$note = array('note' => $note_data, 'field_name' => $field, 'office_id' => $update->office_id, 'milestone' => $update->milestone);
 				$note = (object) $note;
@@ -1157,7 +1157,7 @@ class Campaign extends CI_Controller {
 		$datagov_model_fields->milestone = $update->milestone;
 		unset($update->milestone);		
 
-		$datagov_model_fields->tracker_fields = json_encode($update);
+		$datagov_model_fields->tracker_fields = json_encode($update, JSON_PRETTY_PRINT);
 
 		// remove blank fields from update
 		foreach ($datagov_model_fields as $field => $data) {
@@ -1245,7 +1245,7 @@ class Campaign extends CI_Controller {
 			} else {
 
 		     	header('Content-type: application/json');
-		        print json_encode($validation);
+		        print json_encode($validation, JSON_PRETTY_PRINT);
 		        exit;
 
 			}
@@ -1463,7 +1463,7 @@ class Campaign extends CI_Controller {
                     header("Content-Disposition: attachment; filename=\"$filename\";" );
                     header("Content-Transfer-Encoding: binary");
 
-                    print json_encode($datajson_model);
+                    print json_encode($datajson_model, JSON_PRETTY_PRINT);
                     exit;                    
                 } else {
                     $data = array();
