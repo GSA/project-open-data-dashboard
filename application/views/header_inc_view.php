@@ -18,6 +18,8 @@
   </script>
 <?php endif; ?>
 
+<!-- Digital Analytics Program roll-up, see https://analytics.usa.gov for data -->
+
 <script id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=GSA"></script>
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
