@@ -14,7 +14,7 @@ $dgs_agencies = dgs_prepend_generator_version( $dgs_agencies );
 dgs_sort( $dgs_agencies->agencies, 'name' );
 
 //output JSON
-file_put_contents( DGS_BASE_DIR . '/data/agencies.json', json_encode( $dgs_agencies ) );
+file_put_contents( DGS_BASE_DIR . '/data/agencies.json', json_encode( $dgs_agencies, JSON_PRETTY_PRINT ) );
 
 //now onto XML
 $xml = new SimpleXMLElement( '<agencies></agencies>' );

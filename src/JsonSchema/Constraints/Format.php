@@ -29,7 +29,7 @@ class Format extends Constraint
         switch ($schema->format) {
             case 'date':
                 if (!$date = $this->validateDateTime($element, 'Y-m-d')) {
-                    $this->addError($path, sprintf('Invalid date %s, expected format YYYY-MM-DD', json_encode($element)));
+                    $this->addError($path, sprintf('Invalid date %s, expected format YYYY-MM-DD', json_encode($element, JSON_PRETTY_PRINT)));
                 }
                 break;
 

@@ -54,7 +54,7 @@
             <script>
                  new Morris.Area({
                     element: 'inventory-trends',
-                    data: <?php echo json_encode($trends); ?>,
+                    data: <?php echo json_encode($trends, JSON_PRETTY_PRINT); ?>,
                     xkey: 'milestone',
                     ykeys: ['edi_access_public', 'edi_access_restricted', 'edi_access_nonpublic'],
                     labels: ['Public', 'Restricted Public', 'Non-Public'],

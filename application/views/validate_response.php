@@ -199,7 +199,7 @@
                                 <?php endif; ?>
                             </h4>
 
-                            <pre><code><?php print htmlentities(prettyPrint(str_replace('\/', '/', json_encode($validation['source'][$source_key])))); ?></code></pre>
+                            <pre><code><?php print htmlentities(prettyPrint(str_replace('\/', '/', json_encode($validation['source'][$source_key], JSON_PRETTY_PRINT)))); ?></code></pre>
                         </div>
 
                         <div class="validation-errors col-md-6">

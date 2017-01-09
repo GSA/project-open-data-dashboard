@@ -176,7 +176,7 @@ class Offices extends CI_Controller {
 			
 
 			header('Content-type: application/json');
-			print json_encode($view_data);
+			print json_encode($view_data, JSON_PRETTY_PRINT);
 			exit;
 		}
 
@@ -199,7 +199,7 @@ class Offices extends CI_Controller {
 		}
 
 		header('Content-type: application/json');
-		print json_encode($output);
+		print json_encode($output, JSON_PRETTY_PRINT);
 		exit;
 
 	}
@@ -287,7 +287,7 @@ class Offices extends CI_Controller {
 					$tracker_fields->$field_name = (isset($tracker_fields->$field_name)) ? $tracker_fields->$field_name : null;
 				}
 
-				$view_data['office_campaign']->tracker_fields = json_encode($tracker_fields);
+				$view_data['office_campaign']->tracker_fields = json_encode($tracker_fields, JSON_PRETTY_PRINT);
 
 			} 
 

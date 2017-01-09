@@ -1311,7 +1311,7 @@ class campaign_model extends CI_Model {
 
 			foreach ($datajson_chunks as $chunk_count => $chunk) {
 
-				$chunk = json_encode($chunk);
+				$chunk = json_encode($chunk, JSON_PRETTY_PRINT);
 				$validator = $this->campaign->jsonschema_validator($chunk, $schema);
 
 				if(!empty($validator['errors']) ) {
@@ -1687,7 +1687,7 @@ class campaign_model extends CI_Model {
 			}
 
 			// Track presence of redactions and rights info
-			$json_text = json_encode($dataset);
+			$json_text = json_encode($dataset, JSON_PRETTY_PRINT);
 			if (strpos($json_text, '[[REDACTED-EX') !== false) {
 				$redaction_present++;
 
