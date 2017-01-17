@@ -34,7 +34,7 @@ class User extends CI_Controller
 
         $pre_approved_admins = $this->config->item('pre_approved_admins');
 
-        if (in_array($userdata['username'], $pre_approved_admins)) {
+        if (in_array(strtolower($userdata['username']), $pre_approved_admins)) {
             $userdata['permissions'] = 'admin';
         }
         $userdata['provider_url'] = 'max.gov';
