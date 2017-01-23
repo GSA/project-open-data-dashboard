@@ -228,12 +228,12 @@ class Campaign extends CI_Controller {
 
                                 $field_path = explode('.', $mapping[$count]);  
 
-                                if (array_key_exists($field_path[0], $json_row) && array_key_exists($field_path[1], $json_row->$field_path[0])) {
+                                if (is_array($json_row) && array_key_exists($field_path[0], $json_row) && array_key_exists($field_path[1], $json_row->$field_path[0])) {
                                     $json_row->$field_path[0]->$field_path[1] = $value;       
                                 }
 
                                 if ($field_path[0] == 'distribution') {
-                                    if (array_key_exists($field_path[1], $distribution_row)) {
+                                    if (is_array($distribution_row) && array_key_exists($field_path[1], $distribution_row)) {
                                         $distribution_row->$field_path[1] = $value;       
                                     }                                    
                                 }
