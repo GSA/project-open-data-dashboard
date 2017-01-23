@@ -185,6 +185,8 @@ class Campaign extends CI_Controller {
 
 			$full_path = $upload_config['upload_path'] . $csv_id;
 
+            $this->load->model('campaign_model', 'campaign');
+
             if (!is_file($full_path)) {
                 $this->campaign->get_from_s3(
                     'uploads/'.$csv_id,
@@ -203,7 +205,6 @@ class Campaign extends CI_Controller {
             if ($schema == 'federal-v1.1') {
 
                 // Provide mapping between csv headings and POD schema
-                $this->load->model('campaign_model', 'campaign');
                 $json_schema = $this->campaign->datajson_schema($schema);
                 $datajson_model = $this->campaign->schema_to_model($json_schema->properties);    
                 $datajson_model->dataset = array();        
