@@ -1071,7 +1071,7 @@ class campaign_model extends CI_Model {
 						}
 
 						$next_offset = $key_offset + $chunk_size;
-						//echo "Analyzing chunk $chunk_cycle of $chunk_count ($key_offset to $next_offset of $datajson_lines_count)" . PHP_EOL;
+						echo "Analyzing chunk $chunk_cycle of $chunk_count ($key_offset to $next_offset of $datajson_lines_count)" . PHP_EOL;
 
 
 						if ($chunk_cycle == 0) {
@@ -1311,7 +1311,7 @@ class campaign_model extends CI_Model {
 
 			foreach ($datajson_chunks as $chunk_count => $chunk) {
 
-				$chunk = json_encode($chunk, JSON_PRETTY_PRINT);
+				$chunk = json_encode($chunk);
 				$validator = $this->campaign->jsonschema_validator($chunk, $schema);
 
 				if(!empty($validator['errors']) ) {
@@ -1433,7 +1433,7 @@ class campaign_model extends CI_Model {
 			//echo $path; exit;
 
 			// Get the schema and data as objects
-	        $retriever = new JsonSchema\Uri\UriRetriever;
+	        $retriever = new \JsonSchema\Uri\UriRetriever;
 	        $schema = $retriever->retrieve('file://' . realpath($path));
 
 
@@ -1446,11 +1446,11 @@ class campaign_model extends CI_Model {
 		    if(!empty($data)) {
                 // If you use $ref or if you are unsure, resolve those references here
                 // This modifies the $schema object
-                $refResolver = new JsonSchema\RefResolver($retriever);
-                $refResolver->resolve($schema, 'file://' . __DIR__ . '/../../schema/' . $schema_variant);
+				$schemaStorage = new \JsonSchema\SchemaStorage();
+				$schemaStorage->addSchema('file://' . __DIR__ . '/../../schema/' . $schema_variant, $schema);
 
                 // Validate
-                $validator = new JsonSchema\Validator();
+                $validator = new \JsonSchema\Validator();
                 $validator->check($data, $schema);
 
                 if ($validator->isValid()) {
@@ -1687,7 +1687,7 @@ class campaign_model extends CI_Model {
 			}
 
 			// Track presence of redactions and rights info
-			$json_text = json_encode($dataset, JSON_PRETTY_PRINT);
+			$json_text = json_encode($dataset);
 			if (strpos($json_text, '[[REDACTED-EX') !== false) {
 				$redaction_present++;
 
@@ -2042,7 +2042,9 @@ class campaign_model extends CI_Model {
 		fclose($copy);
 		fclose($paste);
 
-		$this->archive_to_s3($filetype, $office_id, $filepath);
+		if($filetype != 'datajson-lines') {
+			$this->archive_to_s3($filetype, $office_id, $filepath);
+		}
 
 		if ($this->environment == 'terminal' OR $this->environment == 'cron') {
 			echo 'Done' . PHP_EOL . PHP_EOL;
@@ -2264,11 +2266,11 @@ class campaign_model extends CI_Model {
 		$path = './schema/' . $version_path;
 
 		// Get the schema and data as objects
-        $retriever = new JsonSchema\Uri\UriRetriever;
+        $retriever = new \JsonSchema\Uri\UriRetriever;
         $schema = $retriever->retrieve('file://' . realpath($path));
 
-        $refResolver = new JsonSchema\RefResolver($retriever);
-        $refResolver->resolve($schema, 'file://' . __DIR__ . '/../../schema/' . $version_path);
+		$schemaStorage = new \JsonSchema\SchemaStorage();
+		$schemaStorage->addSchema('file://' . __DIR__ . '/../../schema/' . $version_path, $schema);
 
 		return $schema;
 
