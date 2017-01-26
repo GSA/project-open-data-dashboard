@@ -352,7 +352,7 @@ class Import extends CI_Controller {
 					$note_data = array("note" => $note_data, "date" => null, "author" => null);
 					$note_data = array("current" => $note_data, "previous" => null);
 
-					$note_data = json_encode($note_data, JSON_PRETTY_PRINT);
+					$note_data = json_encode($note_data);
 
 					$note = array('note' => $note_data, 'field_name' => $field_name, 'office_id' => $update->office_id);
 					$note = (object) $note;

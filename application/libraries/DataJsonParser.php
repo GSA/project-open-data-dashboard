@@ -73,13 +73,13 @@ class DataJsonParser implements \JsonStreamingParser\Listener {
 
             // If this is the first line of the file, write the frontmatter
             if ($this->_dataset_stack === false) {
-                $front_matter = json_encode($this->_front_matter, JSON_PRETTY_PRINT);
+                $front_matter = json_encode($this->_front_matter);
                 $front_matter = substr($front_matter, 0, strlen($front_matter) - 1);
                 $json_line = $front_matter . ',"dataset":[' . "\n";
                 $this->_dataset_stack = true;
             } 
 
-            $json_line .= json_encode($this->_json, JSON_PRETTY_PRINT) . ",\n";
+            $json_line .= json_encode($this->_json) . ",\n";
             fwrite($this->out_file, $json_line);
         }
     }
