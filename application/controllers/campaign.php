@@ -728,7 +728,7 @@ class Campaign extends CI_Controller {
     $id can be all, cfo-act, or a specific id
     $component can be full-scan, all, datajson, datapage, digitalstrategy, download
     */
-	public function status($id = null, $component = null, $selected_milestone = null) {
+	public function status($id = null, $component = null, $selected_milestone = null, $url_override = null) {
 
 		// enforce explicit component selection
 		if(empty($component)) {
@@ -788,6 +788,10 @@ class Campaign extends CI_Controller {
 				$url =  parse_url($office->url);
 				$url = $url['scheme'] . '://' . $url['host'];
 
+                if(!empty($selected_milestone)) {
+                    $update->milestone = $selected_milestone;
+                }
+                
 
 
                 /*
@@ -869,7 +873,11 @@ class Campaign extends CI_Controller {
 
 			    if ($component == 'full-scan' || $component == 'all' || $component == 'datajson' || $component == 'download') {
 
-    				$expected_datajson_url = $url . '/data.json';
+                    if (empty($url_override)) {
+                        $expected_datajson_url = $url . '/data.json';
+                    } else {
+                        $expected_datajson_url = urldecode($url_override);
+                    }
 
     				// attempt to break any caching
     				$expected_datajson_url_refresh = $expected_datajson_url . '?refresh=' . time();
