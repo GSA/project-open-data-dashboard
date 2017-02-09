@@ -1056,7 +1056,9 @@ class campaign_model extends CI_Model {
 						$response['qa'] = array();
 					}
 
-					echo "Analyzing $datajson_lines_count lines in $chunk_count chunks of $chunk_size lines each" . PHP_EOL;
+					if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+						echo "Analyzing $datajson_lines_count lines in $chunk_count chunks of $chunk_size lines each" . PHP_EOL;
+					}
 
 					while($chunk_cycle < $chunk_count) {
 
