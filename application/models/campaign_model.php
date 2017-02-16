@@ -1907,7 +1907,7 @@ class campaign_model extends CI_Model {
         $s3 = $this->init_s3();
 
         if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-            echo 'Adding to S3:   ' . $s3_bucket . ' : ' . $s3_prefix . ' : ' . $s3_filepath . PHP_EOL;
+            echo 'Adding to S3: https://s3.amazonaws.com/'.$s3_bucket.'/'.$s3_prefix.$s3_filepath.PHP_EOL;
         }
 
         // Upload a publicly accessible file. The file size and type are determined by the SDK.
