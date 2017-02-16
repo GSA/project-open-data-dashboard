@@ -77,6 +77,9 @@ class campaign_model extends CI_Model {
 		$this->db->order_by('status_id', $order_dir);
 
 		$query = $this->db->get('datagov_campaign', $limit);
+//		if (!$query) {
+//			throw new Exception('No results');
+//		}
 
 		return $query->result_array();
 
@@ -1033,6 +1036,8 @@ class campaign_model extends CI_Model {
 			            $parser->parse();
 			        } catch (Exception $e) {
 			            fclose($stream);
+			            is_file($rawfile) && unlink($rawfile);
+			            is_file($outfile) && unlink($outfile);
 			            throw $e;
 			        }
 
@@ -1047,7 +1052,6 @@ class campaign_model extends CI_Model {
 					$chunk_cycle = 0;
 					$chunk_size = 200;
 					$chunk_count = intval(ceil($datajson_lines_count/$chunk_size));
-					$buffer = '';
 
 					$response = array();
 					$response['errors'] = array();
