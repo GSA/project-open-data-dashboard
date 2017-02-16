@@ -14,7 +14,7 @@ $dgs_items = dgs_prepend_generator_version( $dgs_items );
 dgs_sort( $dgs_items->items );
 
 //JSON encode the action items array into the json file
-file_put_contents( DGS_BASE_DIR .'/data/items.json', json_encode( $dgs_items ) );
+file_put_contents( DGS_BASE_DIR .'/data/items.json', json_encode( $dgs_items, JSON_PRETTY_PRINT ) );
 
 //build XML files
 $xml = new SimpleXMLElement( '<items></items>' );

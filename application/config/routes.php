@@ -61,10 +61,17 @@ $route['datagov/(:any)/(:any)/(:any)'] = "campaign/$1/$2/$3";
 $route['offices/(:any)'] = "offices/routes/$1";
 $route['docs/(:any)'] = "docs/routes/$1";
 
-$route['login'] = "auth/session/github";
-$route['logout'] = "auth/logout";
+//$route['login'] = "auth/session/github";
+$route['logout'] = "user/logout";
 $route['account'] = "docs/routes/user";
 
+$old_route = $route;
+
+foreach($old_route as $key => $value) {
+    $route['dashboard/'.$key] = $value;
+}
+$route['dashboard/(:any)'] = '$1';
+$route['dashboard'] = $route['default_controller'];
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

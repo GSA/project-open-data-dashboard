@@ -176,7 +176,7 @@ class Offices extends CI_Controller {
 			
 
 			header('Content-type: application/json');
-			print json_encode($view_data);
+			print json_encode($view_data, JSON_PRETTY_PRINT);
 			exit;
 		}
 
@@ -199,7 +199,7 @@ class Offices extends CI_Controller {
 		}
 
 		header('Content-type: application/json');
-		print json_encode($output);
+		print json_encode($output, JSON_PRETTY_PRINT);
 		exit;
 
 	}
@@ -346,7 +346,12 @@ class Offices extends CI_Controller {
 		$view_data['section_breakdown'] = $this->campaign->tracker_sections_model();
 
 		// pass config variable
-		$view_data['config'] = array('max_remote_size' => $this->config->item('max_remote_size'), 'archive_dir' => $this->config->item('archive_dir'));
+		$view_data['config'] = array(
+		    'max_remote_size' => $this->config->item('max_remote_size'),
+            'archive_dir' => $this->config->item('archive_dir'),
+            's3_bucket' => $this->config->item('s3_bucket'),
+            's3_prefix' => $this->config->item('s3_prefix')
+        );
 
 		$this->load->view('office_detail', $view_data);
 

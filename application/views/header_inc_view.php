@@ -24,7 +24,9 @@
   </script>
 <?php endif; ?>
 
-<script id="_fed_an_ua_tag" src="https://analytics.usa.gov/dap/dap.min.js?agency=GSA"></script>
+<!-- Digital Analytics Program roll-up, see https://analytics.usa.gov for data -->
+
+<script id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=GSA"></script>
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container <?php if(!empty($container_class)) echo $container_class; ?>">

@@ -60,7 +60,7 @@ mkdir( $dir );
 //generate the payload
 
 //json
-file_put_contents( $dir . '/digitalstrategy.json', json_encode( $report ) );
+file_put_contents( $dir . '/digitalstrategy.json', json_encode( $report, JSON_PRETTY_PRINT ) );
 
 //xml
 $xml = new SimpleXMLElement( '<report></report>' );
