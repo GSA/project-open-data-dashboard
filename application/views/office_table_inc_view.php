@@ -333,11 +333,12 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 
 				<?php 
 
-						if(!empty($qa_field->total_field) || $accessURL_working_checksum > 0) {
+						if(!empty($qa_field->total_field)) {
 							if ($qa_field_name == 'accessURL_working' && empty($qa_field->value) && empty($accessURL_working_checksum)) {
 								$metric = ''; 
 							} else {
-								$metric = process_percentage($qa_field->value, $model->{$qa_field->total_field}->value);
+								$denominator = (empty($model->{$qa_field->total_field}->value) && !empty($accessURL_working_checksum)) ? 1 : $model->{$qa_field->total_field}->value;
+								$metric = process_percentage($qa_field->value, $denominator);
 							}							
 						} else {
 							$metric = $qa_field->value; 	
