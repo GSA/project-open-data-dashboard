@@ -98,7 +98,7 @@ class campaign_model extends CI_Model
         $this->db->where('crawl_status <> ', 'archive');
 
         $this->db->order_by('crawl_status', 'ASC');
-        $this->db->order_by('crawl_start', 'ASC');
+        $this->db->order_by('crawl_start', 'DESC');
 
         $query = $this->db->get('datagov_campaign');
 
