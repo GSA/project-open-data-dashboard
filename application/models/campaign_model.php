@@ -1434,7 +1434,7 @@ class campaign_model extends CI_Model
         fclose($copy);
         fclose($paste);
 
-        if ($filetype != 'datajson-lines') {
+        if($filetype != 'datajson-lines' && !$this->config->item('use_local_storage')) {
             $this->archive_to_s3($filetype, $office_id, $filepath);
         }
 
