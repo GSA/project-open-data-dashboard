@@ -160,10 +160,12 @@ class Campaign extends CI_Controller
                     $datajson_model = $this->campaign->schema_to_model($json_schema->items->properties);
                 }
 
-                $this->campaign->put_to_s3(
-                    $this->upload->upload_path . $data['file_name'],
-                    'uploads/' . $data['file_name']
-                );
+                if (!$this->config->item('use_local_storage')) {
+                    $this->campaign->put_to_s3(
+                        $this->upload->upload_path . $data['file_name'],
+                        'uploads/' . $data['file_name']
+                    );
+                }
 
                 $output = array();
                 $output['headings'] = $headings;
@@ -188,7 +190,7 @@ class Campaign extends CI_Controller
 
             $this->load->model('campaign_model', 'campaign');
 
-            if (!is_file($full_path)) {
+            if (!is_file($full_path) && !$this->config->item('use_local_storage')) {
                 $this->campaign->get_from_s3(
                     'uploads/' . $csv_id,
                     $full_path
@@ -860,7 +862,7 @@ class Campaign extends CI_Controller
 
 
 //                      If digitalstrategy.json was downloaded successfully, then it was archived to AWS S3, so let's remove local copy
-                        if ($digitalstrategy_archive_status && is_file($digitalstrategy_archive_status)) {
+                        if (!$this->config->item('use_local_storage') && $digitalstrategy_archive_status && is_file($digitalstrategy_archive_status)) {
                             unlink($digitalstrategy_archive_status);
                         }
                     }
@@ -925,7 +927,7 @@ class Campaign extends CI_Controller
                         }
 
                         // If data.json was downloaded successfully, then it was archived to AWS S3, so let's remove local copy
-                        if ($datajson_archive_status && is_file($datajson_archive_status)) {
+                        if (!$this->config->item('use_local_storage') && $datajson_archive_status && is_file($datajson_archive_status)) {
                             unlink($datajson_archive_status);
                         }
                     }

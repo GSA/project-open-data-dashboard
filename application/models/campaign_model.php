@@ -1434,7 +1434,7 @@ class campaign_model extends CI_Model
         fclose($copy);
         fclose($paste);
 
-        if($filetype != 'datajson-lines' && !$this->config->item('use_local_storage')) {
+        if(!$this->config->item('use_local_storage') && $filetype != 'datajson-lines') {
             $this->archive_to_s3($filetype, $office_id, $filepath);
         }
 
@@ -1448,7 +1448,9 @@ class campaign_model extends CI_Model
 
     private function archive_to_s3($filetype, $office_id, $local_filepath)
     {
-
+        if ($this->config->item('use_local_storage')) {
+            return;
+        }
 
         if ($filetype == 'datajson-lines') {
             $directory = "datajson-lines";
@@ -1466,6 +1468,9 @@ class campaign_model extends CI_Model
 
     public function put_to_s3($local_filepath, $s3_filepath, $acl = 'private')
     {
+        if ($this->config->item('use_local_storage')) {
+            return;
+        }
         $s3_bucket = $this->config->item('s3_bucket');
         $s3_prefix = $this->config->item('s3_prefix');
 
@@ -1492,7 +1497,9 @@ class campaign_model extends CI_Model
 
     private function init_s3()
     {
-
+        if ($this->config->item('use_local_storage')) {
+            return;
+        }
         // Instantiate an Amazon S3 client.
         $s3 = new Aws\S3\S3Client(array(
             'version' => 'latest',
@@ -1967,6 +1974,9 @@ class campaign_model extends CI_Model
 
     public function get_from_s3($s3_filepath, $local_filepath)
     {
+        if ($this->config->item('use_local_storage')) {
+            return;
+        }
         $s3_bucket = $this->config->item('s3_bucket');
         $s3_prefix = $this->config->item('s3_prefix');
 
