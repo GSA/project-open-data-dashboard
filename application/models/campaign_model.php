@@ -952,164 +952,168 @@ class campaign_model extends CI_Model
                         echo 'Attempting to convert to JSON lines' . PHP_EOL;
                     }
 
+                    $json_parsed = false;
+
                     try {
                         $parser = new \JsonStreamingParser\Parser($stream, $listener);
                         $parser->parse();
+                        $json_parsed = true;
                     } catch (Exception $e) {
                         if ($this->environment == 'terminal' OR $this->environment == 'cron') {
                             echo 'Error parsing JSON: ' . $e->getMessage() . PHP_EOL;
                         }
+                        $errors[] = 'Error parsing JSON: ' . $e->getMessage();
                         fclose($stream);
                         is_file($rawfile) && unlink($rawfile);
                         is_file($outfile) && unlink($outfile);
-                        throw $e;
+//                        throw $e;
                     }
 
-                    // Get the dataset count
-                    $datajson_lines_count = $listener->_array_count;
+                    if ($json_parsed) {
+                        // Get the dataset count
+                        $datajson_lines_count = $listener->_array_count;
 
-                    // Delete temporary raw source file
-                    unlink($rawfile);
+                        // Delete temporary raw source file
+                        unlink($rawfile);
 
-                    $out_stream = fopen($outfile, 'r+');
+                        $out_stream = fopen($outfile, 'r+');
 
-                    $chunk_cycle = 0;
-                    $chunk_size = 200;
-                    $chunk_count = intval(ceil($datajson_lines_count / $chunk_size));
+                        $chunk_cycle = 0;
+                        $chunk_size = 200;
+                        $chunk_count = intval(ceil($datajson_lines_count / $chunk_size));
 
-                    $response = array();
-                    $response['errors'] = array();
-
-                    if ($quality !== false) {
-                        $response['qa'] = array();
-                    }
-
-                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                        echo "Analyzing $datajson_lines_count lines in $chunk_count chunks of $chunk_size lines each" . PHP_EOL;
-                    }
-
-                    while ($chunk_cycle < $chunk_count) {
-
-                        $buffer = '';
-                        $datajson_qa = null;
-                        $counter = 0;
-
-                        if ($chunk_cycle > 0) {
-                            $key_offset = $chunk_size * $chunk_cycle;
-                        } else {
-                            $key_offset = 0;
-                        }
-
-                        $next_offset = $key_offset + $chunk_size;
-                        echo "Analyzing chunk $chunk_cycle of $chunk_count ($key_offset to $next_offset of $datajson_lines_count)" . PHP_EOL;
-
-
-                        if ($chunk_cycle == 0) {
-                            $json_header = fgets($out_stream);
-                        }
-
-                        while (($buffer .= fgets($out_stream)) && $counter < $chunk_size) {
-                            $counter++;
-                        }
-
-                        $buffer = $json_header . $buffer;
-                        $buffer = substr($buffer, 0, strlen($buffer) - 2) . ']}';
-
-                        $validator = $this->campaign->jsonschema_validator($buffer, 'federal-v1.1');
-
-                        if (!empty($validator['errors'])) {
-
-                            $response['errors'] = array_merge($response['errors'], $this->process_validation_errors($validator['errors'], $key_offset));
-
-                        }
+                        $response = array();
+                        $response['errors'] = array();
 
                         if ($quality !== false) {
-                            $datajson_qa = $this->campaign->datajson_qa($buffer, 'federal-v1.1', $quality, $component);
+                            $response['qa'] = array();
+                        }
 
-                            if (!empty($datajson_qa)) {
-                                $response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);
+                        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                            echo "Analyzing $datajson_lines_count lines in $chunk_count chunks of $chunk_size lines each" . PHP_EOL;
+                        }
+
+                        while ($chunk_cycle < $chunk_count) {
+
+                            $buffer = '';
+                            $datajson_qa = null;
+                            $counter = 0;
+
+                            if ($chunk_cycle > 0) {
+                                $key_offset = $chunk_size * $chunk_cycle;
+                            } else {
+                                $key_offset = 0;
                             }
 
-                        }
-
-                        $chunk_cycle++;
-                    }
-
-                    // Delete json lines file
-                    unlink($outfile);
-
-                    // ###################################################################
-                    // Needs to be refactored into separate function
-                    // ###################################################################
+                            $next_offset = $key_offset + $chunk_size;
+                            echo "Analyzing chunk $chunk_cycle of $chunk_count ($key_offset to $next_offset of $datajson_lines_count)" . PHP_EOL;
 
 
-                    // Sum QA counts
-                    if (!empty($response['qa'])) {
-
-
-                        if (!empty($response['qa']['bureauCodes'])) {
-                            $response['qa']['bureauCodes'] = array_keys($response['qa']['bureauCodes']);
-                        }
-
-                        if (!empty($response['qa']['programCodes'])) {
-                            $response['qa']['programCodes'] = array_keys($response['qa']['programCodes']);
-                        }
-
-                        $sum_array_fields = array('API_total',
-                            'API_public',
-                            'API_restricted',
-                            'API_nonpublic',
-                            'collections_total',
-                            'non_collection_total',
-                            'downloadURL_present',
-                            'downloadURL_total',
-                            'accessURL_present',
-                            'accessURL_total',
-                            'accessLevel_public',
-                            'accessLevel_restricted',
-                            'accessLevel_nonpublic',
-                            'license_present',
-                            'redaction_present',
-                            'redaction_no_explanation');
-
-                        foreach ($sum_array_fields as $array_field) {
-                            if (!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {
-                                $response['qa'][$array_field] = array_sum($response['qa'][$array_field]);
+                            if ($chunk_cycle == 0) {
+                                $json_header = fgets($out_stream);
                             }
-                        }
 
-                        // Sum validation counts
-                        if (!empty($response['qa']['validation_counts']) && is_array($response['qa']['validation_counts'])) {
-                            foreach ($response['qa']['validation_counts'] as $validation_key => $validation_count) {
+                            while (($buffer .= fgets($out_stream)) && $counter < $chunk_size) {
+                                $counter++;
+                            }
 
-                                if (is_array($response['qa']['validation_counts'][$validation_key])) {
-                                    $response['qa']['validation_counts'][$validation_key] = array_sum($response['qa']['validation_counts'][$validation_key]);
+                            $buffer = $json_header . $buffer;
+                            $buffer = substr($buffer, 0, strlen($buffer) - 2) . ']}';
+
+                            $validator = $this->campaign->jsonschema_validator($buffer, 'federal-v1.1');
+
+                            if (!empty($validator['errors'])) {
+
+                                $response['errors'] = array_merge($response['errors'], $this->process_validation_errors($validator['errors'], $key_offset));
+
+                            }
+
+                            if ($quality !== false) {
+                                $datajson_qa = $this->campaign->datajson_qa($buffer, 'federal-v1.1', $quality, $component);
+
+                                if (!empty($datajson_qa)) {
+                                    $response['qa'] = array_merge_recursive($response['qa'], $datajson_qa);
                                 }
 
                             }
+
+                            $chunk_cycle++;
                         }
 
+                        // Delete json lines file
+                        unlink($outfile);
+
+                        // ###################################################################
+                        // Needs to be refactored into separate function
+                        // ###################################################################
+
+
+                        // Sum QA counts
+                        if (!empty($response['qa'])) {
+
+
+                            if (!empty($response['qa']['bureauCodes'])) {
+                                $response['qa']['bureauCodes'] = array_keys($response['qa']['bureauCodes']);
+                            }
+
+                            if (!empty($response['qa']['programCodes'])) {
+                                $response['qa']['programCodes'] = array_keys($response['qa']['programCodes']);
+                            }
+
+                            $sum_array_fields = array('API_total',
+                                'API_public',
+                                'API_restricted',
+                                'API_nonpublic',
+                                'collections_total',
+                                'non_collection_total',
+                                'downloadURL_present',
+                                'downloadURL_total',
+                                'accessURL_present',
+                                'accessURL_total',
+                                'accessLevel_public',
+                                'accessLevel_restricted',
+                                'accessLevel_nonpublic',
+                                'license_present',
+                                'redaction_present',
+                                'redaction_no_explanation');
+
+                            foreach ($sum_array_fields as $array_field) {
+                                if (!empty($response['qa'][$array_field]) && is_array($response['qa'][$array_field])) {
+                                    $response['qa'][$array_field] = array_sum($response['qa'][$array_field]);
+                                }
+                            }
+
+                            // Sum validation counts
+                            if (!empty($response['qa']['validation_counts']) && is_array($response['qa']['validation_counts'])) {
+                                foreach ($response['qa']['validation_counts'] as $validation_key => $validation_count) {
+
+                                    if (is_array($response['qa']['validation_counts'][$validation_key])) {
+                                        $response['qa']['validation_counts'][$validation_key] = array_sum($response['qa']['validation_counts'][$validation_key]);
+                                    }
+
+                                }
+                            }
+
+                        }
+
+                        $response['valid'] = (empty($response['errors'])) ? true : false;
+                        $response['valid_json'] = true;
+
+                        $response['total_records'] = $datajson_lines_count;
+
+                        if (!empty($datajson_header['download_content_length'])) {
+                            $response['download_content_length'] = $datajson_header['download_content_length'];
+                        }
+
+                        if (empty($response['errors'])) {
+                            $response['errors'] = false;
+                        }
+
+                        return $response;
+
+
+                        // ###################################################################
                     }
-
-
-                    $response['valid'] = (empty($response['errors'])) ? true : false;
-                    $response['valid_json'] = true;
-
-                    $response['total_records'] = $datajson_lines_count;
-
-                    if (!empty($datajson_header['download_content_length'])) {
-                        $response['download_content_length'] = $datajson_header['download_content_length'];
-                    }
-
-                    if (empty($response['errors'])) {
-                        $response['errors'] = false;
-                    }
-
-                    return $response;
-
-
-                    // ###################################################################
-
 
                 } else {
                     $errors[] = "File not found or couldn't be downloaded";
