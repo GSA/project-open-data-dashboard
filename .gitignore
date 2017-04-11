@@ -12,7 +12,7 @@ application/config/gearman.php
 
 application/config/database.php
 downloads/*
-
+uploads/*
 archive/error_log/*
 archive/datajson/201*
 archive/digitalstrategy/201*

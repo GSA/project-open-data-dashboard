@@ -175,6 +175,11 @@ class Campaign extends CI_Controller
                 $output['schema'] = $schema;
                 $this->load->view('csv_mapping', $output);
 
+            } else {
+                $error = array('error' => $this->upload->display_errors());
+                if (defined('ENVIRONMENT') && ENVIRONMENT != 'production') {
+                    var_dump($error); exit;
+                }
             }
 
         } // Apply mapping and convert file to JSON

@@ -2288,10 +2288,25 @@ class campaign_model extends CI_Model
         $schemaStorage = new \JsonSchema\SchemaStorage();
         $schemaStorage->addSchema('file://' . __DIR__ . '/../../schema/' . $version_path, $schema);
 
+        // Expand $ref objects
+        if($version == 'federal-v1.1') {
+            $ref='$ref';
+            $schema->properties->dataset->items = $retriever->retrieve($schema->properties->dataset->items->$ref);
+
+            // resolve any new $ref paths
+            $schema = $retriever->retrieve('file://' . realpath($path));
+            $schemaStorage->addSchema('file://' . __DIR__ . '/../../schema/' . $version_path, $schema);
+
+            $schema->properties->dataset->items->properties->contactPoint = $retriever->retrieve($schema->properties->dataset->items->properties->contactPoint->$ref);
+            $schema->properties->dataset->items->properties->publisher = $retriever->retrieve($schema->properties->dataset->items->properties->publisher->$ref);
+            $schema->properties->dataset->items->properties->distribution->anyOf[0]->items = $retriever->retrieve($schema->properties->dataset->items->properties->distribution->anyOf[0]->items->$ref);
+
+        }
         return $schema;
 
-
     }
+
+
 
 
     public function schema_to_model($schema)
