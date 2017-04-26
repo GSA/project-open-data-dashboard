@@ -851,12 +851,12 @@ class campaign_model extends CI_Model
         return $model;
     }
 
-    public function uri_header($url, $redirect_count = 0)
+    public function uri_header($url, $redirect_count = 0, $force_shim = false)
     {
 
         $tmp_dir = $tmp_dir = $this->config->item('archive_dir');
 
-        $status = curl_header($url, true, $tmp_dir);
+        $status = curl_header($url, true, $tmp_dir, $force_shim);
         $status = $status['info'];    //content_type and http_code
 
         if ($status['redirect_count'] == 0 && !(empty($redirect_count))) $status['redirect_count'] = 1;
@@ -866,7 +866,7 @@ class campaign_model extends CI_Model
             if ($status['redirect_count'] == 0 && $redirect_count == 0) $status['redirect_count'] = 1;
 
             if ($status['redirect_count'] > 5) return $status;
-            $status = $this->uri_header($status['redirect_url'], $status['redirect_count']);
+            $status = $this->uri_header($status['redirect_url'], $status['redirect_count'], $force_shim);
         }
 
         if (!empty($status)) {

@@ -795,6 +795,19 @@ class Campaign extends CI_Controller
                     $update->milestone = $selected_milestone;
                 }
 
+                // See if this is a domain where we can't rely on HTTP HEAD responses
+                if ($this->config->item('no_http_head')) {
+
+                    if (is_array($this->config->item('no_http_head'))) {
+                        foreach ($this->config->item('no_http_head') as $head_domain) {
+                            if (strpos($url, $head_domain)) {
+                                $force_head_shim = true;
+                            }
+                        }
+                    }
+                    
+                }
+
 
                 /*
                 ################ datapage ################
@@ -895,11 +908,11 @@ class Campaign extends CI_Controller
 
                     // Try to force refresh the cache, follow redirects and get headers
                     $json_refresh = true;
-                    $status = $this->campaign->uri_header($expected_datajson_url_refresh);
+                    $status = $this->campaign->uri_header($expected_datajson_url_refresh, 0, $force_head_shim);
 
                     if (!$status OR $status['http_code'] != 200) {
                         $json_refresh = false;
-                        $status = $this->campaign->uri_header($expected_datajson_url);
+                        $status = $this->campaign->uri_header($expected_datajson_url, 0, $force_head_shim);
                     }
 
                     //$status['url']          = $expected_datajson_url;

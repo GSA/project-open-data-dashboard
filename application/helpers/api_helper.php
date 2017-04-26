@@ -35,7 +35,12 @@ function curl_from_json($url, $array=false, $decode=true) {
 }
 
 
-function curl_header($url, $follow_redirect = true, $tmp_dir = null) {
+function curl_header($url, $follow_redirect = true, $tmp_dir = null, $force_shim = false) {
+
+  if ($force_shim) {
+    return curl_head_shim($url, $follow_redirect, $tmp_dir);
+  }
+
   $info = array();
   
   $ch = curl_init();
