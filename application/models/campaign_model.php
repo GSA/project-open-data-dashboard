@@ -81,9 +81,9 @@ class campaign_model extends CI_Model
         $this->db->order_by('status_id', $order_dir);
 
         $query = $this->db->get('datagov_campaign', $limit);
-//		if (!$query) {
-//			throw new Exception('No results');
-//		}
+		if (!$query) {
+			return [];
+		}
 
         return $query->result_array();
 
