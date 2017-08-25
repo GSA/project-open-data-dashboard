@@ -1225,6 +1225,9 @@ class Campaign extends CI_Controller
         $schema = ($this->input->get_post('schema')) ? $this->input->get_post('schema', TRUE) : $schema;
 
         $datajson_url = ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url', TRUE) : $datajson_url;
+        if (!filter_var($datajson_url, FILTER_VALIDATE_URL)) {
+            $datajson_url = false;
+        }
         $output_type = ($this->input->get_post('output')) ? $this->input->get_post('output', TRUE) : $output;
 
         if ($this->input->get_post('qa')) {
