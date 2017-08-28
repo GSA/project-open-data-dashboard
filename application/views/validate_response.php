@@ -24,13 +24,13 @@
 
                         <?php if(!empty($datajson_url)) : ?>
                             <tr>
-                                <th>Source</th> <td><?php echo $datajson_url; ?> </td>
+                                <th>Source</th> <td><?php echo html_escape($datajson_url); ?> </td>
                             </tr>
                         <?php endif; ?>
 
                         <?php if(!empty($schema)) : ?>
                             <tr>
-                                <th>Schema</th> <td><?php echo $schema; ?></td>
+                                <th>Schema</th> <td><?php echo html_escape($schema); ?></td>
                             </tr>
                         <?php endif; ?> 
 
@@ -56,7 +56,7 @@
 
                         <?php if(!empty($dataset_count)) : ?>
                             <tr>
-                                <th>Total datasets</th> <td><?php echo $dataset_count; ?></td>
+                                <th>Total datasets</th> <td><?php echo html_escape($dataset_count); ?></td>
                             </tr>
                         <?php endif; ?>                       
 
@@ -67,7 +67,7 @@
                                 <td>
                                     <?php foreach ($validation['fail'] as $fail) {   ?>
 
-                                        <p><?php echo $fail ?></p>
+                                        <p><?php echo html_escape($fail) ?></p>
 
                                     <?php } ?>
                                 </td>
