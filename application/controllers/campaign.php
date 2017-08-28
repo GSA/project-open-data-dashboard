@@ -185,6 +185,8 @@ class Campaign extends CI_Controller
         } // Apply mapping and convert file to JSON
         else if (!empty($csv_id)) {
 
+            $csv_id = basename($csv_id);
+
             $mapping = ($this->input->post('mapping', TRUE)) ? $this->input->post('mapping', TRUE) : null;
             $schema = ($this->input->post('schema', TRUE)) ? $this->input->post('schema', TRUE) : 'federal';
 
