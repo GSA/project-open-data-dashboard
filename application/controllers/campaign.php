@@ -353,6 +353,7 @@ class Campaign extends CI_Controller
 
         ob_start();
         foreach ($headings as $field) {
+            $field = html_escape($field);
             ?>
             <div class="form-group">
                 <label class="col-sm-2" for="<?php echo $field; ?>"><?php echo $field; ?></label>
