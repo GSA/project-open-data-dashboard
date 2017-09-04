@@ -878,7 +878,7 @@ class campaign_model extends CI_Model
 
     public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null)
     {
-
+        $datajson_url = filter_var($datajson_url, FILTER_VALIDATE_URL);
 
         if ($datajson_url) {
 
