@@ -876,9 +876,46 @@ class campaign_model extends CI_Model
         }
     }
 
+    private function filter_remote_url($url, $allowed_schemes = array('http', 'https'))
+    {
+        $url = filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED);
+
+        // ban non http/https:
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        if ($url && !in_array($scheme, $allowed_schemes)) {
+            $url = false;
+        }
+
+        // filter xss
+        if ($url && function_exists('xss_clean')) {
+            $url = xss_clean($url);
+        }
+
+        // ban localhost/portscan/ssrf
+        if ($url) {
+            $host = parse_url($url, PHP_URL_HOST);
+            $banned_hosts = array(
+                'localhost',
+                '[::]',
+                '0',
+                '2130706433'
+            );
+            if (in_array($host, $banned_hosts)) {
+                $url = false;
+            }
+
+            if (filter_var($host, FILTER_VALIDATE_IP) // is ip
+                && !filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+                $url = false;
+            }
+        }
+
+        return $url;
+    }
+
     public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null)
     {
-        $datajson_url = filter_var($datajson_url, FILTER_VALIDATE_URL);
+        $datajson_url = $this->filter_remote_url($datajson_url);
 
         if ($datajson_url) {
 
