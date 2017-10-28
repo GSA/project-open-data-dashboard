@@ -29,6 +29,8 @@
                     </select>
                 </div>
 
+            <p>Note: For successful Non-Federal v1.1 schema validation, <a href=https://project-open-data.cio.gov/v1.1/schema/#USG-note>USG noted fields</a> and <a href=https://project-open-data.cio.gov/v1.1/schema/#contactPoint>contactPoint</a> are not required. However when included contactPoint should always contain both the person’s appropriately formatted full name (fn) and email (hasEmail).
+
                 <div class="form-group">
                     <label class="radio-inline">
                         <input checked="checked" type="radio" id="output-browser" name="output" value="browser"> View in Browser
