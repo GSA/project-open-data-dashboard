@@ -73,7 +73,15 @@
 
 
       </ul>
-
+      <?php if (!$this->session->userdata('username')) : ?>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <div style="margin-top:10px;">
+              <a class="btn btn-default btn-auth" href="<?php echo site_url('user/login')?>">Sign in with <b>MAX</b></a>
+            </div>
+          </li>
+        </ul>
+      <?php endif; ?>
       <?php if ($this->session->userdata('username')) : ?>
             <ul class="nav navbar-nav navbar-right">
               <li>

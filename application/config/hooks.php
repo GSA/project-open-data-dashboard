@@ -10,7 +10,24 @@
 |
 */
 
-
+$hook['post_controller_constructor'][] = array(
+                                'class'    => 'CILogger',
+                                'function' => 'pre_application',
+                                'filename' => 'CILogger.php',
+                                'filepath' => 'libraries'
+                                );
+$hook['post_controller'][] = array(
+                                'class'    => 'CILogger',
+                                'function' => 'post_application',
+                                'filename' => 'CILogger.php',
+                                'filepath' => 'libraries'
+                                );
+$hook['post_system'][] = array(
+                                'class'    => 'CILogger',
+                                'function' => 'resolve_profiling',
+                                'filename' => 'CILogger.php',
+                                'filepath' => 'libraries'
+                            );
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */
