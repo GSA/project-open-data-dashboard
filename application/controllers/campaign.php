@@ -118,7 +118,17 @@ class Campaign extends CI_Controller
         }
 
     }
-
+    public function lastActivity(){
+      //$checksession = $this->session->userdata('session_id');
+      $lastactivity = $this->session->userdata('last_activity');
+      $now = time();
+      $activity = array(
+                  'lastactivity'=>$lastactivity,
+                  'currenttime'=>$now
+                );
+      $stringver = json_encode($activity);
+      echo $stringver;
+    }
     public function csv_to_json($schema = null)
     {
 
