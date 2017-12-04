@@ -39,10 +39,19 @@
       </footer>
       <?php if ($this->session->userdata('username')) : ?>
           <script>
+          var loc = window.location;
+          var pathhost = loc.protocol + "//" + loc.hostname + (loc.port? ":"+loc.port : "") + "/";
+          var pathcheck = loc.pathname.split( '/' );
+          var fullpath="";
+          if(pathcheck[1]=="dashboard"){
+            fullpath = pathhost+pathcheck[1]+"/campaign/lastActivity";
+          }else{
+            fullpath = pathhost+"/campaign/lastActivity";
+          }
           $(document).ready(function(){
             setTimeout(function() {
               setInterval(function(){
-                $.post( "/campaign/lastActivity", function( data ) {
+                $.post( fullpath, function( data ) {
                     var jsonobj = $.parseJSON(data);
                     var currenttime = moment.unix(jsonobj.currenttime);
                     var lastactivity = moment.unix(jsonobj.lastactivity);
