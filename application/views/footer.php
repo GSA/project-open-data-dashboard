@@ -46,7 +46,7 @@
           if(pathcheck[1]=="dashboard"){
             fullpath = pathhost+pathcheck[1]+"/campaign/lastActivity";
           }else{
-            fullpath = pathhost+"/campaign/lastActivity";
+            fullpath = pathhost+"campaign/lastActivity";
           }
           $(document).ready(function(){
             setTimeout(function() {
