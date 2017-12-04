@@ -128,7 +128,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 
 /*
@@ -218,6 +218,15 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 |
 */
 $config['log_threshold'] = 0;
+
+/*
+|--------------------------------------------------------------------------
+| Log Frequency Settings
+|--------------------------------------------------------------------------
+|
+| Determines how often benchmarks are logged.  100 = 100% = all the time.
+*/
+$config['log_frequency'] = 100;
 
 /*
 |--------------------------------------------------------------------------
