@@ -43,10 +43,13 @@
           var pathhost = loc.protocol + "//" + loc.hostname + (loc.port? ":"+loc.port : "") + "/";
           var pathcheck = loc.pathname.split( '/' );
           var fullpath="";
+          var logoutpath="";
           if(pathcheck[1]=="dashboard"){
             fullpath = pathhost+pathcheck[1]+"/campaign/lastActivity";
+            logoutpath = pathhost+pathcheck[1]+"/logout";
           }else{
             fullpath = pathhost+"campaign/lastActivity";
+            logoutpath = pathhost+"logout";
           }
           $(document).ready(function(){
             setTimeout(function() {
@@ -67,7 +70,7 @@
                           }
                         }, 1000);
                       setTimeout(function() {
-                        window.location = "/logout?exired=true";
+                        window.location = logoutpath;
                       }, 60000);
                     }
                 });
@@ -76,7 +79,7 @@
           });
           $("#logoutSession").on('click', function(){
             $("#secondsRemaining").hide();
-            window.location = "/logout?exired=true";
+            window.location = logoutpath;
           });
           $("#extendSession").on('click', function(){
             $("#secondsRemaining").hide();
