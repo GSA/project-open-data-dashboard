@@ -21,4 +21,5 @@
 
         <script src="<?php echo site_url('js/vendor/jquery-1.10.1.min.js')?>"></script>
         <script src="<?php echo site_url('js/vendor/bootstrap.min.js')?>"></script>
+        <script src="<?php echo site_url('js/vendor/moment.min.js')?>"></script>
         <script src="<?php echo site_url('js/main.js')?>"></script>
