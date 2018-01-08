@@ -367,6 +367,15 @@ class Offices extends CI_Controller {
 			return $this->detail($parameter1, $parameter2, $parameter3, $parameter4);	
 		}
 
+		if($route == 'qa') {
+
+			$this->load->model('campaign_model', 'campaign');
+			$milestones = $this->campaign->milestones_model();
+			$milestone 	= $this->campaign->milestone_filter(null, $milestones);
+
+			return $this->index($milestone=$milestone->previous, $output=null, $show_all_offices=true, $show_all_fields=false, $show_qa_fields=true);	
+		}
+
 		// check if it's a milestone date
     	$d = DateTime::createFromFormat('Y-m-d', $route);
     	if ($d && $d->format('Y-m-d') == $route) {

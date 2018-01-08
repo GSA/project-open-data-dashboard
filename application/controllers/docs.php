@@ -58,7 +58,7 @@ class Docs extends CI_Controller {
 	public function routes($route) {
 
 		if ($route == 'intro') {
-	        redirect('offices');
+	        redirect('offices/qa');
 			//$this->load->view('welcome_message');			
 		} else if ($route == 'export') {
 			$this->load->view('export');
