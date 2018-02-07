@@ -87,6 +87,29 @@ if($show_all_fields) {
 				status_table('Other Independent Offices', $independent_offices, $config, $milestone->selected_milestone, $milestone->specified);
 			}
 
+      if ($show_qa_fields) {
+        $weighted_measures = array('accessURL_working','accessURL_format','accessURL_html','accessURL_pdf');
+
+        echo '<h3>Percentage Weighting</h3>';
+      
+        foreach($weighted_measures as $weighted_measure) {
+        
+          echo '<h4 style="margin-top:2em">' . $section_breakdown->{$weighted_measure}->label . '</h4>';
+          echo '<table><tr><td>0%</td>';
+
+          for ($count = 0; $count <= 100; $count++) {
+            $count = ($count === 0) ? '0.0' : $count;
+          ?>
+            <td style="<?php echo metric_status_color($count, $section_breakdown->{$weighted_measure}->success_basis, $section_breakdown->{$weighted_measure}->success_weight); ?>; width:1%"></td>
+          <?
+          }
+          echo '<td> 100%</td></tr></table>';
+        }
+       ?>
+
+      <?php   
+      }
+
       if(!empty($office_totals)) {
       ?>
         <h4>Totals for CFO-Act Agencies</h4>
