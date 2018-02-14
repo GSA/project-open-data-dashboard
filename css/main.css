@@ -305,6 +305,10 @@ a.info-icon span {
 	height : .25em;
 }
 
+.hide-graph {
+	display : none;
+}
+
 p+h4, p+h5 {
 	margin-top : 2em;
 }

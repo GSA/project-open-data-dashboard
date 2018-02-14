@@ -90,22 +90,55 @@ if($show_all_fields) {
       if ($show_qa_fields) {
         $weighted_measures = array('accessURL_working','accessURL_format','accessURL_html','accessURL_pdf');
 
-        echo '<h3>Percentage Weighting</h3>';
-      
+
+
+?>
+
+
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseGraph" aria-expanded="false" aria-controls="collapseGraph">
+          Advanced
+        </button>
+        <div class="collapse" id="collapseGraph">
+          <div class="well">
+          <h3>Percentage Weighting</h3>
+
+<?php 
+     
         foreach($weighted_measures as $weighted_measure) {
         
+          $color_graph_class = ($weighted_measure == 'accessURL_working') ? 'show-graph' : 'hide-graph';
+
+          echo '<div class="' . $color_graph_class . '">';
           echo '<h4 style="margin-top:2em">' . $section_breakdown->{$weighted_measure}->label . '</h4>';
           echo '<table><tr><td>0%</td>';
 
           for ($count = 0; $count <= 100; $count++) {
             $count = ($count === 0) ? '0.0' : $count;
           ?>
-            <td style="<?php echo metric_status_color($count, $section_breakdown->{$weighted_measure}->success_basis, $section_breakdown->{$weighted_measure}->success_weight); ?>; width:1%"></td>
+            <td style="<?php echo metric_status_color($count, $section_breakdown->{$weighted_measure}->success_basis, $section_breakdown->{$weighted_measure}->success_weight, true); ?>; width:1%"></td>
           <?
           }
-          echo '<td> 100%</td></tr></table>';
+          echo '<td> 100%</td></tr></table></div>';
         }
        ?>
+
+       <button style="margin-top : 1em" id="showcolors">Show all colors</button>
+
+       <script>
+          $( "#showcolors" ).click(function() {
+              $( ".hidden-color" ).each(function( index ) {
+                  $(this).css( "background-color", $(this).data("color") );
+                })
+              $( ".hide-graph" ).each(function( index ) {
+                  $(this).css( "display", "block" );
+                })
+              }
+            )
+
+
+       </script>
+     </div>
+   </div>
 
       <?php   
       }

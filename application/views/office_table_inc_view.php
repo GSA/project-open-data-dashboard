@@ -343,11 +343,19 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 						} else {
 							$metric = $qa_field->value; 	
 						}
+
+						if ($qa_field_name == 'accessURL_html' OR $qa_field_name == 'accessURL_pdf' OR $qa_field_name == 'accessURL_format') {
+							$attribute_open = 'data-color="';
+							$element_class = 'hidden-color';
+						} else {
+							$attribute_open = 'style="background-color : ';
+							$element_class = 'normal-color';
+						}
 			
 				?>
 
 
-				<td style="<?php echo metric_status_color($metric, $qa_field->success_basis, $qa_field->success_weight); ?>">
+				<td class="<?php echo $element_class; ?>" <?php echo $attribute_open . metric_status_color($metric, $qa_field->success_basis, $qa_field->success_weight) . '"' ?>>
 					<a href="<?php echo site_url('offices/detail') ?>/<?php echo $office->id . $milestone_url;?><?php echo '#metrics_' . $qa_field_name; ?>">
 						<span>
 							<?php 
@@ -443,7 +451,7 @@ function page_status($data_status, $status_color = null) {
 	return $icon;
 }
 
-function metric_status_color($metric, $success_basis, $weight) {
+function metric_status_color($metric, $success_basis, $weight, $return_property = false) {
 
 	if(empty($metric)) return '';
 
@@ -478,9 +486,10 @@ function metric_status_color($metric, $success_basis, $weight) {
 		}
 
 
+		$hue = round(($value) * 120);
 
-		$hue = round(($value) * 120);		
-		$status_color = "background-color : hsl($hue, $saturation, $lightness);";
+		$return_property = ($return_property) ? 'background-color : ' : '';
+		$status_color = $return_property . "hsl($hue, $saturation, $lightness)";
 	} else {
 		$status_color = '';
 	}
