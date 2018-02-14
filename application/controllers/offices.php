@@ -39,9 +39,9 @@ class Offices extends CI_Controller {
 		$milestone 			= $this->campaign->milestone_filter($selected_milestone, $milestones);
 		$milestones 		= $milestone->milestones;
 
-		// Determine selected milestone. Defaults to previous milestone if not specified
+		// Determine selected milestone. Defaults to current milestone if not specified
 		if(empty($selected_milestone)) {
-			$milestone->selected_milestone	= $milestone->previous;
+			$milestone->selected_milestone	= $milestone->current;
 		} 
 
 		if ($milestone->selected_milestone == $milestone->current) {
@@ -373,7 +373,7 @@ class Offices extends CI_Controller {
 			$milestones = $this->campaign->milestones_model();
 			$milestone 	= $this->campaign->milestone_filter(null, $milestones);
 
-			return $this->index($milestone=$milestone->previous, $output=null, $show_all_offices=true, $show_all_fields=false, $show_qa_fields=true);	
+			return $this->index($milestone=$milestone->current, $output=null, $show_all_offices=true, $show_all_fields=false, $show_qa_fields=true);	
 		}
 
 		// check if it's a milestone date
