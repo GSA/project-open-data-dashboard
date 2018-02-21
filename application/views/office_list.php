@@ -116,7 +116,7 @@ if($show_all_fields) {
             $count = ($count === 0) ? '0.0' : $count;
           ?>
             <td style="<?php echo metric_status_color($count, $section_breakdown->{$weighted_measure}->success_basis, $section_breakdown->{$weighted_measure}->success_weight, true); ?>; width:1%"></td>
-          <?
+          <?php
           }
           echo '<td> 100%</td></tr></table></div>';
         }
