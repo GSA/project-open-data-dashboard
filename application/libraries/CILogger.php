@@ -21,7 +21,6 @@ class CILogger {
        $this->CI =& get_instance();
        if (!is_null($this->CI)) {
            // Load configuration
-           $this->CI->config->load('fms_endpoint', FALSE, TRUE);
            $this->log_frequency = $this->CI->config->item('log_frequency');
            $this->db_name = $this->CI->db->database;
        }
@@ -112,24 +111,29 @@ class CILogger {
                     mysql_queries,
                     mysql_elapsed
                 ) VALUES (
-                    '" . ip2long(@$_SERVER['REMOTE_ADDR']) . "',
-                    '" . @$_SERVER['REQUEST_URI'] . "',
-                    '" . @$_SERVER['HTTP_USER_AGENT'] . "',
-                    '" . @$_SERVER['HTTP_REFERER'] . "',
-                    '$username',
-                    '$memory',
-                    '$render_elapsed',
-                    '$ci_elapsed',
-                    '$controller_elapsed',
-                    '$mysql_count_queries',
-                    '$mysql_queries',
-                    '$mysql_elapsed'
+                    ?,?,?,?,?,?,?,?,?,?,?,? 
                 );";
+
+            $query_values = array (
+                    ip2long(@$_SERVER['REMOTE_ADDR']),
+                    @$_SERVER['REQUEST_URI'],
+                    @$_SERVER['HTTP_USER_AGENT'],
+                    @$_SERVER['HTTP_REFERER'],
+                    $username,
+                    $memory,
+                    $render_elapsed,
+                    $ci_elapsed,
+                    $controller_elapsed,
+                    $mysql_count_queries,
+                    $mysql_queries,
+                    $mysql_elapsed
+                );
+
             // Turn off DB debug mode
             $saved_debug = $this->CI->db->db_debug;
             $this->CI->db->db_debug = false;
             // Attempt query
-            $this->CI->db->query($sql);
+            $this->CI->db->query($sql, $query_values);
             // Restore DB debug mode
             $this->CI->db->db_debug = $saved_debug;
             // Handle "Table Not Found" error
@@ -155,7 +159,7 @@ class CILogger {
                 ) ENGINE=ARCHIVE;
                 ');
                 // Insert again
-                $this->CI->db->query($sql);
+                $this->CI->db->query($sql, $query_values);
             }
         }
     }
