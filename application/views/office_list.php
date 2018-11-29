@@ -125,17 +125,14 @@ if($show_all_fields) {
        <button style="margin-top : 1em" id="showcolors">Show all colors</button>
 
        <script>
-          $( "#showcolors" ).click(function() {
-              $( ".hidden-color" ).each(function( index ) {
-                  $(this).css( "background-color", $(this).data("color") );
-                })
-              $( ".hide-graph" ).each(function( index ) {
-                  $(this).css( "display", "block" );
-                })
-              }
-            )
-
-
+          $('#showcolors').on('click', function() {
+            $('.hidden-color').each(function(index) {
+              $(this).css('background-color', $(this).data('color'));
+            });
+            $('.hide-graph').each(function(index) {
+              $(this).css('display', 'block');
+            });
+          });
        </script>
      </div>
    </div>
