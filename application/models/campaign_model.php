@@ -879,37 +879,54 @@ class campaign_model extends CI_Model
     private function filter_remote_url($url, $allowed_schemes = array('http', 'https'))
     {
         $url = filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED);
-
         // ban non http/https:
         $scheme = parse_url($url, PHP_URL_SCHEME);
         if ($url && !in_array($scheme, $allowed_schemes)) {
             $url = false;
         }
 
+        // ban localhost/portscan/ssrf
+
+        if ($url) {
+
+            $host = parse_url($url, PHP_URL_HOST);
+            /* We should check if host is IP first*/
+            if (filter_var($host, FILTER_VALIDATE_IP))// is ip
+            {
+                if (!filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+                /* Now, we know that it's not a valid IP.*/
+                $url = false;
+                }
+            }
+            /*We should check if it is a hostname - resolving url*/
+            else
+            {
+                // If record resolved
+                $resolved = dns_get_record($host, DNS_A + DNS_AAAA);
+                if ($resolved)
+                {
+                    // We should read the array of A and AAAA records, and check them against private ranges
+                    for ($i=0; $i < count($resolved); $i++)
+                    {
+                        if ($resolved[$i]["type"] === "A")
+                        if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ))
+                            $url = false;
+                        if ($resolved[$i]["type"] === "AAAA")
+                        if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ))
+                            $url = false;
+                    }
+
+                }
+                else
+                    $url = false;
+            }
+
+
+        }
         // filter xss
         if ($url && function_exists('xss_clean')) {
             $url = xss_clean($url);
         }
-
-        // ban localhost/portscan/ssrf
-        if ($url) {
-            $host = parse_url($url, PHP_URL_HOST);
-            $banned_hosts = array(
-                'localhost',
-                '[::]',
-                '0',
-                '2130706433'
-            );
-            if (in_array($host, $banned_hosts)) {
-                $url = false;
-            }
-
-            if (filter_var($host, FILTER_VALIDATE_IP) // is ip
-                && !filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
-                $url = false;
-            }
-        }
-
         return $url;
     }
 
