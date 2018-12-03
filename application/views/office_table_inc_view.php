@@ -459,6 +459,10 @@ function metric_status_color($metric, $success_basis, $weight, $return_property 
 
 		$emphasis = false;
 		
+		// cast values
+		$weight = (float)$weight;
+		$metric = (float)$metric;
+
 		// curve the percentage
 		$curve = pow(100, 1-$weight) * pow($metric, $weight);
 
