@@ -808,6 +808,8 @@ class Campaign extends CI_Controller
                     $update->milestone = $selected_milestone;
                 }
 
+                $force_head_shim = false;
+
                 // See if this is a domain where we can't rely on HTTP HEAD responses
                 if ($this->config->item('no_http_head')) {
 
@@ -819,8 +821,7 @@ class Campaign extends CI_Controller
                         }
                     }
 
-                }
-
+                } 
 
                 /*
                 ################ datapage ################
