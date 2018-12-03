@@ -2193,29 +2193,25 @@ class campaign_model extends CI_Model
     public function milestones_model()
     {
 
-        $milestones = array(
-            "2013-11-30" => "Milestone 1",
-            "2014-02-28" => "Milestone 2",
-            "2014-05-31" => "Milestone 3",
-            "2014-08-31" => "Milestone 4",
-            "2014-11-30" => "Milestone 5",
-            "2015-02-28" => "Milestone 6",
-            "2015-05-31" => "Milestone 7",
-            "2015-08-31" => "Milestone 8",
-            "2015-11-30" => "Milestone 9",
-            "2016-02-29" => "Milestone 10",
-            "2016-05-31" => "Milestone 11",
-            "2016-08-31" => "Milestone 12",
-            "2016-11-30" => "Milestone 13",
-            "2017-02-28" => "Milestone 14",
-            "2017-05-31" => "Milestone 15",
-            "2017-08-31" => "Milestone 16",
-            "2017-11-30" => "Milestone 17",
-            "2018-02-28" => "Milestone 18",
-            "2018-05-31" => "Milestone 19",
-            "2018-08-31" => "Milestone 20",
-            "2018-11-30" => "Milestone 21"
-        );
+        $milestones = array();
+        $milestone_month_firstday = strtotime("2013-11-01");
+        $milestone_count = 1;
+
+        while ($milestone_count < 100) {
+            
+            $milestone_month_lastday = date('t',$milestone_month_firstday);
+            $year = date('Y',$milestone_month_firstday);
+            $month = date('m',$milestone_month_firstday);
+
+            $milestone_month_lastday = "$year-$month-$milestone_month_lastday";
+
+            // calculate next milestone
+            $milestone_month_firstday = strtotime("+3 months", $milestone_month_firstday);
+
+            $milestones = array_merge($milestones, array("$milestone_month_lastday" => "Milestone $milestone_count"));
+
+            $milestone_count++;
+        }        
 
         return $milestones;
     }
