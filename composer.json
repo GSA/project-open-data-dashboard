@@ -1,5 +1,5 @@
 {
-    "name": "GSA/project-open-data-dashboard",
+    "name": "gsa/project-open-data-dashboard",
     "description": "A Dashboard to Manage Project Open Data Information",
     "keywords": ["json", "schema"],
     "homepage": "https://github.com/GSA/project-open-data-dashboard/",
@@ -33,7 +33,7 @@
         "aws/aws-sdk-php": "*"
     },
     "require-dev": {
-        "json-schema/JSON-Schema-Test-Suite": "1.1.0",
+        "json-schema/json-schema-test-suite": "1.1.0",
         "phpunit/phpunit": "~3.7.0"
     },
     "autoload": {
