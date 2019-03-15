@@ -4,7 +4,7 @@ The [Project Open Data Dashboard](http://labs.data.gov/dashboard/offices) is a w
 
 ### Metrics 
 
-The Project Open Data Dashboard is informed by [M-13-13](https://project-open-data.cio.gov/policy-memo/), the [Project Open Data Implementation Guide](https://project-open-data.cio.gov/implementation-guide/), the [Open Data Cross-Agency Priority (CAP) Goal](http://www.performance.gov/node/3396/view?view=public#overview), and the [Integrated Data Collection](https://www.whitehouse.gov/sites/default/files/omb/memoranda/2013/m-13-09.pdf) Open Data Progress, Use, and Impact questions. The Project Open Dashboard tracks progress in two ways:
+The Project Open Data Dashboard is informed by [M-13-13](https://project-open-data.cio.gov/policy-memo/), the [Project Open Data Implementation Guide](https://project-open-data.cio.gov/implementation-guide/), the [Cross-Agency Priority (CAP) Goal #2 - Leveraging Data as a Strategic Asset](https://www.performance.gov/CAP/CAP_goal_2.html), and the [Integrated Data Collection](https://www.whitehouse.gov/sites/default/files/omb/memoranda/2013/m-13-09.pdf) Open Data Progress, Use, and Impact questions. The Project Open Dashboard tracks progress in two ways:
 
  1.	Quarterly review by OMB staff of Leading Indicators in six categories: Enterprise Data Inventory, Public Data Listing, Public Engagement, Privacy & Security, Human Capital, and Use & Impact. For more information see [Leading Indicators Strategy Rubric](./rubric).  
 
