@@ -962,7 +962,8 @@ class campaign_model extends CI_Model
                 $opts = array(
                     'http' => array(
                         'method' => "GET",
-                        'user_agent' => "Data.gov data.json crawler"
+                        'user_agent' => "Data.gov data.json crawler",
+                        'follow_location' => false,
                     )
                 );
 
