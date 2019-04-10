@@ -1,9 +1,13 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.3
+version: v1.13.4
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   SNYK-PHP-TWIGTWIG-72239:
     - '*':
         reason: CVE is disputed and incomplete
         expires: 2019-04-06T06:54:58.310Z
+  SNYK-PHP-TWIGTWIG-173776:
+    - '*':
+        reason: Will be addressed with simplesamlphp upgrade
+        expires: 2019-05-01T22:05:42.366Z
 patch: {}
