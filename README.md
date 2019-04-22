@@ -40,9 +40,9 @@ The options for [id] are: `all`,`cfo-act`, or the ID provided by the [USA.gov Fe
 
 The options for [component] are: `all`, `datajson`, `datapage`, `digitalstrategy`, `download`. 
 
-* The `datajson` component captures the basic charactersitics of a request to an agency's data.json file (like whether it returns an HTTP 200) and then attempts to parse the file, validate against the schema, and provide other reporting metrics like the number of datasets listed. 
-* The `digitalstrategy` component captures the basic charactersitics of a request to an agency's digitalstrategy.json file (like whether it returns an HTTP 200) 
-* The `datapage` component captures the basic charactersitics of a request to an agency's /data page (like whether it returns an HTTP 200)
+* The `datajson` component captures the basic characteristics of a request to an agency's data.json file (like whether it returns an HTTP 200) and then attempts to parse the file, validate against the schema, and provide other reporting metrics like the number of datasets listed. 
+* The `digitalstrategy` component captures the basic characteristics of a request to an agency's digitalstrategy.json file (like whether it returns an HTTP 200) 
+* The `datapage` component captures the basic characteristics of a request to an agency's /data page (like whether it returns an HTTP 200)
 * The `download` component downloads an archive of the data.json and digitalstrategy.json files
 * As you'd expect, `all` does all of these things at once. 
 
