@@ -1,0 +1,42 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    depends_on:
+      - db
+    environment:
+      DB_NAME: dashboard
+      DB_USER: root
+      DB_PASSWORD: mysql-dev-password
+      DB_HOST: db
+    ports:
+      - "9000"
+    volumes:
+      - composer:/var/www/vendor
+      # For quicker PHP debugging, enable a local volume
+      #- .:/var/www
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql-dev-password
+      MYSQL_DATABASE: dashboard
+    ports:
+      - "3306"
+    volumes:
+      - db:/var/lib/mysql
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - "8000:80"
+    depends_on:
+      - app
+
+volumes:
+  db:
+  composer:
