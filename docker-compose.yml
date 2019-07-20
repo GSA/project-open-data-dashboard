@@ -11,12 +11,14 @@ services:
       DB_USER: root
       DB_PASSWORD: mysql-dev-password
       DB_HOST: db
+      ENCRYPTION_KEY: not-secure-encryption-key
     ports:
       - "9000"
     volumes:
-      - composer:/var/www/vendor
       # For quicker PHP debugging, enable a local volume
       #- .:/var/www
+      - composer:/var/www/vendor
+      - uploads:/var/www/uploads
 
   db:
     image: mysql:5.7
@@ -40,3 +42,4 @@ services:
 volumes:
   db:
   composer:
+  uploads:
