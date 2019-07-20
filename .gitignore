@@ -4,13 +4,10 @@
 */cache/*
 */cache/!index.html
 csv/*
-application/config/config.php
-application/config/gearman.php
 
 .htaccess
 .DS_Store
 
-application/config/database.php
 downloads/*
 uploads/*
 archive/error_log/*
@@ -18,10 +15,6 @@ archive/datajson/201*
 archive/digitalstrategy/201*
 archive/datajson-lines/*
 archive/curl_header
-
-application/config/upload.php
-
-/index.php
 
 composer.phar
 vendor
