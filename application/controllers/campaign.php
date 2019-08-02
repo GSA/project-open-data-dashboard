@@ -1341,6 +1341,16 @@ class Campaign extends CI_Controller
             // $json_old = 'http://test.dev/temp/ocsit-gsa-gov.json';
 
             $datajson_domain = parse_url($datajson_new);
+            if ($datajson_domain === false) {
+              show_error('datajson_new parameter is not a valid URL.', 400, $heading = 'An Error Was Encountered');
+              return;
+            }
+
+            if ($datajson_domain['scheme'] !== 'http' || $datajson_domain['scheme'] !== 'https') {
+              show_error('datajson_new must be an http(s) URL.', 400, $heading = 'An Error Was Encountered');
+              return;
+            }
+
             $output['datajson_domain'] = $datajson_domain['host'];
             $output['json_old_url'] = $json_old;
             $output['datajson_new_url'] = $datajson_new;
