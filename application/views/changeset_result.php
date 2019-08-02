@@ -17,7 +17,8 @@
     <div style="color: #666">source: <a style="color: #666" href="<?php echo htmlentities($json_old_url); ?>"><?php echo htmlentities($json_old_request); ?></a></div>
 
     <h3 style="color : #666; margin-bottom : 0; padding-bottom : 0">Data listings in data.json: <span style="color : #000"><?php echo ($new_count + 0) ?></span></h3>
-    <div style="color: #666">source: <a style="color: #666" href="<?php echo htmlentities($datajson_new_url) ?>"><?php echo htmlentities($datajson_new_url); ?></a></div>
+    <!-- avoid using an href here to avoid XSS vector https://github.com/GSA/datagov-incident-response/issues/42 -->
+    <div style="color: #666">source: <?php echo htmlentities($datajson_new_url); ?></div>
 
     <h3 style="color : blue">Matches: <?php echo ($match_count + 0) ?></h3>
 
