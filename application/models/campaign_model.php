@@ -893,10 +893,7 @@ class campaign_model extends CI_Model
             /* We should check if host is IP first*/
             if (filter_var($host, FILTER_VALIDATE_IP))// is ip
             {
-                if (!filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
-                /* Now, we know that it's not a valid IP.*/
                 $url = false;
-                }
             }
             /*We should check if it is a hostname - resolving url*/
             else
