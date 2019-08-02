@@ -55,6 +55,10 @@ class Campaign extends CI_Controller
         $harvest = (!empty($harvest)) ? $harvest : $this->input->get('harvest', TRUE);
         $from_export = (!empty($from_export)) ? $from_export : $this->input->get('from_export', TRUE);
 
+        if (!$orgs) {
+          show_error('Invalid orgs parameter, cannot be empty', 400);
+          return
+        }
 
         $row_total = 100;
         $row_count = 0;
