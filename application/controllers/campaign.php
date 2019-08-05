@@ -1352,12 +1352,12 @@ class Campaign extends CI_Controller
 
             $datajson_domain = parse_url($datajson_new);
             if ($datajson_domain === false) {
-              show_error('datajson_new parameter is not a valid URL.', 400, $heading = 'An Error Was Encountered');
+              show_error('datajson_new parameter is not a valid URL.', 400);
               return;
             }
 
             if ($datajson_domain['scheme'] !== 'http' || $datajson_domain['scheme'] !== 'https') {
-              show_error('datajson_new must be an http(s) URL.', 400, $heading = 'An Error Was Encountered');
+              show_error('datajson_new must be an http(s) URL.', 400);
               return;
             }
 
