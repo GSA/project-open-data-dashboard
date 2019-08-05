@@ -57,7 +57,7 @@ class Campaign extends CI_Controller
 
         if (!$orgs) {
           show_error('Invalid orgs parameter, cannot be empty', 400);
-          return
+          return;
         }
 
         $row_total = 100;
