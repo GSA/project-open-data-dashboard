@@ -55,6 +55,10 @@ class Campaign extends CI_Controller
         $harvest = (!empty($harvest)) ? $harvest : $this->input->get('harvest', TRUE);
         $from_export = (!empty($from_export)) ? $from_export : $this->input->get('from_export', TRUE);
 
+        if (!$orgs) {
+          show_error('Invalid orgs parameter, cannot be empty', 400);
+          return;
+        }
 
         $row_total = 100;
         $row_count = 0;
@@ -913,6 +917,12 @@ class Campaign extends CI_Controller
                         $expected_datajson_url = urldecode($url_override);
                     }
 
+                    $expected_datajson_url = $this->campaign->filter_remote_url($expected_datajson_url);
+                    if ($expected_datajson_url === false) {
+                      show_error('Not valid data.json URL.', 400);
+                      return;
+                    }
+
                     // attempt to break any caching
                     $expected_datajson_url_refresh = $expected_datajson_url . '?refresh=' . time();
 
@@ -1341,6 +1351,16 @@ class Campaign extends CI_Controller
             // $json_old = 'http://test.dev/temp/ocsit-gsa-gov.json';
 
             $datajson_domain = parse_url($datajson_new);
+            if ($datajson_domain === false) {
+              show_error('datajson_new parameter is not a valid URL.', 400);
+              return;
+            }
+
+            if ($datajson_domain['scheme'] !== 'http' || $datajson_domain['scheme'] !== 'https') {
+              show_error('datajson_new must be an http(s) URL.', 400);
+              return;
+            }
+
             $output['datajson_domain'] = $datajson_domain['host'];
             $output['json_old_url'] = $json_old;
             $output['datajson_new_url'] = $datajson_new;

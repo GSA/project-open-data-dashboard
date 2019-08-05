@@ -893,10 +893,7 @@ class campaign_model extends CI_Model
             /* We should check if host is IP first*/
             if (filter_var($host, FILTER_VALIDATE_IP))// is ip
             {
-                if (!filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
-                /* Now, we know that it's not a valid IP.*/
                 $url = false;
-                }
             }
             /*We should check if it is a hostname - resolving url*/
             else
@@ -2449,30 +2446,10 @@ class campaign_model extends CI_Model
             $filter .= "AND%20-harvest_source_id:[''%20TO%20*]";
         }
 
-        if (strpos($orgs, 'http://') !== false) {
-
-            $uri = $orgs;
-            $from_export = true;
-
-        } else {
-
-            $orgs = rawurlencode($orgs);
-            $query = $filter . "-type:harvest%20AND%20organization:(" . $orgs . ")&rows=" . $rows . '&start=' . $offset;
-            $uri = 'http://catalog.data.gov/api/3/action/package_search?q=' . $query;
-            $from_export = false;
-        }
-
+        $orgs = rawurlencode($orgs);
+        $query = $filter . "-type:harvest%20AND%20organization:(" . $orgs . ")&rows=" . $rows . '&start=' . $offset;
+        $uri = 'http://catalog.data.gov/api/3/action/package_search?q=' . $query;
         $datagov_json = curl_from_json($uri, false);
-
-        if ($from_export) {
-
-            $object_shim = new stdClass();
-            $object_shim->result = new stdClass();
-            $object_shim->result->count = count($datagov_json);
-            $object_shim->result->results = $datagov_json;
-
-            $datagov_json = $object_shim;
-        }
 
         if (empty($datagov_json)) return false;
 
