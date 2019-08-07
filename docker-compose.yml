@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: docker/app/Dockerfile
+      dockerfile: docker/Dockerfile
     depends_on:
       - db
     environment:
@@ -15,8 +15,7 @@ services:
     ports:
       - "9000"
     volumes:
-      # For quicker PHP debugging, enable a local volume
-      #- .:/var/www
+      - .:/var/www
       - composer:/var/www/vendor
       - uploads:/var/www/uploads
 
@@ -31,13 +30,14 @@ services:
       - db:/var/lib/mysql
 
   nginx:
-    build:
-      context: .
-      dockerfile: docker/nginx/Dockerfile
+    image: nginx
     ports:
       - "8000:80"
     depends_on:
       - app
+    volumes:
+      - .:/var/www
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
 
 volumes:
   db:
