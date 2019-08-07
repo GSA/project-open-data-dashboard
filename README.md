@@ -87,3 +87,35 @@ Second, populate all the subagencies:
 Limitations
 -----
 Currently this tool does not handle large files in a memory efficient way. If you are unable to utilize a high amount of memory and are at risk of timeouts, you should set the maximum file size that the application can handle so it will avoid large files and fail more gracefully. The maximum size of JSON files to parse can be set with the `max_remote_size` option in config.php
+
+
+## Development
+
+Prerequisites:
+
+- [Docker Engine](https://docs.docker.com/install/) v18+
+- [Docker Compose](https://docs.docker.com/compose/install/) v1.24+
+
+
+### Setup
+
+Setup docker containers.
+
+    $ docker-compose up
+
+Open your browser to [localhost:8000](http://localhost:8000/).
+
+_TODO how to populate initial data. The following notes are a work in progress._
+
+Run the migrations.
+
+    $ docker-compose exec app php index.php migrate
+
+
+### Updating composer dependencies
+
+Edit version constraints in [composer.json](./composer.json).
+
+    $ docker-compose exec app composer update
+
+Commit the updated composer.json and composer.lock.
