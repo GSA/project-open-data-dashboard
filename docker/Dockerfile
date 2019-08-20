@@ -1,22 +1,28 @@
-FROM php:7.0-fpm
+FROM php:7.1-apache
 
 ARG APP_DIR=/var/www
 
 RUN apt-get update && apt-get install -y \
-  git \
-  unzip \
-  wget
+  git unzip wget curl \
+    jq mysql-client &&\
+    apt-get autoremove -y &&\
+    rm -rf /var/lib/apt/lists/* &&\
+    rm -rf /var/cache/apt/*
+#  libbz2-dev libcurl4-openssl-dev libmcrypt-dev \
+#      libwebp-dev libjpeg-dev libpng-dev \
+
+# Need mod_rewrite
+RUN a2enmod rewrite 
 
 # Install php extensions
-RUN docker-php-ext-install mysqli
+# RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install mysqli pdo pdo_mysql 
 
 # Install composer
 COPY docker/install-composer.sh /tmp/install-composer.sh
 RUN /tmp/install-composer.sh
 
-# Install php dependencies
-COPY composer.json $APP_DIR
-COPY composer.lock $APP_DIR
-RUN cd $APP_DIR && composer install --no-dev
+# Add composer-installed libs to path
+ENV PATH=/var/www/vendor/bin:$PATH
 
 WORKDIR $APP_DIR
