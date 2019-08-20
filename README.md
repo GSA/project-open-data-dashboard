@@ -99,6 +99,10 @@ Prerequisites:
 
 ### Setup
 
+Install dependencies
+
+    $ bin/composer install --no-dev
+
 Setup docker containers.
 
     $ docker-compose up
