@@ -1,6 +1,7 @@
 FROM php:7.1-apache
 
 ARG APP_DIR=/var/www
+RUN sed -i 's/html//g' /etc/apache2/sites-available/000-default.conf
 
 RUN apt-get update && apt-get install -y \
   git unzip wget curl \
