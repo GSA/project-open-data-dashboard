@@ -48,14 +48,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-#$db['default']['hostname'] = empty(getenv('DB_HOST')) ? getenv('DB_HOST') : 'localhost';
-#$db['default']['username'] = empty(getenv('DB_USER')) ? getenv('DB_USER') : '';
-#$db['default']['password'] = empty(getenv('DB_PASSWORD')) ? getenv('DB_PASSWORD') : '';
-#$db['default']['database'] = empty(getenv('DB_NAME')) ? getenv('DB_NAME') : '';
-$db['default']['hostname'] = 'database';
-$db['default']['username'] = 'root';
-$db['default']['password'] = 'mysql';
-$db['default']['database'] = 'dashboard';
+$db['default']['database'] = empty(getenv('DB_NAME')) ? '' : getenv('DB_NAME');
+$db['default']['username'] = empty(getenv('DB_USER')) ? '' : getenv('DB_USER');
+$db['default']['password'] = empty(getenv('DB_PASSWORD')) ? '' : getenv('DB_PASSWORD');
+$db['default']['hostname'] = empty(getenv('DB_HOST')) ? 'localhost' : getenv('DB_HOST');
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
