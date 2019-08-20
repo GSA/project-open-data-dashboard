@@ -15,7 +15,11 @@ then
 fi
 
 php composer-setup.php --quiet
+RESULT=$?
 rm composer-setup.php
 
+# next two lines are local to our docker setup
 mv composer.phar /usr/local/bin/composer
 chmod +x /usr/local/bin/composer
+
+exit $RESULT
