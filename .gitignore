@@ -11,8 +11,8 @@ csv/*
 downloads/*
 uploads/*
 archive/error_log/*
-archive/datajson/201*
-archive/digitalstrategy/201*
+archive/datajson/20*
+archive/digitalstrategy/20*
 archive/datajson-lines/*
 archive/curl_header
 
