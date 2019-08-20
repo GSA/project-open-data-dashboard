@@ -123,3 +123,13 @@ Edit version constraints in [composer.json](./composer.json).
     $ docker-compose exec app composer update
 
 Commit the updated composer.json and composer.lock.
+
+
+Notes:
+- use .env on BSP pending  migration and use phpdotenv code to do so.
+- deployment playbooks are referenced from https://github.com/GSA/datagov-deploy/blob/develop/ansible/dashboard-web.yml
+- 
+
+
+TODO:
+- Remove apt-get and PHP install from Dockerfile build  that I probably don't need.
