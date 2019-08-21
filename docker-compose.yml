@@ -15,8 +15,8 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - .:/var/www:delegated
-      - uploads:/var/www/uploads
+      - .:/var/www/app:delegated
+      - uploads:/var/www/app/uploads
 
   database:
     image: mysql:5.7

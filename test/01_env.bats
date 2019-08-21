@@ -1,18 +1,19 @@
+APP_DIR=/var/www/app
 setup() {
     if which sudo > /dev/null; then
-      sudo touch /var/www/.env 
-      sudo chmod 666 /var/www/.env
+      sudo touch $APP_DIR/.env
+      sudo chmod 666 $APP_DIR/.env
     else
-      touch /var/www/.env 
-      chmod 666 /var/www/.env 
+      touch $APP_DIR/.env
+      chmod 666 $APP_DIR/.env
     fi
 }
 
 teardown () {
     if which sudo > /dev/null; then
-      sudo /bin/rm -f /var/www/.env
+      sudo /bin/rm -f $APP_DIR/.env
     else
-      /bin/rm -f /var/www/.env
+      /bin/rm -f $APP_DIR/.env
     fi
 }
 
@@ -22,7 +23,7 @@ teardown () {
 }
 
 @test "Migration should work when proper dotenv is used" {
-    cat <<-END >/var/www/.env
+    cat <<-END >$APP_DIR/.env
 DB_HOST=database
 DB_USER=root
 DB_PASSWORD=mysql

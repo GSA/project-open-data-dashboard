@@ -4,6 +4,6 @@ set -e
 docker-compose run \
   --rm \
   --no-deps \
-  --workdir /var/www \
+  --workdir /var/www/app \
   app \
   composer "$@"

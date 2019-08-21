@@ -16,11 +16,15 @@ jobs:
           MYSQL_DATABASE: dashboard
     steps:
       - checkout
+      - run:
+          name: Set httpd document root
+          command: |
+            sudo sed -i 's.DocumentRoot /var/www/html.DocumentRoot /home/circleci/project.' /etc/apache2/sites-available/000-default.conf
+      - run: sudo docker-php-ext-install mysqli
       - restore_cache:
           keys:
             - v1-composer-{{ checksum "composer.lock" }}
             - v1-composer-
-      - run: sudo docker-php-ext-install mysqli
       - run: composer --no-interaction install --no-dev
       - save_cache:
           key: v1-composer-{{ checksum "composer.lock" }}

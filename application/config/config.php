@@ -8,8 +8,8 @@ if (file_exists($root_dir . '/.env')) {
 }
 
 
-$config['download_dir'] = '/var/www/downloads';
-$config['archive_dir']  = '/var/www/archive';
+$config['download_dir'] = '/var/www/app/downloads';
+$config['archive_dir']  = '/var/www/app/archive';
 $config['docs_path'] = 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';
 
 $config['import_active'] = true;
@@ -22,7 +22,7 @@ $config['google_analytics_domain'] = ''; // domain.com
 // Set local time zone
 date_default_timezone_set(getenv('TIMEZONE') ?: 'America/New_York');
 
-$config['tmp_csv_import'] = '/var/www/downloads/import.csv';
+$config['tmp_csv_import'] = '/var/www/app/downloads/import.csv';
 $config['pre_approved_admins'] = array('user1', 'user2');
 
 // Use the local filesystem for uploads, or use S3

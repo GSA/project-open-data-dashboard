@@ -1,7 +1,7 @@
 FROM php:7.1-apache
 
-ARG APP_DIR=/var/www
-RUN sed -i 's/html//g' /etc/apache2/sites-available/000-default.conf
+ARG APP_DIR=/var/www/app
+RUN sed -i 's/html/app/g' /etc/apache2/sites-available/000-default.conf
 
 RUN apt-get update && apt-get install -y git wget &&\
     apt-get autoremove -y &&\
@@ -26,6 +26,6 @@ COPY docker/install-composer.sh /tmp/install-composer.sh
 RUN /tmp/install-composer.sh
 
 # Add composer-installed libs to path
-ENV PATH=/var/www/vendor/bin:$PATH
+ENV PATH=/var/www/app/vendor/bin:$PATH
 
 WORKDIR $APP_DIR
