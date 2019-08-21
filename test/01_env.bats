@@ -1,21 +1,4 @@
 APP_DIR=/var/www/app
-#setup() {
-#    if which sudo > /dev/null; then
-#      sudo touch $APP_DIR/.env
-#      sudo chmod 666 $APP_DIR/.env
-#    else
-#      touch $APP_DIR/.env
-#      chmod 666 $APP_DIR/.env
-#    fi
-#}
-
-#teardown () {
-#    if which sudo > /dev/null; then
-#      sudo /bin/rm -f $APP_DIR/.env
-#    else
-#      /bin/rm -f $APP_DIR/.env
-#    fi
-#}
 
 @test "Migration should fail when env is empty" {
     /bin/rm -f $APP_DIR/.env
