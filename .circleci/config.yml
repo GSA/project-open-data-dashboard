@@ -16,12 +16,9 @@ jobs:
           MYSQL_DATABASE: dashboard
     steps:
       - checkout
-      - run: sudo a2enmod rewrite
-      - run: sudo ln -s /home/circleci/project /var/www/app
-      - run:
-          name: Set httpd document root
-          command: |
-            sudo sed -i 's./var/www/html./var/www/app.' /etc/apache2/sites-available/000-default.conf
+      - run: 
+          name: Dump env vars to .env file for this work on CircleCI
+          command: env | egrep '(DB_|ENCRYPTION)' > .env
       - run: sudo docker-php-ext-install mysqli
       - restore_cache:
           keys:
@@ -32,8 +29,17 @@ jobs:
           key: v1-composer-{{ checksum "composer.lock" }}
           paths:
             - vendor
-      - run: env | grep DB > .env
+
+      # Setup Apache2 in circleCI
+      - run: sudo a2enmod rewrite
+      - run: sudo ln -s /home/circleci/project /var/www/app
+      - run: sudo sed -i 's./var/www/html./var/www/app.' /etc/apache2/sites-available/000-default.conf
       - run: sudo service apache2 start
+
+      # Set up and run tests
+      - run: 
+          name: Set /etc/hosts to resolved `database` 
+          command: echo 127.0.0.1 database | sudo tee -a /etc/hosts
       - run:
           name: Install bats-core
           command: |
