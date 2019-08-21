@@ -16,10 +16,12 @@ jobs:
           MYSQL_DATABASE: dashboard
     steps:
       - checkout
+      - run: sudo a2enmod rewrite
+      - run: sudo ln -s /home/circleci/project /var/www/app
       - run:
           name: Set httpd document root
           command: |
-            sudo sed -i 's.DocumentRoot /var/www/html.DocumentRoot /home/circleci/project.' /etc/apache2/sites-available/000-default.conf
+            sudo sed -i 's./var/www/html./var/www/app.' /etc/apache2/sites-available/000-default.conf
       - run: sudo docker-php-ext-install mysqli
       - restore_cache:
           keys:
@@ -30,6 +32,8 @@ jobs:
           key: v1-composer-{{ checksum "composer.lock" }}
           paths:
             - vendor
+      - run: env | grep DB > .env
+      - run: sudo service apache2 start
       - run:
           name: Install bats-core
           command: |
