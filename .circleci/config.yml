@@ -4,18 +4,33 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.1-jessie-node
+        environment:
+          DB_NAME: dashboard
+          DB_USER: root
+          DB_PASSWORD: mysql
+          DB_HOST: 127.0.0.1
+          ENCRYPTION_KEY: not-secure-encryption-key
+      - image: mysql:5.7
+        environment:
+          MYSQL_ROOT_PASSWORD: mysql
+          MYSQL_DATABASE: dashboard
     steps:
       - checkout
       - restore_cache:
           keys:
             - v1-composer-{{ checksum "composer.lock" }}
             - v1-composer-
+      - run: sudo docker-php-ext-install mysqli
       - run: composer --no-interaction install --no-dev
       - save_cache:
           key: v1-composer-{{ checksum "composer.lock" }}
           paths:
             - vendor
-      - run: php index.php help
+      - run: php index.php migrate
+      - run: 
+          name: Migration confirmation test
+          command: |
+            php index.php migrate | grep -q "The migration was run"
 
 
 workflows:
