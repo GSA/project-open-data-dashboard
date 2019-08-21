@@ -10,13 +10,12 @@ jobs:
           keys:
             - v1-composer-{{ checksum "composer.lock" }}
             - v1-composer-
-      - run: composer --no-interaction install
+      - run: composer --no-interaction install --no-dev
       - save_cache:
           key: v1-composer-{{ checksum "composer.lock" }}
           paths:
             - vendor
-      - run: sudo npm install -g snyk
-      - run: snyk test
+      - run: php index.php help
 
 
 workflows:
