@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.1-jessie-node
+      - image: circleci/php:apache-stretch
         environment:
           DB_NAME: dashboard
           DB_USER: root
@@ -26,11 +26,17 @@ jobs:
           key: v1-composer-{{ checksum "composer.lock" }}
           paths:
             - vendor
-      - run: php index.php migrate
-      - run: 
-          name: Migration confirmation test
+      - run:
+          name: Install bats-core
           command: |
-            php index.php migrate | grep -q "The migration was run"
+            git clone https://github.com/bats-core/bats-core.git /tmp/bats-core && \
+              cd /tmp/bats-core && \
+              sudo ./install.sh /usr/local && \
+              /bin/rm -rf /tmp/bats-core
+      - run: 
+          name: Run bats tests
+          command: |
+            bats -r test/
 
 
 workflows:
