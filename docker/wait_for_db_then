@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+
+FIRST_RUN=true
+
+until (echo 2>/dev/null > /dev/tcp/database/3306)
+do
+  echo "Startup: Waiting for MySQL..."
+  if $FIRST_RUN; then
+    echo -e "\tTo track progress, run:"
+    echo -e "\tdocker-compose logs -f database"
+    FIRST_RUN=false
+  fi
+  sleep 1
+done
+
+exec "$@"
