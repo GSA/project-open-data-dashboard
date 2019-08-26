@@ -3,8 +3,8 @@ FROM php:7.1-apache
 ARG APP_DIR=/var/www/app
 RUN sed -i 's/html/app/g' /etc/apache2/sites-available/000-default.conf
 
-# git and wget to install stuff, mysql-client for debugging, zip for composer
-RUN apt-get update && apt-get install -y git wget mariadb-client zip &&\
+# git and wget to install stuff, mysql-client for debugging
+RUN apt-get update && apt-get install -y git wget mysql-client jq &&\
     apt-get autoremove -y &&\
     rm -rf /var/lib/apt/lists/* &&\
     rm -rf /var/cache/apt/*

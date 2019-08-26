@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
+    entrypoint: "/var/www/app/docker/startup.sh"
     depends_on:
       - database
     environment:
@@ -11,6 +12,7 @@ services:
       DB_USER: root
       DB_PASSWORD: mysql
       DB_HOST: database
+      DB_PORT: 3306
       ENCRYPTION_KEY: not-secure-encryption-key
     ports:
       - "8000:80"
