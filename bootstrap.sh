@@ -8,7 +8,8 @@ fail() {
 
 SECRETS=$(echo $VCAP_SERVICES | jq -r '.["user-provided"][] | select(.name == "secrets") | .credentials') ||
   fail "Unable to parse SECRETS from VCAP_SERVICES"
-ENCRYPTION_KEY=$(echo $SECRETS | jq -r '.ENCRYPTION_KEY')
+ENCRYPTION_KEY=$(echo $SECRETS | jq --exit-status -r '.ENCRYPTION_KEY') ||
+  fail "Unable to parse ENCRYPTION_KEY from SECRETS"
 
 DB_NAME=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.db_name')
 DB_USER=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.username')
