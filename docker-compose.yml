@@ -8,12 +8,26 @@ services:
     depends_on:
       - database
     environment:
-      DB_NAME: dashboard
-      DB_USER: root
-      DB_PASSWORD: mysql
-      DB_HOST: database
-      DB_PORT: 3306
-      ENCRYPTION_KEY: not-secure-encryption-key
+      CF_INSTANCE_INDEX: '0'
+      VCAP_APPLICATION: >
+        {"name": "web", "application_id": "docker"}
+      VCAP_SERVICES: >
+        { "aws-rds": [{
+            "name": "database",
+            "credentials": {
+              "db_name": "dashbaord",
+              "host": "database",
+              "password": "mysql",
+              "port": "3306",
+              "username": "root"
+            }
+          }],
+          "user-provided": [{
+            "name": "secrets",
+            "credentials": {
+              "ENCRYPTION_KEY": "not-a-real-key-from-vcap"
+            }
+        }
     ports:
       - "8000:80"
     volumes:
