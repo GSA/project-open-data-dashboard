@@ -917,9 +917,9 @@ class campaign_model extends CI_Model
 
                 $datajson = @file_get_contents($datajson_url, false, $context, -1, $max_remote_size + 1);
 
-                if ($datajson == false) {
+                if ($datajson === false) {
 
-                    $datajson = curl_from_json($datajson_url, false, false);
+                    $datajson = curl_from_json($datajson_url, false, false, false);
 
                     if (!$datajson) {
                         $errors[] = "File not found or couldn't be downloaded";

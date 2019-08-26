@@ -1367,7 +1367,7 @@ class Campaign extends CI_Controller
 
 
             $json_old = curl_from_json($json_old, false);
-            $datajson_new = curl_from_json($datajson_new, false);
+            $datajson_new = curl_from_json($datajson_new, false, true, false);
 
             // $object_shim = new stdClass();
             // $object_shim->result 			= new stdClass();

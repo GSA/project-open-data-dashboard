@@ -1,6 +1,6 @@
 <?php
 
-function curl_from_json($url, $array=false, $decode=true) {
+function curl_from_json($url, $array=false, $decode=true, $follow_redirect=true) {
 
 	$ch = curl_init();
     curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
@@ -17,7 +17,7 @@ function curl_from_json($url, $array=false, $decode=true) {
     curl_setopt($ch, CURLOPT_COOKIESESSION, true);
     curl_setopt($ch, CURLOPT_COOKIE, "");
     
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 10);    
     
 
