@@ -17,9 +17,9 @@ DB_PASSWORD=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.passwor
 DB_HOST=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.host')
 DB_PORT=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.port')
 
-:>.env
+:>$APP_DIR/.env
 for e in DB_NAME DB_USER DB_PASSWORD DB_HOST DB_PORT ENCRYPTION_KEY; do 
-  echo "$e=${!e}" >> .env
+  echo "$e=${!e}" >> $APP_DIR/.env
 done 
 
 which apache2-foreground && exec "apache2-foreground" || exit 0

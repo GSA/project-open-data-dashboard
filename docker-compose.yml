@@ -8,9 +8,7 @@ services:
     depends_on:
       - database
     environment:
-      CF_INSTANCE_INDEX: '0'
-      VCAP_APPLICATION: >
-        {"name": "web", "application_id": "docker"}
+      APP_DIR: /var/www/app 
       VCAP_SERVICES: >
         {
           "aws-rds": [
