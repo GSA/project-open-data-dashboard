@@ -103,6 +103,25 @@ To do the initial migration to populate the database:
 cf ssh app -c '/tmp/lifecycle/launcher "app" "php htdocs/index.php migrate" ""'
 ```
 
+You should be able to visit https://&lt;ROUTE&gt;/offices/qa, where &lt;ROUTE&gt; is the route reported from `cf push`:
+
+<pre><code>
+Waiting for app to start...
+
+name:              app
+requested state:   started
+routes:            <b><u>app-boring-sable.app.cloud.gov</u></b>
+last uploaded:     Wed 28 Aug 10:02:06 EDT 2019
+stack:             cflinuxfs3
+buildpacks:        php_buildpack
+
+type:            web
+instances:       1/1
+memory usage:    256M
+start command:   $HOME/.bp/bin/start
+     state     since                  cpu    memory          disk             details
+#0   running   2019-08-28T14:02:25Z   0.3%   24.3M of 256M   301.7M of 512M
+</code></pre>
 
 ## Known issues
 
