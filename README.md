@@ -80,6 +80,30 @@ Edit version constraints in [composer.json](./composer.json).
 
 Commit the updated composer.json and composer.lock.
 
+
+## Deploying to cloud.gov
+
+### Quickstart
+
+Assuming you're logged in for the Cloud Foundry CLI:
+
+```sh
+cf create-service aws-rds shared-mysql database
+
+cf create-user-provided-service secrets -p '{
+  "ENCRYPTION_KEY": "long-random-string"
+}'
+
+cf push
+```
+
+To do the initial migration to populate the database:
+
+```
+cf ssh app -c '/tmp/lifecycle/launcher "app" "php htdocs/index.php migrate" ""'
+```
+
+
 ## Known issues
 
 The agency hierarchy is designed to be populated from the `contacts` API at https://www.usa.gov/api/USAGovAPI/contacts.json/contact, but that is no longer available, so these
