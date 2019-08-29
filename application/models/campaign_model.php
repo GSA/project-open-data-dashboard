@@ -915,18 +915,27 @@ class campaign_model extends CI_Model
 
                 $context = stream_context_create($opts);
 
-                $datajson = @file_get_contents($datajson_url, false, $context, -1, $max_remote_size + 1);
+                $datajson = @file_get_contents($datajson_url, false, $context, $offset=0, $max_remote_size + 1);
 
+                // We are explicitly failing on errors
                 if ($datajson === false) {
+                    show_error('Fetch file as string failed', 400);
+                    return;
+                }
 
+                // Retry on falsy non-error conditions
+                if ($datajson == false) {
+                    // Retry using curl. It's unclear from project history what
+                    // the failure conditions are and why curl might work here when
+                    // file_get_contents has not.
+                    // https://github.com/GSA/project-open-data-dashboard/commit/5fd58655?w=1
                     $datajson = curl_from_json($datajson_url, false, false, false);
 
                     if (!$datajson) {
-                        $errors[] = "File not found or couldn't be downloaded";
+                        show_error('Fetch file as string failed. Is the data.json publicly available without redirects from this URL?', 400);
+                        return;
                     }
-
                 }
-
             }
 
 
