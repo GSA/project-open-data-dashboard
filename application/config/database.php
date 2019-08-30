@@ -1,4 +1,16 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+$root_dir = dir_name(__DIR__,2);
+require_once($root_dir . "/vendor/autoload.php");
+
+/**
+ * Use Dotenv to set required environment variables and load .env file in root
+ */
+if (file_exists($root_dir . '/.env')) {
+    $dotenv = new \Dotenv\Dotenv($root_dir);
+    $dotenv->load();
+}
+
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
@@ -48,10 +60,11 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['database'] = empty(getenv('DB_NAME')) ? '' : getenv('DB_NAME');
-$db['default']['username'] = empty(getenv('DB_USER')) ? '' : getenv('DB_USER');
-$db['default']['password'] = empty(getenv('DB_PASSWORD')) ? '' : getenv('DB_PASSWORD');
-$db['default']['hostname'] = empty(getenv('DB_HOST')) ? 'localhost' : getenv('DB_HOST');
+
+$db['default']['hostname'] = getenv('DB_HOST');
+$db['default']['username'] = getenv('DB_USER');
+$db['default']['password'] = getenv('DB_PASSWORD');
+$db['default']['database'] = getenv('DB_NAME');
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
