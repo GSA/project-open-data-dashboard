@@ -1,29 +1,36 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 // Load .env file into environment
-$root_dir = dirname(__DIR__, 2);
+$root_dir = dirname(__DIR__, 2)
+require_once($root_dir . "/vendor/autoload.php");
+
+/**
+ * Use Dotenv to set required environment variables and load .env file in root
+ */
 if (file_exists($root_dir . '/.env')) {
     $dotenv = new \Dotenv\Dotenv($root_dir);
     $dotenv->load();
 }
-
-
-$config['download_dir'] = '/var/www/app/downloads';
-$config['archive_dir']  = '/var/www/app/archive';
+$project_shared_path = getenv(PROJECT_SHARED_PATH)) ?: '/var/www/app';
+$config['download_dir'] = $project_shared_path . 'downloads';
+$config['archive_dir'] = $project_shared_path. '/archive';
 $config['docs_path'] = 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';
+
+$config['s3_bucket'] = getenv(S3_BUCKET) ?: '';
+$config['s3_prefix'] = getenv(S3_PREFIX) ?: '';
 
 $config['import_active'] = true;
 $config['show_all_offices'] = false;
-$config['max_remote_size'] = 5000000;
+$config['max_remote_size'] = 500000000; // 
 
 $config['google_analytics_id'] = ''; // UA-xxxxxxx-xx
 $config['google_analytics_domain'] = ''; // domain.com
 
 // Set local time zone
-date_default_timezone_set(getenv('TIMEZONE') ?: 'America/New_York');
+date_default_timezone_set(getenv('TIMEZONE') ?: 'America/New_York')
 
-$config['tmp_csv_import'] = '/var/www/app/downloads/import.csv';
-$config['pre_approved_admins'] = array('user1', 'user2');
+$config['tmp_csv_import'] = $project_shared_path. 'downloads/import.csv';
+$config['pre_approved_admins'] = explode(",", strtolower(getenv('PRE_APPROVED_ADMINS')));
 
 // Use the local filesystem for uploads, or use S3
 $config['use_local_storage'] = empty(getenv('USE_LOCAL_STORAGE'));
@@ -43,8 +50,21 @@ $config['use_local_storage'] = empty(getenv('USE_LOCAL_STORAGE'));
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost:8000/';
+$protocol = getenv(CONTENT_PROTOCOL) ?: 'http';
 
+$default_host = getenv(DEFAULT_HOST) ?: 'localhost';
+if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST']) {
+    $default_host = $_SERVER['HTTP_HOST'];
+}
+
+$config['base_url'] = $protocol . '://' . $default_host;
+
+$cookie_path_prefix = '';
+
+if (isset($_SERVER['REQUEST_URI']) && 0 === stripos($_SERVER['REQUEST_URI'], '/dashboard')){
+    $config['base_url'] .= '/dashboard';
+    $cookie_path_prefix = 'dashboard';
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -56,11 +76,11 @@ $config['base_url']	= 'http://localhost:8000/';
 */
 
 // OAuth Settings
-$config['github_oauth_id'] = '############';
-$config['github_oauth_secret'] = '############';
+//$config['github_oauth_id'] = getenv('GITHUB_OATH_ID');
+//$config['github_oauth_secret'] = getenv('GITHUB_OATH_SECRET');
 
 // You shouldn't need to edit this unless you haven't specified a 'base_url'
-$config['github_oauth_redirect'] =  $config['base_url'] . '/auth/session/github';
+//$config['github_oauth_redirect'] = $config['base_url'] . '/dashboard/auth/session/github';
 
 
 
@@ -92,7 +112,7 @@ $config['index_page'] = '';
 | 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']	= 'AUTO';
+$config['uri_protocol'] = 'AUTO';
 
 /*
 |--------------------------------------------------------------------------
@@ -117,7 +137,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language'] = 'english';
 
 /*
 |--------------------------------------------------------------------------
@@ -202,11 +222,11 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 | use segment based URLs.
 |
 */
-$config['allow_get_array']		= TRUE;
+$config['allow_get_array'] = TRUE;
 $config['enable_query_strings'] = FALSE;
-$config['controller_trigger']	= 'c';
-$config['function_trigger']		= 'm';
-$config['directory_trigger']	= 'd'; // experimental not currently in use
+$config['controller_trigger'] = 'c';
+$config['function_trigger'] = 'm';
+$config['directory_trigger'] = 'd'; // experimental not currently in use
 
 /*
 |--------------------------------------------------------------------------
@@ -228,7 +248,9 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = (ENVIRONMENT == 'development') ? 2 : 0;
+
+// TODO: set to 1 once logging to STDOUT is enabled
+$config['log_threshold'] = 0;
 
 /*
 |--------------------------------------------------------------------------
@@ -283,6 +305,7 @@ $config['cache_path'] = '';
 */
 $config['encryption_key'] = getenv('ENCRYPTION_KEY');
 
+
 /*
 |--------------------------------------------------------------------------
 | Session Variables
@@ -301,15 +324,16 @@ $config['encryption_key'] = getenv('ENCRYPTION_KEY');
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']		= 'ci_session';
-$config['sess_expiration']		= 7200;
-$config['sess_expire_on_close']	= FALSE;
-$config['sess_encrypt_cookie']	= FALSE;
-$config['sess_use_database']	= FALSE;
-$config['sess_table_name']		= 'ci_sessions';
-$config['sess_match_ip']		= FALSE;
-$config['sess_match_useragent']	= TRUE;
-$config['sess_time_to_update']	= 300;
+$config['sess_cookie_name'] = 'ci_session_dashboard';
+$config['sess_expiration'] = 900;
+$config['sess_expire_on_close'] = FALSE;
+$config['sess_encrypt_cookie'] = FALSE;
+// TODO don't use DB on non-production tests
+$config['sess_use_database'] = TRUE;
+$config['sess_table_name'] = 'ci_sessions';
+$config['sess_match_ip'] = FALSE;
+$config['sess_match_useragent'] = TRUE;
+$config['sess_time_to_update'] = 300;
 
 /*
 |--------------------------------------------------------------------------
@@ -322,10 +346,11 @@ $config['sess_time_to_update']	= 300;
 | 'cookie_secure' =  Cookies will only be set if a secure HTTPS connection exists.
 |
 */
-$config['cookie_prefix']	= "";
-$config['cookie_domain']	= "";
-$config['cookie_path']		= "/";
-$config['cookie_secure']	= FALSE;
+$config['cookie_prefix'] = "";
+$config['cookie_domain'] = "";
+$config['cookie_path'] = "/" . $cookie_path_prefix;
+$config['cookie_secure']	= TRUE;
+$config['cookie_httponly'] 	= TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -412,7 +437,9 @@ $config['rewrite_short_tags'] = FALSE;
 | Comma-delimited, e.g. '10.0.1.200,10.0.1.201'
 |
 */
-$config['proxy_ips'] = '';
+
+// TODO check if not working OK in docker/cloud.gov
+$config['proxy_ips'] = '10.0.0.0/8';
 
 
 /* End of file config.php */
