@@ -6,7 +6,6 @@
 csv/*
 
 .DS_Store
-.env
 
 downloads/*
 uploads/*
