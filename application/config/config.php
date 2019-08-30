@@ -1,7 +1,11 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+// TODO: Why are project_shared_path and root_dir
+// determined differently?
+//   $root_dir = '{{ current_source_symlink }}';
+
 // Load .env file into environment
-$root_dir = dirname(__DIR__, 2)
+$root_dir = dirname(__DIR__, 2);
 require_once($root_dir . "/vendor/autoload.php");
 
 /**
@@ -12,6 +16,7 @@ if (file_exists($root_dir . '/.env')) {
     $dotenv->load();
 }
 $project_shared_path = getenv(PROJECT_SHARED_PATH)) ?: '/var/www/app';
+$config['project_shared_path'] = $project_shared_path;
 $config['download_dir'] = $project_shared_path . 'downloads';
 $config['archive_dir'] = $project_shared_path. '/archive';
 $config['docs_path'] = 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';
@@ -21,7 +26,7 @@ $config['s3_prefix'] = getenv(S3_PREFIX) ?: '';
 
 $config['import_active'] = true;
 $config['show_all_offices'] = false;
-$config['max_remote_size'] = 500000000; // 
+$config['max_remote_size'] = 500000000;
 
 $config['google_analytics_id'] = ''; // UA-xxxxxxx-xx
 $config['google_analytics_domain'] = ''; // domain.com
