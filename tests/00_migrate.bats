@@ -12,8 +12,8 @@
     [[ ${#lines[@]} -eq 1  ]]
 }
 
-@test "curl works" {
-    curl http://localhost/offices/qa --silent | 
+@test "GET w/ curl of /offices/qa works" {
+    curl http://localhost/offices/qa --silent --fail | 
         grep -q "<title>Project Open Data Dashboard</title>"
 }
 
