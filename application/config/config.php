@@ -1,5 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+// config.php from project source code - keep line for Ansible tests
+
 // TODO: Why are project_shared_path and root_dir
 // determined differently?
 //   $root_dir = '{{ current_source_symlink }}';
