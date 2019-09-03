@@ -17,14 +17,14 @@ if (file_exists($root_dir . '/.env')) {
     $dotenv = new \Dotenv\Dotenv($root_dir);
     $dotenv->load();
 }
-$project_shared_path = getenv(PROJECT_SHARED_PATH) ?: '/var/www/app';
+$project_shared_path = getenv('PROJECT_SHARED_PATH') ?: '/var/www/app';
 $config['project_shared_path'] = $project_shared_path;
 $config['download_dir'] = $project_shared_path . 'downloads';
 $config['archive_dir'] = $project_shared_path. '/archive';
 $config['docs_path'] = 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';
 
-$config['s3_bucket'] = getenv(S3_BUCKET) ?: '';
-$config['s3_prefix'] = getenv(S3_PREFIX) ?: '';
+$config['s3_bucket'] = getenv('S3_BUCKET') ?: '';
+$config['s3_prefix'] = getenv('S3_PREFIX') ?: '';
 
 $config['import_active'] = true;
 $config['show_all_offices'] = false;
@@ -57,9 +57,9 @@ $config['use_local_storage'] = empty(getenv('USE_LOCAL_STORAGE'));
 | path to your installation.
 |
 */
-$protocol = getenv(CONTENT_PROTOCOL) ?: 'http';
+$protocol = getenv('CONTENT_PROTOCOL') ?: 'http';
 
-$default_host = getenv(DEFAULT_HOST) ?: 'localhost';
+$default_host = getenv('DEFAULT_HOST') ?: 'localhost';
 if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST']) {
     $default_host = $_SERVER['HTTP_HOST'];
 }
