@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$root_dir = dir_name(__DIR__,2);
+$root_dir = dirname(__DIR__,2);
 require_once($root_dir . "/vendor/autoload.php");
 
 /**
