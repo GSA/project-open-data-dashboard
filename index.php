@@ -137,6 +137,7 @@ if (defined('ENVIRONMENT'))
 	// Set the current directory correctly for CLI requests
 	if (defined('STDIN'))
 	{
+		// TODO: In Ansible, was: chdir("{{ current_source_symlink }}");
 		chdir(dirname(__FILE__));
 	}
 
@@ -170,6 +171,7 @@ if (defined('ENVIRONMENT'))
 	define('BASEPATH', str_replace("\\", "/", $system_path));
 
 	// Path to the front controller (this file)
+	// TODO: in Ansible, was: define('FCPATH', "{{ current_source_symlink }}".'/');
 	define('FCPATH', str_replace(SELF, '', __FILE__));
 
 	// Name of the "system folder"

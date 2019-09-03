@@ -17,7 +17,7 @@ if (file_exists($root_dir . '/.env')) {
     $dotenv = new \Dotenv\Dotenv($root_dir);
     $dotenv->load();
 }
-$project_shared_path = getenv(PROJECT_SHARED_PATH)) ?: '/var/www/app';
+$project_shared_path = getenv(PROJECT_SHARED_PATH) ?: '/var/www/app';
 $config['project_shared_path'] = $project_shared_path;
 $config['download_dir'] = $project_shared_path . 'downloads';
 $config['archive_dir'] = $project_shared_path. '/archive';
@@ -34,9 +34,9 @@ $config['google_analytics_id'] = ''; // UA-xxxxxxx-xx
 $config['google_analytics_domain'] = ''; // domain.com
 
 // Set local time zone
-date_default_timezone_set(getenv('TIMEZONE') ?: 'America/New_York')
+date_default_timezone_set(getenv('TIMEZONE') ?: 'America/New_York');
 
-$config['tmp_csv_import'] = $project_shared_path. 'downloads/import.csv';
+$config['tmp_csv_import'] = $project_shared_path . 'downloads/import.csv';
 $config['pre_approved_admins'] = explode(",", strtolower(getenv('PRE_APPROVED_ADMINS')));
 
 // Use the local filesystem for uploads, or use S3
