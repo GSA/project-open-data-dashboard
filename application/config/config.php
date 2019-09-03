@@ -257,7 +257,7 @@ $config['directory_trigger'] = 'd'; // experimental not currently in use
 */
 
 // TODO: set to 1 once logging to STDOUT is enabled
-$config['log_threshold'] = 0;
+$config['log_threshold'] = (ENVIRONMENT == 'development') ? 2 : 0;
 
 /*
 |--------------------------------------------------------------------------
