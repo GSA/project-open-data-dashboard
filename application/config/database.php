@@ -91,9 +91,9 @@ if (
 }
 
 if ($db['default']['db_debug']) {
-   log_message('debug', 'Value of db.default.db_debug value is TRUE';
+   log_message('debug', 'Value of db.default.db_debug value is TRUE');
 } else {
-   log_message('debug', 'Value of db.default.db_debug value is FALSE';
+   log_message('debug', 'Value of db.default.db_debug value is FALSE');
 }
 
 
