@@ -88,14 +88,8 @@ if (
     (strtolower(getenv('DB_DEBUG')) == 'false')
    ) {
     $db['default']['db_debug']=FALSE;
+   log_message('debug', 'Setting value of db.default.db_debug value is FALSE');
 }
-
-if ($db['default']['db_debug']) {
-   log_message('debug', 'Value of db.default.db_debug value is TRUE');
-} else {
-   log_message('debug', 'Value of db.default.db_debug value is FALSE');
-}
-
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

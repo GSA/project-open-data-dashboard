@@ -39,9 +39,18 @@ date_default_timezone_set(getenv('TIMEZONE') ?: 'America/New_York');
 $config['tmp_csv_import'] = $project_shared_path . 'downloads/import.csv';
 $config['pre_approved_admins'] = explode(",", strtolower(getenv('PRE_APPROVED_ADMINS')));
 
-// Use the local filesystem for uploads, or use S3
-$config['use_local_storage'] = empty(getenv('USE_LOCAL_STORAGE'));
-
+// `use_local_storage`: Use the local filesystem for uploads, or use S3
+// We default to TRUE, setting to FALSE only if env is 
+// is explicitly FALSE (case insenstive)
+$config['use_local_storage'] = TRUE;
+if (
+    !empty(getenv('USE_LOCAL_STORAGE')) and
+    is_string(getenv('USE_LOCAL_STORAGE')) and 
+    (strtolower(getenv('USE_LOCAL_STORAGE')) == 'false')
+   ) {
+    $config['use_local_storage'] = TRUE;
+    log_message('debug', 'Setting use_local_storage to TRUE');
+}
 
 /*
 |--------------------------------------------------------------------------
