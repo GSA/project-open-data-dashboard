@@ -69,7 +69,6 @@ $db['default']['hostname'] = getenv('DB_HOST');
 $db['default']['username'] = getenv('DB_USER');
 $db['default']['password'] = getenv('DB_PASSWORD');
 $db['default']['database'] = getenv('DB_NAME');
-$db['default']['db_debug'] = getenv('DB_DEBUG') === "TRUE" ? TRUE : FALSE;
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
@@ -80,6 +79,23 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
+// db_debug is TRUE unless explicity set as a string "false"
+// set to FALSE in production and when testing w/o a database
+$db['default']['db_debug'] = TRUE;
+if (
+    !empty(getenv('DB_DEBUG')) and
+    is_string(getenv('DB_DEBUG')) and 
+    (strtolower(getenv('DB_DEBUG')) == 'false')
+   ) {
+    $db['default']['db_debug']=FALSE;
+}
+
+if ($db['default']['db_debug']) {
+   log_message('debug', 'Value of db.default.db_debug value is TRUE';
+} else {
+   log_message('debug', 'Value of db.default.db_debug value is FALSE';
+}
+
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */
