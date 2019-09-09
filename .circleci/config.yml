@@ -9,17 +9,16 @@ jobs:
           DB_USER: root
           DB_PASSWORD: mysql
           DB_HOST: 127.0.0.1
-          ENCRYPTION_KEY: not-secure-encryption-key
           DB_DEBUG: TRUE
-          S3_BUCKET: foobar
-          S3_PREFIX: prefix
-          USE_LOCAL_STORAGE: true
+          DEFAULT_HOST: localhost
           ENCRYPTION_KEY: not-secure-encryption-key
+          ENVIRONMENT: development
           PROTOCOL: http
           PROJECT_SHARED_PATH: /var/www/app
           PRE_APPROVED_ADMINS: "user1,user2,admin3"
-          DEFAULT_HOST: localhost
-          ENVIRONMENT: development
+          S3_BUCKET: foobar
+          S3_PREFIX: prefix
+          USE_LOCAL_STORAGE: true
       - image: mysql:5.7
         environment:
           MYSQL_ROOT_PASSWORD: mysql
