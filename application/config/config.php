@@ -19,8 +19,8 @@ if (file_exists($root_dir . '/.env')) {
 }
 $project_shared_path = getenv('PROJECT_SHARED_PATH') ?: '/var/www/app';
 $config['project_shared_path'] = $project_shared_path;
-$config['download_dir'] = $project_shared_path . 'downloads';
-$config['archive_dir'] = $project_shared_path. '/archive';
+$config['download_dir'] = $project_shared_path . '/downloads';
+$config['archive_dir'] = $project_shared_path . '/archive';
 $config['docs_path'] = 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';
 
 $config['s3_bucket'] = getenv('S3_BUCKET') ?: '';
@@ -36,7 +36,7 @@ $config['google_analytics_domain'] = ''; // domain.com
 // Set local time zone
 date_default_timezone_set(getenv('TIMEZONE') ?: 'America/New_York');
 
-$config['tmp_csv_import'] = $project_shared_path . 'downloads/import.csv';
+$config['tmp_csv_import'] = $project_shared_path . '/downloads/import.csv';
 $config['pre_approved_admins'] = explode(",", strtolower(getenv('PRE_APPROVED_ADMINS')));
 
 // `use_local_storage`: Use the local filesystem for uploads, or use S3
@@ -48,8 +48,8 @@ if (
     is_string(getenv('USE_LOCAL_STORAGE')) and 
     (strtolower(getenv('USE_LOCAL_STORAGE')) == 'false')
    ) {
-    $config['use_local_storage'] = TRUE;
-    log_message('debug', 'Setting use_local_storage to TRUE');
+    $config['use_local_storage'] = FALSE;
+    log_message('debug', 'Setting use_local_storage to FALSE');
 }
 
 /*
@@ -344,7 +344,6 @@ $config['sess_cookie_name'] = 'ci_session_dashboard';
 $config['sess_expiration'] = 900;
 $config['sess_expire_on_close'] = FALSE;
 $config['sess_encrypt_cookie'] = FALSE;
-// TODO don't use DB on non-production tests
 $config['sess_use_database'] = TRUE;
 $config['sess_table_name'] = 'ci_sessions';
 $config['sess_match_ip'] = FALSE;

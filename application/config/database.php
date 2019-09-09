@@ -62,13 +62,10 @@ if (file_exists($root_dir . '/.env')) {
 $active_group = 'default';
 $active_record = TRUE;
 
-// TODO: These all might be safer written as, say:
-// 		db['default']['hostname'] = getenv('DB_HOST') ?: '';
-// so the value is an empty string instead of FALSE
-$db['default']['hostname'] = getenv('DB_HOST');
-$db['default']['username'] = getenv('DB_USER');
-$db['default']['password'] = getenv('DB_PASSWORD');
-$db['default']['database'] = getenv('DB_NAME');
+$db['default']['hostname'] = getenv('DB_HOST') ?: '';
+$db['default']['username'] = getenv('DB_USER') ?: '';
+$db['default']['password'] = getenv('DB_PASSWORD' ?: '');
+$db['default']['database'] = getenv('DB_NAME') ?: '';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
