@@ -109,9 +109,3 @@ following steps no longer work:
 
 
 Currently this tool does not handle large files in a memory efficient way. If you are unable to utilize a high amount of memory and are at risk of timeouts, you should set the maximum file size that the application can handle so it will avoid large files and fail more gracefully. The maximum size of JSON files to parse can be set with the `max_remote_size` option in config.php
-
-## Issues to be addressed in cloud.gov migration:
-
-* Your Github OAuth Client ID, Client Secret, and redirect URL for <a href="https://github.com/settings/applications/new">GitHub authentication</a> 
-* The path to where you want to store the archival json files (`archive_dir`) - give this directory adequate permissions for your server to write to
-* You can pre-approave github users to have admin rights by adding their github username to the array in the `pre_approved_admins` option
