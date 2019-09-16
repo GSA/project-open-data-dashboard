@@ -67,12 +67,7 @@ if (
 |
 */
 $protocol = getenv('CONTENT_PROTOCOL') ?: 'http';
-
 $default_host = getenv('DEFAULT_HOST') ?: 'localhost';
-if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST']) {
-    $default_host = $_SERVER['HTTP_HOST'];
-}
-
 $config['base_url'] = $protocol . '://' . $default_host;
 
 $cookie_path_prefix = '';
