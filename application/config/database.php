@@ -3,14 +3,6 @@
 $root_dir = dirname(__DIR__,2);
 require_once($root_dir . "/vendor/autoload.php");
 
-/**
- * Use Dotenv to set required environment variables and load .env file in root
- */
-if (file_exists($root_dir . '/.env')) {
-    $dotenv = new \Dotenv\Dotenv($root_dir);
-    $dotenv->load();
-}
-
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
