@@ -2,72 +2,27 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: circleci/php:apache-stretch
-        environment:
-          DB_NAME: dashboard
-          DB_USER: root
-          DB_PASSWORD: mysql
-          DB_HOST: 127.0.0.1
-          DB_DEBUG: TRUE
-          DEFAULT_HOST: localhost
-          ENCRYPTION_KEY: not-secure-encryption-key
-          ENVIRONMENT: development
-          PROTOCOL: http
-          PROJECT_SHARED_PATH: /var/www/app
-          PRE_APPROVED_ADMINS: "user1,user2,admin3"
-          S3_BUCKET: foobar
-          S3_PREFIX: prefix
-          USE_LOCAL_STORAGE: true
-      - image: mysql:5.7
-        environment:
-          MYSQL_ROOT_PASSWORD: mysql
-          MYSQL_DATABASE: dashboard
+    machine: true
     steps:
       - checkout
       - run: 
-          name: Dump env vars to .env file for this work on CircleCI
-          command: env | egrep '(DB_|ENCRYPTION)' > .env
-      - run: sudo docker-php-ext-install mysqli
-      - restore_cache:
-          keys:
-            - v1-composer-{{ checksum "composer.lock" }}
-            - v1-composer-
-      - run: composer --no-interaction install --no-dev
-      - save_cache:
-          key: v1-composer-{{ checksum "composer.lock" }}
-          paths:
-            - vendor
-
-      # Setup Apache2 in circleCI
-      - run: sudo a2enmod rewrite
-      - run: sudo ln -s /home/circleci/project /var/www/app
-      - run: sudo sed -i 's./var/www/html./var/www/app.' /etc/apache2/sites-available/000-default.conf
-      - run: sudo service apache2 start
-
-      # Set up and run tests
-      - run: 
-          name: Set /etc/hosts to resolved `database` 
-          command: echo 127.0.0.1 database | sudo tee -a /etc/hosts
+          name: Build docker image
+          command: docker-compose build app
       - run:
-          name: Install bats-core
-          command: |
-            git clone https://github.com/bats-core/bats-core.git /tmp/bats-core && \
-              cd /tmp/bats-core && \
-              sudo ./install.sh /usr/local && \
-              /bin/rm -rf /tmp/bats-core
-      - run: 
-          name: Run bats tests
-          command: |
-            bats -r tests/
-
+          name: Install composer dependencies
+          command: bin/composer install --no-dev
+      - run:
+          name: Start docker-compose containers
+          command: docker-compose up -d
+      - run:
+          name: Test with bats
+          command: docker-compose exec app bats -r test/
 
 workflows:
   version: 2
   commit:
     jobs:
       - build
-
   weekly:
     triggers:
       - schedule:
@@ -76,6 +31,5 @@ workflows:
             branches:
               only:
                 - master
-
     jobs:
       - build
