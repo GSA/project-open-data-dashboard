@@ -64,30 +64,13 @@ Start up docker containers.
 
 Test with bats (and run the migrations):
 
-    docker-compose exec app bats -r test/
+    docker-compose exec app bats -r tests/
 
 Open your browser to [localhost:8000](http://localhost:8000/).
 
+### CircleCI testing
 
-### CI and Testing
-
-You can test the CircleCI smoke test locally by installing the [CircleCI CLI](https://circleci.com/docs/2.0/local-cli/), then running:
-
-    $ circleci local execute
-    Docker image digest: sha256:3021b36e5d65336f2da1106e53fdbfa9c133ae021747c40dd6ea23e899635481
-    ====>> Spin up Environment
-    ...
-    bats -r test/
-
-    1..5
-    ok 1 Migration runs initially w long output
-    ok 2 Migration runs subsequently w short output
-    ok 3 curl works
-    ok 4 Migration should fail when env is empty
-    ok 5 Migration should work when proper dotenv is used
-    Success!
-
-Should work the same over at CircleCI itself.
+All pushes to GitHub are integration tested with our [CircleCI tests](https://circleci.com/gh/GSA/project-open-data-dashboard).
 
 ### Updating composer dependencies
 

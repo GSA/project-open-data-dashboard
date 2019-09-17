@@ -69,9 +69,10 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 // set db_debug to FALSE in production and when testing w/o a database
+//$db['default']['db_debug'] = FALSE;
 $db['default']['db_debug'] = FALSE;
 if (filter_var(getenv('DB_DEBUG'), FILTER_VALIDATE_BOOLEAN)) {
-    $config['db_debug'] = TRUE;
+    $db['default']['db_debug'] = TRUE;
 }
 
 /* End of file database.php */
