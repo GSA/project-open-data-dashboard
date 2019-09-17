@@ -16,7 +16,7 @@ jobs:
           command: docker-compose up -d
       - run:
           name: Wait for containers to ready
-          command: for i in `seq 1 10`; do docker-compose exec app true && break; echo "Waiting for docker ready..."; sleep 2; done
+          command: for i in `seq 1 10`; do docker-compose exec app true && exit 0; echo "Waiting for docker ready..."; sleep 2; done; exit 1
       - run:
           name: Wait for database to ready
           command: docker-compose exec app docker/wait_for_db
