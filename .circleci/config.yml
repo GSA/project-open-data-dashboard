@@ -15,8 +15,11 @@ jobs:
           name: Start docker-compose containers
           command: docker-compose up -d
       - run:
+          name: Sleep 10s for containers to ready
+          command: sleep 10
+      - run:
           name: Test with bats
-          command: docker-compose exec app bats -r test/
+          command: docker-compose exec app bats -r tests/
 
 workflows:
   version: 2
