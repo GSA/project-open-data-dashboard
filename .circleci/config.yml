@@ -15,8 +15,11 @@ jobs:
           name: Start docker-compose containers
           command: docker-compose up -d
       - run:
-          name: Sleep 10s for containers to ready
-          command: sleep 10
+          name: Wait for containers to ready
+          command: for i in `seq 1 10`; do docker-compose exec app true && break; echo "Waiting for docker ready..."; sleep 2; done
+      - run:
+          name: Wait for database to ready
+          command: docker-compose exec app docker/wait_for_db
       - run:
           name: Test with bats
           command: docker-compose exec app bats -r tests/

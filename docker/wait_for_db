@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+until (echo 2>/dev/null > /dev/tcp/database/3306)
+do
+  echo "Startup: Waiting for MySQL..."
+  sleep 1
+done
+
+exec "$@"
