@@ -1,4 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+$root_dir = dirname(__DIR__,2);
+require_once($root_dir . "/vendor/autoload.php");
+
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
@@ -22,6 +26,8 @@
 |				 to the table name when using the  Active Record class
 |	['pconnect'] TRUE/FALSE - Whether to use a persistent connection
 |	['db_debug'] TRUE/FALSE - Whether database errors should be displayed.
+|				 FALSE also means migrations/app works regardless of actual
+|				 database availability.
 |	['cache_on'] TRUE/FALSE - Enables/disables query caching
 |	['cachedir'] The path to the folder where cache files should be stored
 |	['char_set'] The character set used in communicating with the database
@@ -48,14 +54,13 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = '';
-$db['default']['password'] = '';
-$db['default']['database'] = '';
+$db['default']['hostname'] = getenv('DB_HOST') ?: '';
+$db['default']['username'] = getenv('DB_USER') ?: '';
+$db['default']['password'] = getenv('DB_PASSWORD' ?: '');
+$db['default']['database'] = getenv('DB_NAME') ?: '';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = (ENVIRONMENT == 'development') ? TRUE : FALSE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';
 $db['default']['char_set'] = 'utf8';
@@ -63,7 +68,12 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
-
+// set db_debug to FALSE in production and when testing w/o a database
+//$db['default']['db_debug'] = FALSE;
+$db['default']['db_debug'] = FALSE;
+if (filter_var(getenv('DB_DEBUG'), FILTER_VALIDATE_BOOLEAN)) {
+    $db['default']['db_debug'] = TRUE;
+}
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

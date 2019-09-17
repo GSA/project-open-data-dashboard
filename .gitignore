@@ -4,27 +4,21 @@
 */cache/*
 */cache/!index.html
 csv/*
-application/config/config.php
-application/config/gearman.php
 
-.htaccess
 .DS_Store
+.env
 
-application/config/database.php
 downloads/*
 uploads/*
 archive/error_log/*
-archive/datajson/201*
-archive/digitalstrategy/201*
+archive/datajson/20*
+archive/digitalstrategy/20*
 archive/datajson-lines/*
 archive/curl_header
-
-application/config/upload.php
-
-/index.php
 
 composer.phar
 vendor
 
 # Intellij
 .idea
+

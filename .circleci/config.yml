@@ -2,29 +2,33 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: circleci/php:7.1-jessie-node
+    machine: true
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-composer-{{ checksum "composer.lock" }}
-            - v1-composer-
-      - run: composer --no-interaction install
-      - save_cache:
-          key: v1-composer-{{ checksum "composer.lock" }}
-          paths:
-            - vendor
-      - run: sudo npm install -g snyk
-      - run: snyk test
-
+      - run: 
+          name: Build docker image
+          command: docker-compose build app
+      - run:
+          name: Install composer dependencies
+          command: bin/composer install --no-dev
+      - run:
+          name: Start docker-compose containers
+          command: docker-compose up -d
+      - run:
+          name: Wait for containers to ready
+          command: for i in `seq 1 10`; do docker-compose exec app true && exit 0; echo "Waiting for docker ready..."; sleep 2; done; exit 1
+      - run:
+          name: Wait for database to ready
+          command: docker-compose exec app docker/wait_for_db
+      - run:
+          name: Test with bats
+          command: docker-compose exec app bats -r tests/
 
 workflows:
   version: 2
   commit:
     jobs:
       - build
-
   weekly:
     triggers:
       - schedule:
@@ -33,6 +37,5 @@ workflows:
             branches:
               only:
                 - master
-
     jobs:
       - build

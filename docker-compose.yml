@@ -1,0 +1,31 @@
+version: "3.0"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - database
+    environment:
+      DB_NAME: dashboard
+      DB_USER: root
+      DB_PASSWORD: mysql
+      DB_HOST: database
+      ENCRYPTION_KEY: not-secure-encryption-key
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/app:delegated
+      - uploads:/var/www/app/uploads
+
+  database:
+    image: mysql:5.7
+    volumes:
+      - database_data:/var/lib/mysql:delegated
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: dashboard
+
+volumes:
+  database_data:
+  uploads:
