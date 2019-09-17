@@ -68,16 +68,10 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
-// db_debug is TRUE unless explicity set as a string "false"
-// set to FALSE in production and when testing w/o a database
-$db['default']['db_debug'] = TRUE;
-if (
-    !empty(getenv('DB_DEBUG')) and
-    is_string(getenv('DB_DEBUG')) and 
-    (strtolower(getenv('DB_DEBUG')) == 'false')
-   ) {
-    $db['default']['db_debug']=FALSE;
-   log_message('debug', 'Setting value of db.default.db_debug value is FALSE');
+// set db_debug to FALSE in production and when testing w/o a database
+$db['default']['db_debug'] = FALSE;
+if (filter_var(getenv('DB_DEBUG'), FILTER_VALIDATE_BOOLEAN)) {
+    $config['db_debug'] = TRUE;
 }
 
 /* End of file database.php */
