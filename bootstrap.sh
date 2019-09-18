@@ -6,6 +6,7 @@ fail() {
   exit 1
 }
 
+mkdir -p $APP_DIR/uploads
 chmod 755 $APP_DIR/uploads
 
 SECRETS=$(echo $VCAP_SERVICES | jq -r '.["user-provided"][] | select(.name == "secrets") | .credentials') ||
