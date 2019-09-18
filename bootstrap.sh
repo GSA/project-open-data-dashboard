@@ -25,4 +25,11 @@ for e in DB_NAME DB_USER DB_PASSWORD DB_HOST DB_PORT ENCRYPTION_KEY; do
   echo "$e=${!e}" >> $APP_DIR/.env
 done 
 
+if echo "$VCAP_APPLICATION" | jq --exit-status '.uris[0]' > /dev/null
+then 
+  uri=$(echo "$VCAP_APPLICATION" | jq -r '.uris[0]')
+  echo "DEFAULT_HOST=$uri" >> $APP_DIR/.env
+  echo "CONTENT_PROTOCOL=https" >> $APP_DIR/.env
+fi
+
 which apache2-foreground && exec "apache2-foreground" || exit 0
