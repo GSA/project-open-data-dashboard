@@ -914,32 +914,11 @@ class campaign_model extends CI_Model
                     $datajson_header['download_content_length'] > 0 &&
                     $datajson_header['download_content_length'] < $max_remote_size)
             ) {
-
-                // Load the JSON
-                $opts = array(
-                    'http' => array(
-                        'method' => "GET",
-                        'user_agent' => "Data.gov data.json crawler",
-                        'follow_location' => false,
-                    )
-                );
-
-                $context = stream_context_create($opts);
-
-                $datajson = @file_get_contents($datajson_url, false, $context, -1, $max_remote_size + 1);
-
-                if ($datajson == false) {
-
-                    $datajson = curl_from_json($datajson_url, false, false);
-
-                    if (!$datajson) {
-                        $errors[] = "File not found or couldn't be downloaded";
-                    }
-
+                $datajson = curl_from_json($datajson_url, false, false);
+                if (!$datajson) {
+                    $errors[] = "File not found or couldn't be downloaded";
                 }
-
             }
-
 
             if (!empty($datajson) && (empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < 0)) {
                 $datajson_header['download_content_length'] = strlen($datajson);
