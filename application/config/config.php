@@ -28,7 +28,7 @@ $config['s3_prefix'] = getenv('S3_PREFIX') ?: '';
 
 $config['import_active'] = true;
 $config['show_all_offices'] = false;
-$config['max_remote_size'] = int(127 * 1E6); // 127MB
+$config['max_remote_size'] = (int)(127 * 1E6); // 127MB
 
 $config['google_analytics_id'] = ''; // UA-xxxxxxx-xx
 $config['google_analytics_domain'] = ''; // domain.com

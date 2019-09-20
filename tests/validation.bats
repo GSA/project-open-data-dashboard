@@ -4,7 +4,7 @@
 # TARGET=tk bats validation.bats
 # or 
 # docker-compose exec -e TARGET=dc app bats -r tests/validation.bats
-case "${TARGET:-tk}" in
+case "${TARGET:-dc}" in
   docker-compose | dc)
     CMD="curl"
     URLROOT="http://localhost"
