@@ -21,6 +21,9 @@ jobs:
           name: Wait for database to ready
           command: docker-compose exec app docker/wait_for_db
       - run:
+          name: Make uploads writeable
+          command: chmod 777 ./uploads
+      - run:
           name: Test with bats
           command: docker-compose exec app bats -r tests/
 

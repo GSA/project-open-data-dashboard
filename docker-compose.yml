@@ -16,7 +16,6 @@ services:
       - "8000:80"
     volumes:
       - .:/var/www/app:delegated
-      - uploads:/var/www/app/uploads
 
   database:
     image: mysql:5.7
@@ -28,4 +27,3 @@ services:
 
 volumes:
   database_data:
-  uploads:
