@@ -7,7 +7,7 @@ fail() {
 }
 
 mkdir -p $APP_DIR/uploads
-chmod 755 $APP_DIR/uploads
+chmod 777 $APP_DIR/uploads
 
 SECRETS=$(echo $VCAP_SERVICES | jq -r '.["user-provided"][] | select(.name == "secrets") | .credentials') ||
   fail "Unable to parse SECRETS from VCAP_SERVICES"
