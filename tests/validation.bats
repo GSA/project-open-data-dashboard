@@ -20,6 +20,8 @@ case "${TARGET:-dc}" in
     ;;
 esac
 
+INVALID_URL_WARNING='Invalid URL'
+
 setup() {
   if [[ "$BATS_TEST_NUMBER" -eq 1 ]]; then
     echo "# CMD: $CMD URLROOT: $URLROOT" >&3
@@ -88,30 +90,23 @@ setup() {
 @test "Redir to 127.0.0.1:443 should not be a valid URL" {
   run $CMD -s \
     $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=http://redir.xpoc.pro/127.0.0.1:443
-  echo ${lines[5]} | grep -q '"The URL does not appear to be valid"'
+  echo ${lines[5]} | grep -q "$INVALID_URL_WARNING"
 }
 
 @test "Redir to 127.0.0.1:442 should not be a valid URL" {
   run $CMD -s \
     $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=http://redir.xpoc.pro/127.0.0.1:442
-  echo ${lines[5]} | grep -q '"The URL does not appear to be valid"'
+  echo ${lines[5]} | grep -q "$INVALID_URL_WARNING"
 }
 
 @test "Redir to http://169.254.169.254/latest/meta-data/hostname should not be valid" {
-  if [ "$TARGET" != "production" ]; then
-   : # skip
-  fi
   run $CMD -s \
     $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=http://redir.xpoc.pro/169.254.169.254/latest/meta-data/hostname
-  echo ${lines[5]} | grep -q '"The URL does not appear to be valid"'
-#  echo ${lines[*]: -2:1} | grep -vq '"download_content_length": 37'
+  echo ${lines[5]} | grep -q "$INVALID_URL_WARNING"
 }
 
 @test "GET of http://169.254.169.254/latest/meta-data/hostname should not be valid" {
-  if [ "$TARGET" != "production" ]; then
-    : # skip
-  fi
   run $CMD -s \
     $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=http://169.254.169.254/latest/meta-data/hostname
-  echo ${lines[5]} | grep -q '"The URL does not appear to be valid"'
+  echo ${lines[5]} | grep -q "$INVALID_URL_WARNING"
 }
