@@ -890,7 +890,7 @@ class campaign_model extends CI_Model
         }
         log_message('debug', 'datajson_url after processing: ' . $datajson_url . " or " . ($datajson_url ? "true" : "false"));
         if ( $datajson_url === false ) {
-            $errors[] = "The URL does not appear to be valid";
+            $errors[] = "Invalid URL. Be sure to use http/https schemes and public, routable hosts";
             $response = array(
                 'raw_valid_json' => false,
                 'valid_json' => false,
