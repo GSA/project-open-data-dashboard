@@ -27,9 +27,12 @@ done
 
 if echo "$VCAP_APPLICATION" | jq --exit-status '.uris[0]' > /dev/null
 then 
+  # use defaults for cloud foundry
   uri=$(echo "$VCAP_APPLICATION" | jq -r '.uris[0]')
   echo "DEFAULT_HOST=$uri" >> $APP_DIR/.env
   echo "CONTENT_PROTOCOL=https" >> $APP_DIR/.env
+  echo "PROJECT_SHARED_PATH=$APP_DIR" >> $APP_DIR/.env
+  echo "USE_LOCAL_STORAGE=true" >> $APP_DIR/.env
 fi
 
 which apache2-foreground && exec "apache2-foreground" || exit 0
