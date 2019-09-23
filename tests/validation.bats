@@ -13,10 +13,15 @@ case "${TARGET:-dc}" in
     CMD="curl"
     URLROOT="https://labs.data.gov/dashboard"
     ;;
-  test-kitchen | tk | * )
+  test-kitchen | tk)
     DOCKER=$(docker ps -f  'name=dashboardwebubuntu1804' -q)
     CMD="docker exec $DOCKER curl -k"
     URLROOT="https://localhost"
+    ;;
+  cloud-gov | cg)
+    ROUTE=$(cf apps | awk '/^app/ { print $NF }')
+    CMD="curl"
+    URLROOT="https://$ROUTE"
     ;;
 esac
 
