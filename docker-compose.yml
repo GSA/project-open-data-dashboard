@@ -15,7 +15,7 @@ services:
             {
               "name": "database",
               "credentials": {
-                "db_name": "dashbaord",
+                "db_name": "dashboard",
                 "host": "database",
                 "password": "mysql",
                 "port": "3306",
