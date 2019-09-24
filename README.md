@@ -135,3 +135,41 @@ following steps no longer work:
 
 
 Currently this tool does not handle large files in a memory efficient way. If you are unable to utilize a high amount of memory and are at risk of timeouts, you should set the maximum file size that the application can handle so it will avoid large files and fail more gracefully. The maximum size of JSON files to parse can be set with the `max_remote_size` option in config.php
+
+# Database restore
+
+## docker compose:
+
+```
+cat downloads/cleaned_database.sql | docker-compose run   --rm   database   mysql --host=database --user=root --password=mysql dashboard
+```
+
+
+
+# What about S3?
+
+S3 is used in a few places: 
+- for put/fetch of csv_to_json
+- for archiving data.json and digitalstrategy
+
+The `archive_file` function will use config[use_local_storage] anytime it's called
+but the logic doesn't apply when to `datajson_lines`. Talk about poor encapsulation.
+
+It's also used in the office_detail view. 
+
+This will require 2 buckets, since they have different ACLs attached.
+
+Also, not all uploads use S3, or all use of archive.
+
+- campaign.php
+  - `public function csv_to_json($schema = null)`
+    - once to PUT the file
+    - again to GET the file
+    - There is no remove from S3
+  - We archive digitalstrategy.json and data.json using `archive_file` which puts a fetch date in the URL.
+- campaign_model has 
+  - `archive_file` which calls  `archive_to_s3
+  - `archive_to_s3` which calls put_to_s3 and stores with a PUBLIC acl
+  - `put_to_s3` which stores private by default
+- views/office_detail
+  - Builds a URL based on values of `config/s3_bucket`
