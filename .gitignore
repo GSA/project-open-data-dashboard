@@ -17,7 +17,7 @@ archive/datajson-lines/*
 archive/curl_header
 
 composer.phar
-vendor
+/vendor
 
 # Intellij
 .idea
