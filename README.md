@@ -140,8 +140,19 @@ Currently this tool does not handle large files in a memory efficient way. If yo
 
 ## docker compose:
 
+
+
 ```
+docker-compose down -v
+docker-compose build
+docker-compose up -d
+# migrate
+docker-compose exec app bats tests/00_migrate.bats
+# upload cleaned DB:
 cat downloads/cleaned_database.sql | docker-compose run   --rm   database   mysql --host=database --user=root --password=mysql dashboard
+# test in browser view USDA page:
+curl http://localhost:8000/offices/detail/49015/2018-08-31
+
 ```
 
 
