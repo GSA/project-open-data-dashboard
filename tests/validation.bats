@@ -87,6 +87,8 @@ setup() {
 }
 
 # Note: 248 length is the HTTP -> HTTPS redirect message in production
+# redir.xpoc.pro is a redirection service run by Evgeniy Yakovchuk
+# (https://github.com/sp1d3r), who reported the SSRF issue.
 @test "Redir to 127.0.0.1:443 should not be a valid URL" {
   run $CMD -s \
     $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=http://redir.xpoc.pro/127.0.0.1:443
