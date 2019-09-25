@@ -306,6 +306,9 @@ function filter_json( $source_datajson, $dataset_array = false ) {
 
 
 function filter_remote_url($url, $allowed_schemes = array('http', 'https')) {
+    if (empty($url)) {
+        return null ;
+    }
     $url = filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED);
     // ban non http/https:
     $scheme = parse_url($url, PHP_URL_SCHEME);

@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+MAX=10
+SLEEP=2
+for i in `seq 1 $MAX`; do 
+  (echo 2>/dev/null > /dev/tcp/database/3306) && exit 0
+  echo "Startup: Waiting for MySQL..."
+  sleep $SLEEP
+done
+exit 1

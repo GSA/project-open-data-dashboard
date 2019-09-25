@@ -878,6 +878,7 @@ class campaign_model extends CI_Model
 
     public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null)
     {
+        log_message('debug', 'datajson_url before processing: ' . $datajson_url);
         $datajson_url = filter_remote_url($datajson_url);
 
         if ($datajson_url) {
@@ -887,7 +888,17 @@ class campaign_model extends CI_Model
                 $datajson_url = false;
             }
         }
-
+        log_message('debug', 'datajson_url after processing: ' . $datajson_url . " or " . ($datajson_url ? "true" : "false"));
+        if ( $datajson_url === false ) {
+            $errors[] = "Invalid URL. Be sure to use http/https schemes and public, routable hosts";
+            $response = array(
+                'raw_valid_json' => false,
+                'valid_json' => false,
+                'valid' => false,
+                'fail' => $errors
+            );
+            return $response;
+       }
         if ($datajson_url) {
 
             $errors = array();
@@ -903,32 +914,11 @@ class campaign_model extends CI_Model
                     $datajson_header['download_content_length'] > 0 &&
                     $datajson_header['download_content_length'] < $max_remote_size)
             ) {
-
-                // Load the JSON
-                $opts = array(
-                    'http' => array(
-                        'method' => "GET",
-                        'user_agent' => "Data.gov data.json crawler",
-                        'follow_location' => false,
-                    )
-                );
-
-                $context = stream_context_create($opts);
-
-                $datajson = @file_get_contents($datajson_url, false, $context, -1, $max_remote_size + 1);
-
-                if ($datajson == false) {
-
-                    $datajson = curl_from_json($datajson_url, false, false);
-
-                    if (!$datajson) {
-                        $errors[] = "File not found or couldn't be downloaded";
-                    }
-
+                $datajson = curl_from_json($datajson_url, false, false);
+                if (!$datajson) {
+                    $errors[] = "File not found or couldn't be downloaded";
                 }
-
             }
-
 
             if (!empty($datajson) && (empty($datajson_header['download_content_length']) || $datajson_header['download_content_length'] < 0)) {
                 $datajson_header['download_content_length'] = strlen($datajson);
