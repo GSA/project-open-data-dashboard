@@ -30,9 +30,18 @@ then
   # use defaults for cloud foundry
   uri=$(echo "$VCAP_APPLICATION" | jq -r '.uris[0]')
   echo "DEFAULT_HOST=$uri" >> $APP_DIR/.env
-  echo "CONTENT_PROTOCOL=https" >> $APP_DIR/.env
-  echo "PROJECT_SHARED_PATH=$APP_DIR" >> $APP_DIR/.env
-  echo "USE_LOCAL_STORAGE=true" >> $APP_DIR/.env
+  echo "PROTOCOL=https" >> $APP_DIR/.env
+else
+  echo "DEFAULT_HOST=locahost:8000" >> $APP_DIR/.env
+  echo "PROTOCOL=http" >> $APP_DIR/.env
 fi
+
+#cat<<EOF>>$APP_DIR/.env
+echo "PROJECT_SHARED_PATH=$APP_DIR" >> $APP_DIR/.env
+echo "USE_LOCAL_STORAGE=true" >> $APP_DIR/.env
+echo "S3_BUCKET=bsp-ocsit-prod-east-appdata" >> $APP_DIR/.env
+echo "S3_PREFIX=datagov/dashboard/" >> $APP_DIR/.env
+echo "USE_LOCAL_STORAGE=true" >> $APP_DIR/.env
+echo "ENVIRONMENT=development" >> $APP_DIR/.env
 
 which apache2-foreground && exec "apache2-foreground" || exit 0
