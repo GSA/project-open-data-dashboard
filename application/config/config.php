@@ -1,6 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 // config.php from project source code - keep line for Ansible tests
+// In environments configured with Ansible, this file will either be
+// overwritten, or superseded by `config/(development|production/...php`
+// This file is in force on docker-compose and cloud.gov platforms
 
 // TODO: Why are project_shared_path and root_dir
 // determined differently?

@@ -1,6 +1,8 @@
 <?php
 
-
+// In environments configured with Ansible, this file will either be
+// overwritten, or superseded by `config/(development|production/...php`
+// This file is in force on docker-compose and cloud.gov platforms
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
