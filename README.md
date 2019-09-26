@@ -138,9 +138,10 @@ Currently this tool does not handle large files in a memory efficient way. If yo
 
 # Database restore
 
+1. Clean up the database dump to either refer to the correctly named database, or not to use the `USE database` statement at all. We'll call this `cleaned_database.sql` below.
+2. Run the migration before the restore, as it'll create an empty `ci_sessions` table.
+
 ## docker compose:
-
-
 
 ```
 docker-compose down -v
@@ -152,10 +153,32 @@ docker-compose exec app bats tests/00_migrate.bats
 cat downloads/cleaned_database.sql | docker-compose run   --rm   database   mysql --host=database --user=root --password=mysql dashboard
 # test in browser view USDA page:
 curl http://localhost:8000/offices/detail/49015/2018-08-31
-
 ```
 
+## cloud.gov
 
+Install the `connect-to-service` plugin, e.g., for version 1.1.0 of the plugin:
+
+```
+cf install-plugin https://github.com/18F/cf-service-connect/releases/download/1.1.0/cf-service-connect-darwin-amd64
+```
+
+Open up a tunnel to the database, and use the connection information, e.g:
+
+```
+$ cf connect-to-service --no-client app database
+Host: localhost
+Port: NNNN
+Username: randomuser
+Password: randompass
+Name: cgawsbrokerrandomname
+```
+
+Then make a client connection to restore a recent database dump, and when prompted for a password, paste in the password (so it's not in your shell history):
+
+```
+mysql -h 127.0.0.1 -PNNNN -u randomuser -p cgawsbrokerrandomname
+```
 
 # What about S3?
 

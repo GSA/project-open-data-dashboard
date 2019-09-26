@@ -25,9 +25,9 @@ for e in DB_NAME DB_USER DB_PASSWORD DB_HOST DB_PORT ENCRYPTION_KEY; do
   echo "$e=${!e}" >> $APP_DIR/.env
 done 
 
-  uri=$(echo "$VCAP_APPLICATION" | jq -r '.uris[0]')
-  echo "DEFAULT_HOST=$uri" >> $APP_DIR/.env
-  echo "PROTOCOL=https" >> $APP_DIR/.env
+uri=$(echo "$VCAP_APPLICATION" | jq -r '.uris[0]')
+echo "DEFAULT_HOST=$uri" >> $APP_DIR/.env
+echo "CONTENT_PROTOCOL=https" >> $APP_DIR/.env
 
 #cat<<EOF>>$APP_DIR/.env
 echo "PROJECT_SHARED_PATH=$APP_DIR" >> $APP_DIR/.env
@@ -36,5 +36,8 @@ echo "S3_BUCKET=bsp-ocsit-prod-east-appdata" >> $APP_DIR/.env
 echo "S3_PREFIX=datagov/dashboard/" >> $APP_DIR/.env
 echo "USE_LOCAL_STORAGE=true" >> $APP_DIR/.env
 echo "ENVIRONMENT=development" >> $APP_DIR/.env
+
+# migrations are idempotent, so run on startup
+cd $APP_DIR && php index.php migrate
 
 which apache2-foreground && exec "apache2-foreground" || exit 0

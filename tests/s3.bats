@@ -22,11 +22,10 @@ case "${TARGET:-dc}" in
     ;;
 esac
 
-ARCHIVE=https://s3.amazonaws.com/bsp-ocsit-prod-east-appdata/datagov/dashboard/archive/datajson/2018-08-31/49015.json
-URLENCODED_ARCHIVE="https%3A%2F%2Fs3.amazonaws.com%2Fbsp-ocsit-prod-east-appdata%2Fdatagov%2Fdashboard%2Farchive%2Fdatajson%2F2018-08-31%2F49015.json"
+URLENCODED_ARCHIVE='https%3A%2F%2Fs3.amazonaws.com%2Fbsp-ocsit-prod-east-appdata%2Fdatagov%2Fdashboard%2Farchive%2Fdatajson%2F2017-11-30%2F49015.json'
 
-@test "Create valid URLS to existing archive" {
+@test "Emits valid URLS to existing archive" {
     run $CMD -s \
-      $URLROOT/offices/detail/49015/2018-08-31
-    echo ${output} | grep -q $URLENCODED_ARCHIVE
+      $URLROOT/offices/detail/49015/2017-11-30
+    echo ${output} | grep -q "$URLENCODED_ARCHIVE"
 }
