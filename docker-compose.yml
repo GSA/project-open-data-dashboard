@@ -9,6 +9,14 @@ services:
       - database
     environment:
       APP_DIR: /var/www/app 
+      VCAP_APPLICATION: >
+        {
+          "application_name": "app",
+          "name": "app",
+          "uris": [
+            "localhost:8000"
+          ]
+        }
       VCAP_SERVICES: >
         {
           "aws-rds": [

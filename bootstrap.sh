@@ -25,16 +25,9 @@ for e in DB_NAME DB_USER DB_PASSWORD DB_HOST DB_PORT ENCRYPTION_KEY; do
   echo "$e=${!e}" >> $APP_DIR/.env
 done 
 
-if echo "$VCAP_APPLICATION" | jq --exit-status '.uris[0]' > /dev/null
-then 
-  # use defaults for cloud foundry
   uri=$(echo "$VCAP_APPLICATION" | jq -r '.uris[0]')
   echo "DEFAULT_HOST=$uri" >> $APP_DIR/.env
   echo "PROTOCOL=https" >> $APP_DIR/.env
-else
-  echo "DEFAULT_HOST=locahost:8000" >> $APP_DIR/.env
-  echo "PROTOCOL=http" >> $APP_DIR/.env
-fi
 
 #cat<<EOF>>$APP_DIR/.env
 echo "PROJECT_SHARED_PATH=$APP_DIR" >> $APP_DIR/.env
