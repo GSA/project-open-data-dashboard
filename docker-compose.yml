@@ -11,6 +11,7 @@ services:
       APP_DIR: /var/www/app 
       VCAP_APPLICATION: >
         {
+          "fake": "yes",
           "application_name": "app",
           "name": "app",
           "uris": [

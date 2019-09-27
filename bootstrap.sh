@@ -27,7 +27,14 @@ done
 
 uri=$(echo "$VCAP_APPLICATION" | jq -r '.uris[0]')
 echo "DEFAULT_HOST=$uri" >> $APP_DIR/.env
-echo "CONTENT_PROTOCOL=https" >> $APP_DIR/.env
+
+fake=$(echo "$VCAP_APPLICATION" | jq -r '.fake')
+if [ "$fake" = "yes" ]; then
+  echo "CONTENT_PROTOCOL=http" >> $APP_DIR/.env
+else
+  echo "CONTENT_PROTOCOL=https" >> $APP_DIR/.env
+fi
+
 
 #cat<<EOF>>$APP_DIR/.env
 echo "PROJECT_SHARED_PATH=$APP_DIR" >> $APP_DIR/.env
