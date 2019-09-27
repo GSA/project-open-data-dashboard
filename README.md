@@ -68,6 +68,16 @@ Test with bats (and run the migrations):
 
 Open your browser to [localhost:8000](http://localhost:8000/).
 
+If desired, restore a database dump. Clean up the database dump by removing any `USE database` statement, or `CREATE DATABASE` statement. Then:
+
+    cat cleaned_database.sql |
+      docker-compose run --rm database mysql \
+      --host=database --user=root --password=mysql dashboard
+
+After a database restore, test by viewing a USDA detail page:
+
+    curl http://localhost:8000/offices/detail/49015/2017-08-31
+
 ### CircleCI testing
 
 All pushes to GitHub are integration tested with our [CircleCI tests](https://circleci.com/gh/GSA/project-open-data-dashboard).
@@ -83,29 +93,19 @@ Commit the updated composer.json and composer.lock.
 
 ## Deploying to cloud.gov
 
-### Quickstart
+### Quickstart with an empty database
+
 
 Assuming you're logged in for the Cloud Foundry CLI:
 
 ```sh
-cf create-service aws-rds shared-mysql database
+$ cf create-service aws-rds shared-mysql database
 
-cf create-user-provided-service secrets -p '{
+$ cf create-user-provided-service secrets -p '{
   "ENCRYPTION_KEY": "long-random-string"
 }'
 
-cf push
-```
-
-To do the initial migration to populate the database:
-
-```
-cf ssh app -c '/tmp/lifecycle/launcher "app" "php htdocs/index.php migrate" ""'
-```
-
-You should be able to visit https://&lt;ROUTE&gt;/offices/qa, where &lt;ROUTE&gt; is the route reported from `cf push`:
-
-<pre><code>
+$ cf push
 Waiting for app to start...
 
 name:              app
@@ -121,7 +121,34 @@ memory usage:    256M
 start command:   $HOME/.bp/bin/start
      state     since                  cpu    memory          disk             details
 #0   running   2019-08-28T14:02:25Z   0.3%   24.3M of 256M   301.7M of 512M
-</code></pre>
+```
+
+You should be able to visit https://&lt;ROUTE&gt;/offices/qa, where &lt;ROUTE&gt; is the route reported from `cf push`:
+
+### Restoring a database backup to cloud.gov:
+
+Clean up the database dump by removing any `USE database` statement, or `CREATE DATABASE` statement. We'll call this `cleaned_database.sql` below. Then:
+
+Install the [cf-service-connect](https://github.com/18F/cf-service-connect) plugin, e.g., for version 1.1.0 of the plugin on a MacOS system:
+
+    cf install-plugin https://github.com/18F/cf-service-connect/releases/download/1.1.0/cf-service-connect-darwin-amd64
+
+Open up a tunnel to the database, and leave the tunnel open for the next step:
+
+    $ cf connect-to-service --no-client app database
+    Host: localhost
+    Port: NNNN
+    Username: randomuser
+    Password: randompass
+    Name: cgawsbrokerrandomname
+
+
+In a separate terminal session, use the connection information to make a MySQL connection to restore `cleaned_database.sql`. When prompted for a password, paste in the password (e.g `randompass` in this example).
+
+    cat cleaned_database.sql | 
+      mysql -h 127.0.0.1 -PNNNN -u randomuser -p cgawsbrokerrandomname
+
+After a restore, you should be able to view an agency's detail page, such as: https://&lt;ROUTE&gt;/offices/detail/49015/2017-08-31
 
 ## Known issues
 
@@ -136,74 +163,37 @@ following steps no longer work:
 
 Currently this tool does not handle large files in a memory efficient way. If you are unable to utilize a high amount of memory and are at risk of timeouts, you should set the maximum file size that the application can handle so it will avoid large files and fail more gracefully. The maximum size of JSON files to parse can be set with the `max_remote_size` option in config.php
 
-# Database restore
+**What about S3?**
 
-1. Clean up the database dump to either refer to the correctly named database, or not to use the `USE database` statement at all. We'll call this `cleaned_database.sql` below.
-2. Run the migration before the restore, as it'll create an empty `ci_sessions` table.
+S3 is used in a few places when `config[use_local_storage]` is false:
+- for put/fetch of csv_to_json (private)
+- for archiving data.json and digitalstrategy (public)
 
-## docker compose:
+The `use_local_storage` setting does not impact all uses of the `upload` class, just those cases above.
 
-```
-docker-compose down -v
-docker-compose build
-docker-compose up -d
-# migrate
-docker-compose exec app bats tests/00_migrate.bats
-# upload cleaned DB:
-cat downloads/cleaned_database.sql | docker-compose run   --rm   database   mysql --host=database --user=root --password=mysql dashboard
-# test in browser view USDA page:
-curl http://localhost:8000/offices/detail/49015/2018-08-31
-```
+The `archive_file` function will use config[use_local_storage] anytime it's called but the logic doesn't apply when to `datajson_lines` is set as `filetype`. 
 
-## cloud.gov
+Here's an outline of where S3 is used in the code:
 
-Install the `connect-to-service` plugin, e.g., for version 1.1.0 of the plugin:
-
-```
-cf install-plugin https://github.com/18F/cf-service-connect/releases/download/1.1.0/cf-service-connect-darwin-amd64
-```
-
-Open up a tunnel to the database, and use the connection information, e.g:
-
-```
-$ cf connect-to-service --no-client app database
-Host: localhost
-Port: NNNN
-Username: randomuser
-Password: randompass
-Name: cgawsbrokerrandomname
-```
-
-Then make a client connection to restore a recent database dump, and when prompted for a password, paste in the password (so it's not in your shell history):
-
-```
-mysql -h 127.0.0.1 -PNNNN -u randomuser -p cgawsbrokerrandomname
-```
-
-# What about S3?
-
-S3 is used in a few places: 
-- for put/fetch of csv_to_json
-- for archiving data.json and digitalstrategy
-
-The `archive_file` function will use config[use_local_storage] anytime it's called
-but the logic doesn't apply when to `datajson_lines`. Talk about poor encapsulation.
-
-It's also used in the office_detail view. 
-
-This will require 2 buckets, since they have different ACLs attached.
-
-Also, not all uploads use S3, or all use of archive.
-
-- campaign.php
+`controllers/campaign.php`:
   - `public function csv_to_json($schema = null)`
     - once to PUT the file
     - again to GET the file
     - There is no remove from S3
-  - We archive digitalstrategy.json and data.json using `archive_file` which puts a fetch date in the URL.
-- campaign_model has 
-  - `archive_file` which calls  `archive_to_s3
+  - It archives `digitalstrategy.json` and `data.json` using `archive_file` which puts a fetch date in the URL.
+
+`models/campaign_model.php`:
+  - `archive_file` which calls  `archive_to_s3` when `use_local_storage` is false
+    - the `validate_datajson` function calls `archive_file` but sets `filetype` to `datajson-lines` so the `archive_file` function does not store it in S3, regardless of `use_local_storage` setting.
   - `archive_to_s3` which calls put_to_s3 and stores with a PUBLIC acl
   - `put_to_s3` which stores private by default
-- views/office_detail
-  - Builds a URL based on values of `config/s3_bucket`
+  - `get_from_s3` only used by `csv_to_json` 
+
+`views/office_detail.php`:
+  - Builds a URL based on values of `config/s3_bucket` for displaying the "Analyze archive copies" line of _Automated Metrics_.
+
+
+**S3 changes for cloud.gov***
+
+- Based on the commit that added S3 for `csv_to_json`, https://github.com/GSA/project-open-data-dashboard/commit/7cea18229707203a5f6de5b722f0c90ce3a74f79, it's not evident why S3 is used for storing the CSV file before converting. This logic can probably be removed, and just use ephemeral local storage. There may be situations when an instance disappears during a conversion, maybe this is OK>
+- Beyond that, there's a need for one public S3 bucket for archiving data.json from crawls, and fetching them in the `office_detail.php`.

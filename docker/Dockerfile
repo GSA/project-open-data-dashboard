@@ -3,8 +3,7 @@ FROM php:7.1-apache
 ARG APP_DIR=/var/www/app
 RUN sed -i 's/html/app/g' /etc/apache2/sites-available/000-default.conf
 
-# git and wget to install stuff, mysql-client for debugging
-RUN apt-get update && apt-get install -y git wget zip mysql-client jq &&\
+RUN apt-get update && apt-get install -y git wget mariadb-client zip jq && \
     apt-get autoremove -y &&\
     rm -rf /var/lib/apt/lists/* &&\
     rm -rf /var/cache/apt/*
@@ -15,11 +14,9 @@ RUN git clone https://github.com/bats-core/bats-core.git /tmp/bats-core && \
   ./install.sh /usr/local && \
   /bin/rm -rf /tmp/bats-core
 
-# Need mod_rewrite
 RUN a2enmod rewrite 
 
 # Install php extensions
-# RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install mysqli
 
 # Install composer
