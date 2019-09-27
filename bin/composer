@@ -5,6 +5,6 @@ docker-compose run \
   --rm \
   --no-deps \
   --workdir /var/www/app \
-  --entrypoint "" \
+  --entrypoint composer \
   app \
-  composer "$@"
+  "$@"
