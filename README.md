@@ -150,6 +150,37 @@ In a separate terminal session, use the connection information to make a MySQL c
 
 After a restore, you should be able to view an agency's detail page, such as: https://&lt;ROUTE&gt;/offices/detail/49015/2017-08-31
 
+## Migration path to cloud.gov
+
+* S3 updates to use authenticators
+  * The BSP code only need to reference a bucket and thanks to IAM roles could write there. Using the ephemeral key and secret in cloud.gov still needs to be implemented.
+* S3 Sync all archives https://s3.amazonaws.com/bsp-ocsit-dev-east-appdata/datagov/dashboard/archive/datajson/* to the S3 bucket for cloud.gov. Resources:
+  * [Using S3 credentials in cloud.gov](https://cloud.gov/docs/services/s3/#using-the-s3-credentials)
+  * [Using `aws s3 sync`](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html)
+* Set up cron jobs. 
+  * There are two cronjobs: 
+    * `index.php campaign status cfo-act download` (takes about 5m)
+    * `index.php campaign status cfo-act full-scan` (takes a lot longer)
+  * Cloud.gov doesn't have built-in [support for scheduling](https://network.pivotal.io/products/p-scheduler-for-pcf), so we can pursue a couple of other options for running the daily jobs. 
+    * One option -- run a [worker process](https://docs.cloudfoundry.org/devguide/multiple-processes.html) that mostly sleeps, but checks every 30m if it's "trigger time" to run the daily tasks, as in [this example from cf-ex-drupal-8](https://github.com/18F/cf-ex-drupal8/blob/master/cronish.sh).
+    * Whether it's triggered could be determined by whether a `cronish` table in the database has not had any updates in 24 hours.
+    * For demo purposes, this example has a `cronish` app that just does the `download` job and then sleeps for 23h.
+    * This `worker` process keeps running regardless of the stability of the `web` process, but uses the same droplet build.
+  * Cloud.gov also doesn't support sending mail from the shell, which had been the method for sharing crawl jobs on BSP, 
+  e.g: `php index.php crawl | tee /var/log/dashboard-cron.log | mail -s 'LabsData - Dashboard' default_email`
+    * The `worker` pattern for the crawl labels all crawl logs with a worker id, e.g.: `[APP/PROC/WORKER/0] OUT Attempting to request http://www.sba.gov/data.json`
+* Run the dashboard app under `/dashboard`, by launching with `cf push --route-path /dashboard`
+  * There may be issues with link writing and the value of `config["base_url"]`. It may be sufficient to unset `config["base_url]` and let CodeIgniter determine URLs internally, and have CloudFoundry rewrite for you. Or, you may want to emulate what's in the Ansible code with:
+      ```php
+      if (isset($_SERVER['REQUEST_URI']) && 0 === stripos($_SERVER['REQUEST_URI'], '/dashboard')){
+          $config['base_url'] .= '/dashboard';
+          $cookie_path_prefix = 'dashboard';
+      }
+      ```
+* Write your SSP ;)
+* Proxy from https://labs.digital.gov/dashboard to https://(cloud.gov host)/dashboard 
+* Tear down existing dashboard hosts
+
 ## Known issues
 
 The agency hierarchy is designed to be populated from the `contacts` API at https://www.usa.gov/api/USAGovAPI/contacts.json/contact, but that is no longer available, so these
