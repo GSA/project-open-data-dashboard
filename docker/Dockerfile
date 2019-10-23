@@ -1,4 +1,4 @@
-FROM php:7.0-apache
+FROM php:7.3.10-apache
 
 ARG APP_DIR=/var/www/app
 RUN sed -i 's/html/app/g' /etc/apache2/sites-available/000-default.conf

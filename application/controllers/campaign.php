@@ -1250,7 +1250,7 @@ class Campaign extends CI_Controller
 
         $datajson_url = ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url', TRUE) : $datajson_url;
         $datajson_url = filter_var($datajson_url, FILTER_SANITIZE_URL);
-        $datajson_url = filter_var($datajson_url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED);
+        $datajson_url = filter_var($datajson_url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED);
         $output_type = ($this->input->get_post('output')) ? $this->input->get_post('output', TRUE) : $output;
 
         if ($this->input->get_post('qa')) {
