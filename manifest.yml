@@ -1,0 +1,20 @@
+---
+default_config: &defaults
+  buildpacks:
+    - php_buildpack
+  disk_quota: 512M
+  timeout: 180
+  services:
+    - database # cf create-service aws-rds shared-mysql database
+    - secrets  # cf create-user-provided-service secrets -p '{
+               # "ENCRYPTION_KEY": "long-random-string" 
+               # }'
+
+applications:
+- name: app
+  <<: *defaults
+  memory: 256M
+  instances: 1
+  random-route: true
+  env:
+    APP_DIR: /home/vcap/app/htdocs

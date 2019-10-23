@@ -1,8 +1,5 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$root_dir = dirname(__DIR__,2);
-require_once($root_dir . "/vendor/autoload.php");
-
 // In environments configured with Ansible, this file will either be
 // overwritten, or superseded by `config/(development|production/...php`
 // This file is in force on docker-compose and cloud.gov platforms

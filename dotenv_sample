@@ -12,8 +12,8 @@ DB_HOST=database
 #   FALSE: continue regardless of errors
 DB_DEBUG=TRUE
 
-S3_BUCKET=foobar
-S3_PREFIX=prefix
+S3_BUCKET=bsp-ocsit-prod-east-appdata
+S3_PREFIX=datagov/dashboard/
 USE_LOCAL_STORAGE=true
 
 ENCRYPTION_KEY=not-secure-encryption-key
