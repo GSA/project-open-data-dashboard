@@ -204,7 +204,12 @@ if (defined('ENVIRONMENT'))
  *
  */
 //include_once './vendor/autoload.php';
-require FCPATH . 'vendor/autoload.php';
+if (is_dir(FCPATH . 'vendor')) {
+	require FCPATH . 'vendor/autoload.php';
+} else {
+	require FCPATH . '../lib/vendor/autoload.php';
+}
+
  
 require_once BASEPATH.'core/CodeIgniter.php';
 

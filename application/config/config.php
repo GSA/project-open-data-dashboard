@@ -8,10 +8,7 @@
 // TODO: Why are project_shared_path and root_dir
 // determined differently?
 //   $root_dir = '{{ current_source_symlink }}';
-
-// Load .env file into environment
 $root_dir = dirname(__DIR__, 2);
-require_once($root_dir . "/vendor/autoload.php");
 
 /**
  * Use Dotenv to set required environment variables and load .env file in root

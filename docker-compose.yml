@@ -4,14 +4,43 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
+    entrypoint: "/var/www/app/docker/startup.sh"
     depends_on:
       - database
     environment:
-      DB_NAME: dashboard
-      DB_USER: root
-      DB_PASSWORD: mysql
-      DB_HOST: database
-      ENCRYPTION_KEY: not-secure-encryption-key
+      APP_DIR: /var/www/app 
+      VCAP_APPLICATION: >
+        {
+          "fake": "yes",
+          "application_name": "app",
+          "name": "app",
+          "uris": [
+            "localhost:8000"
+          ]
+        }
+      VCAP_SERVICES: >
+        {
+          "aws-rds": [
+            {
+              "name": "database",
+              "credentials": {
+                "db_name": "dashboard",
+                "host": "database",
+                "password": "mysql",
+                "port": "3306",
+                "username": "root"
+              }
+            }
+          ],
+          "user-provided": [
+            {
+              "name": "secrets",
+              "credentials": {
+                "ENCRYPTION_KEY": "not-a-real-key-from-vcap"
+              }
+            }
+          ]
+        }
     ports:
       - "8000:80"
     volumes:
