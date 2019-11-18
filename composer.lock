@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ed6b1406826c3bf3e8e61792af77e48",
+    "content-hash": "44f89128f427bc4757e5633d6bb83505",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.117.0",
+            "version": "3.118.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3fc3d2c1962f34becc4313c839ed8b659d045114"
+                "reference": "e4600c22cb69c94d1aa65bf91af5c225f2a109fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3fc3d2c1962f34becc4313c839ed8b659d045114",
-                "reference": "3fc3d2c1962f34becc4313c839ed8b659d045114",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e4600c22cb69c94d1aa65bf91af5c225f2a109fd",
+                "reference": "e4600c22cb69c94d1aa65bf91af5c225f2a109fd",
                 "shasum": ""
             },
             "require": {
@@ -87,20 +87,20 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-11-13T19:14:25+00:00"
+            "time": "2019-11-18T19:13:19+00:00"
         },
         {
             "name": "gettext/gettext",
-            "version": "v4.8.0",
+            "version": "v4.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-gettext/Gettext.git",
-                "reference": "207719c6eae36f5ac7c2c9542f6a4d4b76307e5a"
+                "reference": "494237c1315438e13777f327271a0dd99fbb6e09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-gettext/Gettext/zipball/207719c6eae36f5ac7c2c9542f6a4d4b76307e5a",
-                "reference": "207719c6eae36f5ac7c2c9542f6a4d4b76307e5a",
+                "url": "https://api.github.com/repos/php-gettext/Gettext/zipball/494237c1315438e13777f327271a0dd99fbb6e09",
+                "reference": "494237c1315438e13777f327271a0dd99fbb6e09",
                 "shasum": ""
             },
             "require": {
@@ -149,7 +149,7 @@
                 "po",
                 "translation"
             ],
-            "time": "2019-11-04T18:03:29+00:00"
+            "time": "2019-11-14T23:28:55+00:00"
         },
         {
             "name": "gettext/languages",
