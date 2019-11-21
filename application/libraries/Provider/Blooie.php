@@ -40,7 +40,8 @@ class OAuth2_Provider_Blooie extends OAuth2_Provider
 
 			default:
 		}
-
+	}
+	
 	public function get_user_info(OAuth2_Token_Access $token)
 	{
 		$url = 'https://graph.facebook.com/me?'.http_build_query(array(
