@@ -60,11 +60,17 @@ Prerequisites:
 
 * [Docker Engine](https://docs.docker.com/install/) v18+
 * [Docker Compose](https://docs.docker.com/compose/install/) v1.24+
+* [Cloud Foundry CLI](https://github.com/cloudfoundry/cli#downloads) v6.47.2+
+  * [cflocal CLI plugin](https://github.com/cloudfoundry-incubator/cflocal) (run `cf install-plugin cflocal`)
 
 By default, the `ENVIRONMENT` variable is set to production so that error messages will not be displayed. To display these messages while developing, you should edit your `.env` file to include the variable `CI_ENV` set to anything other than `production`. See [index.php](https://github.com/GSA/project-open-data-dashboard/blob/master/public/index.php#L56-L91) for more details.
 
 ### Setup
 
+Create Docker image using a buildpack (note this caches resources the first time)
+
+    cf local stage project-open-data-dashboard_app
+    cf local export project-open-data-dashboard_app -r project-open-data-dashboard_app:latest
 Install application dependencies
 
     make install-dev-dependencies

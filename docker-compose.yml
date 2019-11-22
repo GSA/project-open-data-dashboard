@@ -1,10 +1,7 @@
 version: "3.0"
 services:
   app:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-    entrypoint: "/var/www/app/docker/startup.sh"
+    image: project-open-data-dashboard_app:latest
     depends_on:
       - database
     environment:
