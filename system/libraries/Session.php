@@ -5,8 +5,9 @@
  * An open source application development framework for PHP 5.1.6 or newer
  *
  * @package		CodeIgniter
- * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @author		EllisLab Dev Team
+ * @copyright		Copyright (c) 2008 - 2014, EllisLab, Inc.
+ * @copyright		Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
  * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
@@ -21,7 +22,7 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Sessions
- * @author		ExpressionEngine Dev Team
+ * @author		EllisLab Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/sessions.html
  */
 class CI_Session {
@@ -37,8 +38,7 @@ class CI_Session {
 	var $cookie_prefix				= '';
 	var $cookie_path				= '';
 	var $cookie_domain				= '';
-	var $cookie_secure				= TRUE;
-	var $cookie_httponly			= TRUE;
+	var $cookie_secure				= FALSE;
 	var $sess_time_to_update		= 300;
 	var $encryption_key				= '';
 	var $flashdata_key				= 'flash';
@@ -145,24 +145,40 @@ class CI_Session {
 			return FALSE;
 		}
 
+		// HMAC authentication
+		$len = strlen($session) - 40;
+
+		if ($len <= 0)
+		{
+			log_message('error', 'Session: The session cookie was not signed.');
+			return FALSE;
+		}
+
+		// Check cookie authentication
+		$hmac = substr($session, $len);
+		$session = substr($session, 0, $len);
+
+		// Time-attack-safe comparison
+		$hmac_check = hash_hmac('sha1', $session, $this->encryption_key);
+		$diff = 0;
+
+		for ($i = 0; $i < 40; $i++)
+		{
+			$xor = ord($hmac[$i]) ^ ord($hmac_check[$i]);
+			$diff |= $xor;
+		}
+
+		if ($diff !== 0)
+		{
+			log_message('error', 'Session: HMAC mismatch. The session cookie data did not match what was expected.');
+			$this->sess_destroy();
+			return FALSE;
+		}
+
 		// Decrypt the cookie data
 		if ($this->sess_encrypt_cookie == TRUE)
 		{
 			$session = $this->CI->encrypt->decode($session);
-		}
-		else
-		{
-			// encryption was not used, so we need to check the md5 hash
-			$hash	 = substr($session, strlen($session)-32); // get last 32 chars
-			$session = substr($session, 0, strlen($session)-32);
-
-			// Does the md5 hash match?  This is to prevent manipulation of session data in userspace
-			if ($hash !==  md5($session.$this->encryption_key))
-			{
-				log_message('error', 'The session cookie data did not match what was expected. This could be a possible hacking attempt.');
-				$this->sess_destroy();
-				return FALSE;
-			}
 		}
 
 		// Unserialize the session array
@@ -657,24 +673,20 @@ class CI_Session {
 		{
 			$cookie_data = $this->CI->encrypt->encode($cookie_data);
 		}
-		else
-		{
-			// if encryption is not used, we provide an md5 hash to prevent userside tampering
-			$cookie_data = $cookie_data.md5($cookie_data.$this->encryption_key);
-		}
+
+		$cookie_data .= hash_hmac('sha1', $cookie_data, $this->encryption_key);
 
 		$expire = ($this->sess_expire_on_close === TRUE) ? 0 : $this->sess_expiration + time();
 
 		// Set the cookie
 		setcookie(
-					$this->sess_cookie_name,
-					$cookie_data,
-					$expire,
-					$this->cookie_path,
-					$this->cookie_domain,
-					$this->cookie_secure,
-                    $this->cookie_httponly
-				);
+			$this->sess_cookie_name,
+			$cookie_data,
+			$expire,
+			$this->cookie_path,
+			$this->cookie_domain,
+			$this->cookie_secure
+		);
 	}
 
 	// --------------------------------------------------------------------
