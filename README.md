@@ -69,13 +69,13 @@ By default, the `ENVIRONMENT` variable is set to production so that error messag
 
 Create Docker image using a buildpack (note this caches resources the first time)
 
-    cf local stage project-open-data-dashboard_app
-    cf local export project-open-data-dashboard_app -r project-open-data-dashboard_app:latest
-Install application dependencies
+    cf local stage pod-dashboard
+    cf local export pod-dashboard -r project-open-data-dashboard_app:latest
 
     make install-dev-dependencies
 
-Start up the application and database
+    docker-compose up
+    cf local run pod-dashboard
 
     make up
 

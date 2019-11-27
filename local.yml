@@ -1,0 +1,29 @@
+---
+applications:
+- name: app
+  memory: 256MB
+  disk_quota: 512MB
+  env:
+    APP_DIR: /home/vcap/app/htdocs
+    VCAP_APPLICATION: >
+      {
+        "fake": "yes",
+        "application_name": "app",
+        "name": "app",
+        "uris": [
+          "localhost:8000"
+        ]
+      }
+  services:
+    aws-rds:
+    - name: database
+      credentials:
+        db_name: dashboard
+        host: localhost
+        password: mysql
+        port: '3306'
+        username: root
+    user-provided:
+    - name: secrets
+      credentials:
+        ENCRYPTION_KEY: not-a-real-key-from-vcap
