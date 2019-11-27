@@ -383,13 +383,13 @@ class Import extends CI_Controller {
 		   $parent_offices = $query->result();
 
 			foreach ($parent_offices as $office) {
-				
+
 				$this->run_match($agency_slugs, $office);
 
 				// Search for child orgs
 				$this->db->select('id, name');
 				$this->db->where('parent_office_id', $office->id);
-				$child_query = $this->db->get('offices');	
+				$child_query = $this->db->get('offices');
 
 				if ($child_query->num_rows() > 0) {
 				   $child_offices = $child_query->result();
@@ -397,8 +397,8 @@ class Import extends CI_Controller {
 					foreach ($child_offices as $child_office) {
 						$this->run_match($agency_slugs, $office, $child_office);
 					}
-				}			
-	
+				}
+
 			}
 
 		}
@@ -410,7 +410,7 @@ class Import extends CI_Controller {
 		foreach ($slugs as $slug) {
 			$slug = $slug["taxonomy"];
 			if ($slug["Federal Agency"] == $parent) {
-				if (!empty($child)) {					
+				if (!empty($child)) {
 					if ($slug["Sub Agency"] == $child) {
 						return substr($slug["term"], 0, strpos($slug["term"], "-gov"));
 					}
@@ -437,22 +437,22 @@ class Import extends CI_Controller {
 		$match = $this->slug_match($agency_slugs, $office->name, $child_office);
 
 		if(!empty($match)) {
-			echo "match, $update_id, $office_name, $match" . PHP_EOL;		
+			echo "match, $update_id, $office_name, $match" . PHP_EOL;
 
 			$this->db->where('id', $update_id);
-			$this->db->update('offices', array("url_slug"=>$match));	
+			$this->db->update('offices', array("url_slug"=>$match));
 
 		} else {
 			echo "no-match, $update_id, $office_name, null" . PHP_EOL;
-		}		
+		}
 	}
 
 	public function match_bureaus () {
-		
+
 		$this->load->helper('csv');
 
 		$bureaus_url = 'http://project-open-data.cio.gov/data/omb_bureau_codes.csv';
-		
+
 		$importer = new CsvImporter($bureaus_url, $parse_header = true, $delimiter = ",");
 		$csv = $importer->get();
 
@@ -460,19 +460,19 @@ class Import extends CI_Controller {
 
 		foreach($csv as $row) {
 			if ($row["Bureau Code"] == "00") {
-				
+
 				// Search for org
 				$this->db->select('id, name');
 				$this->db->where('name', $row["Bureau Name"]);
-				$office_query = $this->db->get('offices');	
+				$office_query = $this->db->get('offices');
 
 				if ($office_query->num_rows() > 0) {
 				   $office_matches = $office_query->result();
 
-					foreach ($office_matches as $office_match) {						
+					foreach ($office_matches as $office_match) {
 						$parent_offices[$row["Agency Code"]] = $office_match->id;
 					}
-				}	
+				}
 			}
 		}
 
@@ -481,12 +481,12 @@ class Import extends CI_Controller {
 
 		foreach($csv as $row) {
 
-			$bureau_mapped = array('agency_name' => '', 
-								   'bureau_name' => '', 
-								   'agency_code' => '', 
-								   'bureau_code' => '', 
+			$bureau_mapped = array('agency_name' => '',
+								   'bureau_name' => '',
+								   'agency_code' => '',
+								   'bureau_code' => '',
 								   'treasury_code' => '',
-								   'cgac_code' => '', 
+								   'cgac_code' => '',
 								   'usagov_directory_id' => '',
 								   'parent_match' => '');
 
@@ -503,13 +503,13 @@ class Import extends CI_Controller {
 				$bureau_mapped['parent_match'] = 'false';
 			}
 
-			$office_query = $this->db->get('offices');	
+			$office_query = $this->db->get('offices');
 
 			if ($office_query->num_rows() > 0) {
 			   $office_matches = $office_query->result();
 
-				foreach ($office_matches as $office_match) {						
-					$bureau_mapped['usagov_directory_id'] = $office_match->id;					
+				foreach ($office_matches as $office_match) {
+					$bureau_mapped['usagov_directory_id'] = $office_match->id;
 				}
 
 			}

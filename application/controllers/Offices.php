@@ -32,7 +32,7 @@ class Offices extends CI_Controller {
 		$output = $this->input->get_post('output', TRUE);
 
 		$this->load->model('campaign_model', 'campaign');
-		$milestones = $this->campaign->milestones_model();	
+		$milestones = $this->campaign->milestones_model();
 
 		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $selected_milestone;
 
@@ -42,7 +42,7 @@ class Offices extends CI_Controller {
 		// Determine selected milestone. Defaults to current milestone if not specified
 		if(empty($selected_milestone)) {
 			$milestone->selected_milestone	= $milestone->current;
-		} 
+		}
 
 		if ($milestone->selected_milestone == $milestone->current) {
 			$crawl_status_filter = 'current';
@@ -54,7 +54,7 @@ class Offices extends CI_Controller {
 
 		$this->db->select('*');
 		$this->db->from('offices');
-		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');	
+		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
 		$this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
 		$this->db->where('offices.cfo_act_agency', 'true');
 		$this->db->where('offices.no_parent', 'true');
@@ -111,8 +111,8 @@ class Offices extends CI_Controller {
 		$view_data['section_breakdown'] = $this->campaign->tracker_sections_model();
 
 		if(!empty($view_data['cfo_offices'])) {
-			$view_data['office_totals'] = $this->calculate_totals($view_data['cfo_offices']);	
-		}		
+			$view_data['office_totals'] = $this->calculate_totals($view_data['cfo_offices']);
+		}
 
 
 
@@ -120,10 +120,10 @@ class Offices extends CI_Controller {
 		$view_data['max_remote_size'] = $this->config->item('max_remote_size');
 
 		$view_data['show_all_fields'] = $show_all_fields;
-		$view_data['show_qa_fields']  = $show_qa_fields;	
+		$view_data['show_qa_fields']  = $show_qa_fields;
 
 		// override section model if we're just showing QA
-		if($show_qa_fields) $view_data['section_breakdown'] = $this->campaign->qa_sections_model();	
+		if($show_qa_fields) $view_data['section_breakdown'] = $this->campaign->qa_sections_model();
 
 
 		// Calculate collective review status
@@ -142,7 +142,7 @@ class Offices extends CI_Controller {
 					}
 				}
 			}
-	
+
 			$view_data['review_status'] = $review_status;
 
 			if($complete_count == count($view_data["cfo_offices"])) {
@@ -158,7 +158,7 @@ class Offices extends CI_Controller {
 			$json_fields = array("datajson_status", "datapage_status", "digitalstrategy_status", "tracker_fields", "tracker_status");
 
 
-			
+
 			if(!empty($view_data["cfo_offices"])) {
 				$converted_data = array();
 				foreach ($view_data["cfo_offices"] as $office_data) {
@@ -168,12 +168,12 @@ class Offices extends CI_Controller {
 							$office_data->$json_field = json_decode($office_data->$json_field);
 						}
 					}
-					$converted_data[] = $office_data;					
+					$converted_data[] = $office_data;
 				}
 				$view_data["cfo_offices"] = $converted_data;
-				
+
 			}
-			
+
 
 			header('Content-type: application/json');
 			print json_encode($view_data, JSON_PRETTY_PRINT);
@@ -211,11 +211,11 @@ class Offices extends CI_Controller {
 		$this->load->model('campaign_model', 'campaign');
 		$markdown_extra = new Michelf\MarkdownExtra();
 
-		$milestones = $this->campaign->milestones_model();	
+		$milestones = $this->campaign->milestones_model();
 		$selected_milestone	= ($this->input->get_post('milestone', TRUE)) ? $this->input->get_post('milestone', TRUE) : $milestone;
 
 		$selected_category	= ($this->input->get_post('highlight', TRUE)) ? $this->input->get_post('highlight', TRUE) : null;
-	
+
 		$milestone 				= $this->campaign->milestone_filter($selected_milestone, $milestones);
 
 
@@ -249,8 +249,8 @@ class Offices extends CI_Controller {
 					if(!empty($note_list[$note_field]->current->note)) {
 
 						$note_html = $note_list[$note_field]->current->note;
-						
-						$note_html = $markdown_extra->transform($note_html);						
+
+						$note_html = $markdown_extra->transform($note_html);
 						$note_html = linkToAnchor($note_html);
 
 						$note_list[$note_field]->current->note_html = $note_html;
@@ -271,7 +271,7 @@ class Offices extends CI_Controller {
 			$crawls_after  = $this->campaign->datagov_office_crawls($view_data['office']->id, $milestone->selected_milestone, $view_data['office_campaign']->status_id, '>', '5');
 
 			$view_data['nearby_crawls'] = array_merge(array_reverse($crawls_before), $crawls_after);
-			
+
 
 			// If we have a blank slate, populate the data model
 			if(empty($view_data['office_campaign'])) {
@@ -289,7 +289,7 @@ class Offices extends CI_Controller {
 
 				$view_data['office_campaign']->tracker_fields = json_encode($tracker_fields);
 
-			} 
+			}
 
 
 			if(!empty($view_data['office_campaign']->datajson_status)) {
@@ -321,13 +321,13 @@ class Offices extends CI_Controller {
 		if ($milestone_trends) {
 			$periods = array();
 			foreach ($milestone_trends as $milestone_trend) {
-				$tracker_fields = json_decode($milestone_trend->tracker_fields);	
+				$tracker_fields = json_decode($milestone_trend->tracker_fields);
 
 				$edi_access_public 		= (!empty($tracker_fields->edi_access_public)) ? $tracker_fields->edi_access_public : null;
 				$edi_access_restricted 	= (!empty($tracker_fields->edi_access_restricted)) ? $tracker_fields->edi_access_restricted : null;
 				$edi_access_nonpublic 	= (!empty($tracker_fields->edi_access_nonpublic)) ? $tracker_fields->edi_access_nonpublic : null;
 
-				$period = array('milestone' => $milestone_trend->milestone, 
+				$period = array('milestone' => $milestone_trend->milestone,
 								'edi_access_public' => 		$edi_access_public,
 								'edi_access_restricted' =>  $edi_access_restricted,
 								'edi_access_nonpublic' => 	$edi_access_nonpublic);
@@ -360,11 +360,11 @@ class Offices extends CI_Controller {
 	public function routes($route, $parameter1 = null, $parameter2 = null, $parameter3 = null, $parameter4 = null) {
 
 		if($route == 'all') {
-			return $this->index($milestone=null, $output=null, $show_all_offices = true);	
+			return $this->index($milestone=null, $output=null, $show_all_offices = true);
 		}
 
 		if($route == 'detail') {
-			return $this->detail($parameter1, $parameter2, $parameter3, $parameter4);	
+			return $this->detail($parameter1, $parameter2, $parameter3, $parameter4);
 		}
 
 		if($route == 'qa') {
@@ -373,7 +373,7 @@ class Offices extends CI_Controller {
 			$milestones = $this->campaign->milestones_model();
 			$milestone 	= $this->campaign->milestone_filter(null, $milestones);
 
-			return $this->index($milestone=$milestone->current, $output=null, $show_all_offices=true, $show_all_fields=false, $show_qa_fields=true);	
+			return $this->index($milestone=$milestone->current, $output=null, $show_all_offices=true, $show_all_fields=false, $show_qa_fields=true);
 		}
 
 		// check if it's a milestone date
@@ -390,20 +390,20 @@ class Offices extends CI_Controller {
     			$show_all_fields = true;
     		} else {
     			$show_all_fields = false;
-    		}  
+    		}
 
     		if ($parameter1 == 'qa' || $parameter2 == 'qa'){
     			$show_qa_fields = true;
     		} else {
     			$show_qa_fields = false;
-    		} 
+    		}
 
 
-    		return $this->index($milestone=$route, $output=null, $show_all_offices, $show_all_fields, $show_qa_fields);	
+    		return $this->index($milestone=$route, $output=null, $show_all_offices, $show_all_fields, $show_qa_fields);
     	}
 
 
-		
+
 	}
 
 	public function calculate_totals($offices) {
@@ -419,7 +419,7 @@ class Offices extends CI_Controller {
 					}
 
 					if (is_numeric($value) OR strpos($value, '%') !== false) {
-						
+
 						if (strpos($value, '%') !== false) {
 							if(empty($totals[$field]['type'])) $totals[$field]['type'] = 'percent';
 							$value = $value * 0.01;
@@ -428,7 +428,7 @@ class Offices extends CI_Controller {
 								$totals[$field]['errors'] .= 'Inconsistent data type found on ' . $office->id . ' ';
 							}
 
-						} else {							
+						} else {
 							if(empty($totals[$field]['type'])) $totals[$field]['type'] = 'integer';
 							if($totals[$field]['type'] == 'percent') {
 								$totals[$field]['errors'] .= 'Inconsistent data type found on ' . $office->id . ' ';
@@ -437,10 +437,10 @@ class Offices extends CI_Controller {
 
 						$totals[$field]['office_count']++;
 						$totals[$field]['total'] = $totals[$field]['total'] + $value;
-					}					
+					}
 				}
 
-			}			
+			}
 
 		}
 
@@ -454,7 +454,7 @@ class Offices extends CI_Controller {
 
 		return $totals;
 
-	} 
+	}
 
 
 
@@ -473,7 +473,7 @@ class Offices extends CI_Controller {
 			return false;
 		}
 
-	}	
+	}
 
 
 

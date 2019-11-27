@@ -6,7 +6,7 @@ class Jobs extends CI_Controller
     {
         parent::__construct();
         // load gearman library
-        $this->load->library('lib_gearman');
+        $this->load->library('Lib_gearman');
     }
 
 

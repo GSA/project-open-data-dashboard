@@ -825,7 +825,7 @@ class Campaign extends CI_Controller
                         }
                     }
 
-                } 
+                }
 
                 /*
                 ################ datapage ################
