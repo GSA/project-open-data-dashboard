@@ -54,7 +54,7 @@ $db['default']['password'] = '';
 $db['default']['database'] = '';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
+$db['default']['pconnect'] = FALSE;
 $db['default']['db_debug'] = (ENVIRONMENT == 'development') ? TRUE : FALSE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';

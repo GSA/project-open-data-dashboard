@@ -14,7 +14,6 @@
 //    public function session($provider)
 //    {
 //        $this->load->helper('url_helper');
-//       // $this->load->library('user_agent');
 //
 //
 //        //$this->load->spark('oauth2/0.3.1');

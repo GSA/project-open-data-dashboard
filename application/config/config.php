@@ -316,27 +316,20 @@ $config['encryption_key'] = getenv('ENCRYPTION_KEY');
 | Session Variables
 |--------------------------------------------------------------------------
 |
+| 'sess_driver'		        = The storage driver to use: files, database, redis, memcached
 | 'sess_cookie_name'		= the name you want for the cookie
 | 'sess_expiration'			= the number of SECONDS you want the session to last.
 |   by default sessions last 7200 seconds (two hours).  Set to zero for no expiration.
-| 'sess_expire_on_close'	= Whether to cause the session to expire automatically
-|   when the browser window is closed
-| 'sess_encrypt_cookie'		= Whether to encrypt the cookie
-| 'sess_use_database'		= Whether to save the session data to a database
-| 'sess_table_name'			= The name of the session database table
+| 'sess_save_path'			= The location to save sessions to, driver dependent.
 | 'sess_match_ip'			= Whether to match the user's IP address when reading the session data
-| 'sess_match_useragent'	= Whether to match the User Agent when reading the session data
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
+$config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'ci_session_dashboard';
 $config['sess_expiration'] = 900;
-$config['sess_expire_on_close'] = FALSE;
-$config['sess_encrypt_cookie'] = FALSE;
-$config['sess_use_database'] = TRUE;
-$config['sess_table_name'] = 'ci_sessions';
+$config['sess_save_path'] = 'ci_sessions';
 $config['sess_match_ip'] = FALSE;
-$config['sess_match_useragent'] = TRUE;
 $config['sess_time_to_update'] = 300;
 
 /*
