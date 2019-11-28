@@ -9,6 +9,7 @@ class Campaign extends CI_Controller
 
         $this->load->helper('api');
         $this->load->helper('url');
+        $this->load->helper('security');
 
         // Determine the environment we're run from for debugging/output
         if (php_sapi_name() == 'cli') {
@@ -1236,15 +1237,15 @@ class Campaign extends CI_Controller
         $this->load->model('campaign_model', 'campaign');
 
         $datajson = ($this->input->post('datajson')) ? $this->input->post('datajson') : $datajson;
-        $schema = ($this->input->get_post('schema')) ? $this->input->get_post('schema', TRUE) : $schema;
+        $schema = ($this->input->post_get('schema')) ? $this->input->post_get('schema', TRUE) : $schema;
 
-        $datajson_url = ($this->input->get_post('datajson_url')) ? $this->input->get_post('datajson_url', TRUE) : $datajson_url;
+        $datajson_url = ($this->input->post_get('datajson_url')) ? $this->input->post_get('datajson_url', TRUE) : $datajson_url;
         $datajson_url = filter_var($datajson_url, FILTER_SANITIZE_URL);
         $datajson_url = filter_var($datajson_url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED);
-        $output_type = ($this->input->get_post('output')) ? $this->input->get_post('output', TRUE) : $output;
+        $output_type = ($this->input->post_get('output')) ? $this->input->post_get('output', TRUE) : $output;
 
-        if ($this->input->get_post('qa')) {
-            $qa = $this->input->get_post('qa');
+        if ($this->input->post_get('qa')) {
+            $qa = $this->input->post_get('qa');
         } else {
             $qa = false;
         }
@@ -1315,17 +1316,17 @@ class Campaign extends CI_Controller
     {
 
 
-        $json_old = ($this->input->get_post('json_old', TRUE)) ? $this->input->get_post('json_old', TRUE) : $json_old;
+        $json_old = ($this->input->post_get('json_old', TRUE)) ? $this->input->post_get('json_old', TRUE) : $json_old;
 
 
-        if ($this->input->get_post('json_old_select', TRUE)) {
-            $selection = $this->input->get_post('json_old_select', TRUE);
+        if ($this->input->post_get('json_old_select', TRUE)) {
+            $selection = $this->input->post_get('json_old_select', TRUE);
             if (!empty($selection)) {
                 $json_old = $selection;
             }
         }
 
-        $datajson_new = ($this->input->get_post('datajson_new', TRUE)) ? $this->input->get_post('datajson_new', TRUE) : $datajson_new;
+        $datajson_new = ($this->input->post_get('datajson_new', TRUE)) ? $this->input->post_get('datajson_new', TRUE) : $datajson_new;
 
         //$datajson_new = 'http://www.treasury.gov/jsonfiles/data.json';
 
@@ -1584,7 +1585,7 @@ class Campaign extends CI_Controller
 
         $this->load->model('campaign_model', 'campaign');
 
-        $schema = ($this->input->get_post('schema', TRUE)) ? $this->input->get_post('schema', TRUE) : $schema;
+        $schema = ($this->input->post_get('schema', TRUE)) ? $this->input->post_get('schema', TRUE) : $schema;
 
         if (!empty($_FILES)) {
 
