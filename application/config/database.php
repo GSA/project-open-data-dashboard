@@ -47,12 +47,12 @@
 | The $active_group variable lets you choose which connection group to
 | make active.  By default there is only one group (the 'default' group).
 |
-| The $active_record variables lets you determine whether or not to load
+| The $query_builder variables lets you determine whether or not to load
 | the active record class
 */
 
 $active_group = 'default';
-$active_record = TRUE;
+$query_builder = TRUE;
 
 $db['default']['hostname'] = getenv('DB_HOST') ?: '';
 $db['default']['username'] = getenv('DB_USER') ?: '';
