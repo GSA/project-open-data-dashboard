@@ -312,10 +312,5 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  */
-if (is_dir(FCPATH . 'vendor')) {
-	require FCPATH . 'vendor/autoload.php';
-} else {
-	require FCPATH . '../lib/vendor/autoload.php';
-}
-
+require_once 'bootstrap.php';
 require_once BASEPATH.'core/CodeIgniter.php';

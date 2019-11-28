@@ -9,14 +9,8 @@
 // determined differently?
 //   $root_dir = '{{ current_source_symlink }}';
 $root_dir = dirname(__DIR__, 2);
+$config['composer_autoload'] = '/var/www/app/vendor/autoload.php';
 
-/**
- * Use Dotenv to set required environment variables and load .env file in root
- */
-if (file_exists($root_dir . '/.env')) {
-    $dotenv = new \Dotenv\Dotenv($root_dir);
-    $dotenv->load();
-}
 $project_shared_path = getenv('PROJECT_SHARED_PATH') ?: '/var/www/app';
 $config['project_shared_path'] = $project_shared_path;
 $config['download_dir'] = $project_shared_path . '/downloads';

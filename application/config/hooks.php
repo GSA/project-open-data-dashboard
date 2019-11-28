@@ -28,6 +28,5 @@ $hook['post_system'][] = array(
                                 'filename' => 'CILogger.php',
                                 'filepath' => 'libraries'
                             );
-
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */
