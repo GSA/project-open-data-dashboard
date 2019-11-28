@@ -9,7 +9,7 @@ class Migration_create_logging_table extends CI_Migration
     {
         // Create new table for each new day
         $this->db->query('
-        CREATE TABLE ci_logs (
+        CREATE TABLE dashboard.ci_logs (
             ip                      VARCHAR(10) NOT NULL,
             page                    VARCHAR(255) NOT NULL,
             user_agent              VARCHAR(255) NOT NULL,
