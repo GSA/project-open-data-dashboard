@@ -131,7 +131,7 @@ You should be able to visit https://&lt;ROUTE&gt;/offices/qa, where &lt;ROUTE&gt
 ### Restoring a database backup to cloud.gov:
 
 If you need a database dump, you can create one following instructions from the
-[Runbook](https://github.com/GSA/datagov-deploy/wiki/Runbook#dashboard-labsdatagovdashboard). Clean up the database dump by removing any `USE database` statement, or `CREATE DATABASE` statement. We'll call this `cleaned_database.sql` below. Then:
+[Runbook](https://github.com/GSA/datagov-deploy/wiki/Dashboard#database-dump). Clean up the database dump by removing any `USE database` statement, or `CREATE DATABASE` statement. We'll call this `cleaned_database.sql` below. Then:
 
 Install the [cf-service-connect](https://github.com/18F/cf-service-connect) plugin, e.g., for version 1.1.0 of the plugin on a MacOS system:
 
