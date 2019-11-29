@@ -71,7 +71,7 @@ Open your browser to [localhost:8000](http://localhost:8000/).
 ### Restoring database dumps
 
 If you need a database dump, you can create one following instructions from the
-[Runbook](https://github.com/GSA/datagov-deploy/wiki/Runbook#dashboard-labsdatagovdashboard). Clean up the database dump by removing any `USE database` statement, or `CREATE DATABASE` statement. Then:
+[Runbook](https://github.com/GSA/datagov-deploy/wiki/Dashboard#database-dump). Clean up the database dump by removing any `USE database` statement, or `CREATE DATABASE` statement. Then:
 
     cat cleaned_database.sql |
       docker-compose run --rm database mysql \
