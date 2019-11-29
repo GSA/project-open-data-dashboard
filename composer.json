@@ -24,17 +24,13 @@
         }
     }],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=7.3.0",
         "justinrainbow/json-schema": "~4",
         "michelf/php-markdown": "*",
         "salsify/json-streaming-parser": "~5",
         "vlucas/phpdotenv": "^2.4",
-        "simplesamlphp/simplesamlphp": "^1.17.8",
+        "simplesamlphp/simplesamlphp": "~1.17.8",
         "aws/aws-sdk-php": "*"
-    },
-    "require-dev": {
-        "json-schema/json-schema-test-suite": "1.1.0",
-        "phpunit/phpunit": "~3.7.0"
     },
     "autoload": {
         "psr-0": { "JsonSchema": "src/" }
