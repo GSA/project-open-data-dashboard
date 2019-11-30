@@ -5,11 +5,8 @@
 // overwritten, or superseded by `config/(development|production/...php`
 // This file is in force on docker-compose and cloud.gov platforms
 
-// TODO: Why are project_shared_path and root_dir
-// determined differently?
-//   $root_dir = '{{ current_source_symlink }}';
-$root_dir = dirname(__DIR__, 2);
-$config['composer_autoload'] = '/var/www/app/vendor/autoload.php';
+// This isn't actually used... We already got access to DotEnv in bootstrap.php
+$config['composer_autoload'] = FCPATH.'/vendor/autoload.php';
 
 $project_shared_path = getenv('PROJECT_SHARED_PATH') ?: '/var/www/app';
 $config['project_shared_path'] = $project_shared_path;
