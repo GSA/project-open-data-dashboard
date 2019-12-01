@@ -56,7 +56,7 @@ $query_builder = TRUE;
 
 $db['default']['hostname'] = getenv('DB_HOST') ?: '';
 $db['default']['username'] = getenv('DB_USER') ?: '';
-$db['default']['password'] = getenv('DB_PASSWORD' ?: '');
+$db['default']['password'] = getenv('DB_PASSWORD') ?: '';
 $db['default']['database'] = getenv('DB_NAME') ?: '';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
