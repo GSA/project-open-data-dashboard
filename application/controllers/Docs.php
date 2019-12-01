@@ -55,11 +55,11 @@ class Docs extends CI_Controller {
 	}
 
 
-	public function routes($route) {
+	public function routes($route = 'intro') {
 
 		if ($route == 'intro') {
 	        redirect('offices/qa');
-			//$this->load->view('welcome_message');			
+			//$this->load->view('welcome_message');
 		} else if ($route == 'export') {
 			$this->load->view('export');
 		} else if ($route == 'user') {

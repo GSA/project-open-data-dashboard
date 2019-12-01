@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "docs/routes/intro";
+$route['default_controller'] = "docs/routes";
 $route['404_override'] = '';
 $route['export'] = "docs/routes/export";
 $route['merge'] = "docs/merge";
