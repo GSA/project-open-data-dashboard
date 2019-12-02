@@ -58,8 +58,8 @@ $route['datagov/(:any)/'] = "campaign/$1";
 $route['datagov/(:any)/(:any)'] = "campaign/$1/$2";
 $route['datagov/(:any)/(:any)/(:any)'] = "campaign/$1/$2/$3";
 
-$route['offices/(:any)'] = "offices/routes/$1";
-$route['docs/(:any)'] = "docs/routes/$1";
+$route['offices/(.+)'] = "offices/routes/$1";
+$route['docs/(.+)'] = "docs/routes/$1";
 
 //$route['login'] = "auth/session/github";
 $route['logout'] = "user/logout";
