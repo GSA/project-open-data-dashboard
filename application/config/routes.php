@@ -53,13 +53,24 @@ $route['datagov/status-update'] = "campaign/status_update";
 $route['datagov/status-review-update'] = "campaign/status_review_update";
 
 
-$route['datagov/(:any)'] = "campaign/$1";
-$route['datagov/(:any)/'] = "campaign/$1";
-$route['datagov/(:any)/(:any)'] = "campaign/$1/$2";
-$route['datagov/(:any)/(:any)/(:any)'] = "campaign/$1/$2/$3";
+$route['datagov/(:any)']                = "campaign/$1";
+$route['datagov/(:any)/']               = "campaign/$1";
+$route['datagov/(:any)/(:any)']         = "campaign/$1/$2";
+$route['datagov/(:any)/(:any)/(:any)']  = "campaign/$1/$2/$3";
 
-$route['offices/(.+)'] = "offices/routes/$1";
-$route['docs/(.+)'] = "docs/routes/$1";
+$route['offices/all']       = "offices/routes/all";
+$route['offices/detail']    = "offices/routes/detail";
+$route['offices/qa']        = "offices/routes/qa";
+
+// Specific date reports (of the form Y-m-d) can have up to four parameters
+$route['offices/(\d{4}-\d{2}-\d{2})/?(:any)?/?(:any)?/?(:any)?/?(:any)?'] =
+    "offices/routes/$1/$2/$3/$4";
+
+// "Special" doc pages
+$route['docs/(intro|export|user)']  = "docs/routes/$1";
+
+// Search for a file named `$1.md` to transform)
+$route['docs/(:any)']               = "docs/routes/$1";
 
 //$route['login'] = "auth/session/github";
 $route['logout'] = "user/logout";

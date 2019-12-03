@@ -32,19 +32,19 @@ class Docs extends CI_Controller {
 
 		$data = array();
 
-		$docs_path = ($this->config->item('docs_path')) ? $this->config->item('docs_path') : 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';	
+		$docs_path = ($this->config->item('docs_path')) ? $this->config->item('docs_path') : 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';
 		$docs_path = $docs_path	. $page . '.md';
-		$docs = @file_get_contents($docs_path);	
-		
+		$docs = @file_get_contents($docs_path);
+
 		if($docs) {
 
 			$markdown_extra = new Michelf\MarkdownExtra();
 
 			$markdown_text = $docs;
-			
+
 			$markdown_text = $markdown_extra->transform($markdown_text);
 			$markdown_text = linkToAnchor($markdown_text);
-			
+
 			$data['docs_html'] = $markdown_text;
 
 		} else {
@@ -59,7 +59,6 @@ class Docs extends CI_Controller {
 
 		if ($route == 'intro') {
 	        redirect('offices/qa');
-			//$this->load->view('welcome_message');
 		} else if ($route == 'export') {
 			$this->load->view('export');
 		} else if ($route == 'user') {
@@ -73,7 +72,7 @@ class Docs extends CI_Controller {
 
 	public function merge() {
 		$this->load->view('merge');
-	}	
+	}
 
 
 
