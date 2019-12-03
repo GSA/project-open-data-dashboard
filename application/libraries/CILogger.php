@@ -96,8 +96,7 @@ class CILogger {
             }
             // Prepare insert
             $this->CI->load->database();
-            $table_name = $this->db_name . '.ci_logs';
-            $sql = "INSERT DELAYED INTO $table_name (
+            $sql = "INSERT DELAYED INTO ci_logs (
                     ip,
                     page,
                     user_agent,
@@ -111,7 +110,7 @@ class CILogger {
                     mysql_queries,
                     mysql_elapsed
                 ) VALUES (
-                    ?,?,?,?,?,?,?,?,?,?,?,? 
+                    ?,?,?,?,?,?,?,?,?,?,?,?
                 );";
 
             $query_values = array (

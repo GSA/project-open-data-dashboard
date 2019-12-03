@@ -7,16 +7,16 @@ class Migration_create_logging_table extends CI_Migration
 
     public function up()
     {
-        // Create new table for each new day
+        // Create new table for capturing SQL query logs
         $this->db->query('
-        CREATE TABLE dashboard.ci_logs (
+        CREATE TABLE IF NOT EXISTS ci_logs (
             ip                      VARCHAR(10) NOT NULL,
             page                    VARCHAR(255) NOT NULL,
             user_agent              VARCHAR(255) NOT NULL,
-            referrer                VARCHAR(255) NOT NULL,
+            referrer                VARCHAR(255) default NULL,
             logged                  TIMESTAMP NOT NULL
                                     default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-            username                VARCHAR(255) NOT NULL,
+            username                VARCHAR(255) default NULL,
             memory                  INT UNSIGNED NOT NULL,
             render_elapsed          FLOAT NOT NULL,
             ci_elapsed              FLOAT NOT NULL,
@@ -26,6 +26,7 @@ class Migration_create_logging_table extends CI_Migration
             mysql_queries           TEXT NOT NULL
         ) ENGINE=ARCHIVE;
         ');
+
 
     }
 }
