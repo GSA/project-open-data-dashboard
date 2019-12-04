@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // overwritten, or superseded by `config/(development|production/...php`
 // This file is in force on docker-compose and cloud.gov platforms
 
-$project_shared_path = getenv('PROJECT_SHARED_PATH') ?: '/var/www/app';
+$project_shared_path = getenv('PROJECT_SHARED_PATH') ?: realpath(APPPATH . '..');
 $config['project_shared_path'] = $project_shared_path;
 $config['download_dir'] = $project_shared_path . '/downloads';
 $config['archive_dir'] = $project_shared_path . '/archive';
@@ -194,7 +194,7 @@ $config['subclass_prefix'] = 'MY_';
 | Note: This will NOT disable or override the CodeIgniter-specific
 |	autoloading (application/config/autoload.php)
 */
-$config['composer_autoload'] = FALSE;
+$config['composer_autoload'] = realpath(APPPATH . '../vendor/autoload.php');
 
 /*
 |--------------------------------------------------------------------------
