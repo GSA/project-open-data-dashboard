@@ -6,7 +6,7 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^$ index.php [L]
-RewriteCond $1 !^(index\.php|img|css|js|fonts|schema|archive|digital-strategy|video_files|robots\.txt|favicon\.ico)
+RewriteCond $1 !^(index\.php|img|css|js|fonts|schema|archive|video_files|robots\.txt|favicon\.ico)
 RewriteRule ^(.*)$ index.php/$1 [L]
 # php_value upload_max_filesize 70M
 # php_value post_max_size 70M
