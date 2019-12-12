@@ -26,6 +26,11 @@ $config['docs_path'] = 'https://raw.githubusercontent.com/GSA/project-open-data-
 $config['s3_bucket'] = getenv('S3_BUCKET') ?: '';
 $config['s3_prefix'] = getenv('S3_PREFIX') ?: '';
 
+// Set the S3 access credentials in environment variables
+// https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_environment.html
+putenv('AWS_ACCESS_KEY_ID='.getenv('S3_ACCESS_KEY_ID'));
+putenv('AWS_SECRET_ACCESS_KEY='.getenv('S3_SECRET_ACCESS_KEY'));
+
 $config['import_active'] = true;
 $config['show_all_offices'] = false;
 $config['max_remote_size'] = (int)(127 * 1E6); // 127MB

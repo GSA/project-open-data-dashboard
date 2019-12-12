@@ -7,13 +7,19 @@ DB_NAME=dashboard
 DB_USER=root
 DB_PASSWORD=mysql
 DB_HOST=database
-# DB_DEBUG: 
+# DB_DEBUG:
 #   TRUE: fail on database errors on migration, display to user
 #   FALSE: continue regardless of errors
 DB_DEBUG=TRUE
 
 S3_BUCKET=bsp-ocsit-prod-east-appdata
 S3_PREFIX=datagov/dashboard/
+
+# If the host where the app is running doesn't have IAM creds setup
+# then these values should be set explicitly
+S3_ACCESS_KEY_ID=foobar
+S3_SECRET_ACCESS_KEY=bazbat
+
 USE_LOCAL_STORAGE=true
 
 ENCRYPTION_KEY=not-secure-encryption-key
