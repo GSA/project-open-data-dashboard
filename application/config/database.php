@@ -76,10 +76,6 @@ $query_builder = TRUE;
 $db['default']['stricton'] = FALSE;
 // set db_debug to FALSE in production and when testing w/o a database
 //$db['default']['db_debug'] = FALSE;
-$db['default']['db_debug'] = FALSE;
-if (filter_var(getenv('DB_DEBUG'), FILTER_VALIDATE_BOOLEAN)) {
-    $db['default']['db_debug'] = TRUE;
-}
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => getenv('DB_HOST') ?: '',
@@ -89,7 +85,7 @@ $db['default'] = array(
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
+	'db_debug' => (ENVIRONMENT !== 'production' && ENVIRONMENT !== 'staging'),
 	'cache_on' => FALSE,
 	'cachedir' => '',
 	'char_set' => 'utf8',
