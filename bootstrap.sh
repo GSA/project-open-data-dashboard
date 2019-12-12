@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 set -euo pipefail
 
 fail() {
@@ -20,10 +20,20 @@ DB_PASSWORD=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.passwor
 DB_HOST=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.host')
 DB_PORT=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.port')
 
+# Truncate the .env file if it already exists
 :>$APP_DIR/.env
-for e in DB_NAME DB_USER DB_PASSWORD DB_HOST DB_PORT ENCRYPTION_KEY; do 
+for e in DB_NAME DB_USER DB_PASSWORD DB_HOST DB_PORT ENCRYPTION_KEY; do
   echo "$e=${!e}" >> $APP_DIR/.env
-done 
+done
+
+S3_PREFIX=
+S3_BUCKET=$(echo $VCAP_SERVICES | jq -r '.["s3"]?[]? | .credentials.bucket')
+S3_ACCESS_KEY_ID=$(echo $VCAP_SERVICES | jq -r '.["s3"]?[]? | .credentials.access_key_id')
+S3_SECRET_ACCESS_KEY=$(echo $VCAP_SERVICES | jq -r '.["s3"]?[]? | .credentials.secret_access_key')
+
+for e in S3_BUCKET S3_PREFIX S3_ACCESS_KEY_ID S3_SECRET_ACCESS_KEY; do
+  echo "$e=${!e}" >> $APP_DIR/.env
+done
 
 uri=$(echo "$VCAP_APPLICATION" | jq -r '.uris[0]')
 echo "DEFAULT_HOST=$uri" >> $APP_DIR/.env
@@ -39,9 +49,7 @@ fi
 #cat<<EOF>>$APP_DIR/.env
 echo "PROJECT_SHARED_PATH=$APP_DIR" >> $APP_DIR/.env
 echo "USE_LOCAL_STORAGE=true" >> $APP_DIR/.env
-echo "S3_BUCKET=bsp-ocsit-prod-east-appdata" >> $APP_DIR/.env
-echo "S3_PREFIX=datagov/dashboard/" >> $APP_DIR/.env
-echo "USE_LOCAL_STORAGE=true" >> $APP_DIR/.env
+
 echo "ENVIRONMENT=development" >> $APP_DIR/.env
 
 # migrations are idempotent, so run on startup
