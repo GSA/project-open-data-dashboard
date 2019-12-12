@@ -1,5 +1,10 @@
 <?php
 
+// We take advantage of CodeIgniter's 'migration_auto_latest' option:
+// https://codeigniter.com/user_guide/libraries/migration.html#migration-preferences
+//
+// This controller code only exists as a hook for explicitly testing migrations.
+
 // For docs on what is happening here, see
 // https://codeigniter.com/user_guide/libraries/migration.html
 
