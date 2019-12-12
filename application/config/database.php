@@ -97,3 +97,12 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+// 'password' is explicitly omitted here since some dev environments will provide an empty password
+foreach(array('hostname', 'username', 'database') as $parameter) {
+  if ($db['default'][$parameter] == '') {
+    log_message('error', 'Incomplete database configuration: missing '.$parameter);
+    show_error('Incomplete configuration. See application logs for details.', EXIT_DATABASE, 'An error was encountered');
+  }
+}
+
