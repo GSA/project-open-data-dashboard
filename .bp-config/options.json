@@ -1,3 +1,5 @@
 {
-    "ADDITIONAL_PREPROCESS_CMDS": "$HOME/htdocs/bootstrap.sh"
+    "ADDITIONAL_PREPROCESS_CMDS": "$HOME/bootstrap.sh",
+    "WEBDIR": "public",
+    "COMPOSER_VENDOR_DIR": "{BUILD_DIR}/vendor"
 }
