@@ -1577,7 +1577,7 @@ class Campaign_model extends CI_Model
 
             $schema_module = ($schema == 'federal-v1.1' && $chunked == true) ? 'dataset.json' : 'catalog.json';
 
-            $path = './schema/' . $schema_variant . $schema_module;
+            $path = $this->config->item('project_shared_path').'/schema/' . $schema_variant . $schema_module;
 
             //echo $path; exit;
 
