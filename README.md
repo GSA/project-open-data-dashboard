@@ -186,7 +186,7 @@ Here's an outline of where S3 is used in the code:
     - There is no remove from S3
   - It archives `digitalstrategy.json` and `data.json` using `archive_file` which puts a fetch date in the URL.
 
-`models/Campaign_model.php`:
+`models/campaign_model.php`:
   - `archive_file` which calls  `archive_to_s3` when `use_local_storage` is false
     - the `validate_datajson` function calls `archive_file` but sets `filetype` to `datajson-lines` so the `archive_file` function does not store it in S3, regardless of `use_local_storage` setting.
   - `archive_to_s3` which calls put_to_s3 and stores with a PUBLIC acl

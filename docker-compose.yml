@@ -8,7 +8,7 @@ services:
     depends_on:
       - database
     environment:
-      APP_DIR: /var/www/app
+      APP_DIR: /var/www/app 
       VCAP_APPLICATION: >
         {
           "fake": "yes",
@@ -31,31 +31,6 @@ services:
                 "username": "root"
               }
             }
-          ],
-          "s3": [
-          {
-            "binding_name": null,
-            "credentials": {
-            "access_key_id": "SOME_ACCESS_KEY_ID",
-            "additional_buckets": [],
-            "bucket": "SOME_BUCKET_ID",
-            "region": "us-gov-west-1",
-            "secret_access_key": "SOME_SECRET_ACCESS_KEY",
-            "uri": "s3://some-long-uri"
-            },
-            "instance_name": "s3",
-            "label": "s3",
-            "name": "s3",
-            "plan": "basic-sandbox",
-            "provider": null,
-            "syslog_drain_url": null,
-            "tags": [
-            "AWS",
-            "S3",
-            "object-storage"
-            ],
-            "volume_mounts": []
-          }
           ],
           "user-provided": [
             {
