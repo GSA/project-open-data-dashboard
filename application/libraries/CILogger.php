@@ -51,7 +51,7 @@ class CILogger {
      */
     function resolve_profiling() {
         // If we should log this run
-        if (rand(0, 99) < $this->log_frequency) {
+        if (php_sapi_name() != 'cli' && rand(0, 99) < $this->log_frequency) {
             // Total consumed memory
             $memory = ( ! function_exists('memory_get_usage')) ? 0 : memory_get_usage();
             // Total elapsed script time
@@ -96,8 +96,7 @@ class CILogger {
             }
             // Prepare insert
             $this->CI->load->database();
-            $table_name = $this->db_name . '.ci_logs';
-            $sql = "INSERT DELAYED INTO $table_name (
+            $sql = "INSERT DELAYED INTO ci_logs (
                     ip,
                     page,
                     user_agent,
@@ -111,7 +110,7 @@ class CILogger {
                     mysql_queries,
                     mysql_elapsed
                 ) VALUES (
-                    ?,?,?,?,?,?,?,?,?,?,?,? 
+                    ?,?,?,?,?,?,?,?,?,?,?,?
                 );";
 
             $query_values = array (
@@ -136,31 +135,6 @@ class CILogger {
             $this->CI->db->query($sql, $query_values);
             // Restore DB debug mode
             $this->CI->db->db_debug = $saved_debug;
-            // Handle "Table Not Found" error
-            if (1146 === $this->CI->db->_error_number()) {
-                // Create new table for each new day
-                //$this->CI->db->query('CREATE TABLE ' . $table_name . ' LIKE ' . $this->db_name . '.ci_logs');
-                $this->CI->db->query('
-                CREATE TABLE ci_logs (
-                    ip                      VARCHAR(10) NOT NULL,
-                    page                    VARCHAR(255) NOT NULL,
-                    user_agent              VARCHAR(255) NOT NULL,
-                    referrer                VARCHAR(255) NOT NULL,
-                    logged                  TIMESTAMP NOT NULL
-                                            default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-                    username                VARCHAR(255) NOT NULL,
-                    memory                  INT UNSIGNED NOT NULL,
-                    render_elapsed          FLOAT NOT NULL,
-                    ci_elapsed              FLOAT NOT NULL,
-                    controller_elapsed      FLOAT NOT NULL,
-                    mysql_elapsed           FLOAT NOT NULL,
-                    mysql_count_queries     TINYINT UNSIGNED NOT NULL,
-                    mysql_queries           TEXT NOT NULL
-                ) ENGINE=ARCHIVE;
-                ');
-                // Insert again
-                $this->CI->db->query($sql, $query_values);
-            }
         }
     }
 }
