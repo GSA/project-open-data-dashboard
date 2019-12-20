@@ -53,6 +53,8 @@ $route['default_controller'] = 'docs/routes';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['healthcheck'] = 'healthcheck/index';
+
 $route['export'] = "docs/routes/export";
 $route['merge'] = "docs/merge";
 $route['upgrade-schema'] = "campaign/upgrade_schema";
