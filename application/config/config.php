@@ -78,11 +78,6 @@ $config['base_url'] = $protocol . '://' . $default_host;
 
 $cookie_path_prefix = '';
 
-if (isset($_SERVER['REQUEST_URI']) && 0 === stripos($_SERVER['REQUEST_URI'], '/dashboard')){
-    $config['base_url'] .= '/dashboard';
-    $cookie_path_prefix = 'dashboard';
-}
-
 /*
 |--------------------------------------------------------------------------
 | Index File
