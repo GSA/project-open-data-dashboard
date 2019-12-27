@@ -1369,7 +1369,7 @@ class Campaign_model extends CI_Model
                 echo 'Creating directory ' . $directory . PHP_EOL;
             }
 
-            mkdir($directory);
+            mkdir($directory, 0777, true);
         }
 
 
@@ -1911,7 +1911,7 @@ class Campaign_model extends CI_Model
 
                 // create error log directory if needed
                 if (!file_exists($directory)) {
-                    mkdir($directory);
+                    mkdir($directory, 0777, true);
                 }
 
                 $backup_path = $directory . '/' . $this->current_office_id . '_backup.csv';
