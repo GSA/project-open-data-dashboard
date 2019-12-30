@@ -58,7 +58,21 @@ class Docs extends CI_Controller {
 	public function routes($route = 'intro') {
 
 		if ($route == 'intro') {
-	        redirect(base_url().'offices/qa');
+			if ($this->input->method(TRUE) == 'HEAD') {
+				// If the HTTP method was HEAD CodeIgniter 3.1.* will return a
+				// 303 status. That's bad because our load-balancer doesn't
+				// understand a 303 to mean "healthy". So here we're explicitly
+				// returning a 302 the same way a GET would to keep the
+				// load-balancer happy.
+
+				// This is a temporary fix until BSP's load-balancer explicitly
+				// checks our new /healthcheck endpoint instead of this
+				// endpoint.
+				$this->output->set_status_header(302, 'Hello Mister Load Balancer Sir');
+				redirect(base_url().'offices/qa', 'auto', 302);
+			} else {
+				redirect(base_url().'offices/qa');
+			}
 		} else if ($route == 'export') {
 			$this->load->view('export');
 		} else if ($route == 'user') {
