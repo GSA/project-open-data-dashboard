@@ -313,8 +313,8 @@ class Offices extends CI_Controller {
 
 			}
 
-
-
+		} else {
+			show_error('Office '.$id.' is unknown', 404, 'Can\'t help you there.');
 		}
 
 		$milestone_trends = $this->get_trends($id);
