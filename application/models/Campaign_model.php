@@ -42,7 +42,7 @@ class Campaign_model extends CI_Model
         $this->db->where('office_id', $office_id);
 
         // If we got a status_id, query specifically for that
-        if (!empty($status_id)) {
+        if (!empty($status_id) && is_integer($status_id)) {
             $this->db->where('status_id', $status_id);
         } else {
             // otherwise see if we need to filter by crawl status
