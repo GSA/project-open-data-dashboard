@@ -232,7 +232,9 @@ class Offices extends CI_Controller {
 		$this->db->where('id', $id);
 		$query = $this->db->get('offices');
 
-		if ($query->num_rows() > 0) {
+		if ($query->num_rows() < 1) {
+			show_error('Office '.html_escape($id).' is unknown', 404, 'Can\'t help you there.');
+		} else {
 		   $view_data['office'] = $query->row();
 
 
@@ -313,8 +315,6 @@ class Offices extends CI_Controller {
 
 			}
 
-		} else {
-			show_error('Office '.$id.' is unknown', 404, 'Can\'t help you there.');
 		}
 
 		$milestone_trends = $this->get_trends($id);
