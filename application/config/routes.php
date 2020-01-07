@@ -90,12 +90,3 @@ $route['docs/(:any)']               = "docs/routes/$1";
 //$route['login'] = "auth/session/github";
 $route['logout'] = "user/logout";
 $route['account'] = "docs/routes/user";
-
-$old_route = $route;
-
-foreach($old_route as $key => $value) {
-    $route['dashboard/'.$key] = $value;
-}
-$route['dashboard/(:any)'] = '$1';
-$route['dashboard'] = $route['default_controller'];
-
