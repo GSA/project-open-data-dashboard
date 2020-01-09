@@ -65,6 +65,49 @@ class Migration_Datajson_stat_versioning extends CI_Migration {
 		$this->db->query("ALTER TABLE `datagov_campaign` DROP PRIMARY KEY; ");
 		$this->db->query("ALTER TABLE `datagov_campaign` ADD `status_id` INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;");
 
+		/*
+		Populate offices table
+
+		The agency hierarchy in the offices table was originally populated from
+		the USA.gov Federal Agency Directory API. That API is no longer
+		available, so we've captured the data in this CSV file.
+
+		Note that the IDs, which originally came from the API, are exposed in
+		URLs that people may have bookmarked; use caution if you change them!
+ 		*/
+		if (($handle = fopen(APPPATH."migrations/offices.csv", "r")) === FALSE) {
+
+			echo "Couldn't open the CSV file";
+
+		} else {
+
+			$this->db->query('BEGIN;');
+
+			// Read in the header row
+			if (($keys = fgetcsv($handle, 1000, ",")) === FALSE) {
+
+				echo "Couldn't find a header row";
+
+			} else {
+
+				// For each remaining row...
+				while (($values = fgetcsv($handle, 1000, ",")) !== FALSE) {
+					// Make an INSERT query and execute it
+					$record = array_combine($keys, $values);
+					$query = $this->db->insert_string('offices', $record);
+					$result = $this->db->simple_query($query);
+					if(!$result) {
+						$this->db->simple_query('ROLLBACK;');
+					}
+				}
+
+			}
+
+			$this->db->query('COMMIT;');
+			fclose($handle);
+
+		}
+
 	}
 
 }

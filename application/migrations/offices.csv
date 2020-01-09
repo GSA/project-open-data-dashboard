@@ -1,0 +1,466 @@
+id,name,abbreviation,url,notes,parent_office_id,no_parent,reporting_authority_type,cfo_act_agency
+47994,Administration for Children and Families,ACF,http://www.acf.hhs.gov/,,49021,FALSE,executive,FALSE
+47995,Administration on Aging,AoA,http://www.aoa.gov/,,49021,FALSE,executive,FALSE
+47996,AIDS.gov,,http://www.aids.gov/,,49021,FALSE,executive,FALSE
+48005,Bureau of the Census,,http://www.census.gov,,52668,FALSE,executive,FALSE
+48006,Bureau of the Public Debt,,http://www.publicdebt.treas.gov/,,49034,FALSE,executive,FALSE
+48007,CDC National STD Hotline,,http://www.cdc.gov/std,,49021,FALSE,executive,FALSE
+48012,Center for Nutrition Policy and Promotion,CNPP,http://www.cnpp.usda.gov/,,49015,FALSE,executive,FALSE
+48013,Centers for Disease Control and Prevention,CDC,http://www.cdc.gov/,,49021,FALSE,executive,FALSE
+48016,Child Welfare Information Gateway,,http://www.childwelfare.gov,,49021,FALSE,executive,FALSE
+48018,Commission on Civil Rights,,http://www.usccr.gov,,,TRUE,independent,FALSE
+48020,Consumer Center,,http://www.fcc.gov/cgb/,,49041,FALSE,independent,FALSE
+48023,Customer Contact Center,,http://www.pbgc.gov/,,49052,FALSE,independent,FALSE
+48027,Department of Veterans Affairs,VA,http://www.va.gov/,,,TRUE,executive,TRUE
+48028,Eldercare Locator,,http://www.eldercare.gov/,,49021,FALSE,executive,FALSE
+48029,Employee Benefits Security Administration,EBSA,http://www.dol.gov/ebsa/,,49028,FALSE,executive,FALSE
+48030,Energy Efficiency and Renewable Energy,EERE,http://www.energysavers.gov/,,49019,FALSE,executive,FALSE
+48031,Energy Star Program,,http://www.energystar.gov,,49039,FALSE,independent,FALSE
+48032,Equal Employment Opportunity Commission,EEOC,http://www.eeoc.gov/,,,TRUE,independent,FALSE
+48033,Federal Aviation Administration,FAA,http://www.faa.gov/,,49035,FALSE,executive,FALSE
+48042,Federal Emergency Management Agency,FEMA,http://www.fema.gov/,,49022,FALSE,executive,FALSE
+48044,Federal Housing Administration,FHA,http://portal.hud.gov,,49023,FALSE,executive,FALSE
+48048,Federal Reserve Consumer Help,,http://www.federalreserveconsumerhelp.gov/,,49046,FALSE,independent,FALSE
+48055,FEMA Disaster Assistance,,http://www.fema.gov/assistance,,49022,FALSE,executive,FALSE
+48057,Fish and Wildlife Service,,http://www.fws.gov/,,49033,FALSE,executive,FALSE
+48058,Food and Drug Administration,FDA,http://www.fda.gov/,,49021,FALSE,executive,FALSE
+48059,Food and Nutrition Service,FNS,http://www.fns.usda.gov,,49015,FALSE,executive,FALSE
+48061,General Information Line,,http://www.usda.gov/wps/portal/usda/usdahome,,49015,FALSE,executive,FALSE
+48062,HHS-TIPS Fraud Hotline,,http://www.oig.hhs.gov,,49021,FALSE,executive,FALSE
+48068,Internal Revenue Service,IRS,http://www.irs.gov,,49034,FALSE,executive,FALSE
+48069,Job Corps,,http://www.jobcorps.gov,,49028,FALSE,executive,FALSE
+48074,National Cemetery Administration,NCA,http://www.cem.va.gov/,,48027,FALSE,executive,FALSE
+48075,National Contact Center,,http://www.dol.gov/,,49028,FALSE,executive,FALSE
+48076,National Council on Disability,NCD,http://www.ncd.gov/,,,TRUE,independent,FALSE
+48078,National Flood Insurance Program,NFIP,http://www.floodsmart.gov/,,48042,FALSE,executive,FALSE
+48079,National Health Information Center,,http://www.health.gov/nhic,,49021,FALSE,executive,FALSE
+48081,National Highway Traffic Safety Administration,NHTSA,http://www.nhtsa.dot.gov/,,49035,FALSE,executive,FALSE
+48082,National Institute of Allergy and Infectious Diseases,NIAID,http://www.niaid.nih.gov,,49021,FALSE,executive,FALSE
+48084,National Institute of Food and Agriculture,,http://www.nifa.usda.gov,,49015,FALSE,executive,FALSE
+48087,National Institute of Mental Health,NIMH,http://www.nimh.nih.gov,,48089,FALSE,executive,FALSE
+48089,National Institutes of Health,NIH,http://www.nih.gov/,,49021,FALSE,executive,FALSE
+48091,National Park Service,NPS,http://www.nps.gov/,,49033,FALSE,executive,FALSE
+48092,National Passport Information Center,NPIC,http://travel.state.gov/passport,,49030,FALSE,executive,FALSE
+48094,National Pesticide Information Center,,http://npic.orst.edu,,49039,FALSE,independent,FALSE
+48096,National Runaway Switchboard,NRS,http://www.1800runaway.org,,49021,FALSE,executive,FALSE
+48099,National Service Center for Environmental Publications,NSCEP,http://www.epa.gov/nscep,,49039,FALSE,independent,FALSE
+48101,Occupational Safety and Health Administration,OSHA,http://www.osha.gov/,,49028,FALSE,executive,FALSE
+48102,"Office for Civil Rights, Department of Education",,http://www.ed.gov/ocr,,49018,FALSE,executive,FALSE
+48104,Office of Child Support Enforcement,OCSE,http://www.acf.hhs.gov/programs/cse/,,49021,FALSE,executive,FALSE
+48105,Office of Disability Employment Policy,,http://www.dol.gov/odep,,49028,FALSE,executive,FALSE
+48107,Office of Fair Housing and Equal Opportunity,FHEO,http://www.hud.gov/offices/fheo/,,49023,FALSE,executive,FALSE
+48109,Office of Investor Education and Advocacy,OIEA,http://www.investor.gov/,,49054,FALSE,independent,FALSE
+48112,Office of Personnel Management,OPM,http://www.opm.gov/,,,TRUE,independent,TRUE
+48113,Office of Postsecondary Education,OPE,http://www2.ed.gov/about/offices/list/ope/index.html,,49018,FALSE,executive,FALSE
+48115,Office of Public Inquiries,,http://www.socialsecurity.gov,,49057,FALSE,independent,FALSE
+48121,Office of Special Education and Rehabilitative Services,OSERS,http://www.ed.gov/about/offices/list/osers/index.html,,49018,FALSE,executive,FALSE
+48126,Office of the Comptroller of the Currency,OCC,http://www.occ.gov/,,49034,FALSE,executive,FALSE
+48129,Office of Vocational and Adult Education,OVAE,http://www2.ed.gov/about/offices/list/ovae/index.html,,49018,FALSE,executive,FALSE
+48131,American Citizens Services and Crisis Management,,http://travel.state.gov/travel,,49030,FALSE,executive,FALSE
+48133,Public Affairs,,http://www.energy.gov/forconsumers.htm,,49019,FALSE,executive,FALSE
+48139,Small Business Administration,SBA,http://www.sba.gov/,,,TRUE,independent,TRUE
+48140,Surplus Federal Property Sales,,http://www.gsaauctions.gov/,,49048,FALSE,independent,FALSE
+48141,The Education Publications Center,EDPUBS,http://www.edpubs.gov,,49018,FALSE,executive,FALSE
+48143,Transportation Security Administration,TSA,http://www.tsa.gov,,49022,FALSE,executive,FALSE
+48146,U.S. Commodity Futures Trading Commission,CFTC,http://www.cftc.gov,,,TRUE,independent,FALSE
+48148,U.S. Trustee Program,,http://www.justice.gov/ust,,52686,FALSE,executive,FALSE
+48150,United States Mint,,http://www.usmint.gov,,49034,FALSE,executive,FALSE
+48151,U.S. Patent and Trademark Office,,http://www.uspto.gov/,,52668,FALSE,executive,FALSE
+48154,United States Postal Inspection Service,,http://postalinspectors.uspis.gov/,,49061,FALSE,independent,FALSE
+48156,Veterans Benefits Administration,,http://www.vba.va.gov/,,48027,FALSE,executive,FALSE
+48158,Veterans Employment and Training Service,VETS,http://www.dol.gov/vets/,,49028,FALSE,executive,FALSE
+48159,Veterans Health Administration,VHA,http://www.va.gov/health,,,TRUE,independent,FALSE
+48161,Visa Services,,http://travel.state.gov/visa,,49030,FALSE,executive,FALSE
+48165,Wireless Telecommunications Bureau,WTB,http://wireless.fcc.gov/,,49041,FALSE,independent,FALSE
+49013,Consumer Product Safety Commission,CPSC,http://www.cpsc.gov/,,,TRUE,independent,FALSE
+49015,Department of Agriculture,USDA,http://www.usda.gov/wps/portal/usda/usdahome,,,TRUE,executive,TRUE
+49018,Department of Education,ED,http://www.ed.gov,,,TRUE,executive,TRUE
+49019,Department of Energy,DOE,http://www.energy.gov/,,,TRUE,executive,TRUE
+49021,Department of Health and Human Services,HHS,http://www.hhs.gov/,,,TRUE,executive,TRUE
+49022,Department of Homeland Security,DHS,http://www.dhs.gov,,,TRUE,executive,TRUE
+49023,Department of Housing and Urban Development,HUD,http://www.hud.gov,,,TRUE,executive,TRUE
+49028,Department of Labor,DOL,http://www.dol.gov/,,,TRUE,executive,TRUE
+49030,Department of State,DOS,http://www.state.gov,,,TRUE,executive,TRUE
+49033,Department of the Interior,DOI,http://www.doi.gov/,,,TRUE,executive,TRUE
+49034,Department of the Treasury,,http://www.ustreas.gov/,,,TRUE,executive,TRUE
+49035,Department of Transportation,DOT,http://www.dot.gov/,,,TRUE,executive,TRUE
+49039,Environmental Protection Agency,EPA,http://www.epa.gov/,,,TRUE,independent,TRUE
+49041,Federal Communications Commission,FCC,http://www.fcc.gov/,,,TRUE,independent,FALSE
+49043,Federal Deposit Insurance Corporation,FDIC,http://www.fdic.gov/,,,TRUE,independent,FALSE
+49046,Federal Reserve System,,http://www.federalreserve.gov/,,,TRUE,independent,FALSE
+49047,Federal Trade Commission,FTC,http://www.ftc.gov/,,,TRUE,independent,FALSE
+49048,General Services Administration,GSA,http://www.gsa.gov/,,,TRUE,independent,TRUE
+49050,National Credit Union Administration,,http://www.ncua.gov/,,,TRUE,independent,FALSE
+49052,Pension Benefit Guaranty Corporation,PBGC,http://www.pbgc.gov/,,,TRUE,independent,FALSE
+49054,Securities and Exchange Commission,SEC,http://www.sec.gov/,,,TRUE,independent,FALSE
+49057,Social Security Administration,SSA,http://www.ssa.gov/,,,TRUE,independent,TRUE
+49061,U.S. Postal Service,USPS,https://www.usps.com/,,,TRUE,independent,FALSE
+49064,Administration for Native Americans,,http://www.acf.hhs.gov/programs/ana/,,47994,FALSE,executive,FALSE
+49066,Administration on Developmental Disabilities,,http://www.acf.hhs.gov/programs/add/,,47994,FALSE,executive,FALSE
+49067,Office of the Federal Register,,http://ofr.gov/,,49483,FALSE,independent,FALSE
+49068,Administrative Conference of the United States,,http://acus.gov/,,,TRUE,independent,FALSE
+49070,Administrative Office of the U.S. Courts,,http://www.uscourts.gov/,,,TRUE,independent,FALSE
+49074,Agency for Healthcare Research and Quality,AHRQ,http://www.ahrq.gov/,,49021,FALSE,executive,FALSE
+49076,Agency for Toxic Substances and Disease Registry,,http://www.atsdr.cdc.gov/,,48013,FALSE,executive,FALSE
+49077,Agricultural Marketing Service,,http://www.ams.usda.gov/,,49450,FALSE,executive,FALSE
+49078,Agricultural Research Service,,http://www.ars.usda.gov/,,49015,FALSE,executive,FALSE
+49080,U.S. Air Force,,http://www.af.mil/,,49229,FALSE,executive,FALSE
+49081,"Bureau of Alcohol, Tobacco, Firearms, and Explosives",,http://www.atf.gov,,52686,FALSE,executive,FALSE
+49082,Alcohol and Tobacco Tax and Trade Bureau,,http://www.ttb.gov/,,49034,FALSE,executive,FALSE
+49084,National Railroad Passenger Corporation,AMTRAK,http://www.amtrak.com/,,,TRUE,independent,FALSE
+49085,Animal and Plant Health Inspection Service,,http://www.aphis.usda.gov/,,49450,FALSE,executive,FALSE
+49088,Architect of the Capitol,,http://www.aoc.gov/,,49664,FALSE,independent,FALSE
+49092,U.S. Arctic Research Commission,,http://www.arctic.gov/,,,TRUE,independent,FALSE
+49093,Armed Forces Retirement Home,,http://www.afrh.gov/,,,TRUE,independent,FALSE
+49095,Arms Control and International Security,,http://www.state.gov/t/,,49030,FALSE,executive,FALSE
+49096,U.S. Army,,http://www.army.mil/,,49229,FALSE,executive,FALSE
+49098,U.S. Army Corps of Engineers,,http://www.usace.army.mil/,,49096,FALSE,executive,FALSE
+49100,Arthritis and Musculoskeletal Interagency Coordinating Committee,,http://www.niams.nih.gov/,,48089,FALSE,executive,FALSE
+49101,U.S. Fleet Forces Command,,http://www.cffc.navy.mil/,,49229,FALSE,executive,FALSE
+49102,Bankruptcy Courts,,http://www.uscourts.gov/bankruptcycourts.html,,,TRUE,independent,FALSE
+49105,Barry M. Goldwater Scholarship and Excellence in Education Program,,http://www.act.org/goldwater/,,,TRUE,independent,FALSE
+49106,Bonneville Power Administration,,http://www.bpa.gov/corporate/,,49624,FALSE,executive,FALSE
+49108,U.S. Botanic Garden,,http://www.usbg.gov/,,49088,FALSE,independent,FALSE
+49109,Broadcasting Board of Governors,,http://www.bbg.gov/,,,TRUE,independent,FALSE
+49112,Bureau of Citizenship and Immigration Services,USCIS,http://www.uscis.gov/portal/site/uscis,,,TRUE,independent,FALSE
+49113,Consumer Financial Protection Bureau,,http://www.consumerfinance.gov,,,TRUE,independent,FALSE
+49115,Bureau of Economic Analysis,BEA,http://www.bea.gov/,,52668,FALSE,executive,FALSE
+49117,Bureau of Indian Affairs,BIA,http://www.bia.gov/WhoWeAre/BIA/index.htm,,49383,FALSE,executive,FALSE
+49120,Bureau of Industry and Security,,http://www.bis.doc.gov/,,52668,FALSE,executive,FALSE
+49121,Bureau of International Labor Affairs,,http://www.dol.gov/ilab/,,49028,FALSE,executive,FALSE
+49124,Bureau of Labor Statistics,,http://stats.bls.gov/,,49028,FALSE,executive,FALSE
+49125,Bureau of Land Management,BLM,http://www.blm.gov/wo/st/en.html,,49033,FALSE,executive,FALSE
+49126,Bureau of Prisons,,http://www.bop.gov/,,52686,FALSE,executive,FALSE
+49128,Bureau of Reclamation,,http://www.usbr.gov/,,49033,FALSE,executive,FALSE
+49129,Bureau of Transportation Statistics,,http://www.bts.gov/,,49035,FALSE,executive,FALSE
+49134,Centers for Medicare & Medicaid Services,CMS,http://www.cms.gov,,49021,FALSE,executive,FALSE
+49135,U.S. Central Command,CENTCOM,http://www.centcom.mil/,,49726,FALSE,executive,FALSE
+49139,Chief Acquisition Officers Council,,http://www.cao.gov,,,TRUE,independent,FALSE
+49141,Chief Financial Officers Council,,http://www.cfo.gov,,,TRUE,independent,FALSE
+49143,Chief Human Capital Officers Council,,http://www.chcoc.gov/,,,TRUE,independent,FALSE
+49145,Chief Information Officers Council,,http://www.cio.gov/,,,TRUE,independent,FALSE
+49146,Citizens' Stamp Advisory Committee,,http://about.usps.com/who-we-are/leadership/stamp-advisory-committee.htm,,,TRUE,independent,FALSE
+49149,U.S. Coast Guard,,http://www.uscg.mil/,,49022,FALSE,executive,FALSE
+49153,U.S. Commission on International Religious Freedom,,http://www.uscirf.gov/,,,TRUE,independent,FALSE
+49155,Commission on Security and Cooperation in Europe,Helsinki Commission,http://www.csce.gov,,,TRUE,independent,FALSE
+49157,U.S. AbilityOne Commission,,http://www.abilityone.gov,,,TRUE,independent,FALSE
+49159,Committee for the Implementation of Textile Agreements,,http://otexa.ita.doc.gov/cita.htm,,52668,FALSE,executive,FALSE
+49161,Committee on Foreign Investment in the United States,,http://www.treasury.gov/about/organizational-structure/offices/International-Affairs/Pages/cfius-index.aspx,,,TRUE,independent,FALSE
+49162,Community Oriented Policing Services,COPS,http://www.cops.usdoj.gov/,,52686,FALSE,executive,FALSE
+49163,Office of Community Planning and Development,,http://www.hud.gov/offices/cpd/index.cfm,,49023,FALSE,executive,FALSE
+49166,Computer Emergency Readiness Team,US CERT,http://www.us-cert.gov/,,49022,FALSE,executive,FALSE
+49167,Congressional Budget Office,CBO,http://www.cbo.gov/,,49664,FALSE,independent,FALSE
+49169,Congressional Research Service,,http://www.loc.gov/crsinfo/about/,,52628,FALSE,independent,FALSE
+49174,Coordinating Council on Juvenile Justice and Delinquency Prevention,,http://www.juvenilecouncil.gov/,,,TRUE,independent,FALSE
+49176,Copyright Office,,http://www.copyright.gov/,,52628,FALSE,independent,FALSE
+49180,Council of Economic Advisers,,http://www.whitehouse.gov/cea/index.html,,,TRUE,executive,FALSE
+49181,Council on Environmental Quality,,http://www.whitehouse.gov/administration/eop/ceq/,,,TRUE,executive,FALSE
+49182,Court of Appeals for the Armed Forces,,http://www.armfor.uscourts.gov/index.html,,,TRUE,independent,FALSE
+49184,Court of Appeals for the Federal Circuit,,http://www.cafc.uscourts.gov/,,,TRUE,independent,FALSE
+49186,U.S. Court of Appeals for Veterans Claims,,http://www.uscourts.cavc.gov,,,TRUE,independent,FALSE
+49188,Court of Federal Claims,,http://www.uscfc.uscourts.gov/,,,TRUE,independent,FALSE
+49189,Court of International Trade,,http://www.cit.uscourts.gov/,,,TRUE,independent,FALSE
+49191,Court Services and Offender Supervision Agency for the District of Columbia,,http://www.csosa.gov,,,TRUE,independent,FALSE
+49194,Defense Acquisition University,,http://www.dau.mil/,,49229,FALSE,executive,FALSE
+49195,Defense Advanced Research Projects Agency,DARPA,http://www.darpa.mil/,,49229,FALSE,executive,FALSE
+49197,Defense Commissary Agency,,http://www.commissaries.com/,,49229,FALSE,executive,FALSE
+49200,Defense Contract Audit Agency,DCAA,http://www.dcaa.mil/,,49229,FALSE,executive,FALSE
+49202,Defense Contract Management Agency,,http://www.dcma.mil/,,49229,FALSE,executive,FALSE
+49206,Defense Field Activities,,http://www.defenselink.mil/pubs/almanac/,,,TRUE,independent,FALSE
+49209,Defense Information Systems Agency,DISA,http://www.disa.mil/,,49229,FALSE,executive,FALSE
+49211,Defense Intelligence Agency,DIA,http://www.dia.mil,,49229,FALSE,executive,FALSE
+49213,Defense Legal Services Agency,,http://www.defenselink.mil/dodgc/,,49229,FALSE,executive,FALSE
+49217,Defense Security Cooperation Agency,DSCA,http://www.dsca.mil/,,49229,FALSE,executive,FALSE
+49219,Defense Security Service,DSS,http://www.dss.mil/,,49229,FALSE,executive,FALSE
+49221,Defense Technical Information Center,,http://www.dtic.mil,,49229,FALSE,executive,FALSE
+49223,Defense Threat Reduction Agency,DTRA,http://www.dtra.mil/,,49229,FALSE,executive,FALSE
+49225,Delaware River Basin Commission,,http://www.state.nj.us/drbc/drbc.htm,,,TRUE,independent,FALSE
+49227,Denali Commission,,http://www.denali.gov/,,,TRUE,independent,FALSE
+49229,Department of Defense,DOD,http://www.defense.gov/,,,TRUE,executive,TRUE
+49230,Department of Defense Inspector General,,http://www.dodig.mil/,,49229,FALSE,executive,FALSE
+49235,Domestic Policy Council,,http://www.whitehouse.gov/dpc/index.html,,,TRUE,executive,FALSE
+49237,"Economic, Business and Agricultural Affairs",,http://www.state.gov/e/,,,TRUE,independent,FALSE
+49238,Economic Adjustment Office,,http://www.oea.gov,,49229,FALSE,executive,FALSE
+49240,Economic Development Administration,EDA,http://www.eda.gov/,,52668,FALSE,executive,FALSE
+49242,Economic Research Service,,http://www.ers.usda.gov/,,49015,FALSE,executive,FALSE
+49243,Economics and Statistics Administration,,http://www.esa.doc.gov/,,52668,FALSE,executive,FALSE
+49250,Endangered Species Program,,http://endangered.fws.gov/,,48057,FALSE,executive,FALSE
+49255,Energy Information Administration,,http://www.eia.doe.gov/,,49019,FALSE,executive,FALSE
+49256,English Language Acquisition Office,,http://www.ed.gov/oela,,49018,FALSE,executive,FALSE
+49259,Environmental Management,Energy Department,http://www.em.doe.gov/,,49019,FALSE,executive,FALSE
+49261,European Command,,http://www.eucom.mil,,49726,FALSE,executive,FALSE
+49263,Executive Office for Immigration Review,,http://www.usdoj.gov/eoir/,,52686,FALSE,executive,FALSE
+49266,Office of Elementary and Secondary Education,OESE,http://www.ed.gov/oese,,49018,FALSE,executive,FALSE
+49267,Fair Housing and Equal Opportunity,FHEO,http://www.hud.gov/offices/fheo/index.cfm,,49023,FALSE,executive,FALSE
+49272,Farm Service Agency,,http://www.fsa.usda.gov,,49015,FALSE,executive,FALSE
+49275,Federal Accounting Standards Advisory Board,,http://www.fasab.gov/,,,TRUE,independent,FALSE
+49278,Federal Bureau of Investigation,FBI,http://www.fbi.gov/,,52686,FALSE,executive,FALSE
+49281,Federal Consulting Group,,http://www.fcg.gov,,49033,FALSE,executive,FALSE
+49288,Federal Executive Boards,,http://www.feb.gov/,,48112,FALSE,independent,FALSE
+49290,Federal Financial Institutions Examination Council,,http://www.ffiec.gov/,,,TRUE,independent,FALSE
+49292,Federal Financing Bank,,http://www.treas.gov/ffb/,,49034,FALSE,executive,FALSE
+49294,Federal Geographic Data Committee,,http://www.fgdc.gov/,,,TRUE,independent,FALSE
+49296,Federal Highway Administration,,http://www.fhwa.dot.gov/,,49035,FALSE,executive,FALSE
+49299,Federal Interagency Committee for the Management of Noxious and Exotic Weeds,,http://www.fs.fed.us/ficmnew/index.shtml,,,TRUE,independent,FALSE
+49300,Federal Interagency Committee on Education,,http://www.ed.gov/about/bdscomm/list/com.html#fice,,,TRUE,independent,FALSE
+49301,Federal Interagency Council on Statistical Policy,,http://www.fedstats.gov/,,,TRUE,independent,FALSE
+49303,Federal Judicial Center,,http://www.fjc.gov/,,,TRUE,independent,FALSE
+49304,Federal Laboratory Consortium for Technology Transfer,,http://www.federallabs.org/,,,TRUE,independent,FALSE
+49308,Federal Law Enforcement Training Center,,http://www.fletc.gov/,,49022,FALSE,executive,FALSE
+49310,Federal Library and Information Center Committee,,http://lcweb.loc.gov/flicc/,,,TRUE,independent,FALSE
+49312,Federal Mediation and Conciliation Service,,http://www.fmcs.gov/,,,TRUE,independent,FALSE
+49315,Federal Motor Carrier Safety Administration,FMCSA,http://www.fmcsa.dot.gov/,,,TRUE,independent,FALSE
+49318,Federal Railroad Administration,,http://www.fra.dot.gov/,,49035,FALSE,executive,FALSE
+49320,Federal Retirement Thrift Investment Board,,http://www.frtib.gov/,,,TRUE,independent,FALSE
+49322,Federal Student Aid Information Center,,http://www2.ed.gov/about/offices/list/fsa/index.html,,,TRUE,independent,FALSE
+49323,Federal Transit Administration,,http://www.fta.dot.gov/,,49035,FALSE,executive,FALSE
+49325,Financial Management Service,Treasury Department,http://www.fms.treas.gov/,,49034,FALSE,executive,FALSE
+49331,Food Safety and Inspection Service,,http://www.fsis.usda.gov/,,49015,FALSE,executive,FALSE
+49334,Foreign Agricultural Service,,http://www.fas.usda.gov/,,49015,FALSE,executive,FALSE
+49336,Foreign Claims Settlement Commission,,http://www.usdoj.gov/fcsc/,,,TRUE,independent,FALSE
+49339,Forest Service,,http://www.fs.fed.us/,,49015,FALSE,executive,FALSE
+49340,Fossil Energy,,http://www.fe.doe.gov/,,49019,FALSE,executive,FALSE
+49341,Fulbright Foreign Scholarship Board,,http://exchanges.state.gov/academicexchanges/fulbright/ffsb.html,,,TRUE,independent,FALSE
+49343,U.S. Geological Survey,USGS,http://www.usgs.gov/,,49033,FALSE,executive,FALSE
+49348,Global Affairs,State Department,http://www.state.gov/g/,,,TRUE,independent,FALSE
+49349,Government Accountability Office,GAO,http://www.gao.gov/,,49664,FALSE,independent,FALSE
+49351,Government National Mortgage Association,,http://www.ginniemae.gov,,49023,FALSE,executive,FALSE
+49353,Government Printing Office,GPO,http://www.gpo.gov/,,49664,FALSE,independent,FALSE
+49354,"Grain Inspection, Packers and Stockyards Administration",,http://www.gipsa.usda.gov/,,49450,FALSE,executive,FALSE
+49356,Harry S. Truman Scholarship Foundation,,http://www.truman.gov/,,,TRUE,independent,FALSE
+49359,Health Resources and Services Administration,,http://www.hrsa.gov/,,49021,FALSE,executive,FALSE
+49363,Holocaust Memorial Museum,,http://www.ushmm.org/,,,TRUE,independent,FALSE
+49367,House Office of Inspector General,,http://www.house.gov/IG/,,49371,FALSE,independent,FALSE
+49369,House Office of the Clerk,,http://clerk.house.gov/,,49371,FALSE,independent,FALSE
+49371,U.S. House of Representatives,,http://www.house.gov/,,,TRUE,independent,FALSE
+49376,Housing Office,HUD,http://www.hud.gov/offices/hsg/index.cfm,,49023,FALSE,executive,FALSE
+49383,Indian Affairs,,http://www.bia.gov/,,49033,FALSE,executive,FALSE
+49384,Indian Arts and Crafts Board,,http://www.doi.gov/iacb/index.html,,49033,FALSE,executive,FALSE
+49386,Indian Health Service,,http://www.ihs.gov/,,49021,FALSE,executive,FALSE
+49389,Dwight D. Eisenhower School for National Security and Resource Strategy,,http://www.ndu.edu/icaf/index.htm,,49492,FALSE,executive,FALSE
+49392,Information Resource Management College,,http://www.ndu.edu/irmc/,,49492,FALSE,executive,FALSE
+49394,Innovation and Improvement Office,,http://www.ed.gov/oii,,49018,FALSE,executive,FALSE
+49395,Institute of Education Sciences,,http://www.ed.gov/about/offices/list/ies/index.html,,49018,FALSE,executive,FALSE
+49398,Institute of Peace,,http://www.usip.org/,,,TRUE,independent,FALSE
+49400,Interagency Alternative Dispute Resolution Working Group,,http://www.adr.gov/index.html,,,TRUE,independent,FALSE
+49402,Interagency Council on Homelessness,,http://www.ich.gov,,,TRUE,independent,FALSE
+49404,Inter-American Foundation,,http://www.iaf.gov,,,TRUE,independent,FALSE
+49409,International Trade Administration,ITA,http://trade.gov/index.asp,,52668,FALSE,executive,FALSE
+49412,James Madison Memorial Fellowship Foundation,,http://www.jamesmadison.com/,,,TRUE,independent,FALSE
+49414,Japan-United States Friendship Commission,,http://www.jusfc.gov,,,TRUE,independent,FALSE
+49416,John F. Kennedy Center for the Performing Arts,,http://www.kennedy-center.org/,,,TRUE,independent,FALSE
+49418,Joint Board for the Enrollment of Actuaries,,http://www.irs.gov/taxpros/actuaries/index.html,,48068,FALSE,executive,FALSE
+49420,Joint Chiefs of Staff,,http://www.jcs.mil/,,,TRUE,independent,FALSE
+49422,Joint Congressional Committee on Inaugural Ceremonies,,http://inaugural.senate.gov/index.cfm,,,TRUE,independent,FALSE
+49423,Joint Fire Science Program,,http://www.firescience.gov,,,TRUE,independent,FALSE
+49425,Joint Forces Command,,http://www.jfcom.mil/about/about1.htm,,,TRUE,independent,FALSE
+49427,Joint Forces Staff College,,http://www.jfsc.ndu.edu/,,49492,FALSE,executive,FALSE
+49429,National Intelligence University,,http://www.ni-u.edu/,,49211,FALSE,executive,FALSE
+49430,U.S. Circuit Courts of Appeal,,http://www.uscourts.gov/FederalCourts.aspx,,,TRUE,independent,FALSE
+49431,Judicial Panel on Multidistrict Litigation,,http://www.jpml.uscourts.gov,,,TRUE,independent,FALSE
+49434,Office of Justice Programs,,http://www.ojp.usdoj.gov/,,52686,FALSE,executive,FALSE
+49441,Healthy Homes and Lead Hazard Control Office,,http://www.hud.gov/offices/lead/,,49023,FALSE,executive,FALSE
+49442,Legal Services Corporation,,http://lsc.gov/find-legal-aid,,,TRUE,independent,FALSE
+49444,Marine Corps,,http://www.usmc.mil/,,49561,FALSE,executive,FALSE
+49446,Marine Mammal Commission,,http://www.mmc.gov/,,,TRUE,independent,FALSE
+49448,Maritime Administration,,http://www.marad.dot.gov/,,49035,FALSE,executive,FALSE
+49450,Marketing and Regulatory Programs,Agriculture Department,http://www.usda.gov/wps/portal/usda/usdahome?contentid=missionarea_MRP.xml,,49015,FALSE,executive,FALSE
+49451,Marshals Service,,http://www.usdoj.gov/marshals/,,52686,FALSE,executive,FALSE
+49457,Migratory Bird Conservation Commission,,http://www.fws.gov/refuges/realty/mbcc.html,,,TRUE,independent,FALSE
+49459,Military Postal Service Agency,,http://hqdainet.army.mil/mpsa/main.htm,,49229,FALSE,executive,FALSE
+49460,Millennium Challenge Corporation,,http://www.mcc.gov,,,TRUE,independent,FALSE
+49462,Mine Safety and Health Administration,,http://www.msha.gov/,,49028,FALSE,executive,FALSE
+49464,Minority Business Development Agency,,http://www.mbda.gov/,,52668,FALSE,executive,FALSE
+49468,Missile Defense Agency,MDA,http://www.mda.mil/mdalink/html/mdalink.html,,49229,FALSE,executive,FALSE
+49470,Mississippi River Commission,,http://www.mvd.usace.army.mil/About/MississippiRiverCommission%28MRC%29.aspx,,,TRUE,independent,FALSE
+49473,Morris K. Udall and Stewart L. Udall Foundation,,http://www.udall.gov/,,,TRUE,independent,FALSE
+49475,Multifamily Housing Office,,http://portal.hud.gov/hudportal/HUD?src=/program_offices/housing/mfh,,49023,FALSE,executive,FALSE
+49476,National Aeronautics and Space Administration,NASA,http://www.nasa.gov,,,TRUE,independent,TRUE
+49479,National Agricultural Statistics Service,,http://www.nass.usda.gov,,49015,FALSE,executive,FALSE
+49481,National AIDS Policy Office,,http://www.whitehouse.gov/onap/aids.html,,49235,FALSE,executive,FALSE
+49483,National Archives and Records Administration,NARA,http://www.archives.gov/index.html,,,TRUE,independent,FALSE
+49484,National Bipartisan Commission on the Future of Medicare,,http://rs9.loc.gov/medicare/index.html,,,TRUE,independent,FALSE
+49488,National Commission on Fiscal Responsibility and Reform,,http://www.fiscalcommission.gov,,,TRUE,independent,FALSE
+49489,National Constitution Center,,http://www.constitutioncenter.org/,,,TRUE,independent,FALSE
+49490,"National Counterintelligence Executive, Office of",,http://www.ncix.gov/,,49595,FALSE,independent,FALSE
+49492,National Defense University,,http://www.ndu.edu/,,49229,FALSE,executive,FALSE
+49494,National Drug Intelligence Center,,http://www.usdoj.gov/ndic/index.htm,,52686,FALSE,executive,FALSE
+49496,National Economic Council,,http://www.whitehouse.gov/nec/index.html,,,TRUE,executive,FALSE
+49502,National Gallery of Art,,http://www.nga.gov/,,,TRUE,independent,FALSE
+49504,National Geospatial-Intelligence Agency,,http://www.nga.mil/,,49229,FALSE,executive,FALSE
+49506,National Guard,,http://www.arng.army.mil/,,,TRUE,independent,FALSE
+49512,National Indian Gaming Commission,,http://www.nigc.gov/,,,TRUE,independent,FALSE
+49515,National Institute of Justice,,http://www.ojp.usdoj.gov/nij/welcome.html,,49434,FALSE,executive,FALSE
+49517,National Institute of Standards and Technology,NIST,http://www.nist.gov/,,52668,FALSE,executive,FALSE
+49520,National Interagency Fire Center,,http://www.nifc.gov/,,,TRUE,independent,FALSE
+49522,National Laboratories,Energy Department,http://www.energy.gov/organization/labs-techcenters.htm,,49019,FALSE,executive,FALSE
+49523,National Labor Relations Board,,http://www.nlrb.gov/,,,TRUE,independent,FALSE
+49524,National Marine Fisheries Service,,http://www.nmfs.noaa.gov/,,49530,FALSE,executive,FALSE
+49526,National Mediation Board,,http://www.nmb.gov/,,,TRUE,independent,FALSE
+49528,National Nuclear Security Administration,,http://www.nnsa.doe.gov/,,49019,FALSE,executive,FALSE
+49530,National Oceanic and Atmospheric Administration,NOAA,http://www.noaa.gov/,,52668,FALSE,executive,FALSE
+49533,National Ocean Service,,http://oceanservice.noaa.gov,,49530,FALSE,executive,FALSE
+49536,National Park Foundation,,http://www.nationalparks.org/,,,TRUE,independent,FALSE
+49539,National Park Service,,http://www.nps.gov/,,49033,FALSE,executive,FALSE
+49542,National Reconnaissance Office,,http://www.nro.gov/,,,TRUE,independent,FALSE
+49546,National Security Agency,NSA,http://www.nsa.gov/,,49229,FALSE,executive,FALSE
+49548,National Security Council,,http://www.whitehouse.gov/nsc/index.html,,,TRUE,executive,FALSE
+49549,National Technical Information Service,,http://www.ntis.gov/,,52668,FALSE,executive,FALSE
+49551,National Telecommunications and Information Administration,,http://www.ntia.doc.gov/,,52668,FALSE,executive,FALSE
+49555,National War College,,http://www.ndu.edu/nwc/index.htm,,49492,FALSE,executive,FALSE
+49557,National Weather Service,NOAA,http://www.nws.noaa.gov/,,49530,FALSE,executive,FALSE
+49560,Natural Resources Conservation Service,,http://www.nrcs.usda.gov/wps/portal/nrcs/home,,49015,FALSE,executive,FALSE
+49561,Navy,,http://www.navy.mil/,,49229,FALSE,executive,FALSE
+49565,Northern Command,,http://www.northcom.mil/,,49726,FALSE,executive,FALSE
+49567,Northwest Power and Conservation Council,,http://www.nwcouncil.org/,,,TRUE,independent,FALSE
+49569,"Nuclear Energy, Science and Technology",,http://www.ne.doe.gov/,,49019,FALSE,executive,FALSE
+49571,Nuclear Waste Technical Review Board,,http://www.nwtrb.gov/,,,TRUE,independent,FALSE
+49573,Oak Ridge National Laboratory,,http://www.oro.doe.gov/,,49522,FALSE,executive,FALSE
+49577,Occupational Safety and Health Review Commission,,http://www.oshrc.gov/index.html,,,TRUE,independent,FALSE
+49579,Office of Compliance,,http://www.compliance.gov,,49664,FALSE,independent,FALSE
+49584,Office of Management and Budget,OMB,http://www.whitehouse.gov/omb/,,,TRUE,executive,FALSE
+49586,Office of National Drug Control Policy,ONDCP,http://www.whitehouse.gov/ondcp,,,TRUE,executive,FALSE
+49588,Office of Refugee Resettlement,,http://www.acf.hhs.gov/programs/orr/,,47994,FALSE,executive,FALSE
+49590,Office of Science and Technology Policy,,http://www.ostp.gov/,,,TRUE,executive,FALSE
+49592,Office of Scientific and Technical Information,,http://www.osti.gov/,,49658,FALSE,executive,FALSE
+49593,Office of Special Counsel,,http://www.osc.gov/,,,TRUE,independent,FALSE
+49595,Office of the Director of National Intelligence,,http://www.dni.gov,,,TRUE,independent,FALSE
+49597,Open World Leadership Center,,http://www.openworld.gov,,49664,FALSE,independent,FALSE
+49601,Pacific Command,,http://www.pacom.mil/,,49726,FALSE,executive,FALSE
+49604,Office of the Pardon Attorney,,http://www.usdoj.gov/pardon/index.html,,52686,FALSE,executive,FALSE
+49606,Parole Commission,Justice Department,http://www.usdoj.gov/uspc/,,52686,FALSE,executive,FALSE
+49614,Pentagon Force Protection Agency,,http://www.pfpa.mil/,,49229,FALSE,executive,FALSE
+49616,Pipeline and Hazardous Materials Safety Administration,,http://www.phmsa.dot.gov/,,49035,FALSE,executive,FALSE
+49618,Policy Development and Research,HUD,http://www.huduser.org,,49023,FALSE,executive,FALSE
+49620,Political Affairs,State Department,http://www.state.gov/p/,,,TRUE,independent,FALSE
+49621,Postal Regulatory Commission,,http://www.prc.gov,,,TRUE,independent,FALSE
+49624,Power Administrations,,http://www.energy.gov/organization/powermarketingadmin.htm,,49019,FALSE,executive,FALSE
+49625,Presidio Trust,,http://www.presidio.gov,,,TRUE,independent,FALSE
+49627,Prisoner of War/Missing Personnel Office,,http://www.dtic.mil/dpmo/,,49229,FALSE,executive,FALSE
+49629,Public and Indian Housing,,http://www.hud.gov/offices/pih/index.cfm,,49023,FALSE,executive,FALSE
+49632,Public Diplomacy and Public Affairs,State Department,http://www.state.gov/r/,,,TRUE,independent,FALSE
+49635,Radio Free Asia,RFA,http://www.rfa.org/,,49109,FALSE,independent,FALSE
+49637,Radio Free Europe/Radio Liberty,RFE/RL,http://www.rferl.org/,,49109,FALSE,independent,FALSE
+49642,Regulatory Information Service Center,,http://www.reginfo.gov/,,49584,FALSE,executive,FALSE
+49644,Rehabilitation Services Administration,Education Department,http://www.ed.gov/about/offices/list/osers/rsa/index.html?exp=0,,48121,FALSE,executive,FALSE
+49647,Research and Innovative Technology Administration,,http://www.rita.dot.gov/,,49035,FALSE,executive,FALSE
+49649,Risk Management Agency,Agriculture Department,http://www.rma.usda.gov/,,49015,FALSE,executive,FALSE
+49650,Rural Business and Cooperative Programs,,http://www.rurdev.usda.gov/LP_Subject_BusinessAndCooperativeAssistance.html,,49653,FALSE,executive,FALSE
+49653,Rural Development,,http://www.rurdev.usda.gov/,,49015,FALSE,executive,FALSE
+49654,Rural Housing Service,,http://www.rurdev.usda.gov/LP_Subject_HousingAndCommunityAssistance.html,,49653,FALSE,executive,FALSE
+49655,Rural Utilities Service,,http://www.rurdev.usda.gov/Utilities_Assistance.html,,49653,FALSE,executive,FALSE
+49656,Saint Lawrence Seaway Development Corporation,,http://www.seaway.dot.gov/,,49035,FALSE,executive,FALSE
+49658,Science Office,Energy Department,http://science.energy.gov/,,49019,FALSE,executive,FALSE
+49660,Secret Service,,http://www.secretservice.gov/index.shtml,,49022,FALSE,executive,FALSE
+49664,U.S. Senate,,http://www.senate.gov/,,,TRUE,independent,FALSE
+49668,Smithsonian Institution,,http://www.si.edu/,,,TRUE,independent,FALSE
+49670,Social Security Advisory Board,,http://www.ssab.gov/,,,TRUE,independent,FALSE
+49672,Southeastern Power Administration,,http://199.44.84.82/,,49624,FALSE,executive,FALSE
+49674,Southern Command,,http://www.southcom.mil/Pages/Default.aspx,,49726,FALSE,executive,FALSE
+49676,Southwestern Power Administration,,http://www.swpa.gov/,,49624,FALSE,executive,FALSE
+49678,Special Forces Operations Command,,http://www.socom.mil/,,49726,FALSE,executive,FALSE
+49681,State Justice Institute,,http://www.sji.gov/about.php,,,TRUE,independent,FALSE
+49684,Stennis Center for Public Service,,http://www.stennis.gov/,,49664,FALSE,independent,FALSE
+49685,Strategic Command,,http://www.stratcom.mil/,,49726,FALSE,executive,FALSE
+49687,Substance Abuse and Mental Health Services Administration,,http://www.samhsa.gov/,,49021,FALSE,executive,FALSE
+49688,Supreme Court of the United States,,http://www.supremecourtus.gov/,,,TRUE,independent,FALSE
+49690,"Surface Mining, Reclamation and Enforcement",,http://www.osmre.gov/,,49033,FALSE,executive,FALSE
+49691,Surface Transportation Board,,http://www.stb.dot.gov/,,49035,FALSE,executive,FALSE
+49692,Susquehanna River Basin Commission,,http://www.srbc.net/,,,TRUE,independent,FALSE
+49694,Tax Court,,http://www.ustaxcourt.gov/,,,TRUE,independent,FALSE
+49696,Taxpayer Advocacy Panel,,http://www.improveirs.org,,49034,FALSE,executive,FALSE
+49699,Transportation Command,,http://www.transcom.mil,,49726,FALSE,executive,FALSE
+49706,TRICARE Management,,http://www.tricare.mil/,,49229,FALSE,executive,FALSE
+49709,U.S. Capitol Visitor Center,,http://www.visitthecapitol.gov,,49088,FALSE,independent,FALSE
+49711,U.S. Immigration and Customs Enforcement,,http://www.ice.gov/,,49022,FALSE,executive,FALSE
+49712,U.S. International Trade Commission,,http://www.usitc.gov/,,,TRUE,independent,FALSE
+49713,"U.S. Military Academy, West Point",,http://www.usma.edu/,,49229,FALSE,executive,FALSE
+49715,U.S. Mission to the United Nations,,http://www.usunnewyork.usmission.gov/,,49030,FALSE,executive,FALSE
+49717,U.S. National Central Bureau - Interpol,Justice Department,http://www.usdoj.gov/usncb/,,52686,FALSE,executive,FALSE
+49719,U.S. Sentencing Commission,,http://www.ussc.gov/,,,TRUE,independent,FALSE
+49721,U.S. Trade and Development Agency,,http://www.ustda.gov/,,,TRUE,independent,FALSE
+49724,U.S. Trade Representative,,http://www.ustr.gov/,,,TRUE,executive,FALSE
+49726,Unified Combatant Commands,Defense Department,http://www.defenselink.mil/specials/unifiedcommand/,,49229,FALSE,executive,FALSE
+49727,Uniformed Services University of the Health Sciences,,http://www.usuhs.mil/,,49229,FALSE,executive,FALSE
+49730,Veterans' Employment and Training Service,,http://www.dol.gov/vets/,,49028,FALSE,executive,FALSE
+49732,Vietnam Education Foundation,,http://www.vef.gov,,,TRUE,independent,FALSE
+49736,Veterans Day National Committee,,http://www1.va.gov/opa/vetsday/vdnc.asp,,48027,FALSE,executive,FALSE
+49737,Washington Headquarters Services,,http://www.whs.mil/,,49229,FALSE,executive,FALSE
+49740,Western Area Power Administration,,http://ww2.wapa.gov/sites/western/Pages/default.aspx,,49624,FALSE,executive,FALSE
+49743,White House,,http://www.whitehouse.gov/,,,TRUE,independent,FALSE
+49744,White House Commission on Presidential Scholars,,http://www.ed.gov/programs/psp/commission.html?exp=0,,49018,FALSE,executive,FALSE
+49747,White House Office of Administration,,http://www.whitehouse.gov/oa/index.html,,,TRUE,executive,FALSE
+49748,Women's Bureau,Labor Department,http://www.dol.gov/wb/,,49028,FALSE,executive,FALSE
+49749,Woodrow Wilson International Center for Scholars,,http://www.wilsoncenter.org,,,TRUE,independent,FALSE
+52580,Advisory Council on Historic Preservation,,http://www.achp.gov/,,,TRUE,independent,FALSE
+52581,African Development Foundation,,http://www.adf.gov,,,TRUE,independent,FALSE
+52583,U.S. Agency for International Development,USAID,http://www.usaid.gov/,,,TRUE,independent,TRUE
+52584,American Battle Monuments Commission,,http://www.abmc.gov/,,,TRUE,independent,FALSE
+52586,AmeriCorps,,http://www.americorps.gov/,,52593,FALSE,independent,FALSE
+52588,Appalachian Regional Commission,,http://www.arc.gov/,,,TRUE,independent,FALSE
+52590,Central Intelligence Agency,CIA,http://www.cia.gov/,,,TRUE,independent,FALSE
+52591,Chemical Safety and Hazard Investigation Board,,http://www.csb.gov,,,TRUE,independent,FALSE
+52592,U.S. Commission of Fine Arts,,http://www.cfa.gov/,,,TRUE,independent,FALSE
+52593,Corporation for National and Community Service,,http://www.nationalservice.gov/,,,TRUE,independent,FALSE
+52595,Defense Finance and Accounting Services,DFAS,http://www.dfas.mil/,,49229,FALSE,executive,FALSE
+52599,Defense Logistics Agency,DLA,http://www.dla.mil,,49229,FALSE,executive,FALSE
+52601,Defense Nuclear Facilities Safety Board,,http://www.dnfsb.gov/,,,TRUE,independent,FALSE
+52603,Export-Import Bank of the United States,,http://www.exim.gov/index.cfm,,,TRUE,independent,FALSE
+52605,Farm Credit Administration,,http://www.fca.gov/,,,TRUE,independent,FALSE
+52607,Federal Election Commission,,http://www.fec.gov/,,,TRUE,independent,FALSE
+52608,Federal Energy Regulatory Commission,,http://www.ferc.gov/,,49019,FALSE,executive,FALSE
+52610,Federal Home Loan Mortgage Corporation,Freddie Mac,http://www.freddiemac.com,,52611,FALSE,independent,FALSE
+52611,Federal Housing Finance Agency,,http://www.fhfa.gov,,,TRUE,independent,FALSE
+52613,Federal Labor Relations Authority,,http://www.flra.gov,,,TRUE,independent,FALSE
+52615,Federal Maritime Commission,,http://www.fmc.gov/,,,TRUE,independent,FALSE
+52617,Federal Mine Safety and Health Review Commission,,http://www.fmshrc.gov/,,,TRUE,independent,FALSE
+52619,Federal National Mortgage Association,Fannie Mae,http://www.fanniemae.com/kb/index?page=home,,,TRUE,independent,FALSE
+52626,Institute of Museum and Library Services,,http://www.imls.gov/,,,TRUE,independent,FALSE
+52628,Library of Congress,,http://www.loc.gov/,,49664,FALSE,independent,FALSE
+52629,Medicare Payment Advisory Commission,,http://www.medpac.gov/,,,TRUE,independent,FALSE
+52630,Merit Systems Protection Board,,http://www.mspb.gov/,,,TRUE,independent,FALSE
+52633,National Capital Planning Commission,,http://www.ncpc.gov/,,,TRUE,independent,FALSE
+52634,National Endowment for the Arts,,http://www.arts.gov/,,,TRUE,independent,FALSE
+52636,National Endowment for the Humanities,,http://www.neh.gov,,,TRUE,independent,FALSE
+52640,National Science Foundation,,http://www.nsf.gov/,,,TRUE,independent,TRUE
+52641,National Transportation Safety Board,,http://www.ntsb.gov/,,,TRUE,independent,FALSE
+52645,Nuclear Regulatory Commission,,http://www.nrc.gov/,,,TRUE,independent,TRUE
+52646,Office of Government Ethics,,http://www.oge.gov/,,,TRUE,independent,FALSE
+52647,Inspectors General,,http://www.ignet.gov/igs/homepage1.html,,,TRUE,independent,FALSE
+52651,Overseas Private Investment Corporation,,http://www.opic.gov/,,,TRUE,independent,FALSE
+52652,Peace Corps,,http://www.peacecorps.gov/about/,,,TRUE,independent,FALSE
+52654,President's Council on Physical Fitness and Sports,,http://www.fitness.gov/,,,TRUE,independent,FALSE
+52655,Public Records/Disclosure Office,,http://www.fec.gov/pubrec/publicrecordsoffice.shtml,,,TRUE,independent,FALSE
+52657,Railroad Retirement Board,RRB,http://www.rrb.gov/default.asp,,,TRUE,independent,FALSE
+52658,Selective Service System,SSS,http://www.sss.gov/,,,TRUE,independent,FALSE
+52660,Tennessee Valley Authority,,http://www.tva.gov/,,,TRUE,independent,FALSE
+52663,U.S. Access Board,,http://www.access-board.gov/,,,TRUE,independent,FALSE
+52666,U.S. Election Assistance Commission,EAC,http://www.eac.gov/,,,TRUE,independent,FALSE
+52668,Department of Commerce,DOC,http://www.commerce.gov/,,,TRUE,executive,TRUE
+52676,Education Resources Information Center,ERIC,http://www.eric.ed.gov/,,49395,FALSE,executive,FALSE
+52678,Center for Food Safety and Applied Nutrition,,http://www.fda.gov/AboutFDA/CentersOffices/OfficeofFoods/CFSAN/default.htm,,48058,FALSE,executive,FALSE
+52681,National Institute of Occupational Safety and Health,,,,,TRUE,independent,FALSE
+52682,Antitrust Division,,http://www.justice.gov/atr/index.html,,52686,FALSE,executive,FALSE
+52683,Bureau of Justice Statistics,,http://bjs.ojp.usdoj.gov/,,49434,FALSE,executive,FALSE
+52686,Department of Justice,DOJ,http://www.usdoj.gov/,,,TRUE,executive,TRUE
+52688,Drug Enforcement Administration,,http://www.justice.gov/dea/,,52686,FALSE,executive,FALSE
+52691,Office of Juvenile Justice and Delinquency Prevention,,http://www.ojjdp.gov/index.html,,49434,FALSE,executive,FALSE
+52693,Employment and Training Administration,,http://www.doleta.gov/,,49028,FALSE,executive,FALSE
+52696,Bureau of Engraving and Printing,,http://www.bep.treas.gov/home.html,,49034,FALSE,executive,FALSE
+55826,AIDsinfo,,,,,TRUE,independent,FALSE
+55835,Americans with Disabilities Act Information Line,,http://www.ada.gov,,,TRUE,independent,FALSE
+55847,Federal Citizen Information Center,FCIC,,,,TRUE,independent,FALSE
+55853,HIV/AIDS Prevention,,,,,TRUE,independent,FALSE
+55854,Indoor Environments Division,,,,,TRUE,independent,FALSE
+55875,National Cancer Institute,NCI,,,,TRUE,independent,FALSE
+55887,"Office for Civil Rights, Department of Health and Human Services",,http://www.hhs.gov/ocr,,,TRUE,independent,FALSE
+55890,Office of Manufactured Housing Programs,,,,,TRUE,independent,FALSE
+55892,Office of RESPA and Interstate Land Sales,,,,49023,FALSE,executive,FALSE
+55896,Seafood Inspection Program,,,,,TRUE,independent,FALSE
+55897,U.S. Citizenship and Immigration Services,,http://www.uscis.gov/portal/site/uscis,,49022,FALSE,executive,FALSE
+55927,U.S. Customs and Border Protection,,http://www.cbp.gov/,,49022,FALSE,executive,FALSE
+55928,Weights and Measures Division,WMD,,,,TRUE,independent,FALSE
+61787,Medicaid and CHIP Payment and Access Commission,,http://www.macpac.gov,,,TRUE,independent,FALSE
+68880,Federal Voting Assistance Program,,http://www.fvap.gov/,,,TRUE,independent,FALSE
+72714,U.S. Capitol Police,,http://www.house.gov/content/learn/partners/capitol_police.php,,49664,FALSE,independent,FALSE
+72913,Farm Credit System Insurance Corporation,,http://www.fcsic.gov/index.html,,,TRUE,independent,FALSE
