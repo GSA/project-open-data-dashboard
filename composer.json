@@ -34,7 +34,9 @@
         "aws/aws-sdk-php": "*"
     },
     "require-dev": {
-        "mikey179/vfsstream": "1.1.*"
+        "mikey179/vfsstream": "1.1.*",
+        "phpunit/phpunit": "~7.5",
+        "kenjis/ci-phpunit-test": "master@dev"
     },
     "autoload": {
         "psr-0": { "JsonSchema": "src/" }
