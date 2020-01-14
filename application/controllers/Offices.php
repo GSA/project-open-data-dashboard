@@ -267,6 +267,10 @@ class Offices extends CI_Controller {
 			// Get crawler data
 			$view_data['office_campaign'] = $this->campaign->datagov_office($view_data['office']->id, $milestone->selected_milestone, null, $status_id);
 
+			// If we have a blank slate, populate the data model
+			if(empty($view_data['office_campaign'])) {
+				$view_data['office_campaign'] = $this->campaign->datagov_model();
+			}
 
 			// Get the IDs of daily crawls before and after this date
 			$crawls_before = $this->campaign->datagov_office_crawls($view_data['office']->id, $milestone->selected_milestone, $view_data['office_campaign']->status_id, '<', '5');
@@ -275,10 +279,6 @@ class Offices extends CI_Controller {
 			$view_data['nearby_crawls'] = array_merge(array_reverse($crawls_before), $crawls_after);
 
 
-			// If we have a blank slate, populate the data model
-			if(empty($view_data['office_campaign'])) {
-				$view_data['office_campaign'] = $this->campaign->datagov_model();
-			}
 
 			// Make sure tracker data uses full tracker model
 			if(isset($view_data['office_campaign']->tracker_fields)) {
