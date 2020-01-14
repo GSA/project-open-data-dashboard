@@ -381,6 +381,7 @@ MonkeyPatchManager::init([
 /*
 define('TESTPATH', APPPATH.'tests'.DIRECTORY_SEPARATOR);
 */
+require_once APPPATH.'../bootstrap.php';
 require CI_PHPUNIT_TESTPATH . '/CIPHPUnitTest.php';
 
 CIPHPUnitTest::init();
