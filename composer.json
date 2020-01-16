@@ -38,6 +38,12 @@
         "phpunit/phpunit": "~7.5",
         "kenjis/ci-phpunit-test": "master@dev"
     },
+    "scripts": {
+        "test": "./vendor/bin/phpunit --no-coverage --testdox -c application/tests"
+    },
+    "scripts-descriptions": {
+        "test": "Run PHPunit tests (assumes valid config in .env)"
+    },
     "autoload": {
         "psr-0": { "JsonSchema": "src/" }
     },
