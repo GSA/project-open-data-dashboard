@@ -54,17 +54,17 @@ Prerequisites:
 
 ### Setup
 
-Install dependencies
+Install application dependencies
 
-    bin/composer install --no-dev
+    make install-dev-dependencies
 
-Start up docker containers.
+Start up the application and database
 
-    docker-compose up
+    make up
 
-Test with bats (and run the migrations):
+Run tests
 
-    docker-compose exec app bats -r tests/
+    make test
 
 Open your browser to [localhost:8000](http://localhost:8000/).
 
@@ -89,7 +89,7 @@ All pushes to GitHub are integration tested with our [CircleCI tests](https://ci
 
 Edit version constraints in [composer.json](./composer.json).
 
-    bin/composer update
+    make update-dependencies
 
 Commit the updated composer.json and composer.lock.
 
