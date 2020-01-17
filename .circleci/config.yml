@@ -1,40 +1,45 @@
 ---
 version: 2
 jobs:
-  build:
+  integration:
     machine: true
     steps:
       - checkout
-      - run: 
-          name: Build docker image
-          command: docker-compose build app
       - run:
-          name: Install composer dependencies
-          command: bin/composer install --no-dev
+          name: Build the application image
+          command: make build
       - run:
-          name: Start docker-compose containers
-          command: docker-compose up -d
+          name: Install application dependencies
+          command: make install-dependencies
       - run:
-          name: Wait for containers to ready
-          command: for i in `seq 1 10`; do docker-compose exec app true && exit 0; echo "Waiting for docker ready..."; sleep 2; done; exit 1
+          name: Run the application
+          command: make up
       - run:
-          name: Wait for database to ready
-          command: docker-compose exec app docker/wait_for_db
+          name: Run integration tests
+          command: make integration-tests
+  unit:
+    machine: true
+    steps:
+      - checkout
       - run:
-          name: Make uploads writeable
-          command: mkdir -p ./uploads && docker-compose exec app chmod 777 ./uploads
+          name: Build the application image
+          command: make build
       - run:
-          name: Make archive writeable
-          command: docker-compose exec app chmod 777 ./archive
+          name: Install application development dependencies
+          command: make install-dev-dependencies
       - run:
-          name: Test with bats
-          command: docker-compose exec app bats -r tests/
+          name: Run the application
+          command: make up
+      - run:
+          name: Run unit tests
+          command: make unit-tests
 
 workflows:
   version: 2
   commit:
     jobs:
-      - build
+      - integration
+      - unit
   weekly:
     triggers:
       - schedule:
@@ -44,4 +49,5 @@ workflows:
               only:
                 - master
     jobs:
-      - build
+      - integration
+      - unit
