@@ -11,7 +11,7 @@
 
 <?php include 'header_inc_view.php';?>
 
-<?php include 'office_table_inc_view.php';?>
+<?php include_once 'office_table_inc_view.php';?>
 
 <?php $permission_level = 'admin' ?>
 
@@ -20,7 +20,7 @@
       <!-- Example row of columns -->
       <div class="row">
         <div>
-		
+
 
             <?php if($this->session->flashdata('outcome') && $this->session->flashdata('status')): ?>
                 <p class="form-flash bg-<?php echo $this->session->flashdata('outcome'); ?>"><?php echo $this->session->flashdata('status'); ?></p>
@@ -29,17 +29,17 @@
 
               <h2><?php echo $office->name ?></h2>
 
-        
+
 			<div><a href="<?php echo $office->url ?>"><?php echo $office->url ?></a></div>
-			<div><?php echo $office->notes ?></div>				
-	
-	
+			<div><?php echo $office->notes ?></div>
+
+
 			<?php if(!empty($office->parent_office_id)): ?>
-				<div class="hidden"><a href="<?php echo site_url('office/') . $office->parent_office_id; ?>">Parent Office</a></div>				
+				<div class="hidden"><a href="<?php echo site_url('office/') . $office->parent_office_id; ?>">Parent Office</a></div>
 			<?php endif; ?>
-		
-	
-		
+
+
+
         </div>
 
 
@@ -47,7 +47,7 @@
             <?php
                 //$edi_public         = !empty($office_campaign->tracker_fields->edi_access_public) ? $office_campaign->tracker_fields->edi_access_public : 0;
             ?>
-            
+
             <div id="inventory-trends" style="height: 200px;"></div>
             <div class="figcaption">Enterprise Data Inventory - Volume and composition over time</div>
 
@@ -66,7 +66,7 @@
                       '#5bc0de',
                       '#f0ad4e',
                       '#95D7BB'
-                    ]                    
+                    ]
                   });
             </script>
 
@@ -75,44 +75,44 @@
         </div>
 
 
-        <h2><?php echo $milestone->milestones[$milestone->selected_milestone];?> - <?php echo date("F jS Y", strtotime($milestone->selected_milestone)) ?></h2>        
+        <h2><?php echo $milestone->milestones[$milestone->selected_milestone];?> - <?php echo date("F jS Y", strtotime($milestone->selected_milestone)) ?></h2>
 
 
         <?php if(!empty($office_campaign)): ?>
-        
-        <?php       
-        
+
+        <?php
+
             if(!empty($office_campaign->datajson_status)) {
-                $office_campaign->datajson_status = json_decode($office_campaign->datajson_status);         
+                $office_campaign->datajson_status = json_decode($office_campaign->datajson_status);
             }
-            
+
             if(!empty($office_campaign->datapage_status)) {
-                $office_campaign->datapage_status = json_decode($office_campaign->datapage_status);         
-            }   
-                
-            
+                $office_campaign->datapage_status = json_decode($office_campaign->datapage_status);
+            }
+
+
             if(!empty($office_campaign->digitalstrategy_status)) {
-                $office_campaign->digitalstrategy_status = json_decode($office_campaign->digitalstrategy_status);           
-            }      
+                $office_campaign->digitalstrategy_status = json_decode($office_campaign->digitalstrategy_status);
+            }
 
 
             if(!empty($office_campaign->tracker_fields)) {
-                $office_campaign->tracker_fields = json_decode($office_campaign->tracker_fields);           
-            }     
+                $office_campaign->tracker_fields = json_decode($office_campaign->tracker_fields);
+            }
 
 
             if(!empty($office_campaign->tracker_status)) {
-                $office_campaign->tracker_status = json_decode($office_campaign->tracker_status);           
-            }  
+                $office_campaign->tracker_status = json_decode($office_campaign->tracker_status);
+            }
 
 
-                
+
             $crawl_details = array(
-                                    'pdl_datajson', 
-                                    'pdl_slashdata', 
-                                    'pdl_valid_metadata', 
-                                    'pdl_datasets', 
-                                    'pdl_link_check', 
+                                    'pdl_datajson',
+                                    'pdl_slashdata',
+                                    'pdl_valid_metadata',
+                                    'pdl_datasets',
+                                    'pdl_link_check',
                                     'pdl_apis',
                                     'pdl_api_access_public',
                                     'pdl_api_access_restricted',
@@ -130,15 +130,15 @@
                                     'pdl_link_format_match',
                                     'pdl_link_format_html',
                                     'pdl_link_format_pdf',
-                                    'pe_feedback_specified', 
-                                    'edi_schedule_delivered', 
+                                    'pe_feedback_specified',
+                                    'edi_schedule_delivered',
                                     'ps_publication_process',
                                     'pdl_downloadable',
                                     'edi_license_present'
                                     );
 
 
-            $active_section = (!empty($selected_category)) ? $selected_category : 'pdl';  
+            $active_section = (!empty($selected_category)) ? $selected_category : 'pdl';
 
 
         ?>
@@ -154,7 +154,7 @@
                 <?php endif;?>
 
             <?php endif;?>
-                
+
 
 
            <?php if($milestone->selected_milestone == $milestone->current): ?>
@@ -164,20 +164,20 @@
 
            <?php if($milestone->selected_milestone == $milestone->previous): ?>
                 <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently complete one. The Automated Metrics are a snapshot from the milestone date.</p>
-            <?php endif; ?>  
+            <?php endif; ?>
 
 
            <?php if(empty($office_campaign->tracker_status->status) OR $office_campaign->tracker_status->status == 'not-started'): ?>
                 <p class="form-flash text-danger bg-danger"><strong>OMB Review Has Not Begun:</strong> OMB has not begun reviewing the agency for this milestone. The review will begin after the milestone date.</p>
-            <?php endif; ?>  
+            <?php endif; ?>
 
            <?php if(!empty($office_campaign->tracker_status->status) && $office_campaign->tracker_status->status == 'in-progress'): ?>
                 <p class="form-flash text-warning bg-warning"><strong>OMB Review In Progress:</strong> OMB is currently reviewing the agency for this milestone. This review status indicator will change once the review is complete.</p>
-            <?php endif; ?>            
+            <?php endif; ?>
 
            <?php if(!empty($office_campaign->tracker_status->status) && $office_campaign->tracker_status->status == 'complete'): ?>
                 <p class="form-flash text-success bg-success"><strong>OMB Review Complete:</strong> OMB has completed the agency review for this milestone. Agencies should contact their OMB desk officer if anything looks incorrect.</p>
-            <?php endif; ?>                 
+            <?php endif; ?>
 
 
             <ul class="milestone-selector nav nav-pills">
@@ -206,30 +206,30 @@
 
                 <table class="table">
 
-                    
+
                         <tr>
                             <th>Review Status</th>
-                            <td>                                
-                                <?php 
+                            <td>
+                                <?php
 
-                                    
+
                                     if (!empty($office_campaign->tracker_status->status)) {
-                                        echo  $office_campaign->tracker_status->status; 
-                                    } 
+                                        echo  $office_campaign->tracker_status->status;
+                                    }
                                 ?>
                             </td>
 
 
                             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                 <td>
-                                                
+
                                     <select name="status">
-                                        <option value="" <?php echo (empty($office_campaign->tracker_status->status)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
+                                        <option value="" <?php echo (empty($office_campaign->tracker_status->status)) ? 'selected = "selected"' : '' ?>>Select Status</option>
                                         <option <?php echo (!empty($office_campaign->tracker_status) && $office_campaign->tracker_status->status == "not-started") ? 'selected = "selected"' : '' ?> value="not-started">Not Reviewed</option>
                                         <option <?php echo (!empty($office_campaign->tracker_status) && $office_campaign->tracker_status->status == "in-progress") ? 'selected = "selected"' : '' ?> value="in-progress">In Progress</option>
                                         <option <?php echo (!empty($office_campaign->tracker_status) && $office_campaign->tracker_status->status == "complete") ? 'selected = "selected"' : '' ?> value="complete">Review Complete</option>
                                     </select>
-                                    
+
                                 </td>
                             <?php endif; ?>
 
@@ -238,7 +238,7 @@
 
                         <tr>
                             <th>Reviewer</th>
-                            <td>                                
+                            <td>
                                 <?php if (!empty($office_campaign->tracker_status->reviewer_email)) echo  $office_campaign->tracker_status->reviewer_email ?>
                             </td>
 
@@ -250,9 +250,9 @@
                             <?php endif; ?>
 
                         </tr>
-                    
 
-                    
+
+
                         <tr>
                             <th>Last Updated</th>
                             <td>
@@ -263,39 +263,39 @@
                             </td>
 
                             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                                <td></td>  
-                            <?php endif; ?>                         
+                                <td></td>
+                            <?php endif; ?>
 
                         </tr>
-                    
+
 
                 </table>
 
-            <?php if ($this->session->userdata('permissions') == $permission_level) : ?>                
+            <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
 
-                    <input type="hidden" name="status_id" value="<?php echo $office_campaign->status_id; ?>">  
-                    <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">   
-                    <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">                       
+                    <input type="hidden" name="status_id" value="<?php echo $office_campaign->status_id; ?>">
+                    <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">
+                    <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">
 
-                    <button type="submit" class="btn btn-success" name="review_status_submit">Update</button>                    
+                    <button type="submit" class="btn btn-success" name="review_status_submit">Update</button>
 
                 </form>
             <?php endif;?>
-  
+
 
            <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                 <form method="post" action="<?php echo site_url(); ?>datagov/status-update" role="form">
             <?php endif;?>
 
-            <h3>Assessment Summary</h3> 
+            <h3>Assessment Summary</h3>
                 <div class="general-notes">
-                   
-                    <?php 
+
+                    <?php
                         $status_field_name = 'office_general';
                         $note_field = "note_office_general";
                         $note_data = (!empty($notes[$note_field])) ? $notes[$note_field] : '';
 
-                        if(!empty($notes[$note_field])) {                                        
+                        if(!empty($notes[$note_field])) {
                             $note_data = $notes[$note_field];
                         } else {
                             $note_data = $note_model;
@@ -306,7 +306,7 @@
                         <div class="note-heading">
                             <span class="note-metadata">
                                 No summary has been provided yet
-                            </span>                                    
+                            </span>
                         </div>
                     <?php endif;?>
 
@@ -318,11 +318,11 @@
                         <?php if (!empty($note_data->current->date) && !empty($note_data->current->author)): ?>
                             <div class="note-metadata">
                                 Lasted edited on <?php echo $note_data->current->date;?> by <?php echo $note_data->current->author;?>
-                            </div> 
+                            </div>
                         <?php endif; ?>
 
                         <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                            <button class="btn btn-primary edit-button" type="button">Edit</button>                                
+                            <button class="btn btn-primary edit-button" type="button">Edit</button>
                         <?php endif; ?>
                     </div>
                     <?php endif; ?>
@@ -402,7 +402,7 @@
                   formatter: function (x) { return x + "%"}
                 });
 
-            </script>            
+            </script>
 
             <?php endif; ?>
 
@@ -412,7 +412,7 @@
                 $pdl_link_2xx            = !empty($office_campaign->tracker_fields->pdl_link_2xx)   ? $office_campaign->tracker_fields->pdl_link_2xx : 0;
                 $pdl_link_3xx            = !empty($office_campaign->tracker_fields->pdl_link_3xx)   ? $office_campaign->tracker_fields->pdl_link_3xx : 0;
                 $pdl_link_4xx            = !empty($office_campaign->tracker_fields->pdl_link_4xx)   ? $office_campaign->tracker_fields->pdl_link_4xx : 0;
-                $pdl_link_5xx            = !empty($office_campaign->tracker_fields->pdl_link_5xx)   ? $office_campaign->tracker_fields->pdl_link_5xx : 0;                                                
+                $pdl_link_5xx            = !empty($office_campaign->tracker_fields->pdl_link_5xx)   ? $office_campaign->tracker_fields->pdl_link_5xx : 0;
 
                 $pdl_link_other         = $pdl_link_total - ($pdl_link_2xx + $pdl_link_3xx + $pdl_link_4xx + $pdl_link_5xx);
 
@@ -447,31 +447,31 @@
                   formatter: function (x) { return x + "%"}
                 });
 
-            </script>            
+            </script>
 
             <?php endif; ?>
 
 
-                
-            </div>    
+
+            </div>
 
 
             <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                <div  class="pull-right" style="margin : 1em 0;">                                
+                <div  class="pull-right" style="margin : 1em 0;">
                     <button class="btn btn-default btn-xs" id="accShow">Show All Notes</button>
-                    <button type="submit" class="btn btn-success btn-xs">Update</button> 
-                </div>  
+                    <button type="submit" class="btn btn-success btn-xs">Update</button>
+                </div>
             <?php endif;?>
 
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs tracker-sections">
-                
+
                 <?php foreach ($section_breakdown as $section_abbreviation => $section_title): ?>
 
                     <?php
                         if ($milestone->selected_milestone < '2014-11-30' && $section_abbreviation == 'ui') continue;
-                        
+
                         $aggregate_score = $section_abbreviation . '_aggregate_score';
 
                         if(!empty($office_campaign->tracker_fields->$aggregate_score)) {
@@ -492,38 +492,38 @@
 
                 <!-- Tab panes -->
                 <div class="tab-content tracker-content">
-                  
+
                   <?php foreach ($section_breakdown as $section_abbreviation => $section_title): ?>
                         <div class="tab-pane <?php if($section_abbreviation == $active_section) echo 'active'; ?>" id="<?php echo $section_abbreviation;?>">
 
 
 
                             <div class="section-notes">
-                                
-                                <?php 
+
+                                <?php
                                     $note_field = 'note_' . $section_abbreviation . '_aggregate_score';
                                     $note_data = (!empty($notes[$note_field])) ? $notes[$note_field] : $note_model;
                                 ?>
 
                                 <div><?php echo $note_data->current->note_html; ?></div>
-                                
+
                                 <?php if (!empty($note_data->current->date) && !empty($note_data->current->author)): ?>
                                     <div class="note-metadata">
                                         Lasted edited on <?php echo $note_data->current->date;?> by <?php echo $note_data->current->author;?>
-                                    </div> 
-                                <?php endif; ?>                                
+                                    </div>
+                                <?php endif; ?>
 
                             </div>
 
-                            <?php 
+                            <?php
                                 $highlight_field = $section_abbreviation . '_selected_best_practice';
                             ?>
 
                            <?php if(!empty($office_campaign->tracker_fields->$highlight_field) && $office_campaign->tracker_fields->$highlight_field == 'yes'): ?>
                                 <p class="form-flash text-success bg-success"><strong>Best Practice:</strong> <?php echo $office->name ?> has been highlighted for demonstrating a best practice on the <?php echo $section_title ?> indicator</p>
-                            <?php endif; ?>                                  
+                            <?php endif; ?>
 
-                            
+
                            <table class="table table-striped table-hover" id="note-expander-parent">
 
                                 <th class="table-header">
@@ -531,14 +531,14 @@
 
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                         <th></th>
-                                    <?php endif; ?> 
+                                    <?php endif; ?>
 
                                     <th>Indicator</th>
                                     <th>Automated Metrics</th>
 
                                     <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
                                         <th></th>
-                                    <?php endif; ?>   
+                                    <?php endif; ?>
 
                                 </th>
 
@@ -548,10 +548,10 @@
                                     <?php
 
                                         // Skip this field if it's not part of current section
-                                        if (substr($tracker_field_name, 0, strlen($section_abbreviation)) !== $section_abbreviation) continue;                        
-                                        
+                                        if (substr($tracker_field_name, 0, strlen($section_abbreviation)) !== $section_abbreviation) continue;
+
                                         // Skip this field if it's not used for this milestone
-                                        if (!empty($tracker_field_meta->milestones_start) && 
+                                        if (!empty($tracker_field_meta->milestones_start) &&
                                             !empty($tracker_field_meta->milestones_end) ) {
 
                                             $milestone_start = strtotime($tracker_field_meta->milestones_start);
@@ -562,49 +562,49 @@
                                                 continue;
                                             }
 
-                                        }  
+                                        }
 
                                         // If this is a best practice highlight field, don't show it unless logged in
                                         if(strpos($tracker_field_name, 'selected_best_practice') !== false && !$this->session->userdata('permissions') == $permission_level) continue;
 
                                         if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
                                             if($office_campaign->tracker_fields->$tracker_field_name == 'yes' || $office_campaign->tracker_fields->$tracker_field_name == 'green') {
-                                                $status_icon = '<i class="text-success fa fa-check-square"></i>';  
-                                                $status_class = 'success';  
+                                                $status_icon = '<i class="text-success fa fa-check-square"></i>';
+                                                $status_class = 'success';
                                             } else if ($office_campaign->tracker_fields->$tracker_field_name == 'no' || $office_campaign->tracker_fields->$tracker_field_name == 'red') {
-                                                $status_icon =  '<i class="text-danger fa fa-times-circle"></i>';    
+                                                $status_icon =  '<i class="text-danger fa fa-times-circle"></i>';
                                                 $status_class = 'danger';
                                             } else {
-                                                $status_icon = '<i class="text-warning fa fa-exclamation-triangle"></i>';            
+                                                $status_icon = '<i class="text-warning fa fa-exclamation-triangle"></i>';
                                                 $status_class = '';
-                                            } 
+                                            }
                                         } else {
                                             //$office_campaign->tracker_fields->$tracker_field_name = '';
-                                            $status_icon = '';            
+                                            $status_icon = '';
                                             $status_class = '';
                                         }
-                                   
+
                                     ?>
 
                                     <tr <?php //if(!empty($status_class)) echo "class=\"$status_class\""; ?>>
                                         <td class="col-md-1">
-                                            <?php 
+                                            <?php
                                                 $overflow_text = false;
 
                                                 if (!empty($status_icon) && ($tracker_field_meta->type == "select" || $tracker_field_meta->type == "traffic")) {
-                                                    echo $status_icon;     
+                                                    echo $status_icon;
                                                 } else {
                                                     if (!empty($office_campaign->tracker_fields->$tracker_field_name)) {
                                                         if(strlen($office_campaign->tracker_fields->$tracker_field_name) < 20) {
                                                             if ($tracker_field_meta->type == "choices" && !empty($tracker_field_meta->choices)) {
                                                                 foreach ($tracker_field_meta->choices as $option_name => $option_label) {
                                                                     if ($office_campaign->tracker_fields->$tracker_field_name == $option_name) {
-                                                                        echo $option_label; 
+                                                                        echo $option_label;
                                                                         break;
                                                                     }
                                                                 }
                                                             } else {
-                                                                echo $office_campaign->tracker_fields->$tracker_field_name;    
+                                                                echo $office_campaign->tracker_fields->$tracker_field_name;
                                                             }
                                                         } else {
                                                             $overflow_text = true;
@@ -620,7 +620,7 @@
 
                                                 <?php if ($tracker_field_meta->type == "select") : ?>
                                                     <select name="<?php echo $tracker_field_name ?>">
-                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "yes") ? 'selected = "selected"' : '' ?> value="yes">Yes</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "no") ? 'selected = "selected"' : '' ?> value="no">No</option>
                                                     </select>
@@ -628,7 +628,7 @@
 
                                                 <?php if ($tracker_field_meta->type == "grade") : ?>
                                                     <select name="<?php echo $tracker_field_name ?>">
-                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Grade</option>                                
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Grade</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "A") ? 'selected = "selected"' : '' ?> value="A">A</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "B") ? 'selected = "selected"' : '' ?> value="B">B</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "C") ? 'selected = "selected"' : '' ?> value="C">C</option>
@@ -639,31 +639,31 @@
 
                                                 <?php if ($tracker_field_meta->type == "progress") : ?>
                                                     <select name="<?php echo $tracker_field_name ?>">
-                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Progress</option>                                
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Progress</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "progress") ? 'selected = "selected"' : '' ?> value="progress">Progress</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "neutral") ? 'selected = "selected"' : '' ?> value="neutral">Neutral</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "retrogress") ? 'selected = "selected"' : '' ?> value="retrogress">Retrogress</option>
                                                     </select>
-                                                <?php endif; ?>     
+                                                <?php endif; ?>
 
 
                                                 <?php if ($tracker_field_meta->type == "traffic") : ?>
                                                     <select name="<?php echo $tracker_field_name ?>">
-                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "red") ? 'selected = "selected"' : '' ?> value="red">Red</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "yellow") ? 'selected = "selected"' : '' ?> value="yellow">Yellow</option>
                                                         <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == "green") ? 'selected = "selected"' : '' ?> value="green">Green</option>
                                                     </select>
-                                                <?php endif; ?>  
+                                                <?php endif; ?>
 
                                                 <?php if ($tracker_field_meta->type == "choices" && !empty($tracker_field_meta->choices)) : ?>
                                                     <select name="<?php echo $tracker_field_name ?>">
-                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>                                
+                                                        <option value="" <?php echo (empty($office_campaign->tracker_fields->$tracker_field_name)) ? 'selected = "selected"' : '' ?>>Select Status</option>
                                                         <?php foreach ($tracker_field_meta->choices as $option_name => $option_label): ?>
                                                             <option <?php echo ($office_campaign->tracker_fields->$tracker_field_name == $option_name) ? 'selected = "selected"' : '' ?> value="<?php echo $option_name; ?>"><?php echo $option_label; ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
-                                                <?php endif; ?>                                                  
+                                                <?php endif; ?>
 
 
                                                 <?php if ($tracker_field_meta->type == "string") : ?>
@@ -671,8 +671,8 @@
                                                 <?php endif; ?>
                                             </td>
                                         <?php endif; ?>
-                                        
-                                        <td class="tracker-field">                                            
+
+                                        <td class="tracker-field">
                                             <a name="tracker_<?php echo $tracker_field_name ?>" class="anchor-point"></a>
                                             <strong>
                                                 <a href="<?php echo site_url('docs') . '#' . $tracker_field_name ?>">
@@ -680,10 +680,10 @@
                                                 </a>
                                                     <?php echo $tracker_field_meta->label ?>
                                             </strong>
-                                        </td>                        
+                                        </td>
                                         <td>
-                                            
-                                            <?php if (array_search($tracker_field_name, $crawl_details) !== false):?> 
+
+                                            <?php if (array_search($tracker_field_name, $crawl_details) !== false):?>
 
                                                 <a href="#<?php echo $tracker_field_name ?>">Crawl details</a>
 
@@ -695,13 +695,13 @@
 
                                         </td>
 
-                                        <?php if ($this->session->userdata('permissions') == $permission_level) : ?>     
-                                        <td>                                            
+                                        <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
+                                        <td>
                                             <a class="btn btn-xs btn-default collapsed pull-right" href="#note-expander-<?php echo $tracker_field_name ?>" data-parent="note-expander-parent" data-toggle="collapse">
                                                 Notes
-                                            </a>                                            
-                                        </td>   
-                                        <?php endif; ?>  
+                                            </a>
+                                        </td>
+                                        <?php endif; ?>
                                     </tr>
 
 
@@ -717,32 +717,32 @@
                                     <tr>
                                         <td colspan="5" class="hidden-row">
                                             <div class="edit-toggle collapse container form-group" id="note-expander-<?php echo $tracker_field_name ?>">
-                                                
-                                                <?php 
+
+                                                <?php
                                                     $note_field = "note_$tracker_field_name";
 
                                                     $note_data = (!empty($notes[$note_field])) ? $notes[$note_field] : '';
 
-                                                    if(!empty($notes[$note_field])) {                                        
+                                                    if(!empty($notes[$note_field])) {
                                                         $note_data = $notes[$note_field];
                                                     } else {
                                                         $note_data = $note_model;
                                                     }
-                                                ?>  
-                                                
+                                                ?>
+
                                                 <div class="edit-area"><?php echo $note_data->current->note_html; ?></div>
                                                 <div class="edit-raw hidden" data-fieldname="note_<?php echo $tracker_field_name ?>"><?php echo $note_data->current->note; ?></div>
 
                                                 <?php if (!empty($note_data->current->date) && !empty($note_data->current->author)): ?>
                                                     <div class="note-metadata">
                                                         Lasted edited on <?php echo $note_data->current->date;?> by <?php echo $note_data->current->author;?>
-                                                    </div> 
+                                                    </div>
                                                 <?php endif; ?>
 
                                                 <?php if ($this->session->userdata('permissions') == $permission_level) : ?>
-                                                    <button class="btn btn-primary edit-button pull-right" type="button">Edit</button>                                
+                                                    <button class="btn btn-primary edit-button pull-right" type="button">Edit</button>
                                                 <?php endif; ?>
-                                                
+
 
                                             </div>
                                         </td>
@@ -751,7 +751,7 @@
 
                                 <?php reset($tracker_model); endforeach; ?>
 
-                            </table>   
+                            </table>
 
 
 
@@ -768,11 +768,11 @@
                         <input type="hidden" name="status" value="<?php if (!empty($office_campaign->tracker_status->status)) echo  $office_campaign->tracker_status->status ?>">
                     <?php endif; ?>
 
-                    <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">   
-                    <input type="hidden" name="status_id" value="<?php echo $office_campaign->status_id; ?>">  
-                    <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">                       
+                    <input type="hidden" name="office_id" value="<?php echo $office->id; ?>">
+                    <input type="hidden" name="status_id" value="<?php echo $office_campaign->status_id; ?>">
+                    <input type="hidden" name="milestone" value="<?php echo $milestone->selected_milestone; ?>">
                 </form>
-            <?php endif; ?>   
+            <?php endif; ?>
 
 
 
@@ -780,46 +780,46 @@
 
 
 
-            
+
             <a name="automated_metrics" class="anchor-point"></a>
             <h3 id="automated-metrics-heading">Automated Metrics <a class="info-icon" href="<?php echo site_url('docs'); ?>#automated_metrics"><span class="glyphicon glyphicon-info-sign"></span></a></h3>
 
 
 		     <?php if(empty($office_campaign->datajson_status) && empty($office_campaign->datapage_status) && empty($office_campaign->digitalstrategy_status)): ?>
                 <p>No automated metrics are currently available for this milestone</p>
-             <?php else: ?> 
+             <?php else: ?>
                 <p>These metrics are generated by an automated analysis that runs every 24 hours until the end of the quarter at which point they become a historical snapshot</p>
-            <?php endif; ?> 
-		
-		
-		
+            <?php endif; ?>
+
+
+
 		<?php if(!empty($office_campaign->datajson_status)): ?>
-		
-            
-        <a name="pdl_datajson" class="anchor-point"></a>              
+
+
+        <a name="pdl_datajson" class="anchor-point"></a>
 
 		<div id="datajson-heading" class="panel panel-default">
 		<div class="panel-heading">data.json <a type="button" class="btn btn-success btn-xs pull-right hidden" href="<?php echo site_url('datagov/status'); ?>/<?php echo $office->id; ?>">Refresh</a></div>
-		
-		<table class="table table-striped table-hover dashboard-list">		
+
+		<table class="table table-striped table-hover dashboard-list">
 
 		<tr>
-			<th id="metrics-datajson-expected-url">               
+			<th id="metrics-datajson-expected-url">
                 <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_expected_url' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
-                Expected Data.json URL               
+                Expected Data.json URL
             </th>
 			<td>
 				<?php if(!empty($office_campaign->datajson_status->expected_url)): ?>
 					<a href="<?php echo $office_campaign->datajson_status->expected_url ?>"><?php echo $office_campaign->datajson_status->expected_url ?></a>
-			        <span style="color:#ccc"> (From <a style="color:#ccc; text-decoration:underline" href="http://www.usa.gov/About/developer-resources/federal-agency-directory/">USA.gov Directory</a>)</span>			
+			        <span style="color:#ccc"> (From <a style="color:#ccc; text-decoration:underline" href="http://www.usa.gov/About/developer-resources/federal-agency-directory/">USA.gov Directory</a>)</span>
 				<?php endif; ?>
-				
-				<?php 
-				
+
+				<?php
+
 					$http_code = (!empty($office_campaign->expected_datajson_status->http_code)) ? $office_campaign->expected_datajson_status->http_code : 0;
-			
+
 					switch ($http_code) {
 					    case 404:
 					        $status_color = 'danger';
@@ -829,33 +829,33 @@
 					        break;
 					    case 0:
 					        $status_color = '';
-					        break;					
+					        break;
 					    default:
 							$status_color = 'warning';
-					}	
-					
+					}
+
 					if(!empty($office_campaign->expected_datajson_status->content_type)) {
 						if (strpos($office_campaign->expected_datajson_status->content_type, 'application/json') !== false) {
 							$mime_color = 'success';
 						} else {
 							$mime_color = 'danger';
-						}						
+						}
 					} else {
 							$mime_color = 'danger';
 					}
 
-				
+
 				?>
-				
-			
 
-				
 
-			
-				
+
+
+
+
+
 			</td>
 		</tr>
-							
+
 		<tr>
 			<th id="metrics-datajson-resolved-url">
                 <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_resolved_url' ?>">
@@ -866,55 +866,55 @@
 			<td>
 				<a href="<?php echo $office_campaign->expected_datajson_status->url ?>"><?php echo $office_campaign->expected_datajson_status->url ?></a>
 			</td>
-		</tr>	
-		
+		</tr>
+
 		<tr>
             <th id="metrics-datajson-redirect-count">
                 <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_redirects' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
                 Number of Redirects
-            </th>            
+            </th>
 			<td>
 				<?php if(!empty($office_campaign->expected_datajson_status->redirect_count)): ?>
 				<span class="text-<?php echo ($office_campaign->expected_datajson_status->redirect_count > 3) ? 'danger' : 'warning'?>">
 					<?php echo $office_campaign->expected_datajson_status->redirect_count . ' redirects'; ?>
-				</span>				
-            		<?php if($office_campaign->expected_datajson_status->redirect_count > 5): ?>			
+				</span>
+            		<?php if($office_campaign->expected_datajson_status->redirect_count > 5): ?>
             		    <span style="color:#ccc"> (stops tracking after 6)</span>
             		<?php endif; ?>
-				<?php endif; ?>			
+				<?php endif; ?>
 			</td>
-		</tr>		
-		
-		
+		</tr>
+
+
 		<tr class="<?php echo $status_color;?>">
             <th id="metrics-datajson-http-status">
                 <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_http_status' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
                 HTTP Status
-            </th>             
+            </th>
 			<td>
 				<span class="text-<?php echo $status_color;?>">
 					<?php echo $office_campaign->expected_datajson_status->http_code?>
-				</span>			
+				</span>
 			</td>
-		</tr>		
-	
+		</tr>
+
 		<tr class="<?php echo $mime_color;?>">
             <th id="metrics-datajson-mimetype">
                 <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_content_type' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
                 Content Type
-            </th>             
+            </th>
 			<td>
 				<span class="text-<?php echo $mime_color;?>">
 					<?php echo $office_campaign->expected_datajson_status->content_type?>
-				</span>			
+				</span>
 			</td>
-		</tr>	
+		</tr>
 
         <?php
             $valid_json = (isset($office_campaign->datajson_status->valid_json)) ? $office_campaign->datajson_status->valid_json : null;
@@ -925,27 +925,27 @@
 
             $valid_count        = (is_numeric($error_count) && is_numeric($total_records)) ? $total_records - $error_count : null;
             $valid_count       = ($valid_count < 0) ? 0 : $valid_count;
-            
+
             $percent_valid      = process_percentage($valid_count, $total_records);
 
-        ?>		
-		
-		
+        ?>
+
+
 		<tr class="<?php echo ($valid_json == true) ? 'success' : 'danger'?>">
             <th id="metrics-datajson-valid-json">
                 <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_valid_json' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
                 Valid JSON
-            </th>              
+            </th>
 			<td>
 			<span id="valid_json" class="text-<?php echo ($valid_json == true) ? 'success' : 'danger'?>">
-			<?php		
+			<?php
 				if($valid_json == true) echo 'Valid';
-				if(($valid_json == false && $valid_json !== null) || ($office_campaign->expected_datajson_status->http_code == 200 && $valid_json != true)) echo 'Invalid <span><a href="http://jsonlint.com/">Check a JSON Validator</a></span>';			
+				if(($valid_json == false && $valid_json !== null) || ($office_campaign->expected_datajson_status->http_code == 200 && $valid_json != true)) echo 'Invalid <span><a href="http://jsonlint.com/">Check a JSON Validator</a></span>';
 			?>
 			</td>
-		</tr>	
+		</tr>
 
 
         <?php if (!empty($office_campaign->datajson_status->schema_version)): ?>
@@ -963,7 +963,7 @@
         </tr>
         <?php endif; ?>
 
-        <?php 
+        <?php
 
         if ($percent_valid == '100%' && $valid_json == true) {
             $percent_valid_color = 'success';
@@ -982,7 +982,7 @@
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
                 Datasets with Valid Metadata
-            </th>              
+            </th>
             <td id="pdl_valid_metadata">
                 <?php if(!empty($percent_valid)): ?>
                     <span class="text-<?php echo ($percent_valid == '100%') ? 'success' : 'danger'?>">
@@ -993,15 +993,15 @@
                     </span>
                 <?php endif; ?>
             </td>
-        </tr>   
-     
+        </tr>
+
         <tr class="<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
             <th id="metrics-datajson-valid-schmea">
                 <a class="info-icon" href="<?php echo site_url('docs') . '#datajson_valid_schema' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
                 Valid Schema
-            </th>             
+            </th>
             <td>
             <span class="text-<?php echo ($valid_schema == true) ? 'success' : 'danger'?>">
             <?php
@@ -1010,17 +1010,17 @@
                 echo 'File is too large to validate';
             } else {
                 if($valid_schema == true) echo 'Valid';
-                if($valid_schema == false && $valid_schema !== null) echo 'Invalid';                            
+                if($valid_schema == false && $valid_schema !== null) echo 'Invalid';
             }
-    
+
             ?>
             </span>
             </td>
 
-        </tr>   
-        
-        <?php 
-        
+        </tr>
+
+        <?php
+
             if (!empty($office_campaign->datajson_status->schema_version)) {
                 $schema_version = $office_campaign->datajson_status->schema_version;
             } else {
@@ -1028,11 +1028,11 @@
                     $schema_version = 'federal-v1.1';
                 } else {
                     $schema_version = 'federal';
-                }                
+                }
             }
 
         if(isset($office_campaign->datajson_status->schema_errors)): ?>
-       
+
          <?php
 
              $validation_url = site_url('validate?schema=' . $schema_version . '&output=browser&datajson_url=') . urlencode($office_campaign->expected_datajson_status->url);
@@ -1040,10 +1040,10 @@
 
         <tr class="info" id="schema_validation_results">
             <td colspan="2">
-                <span class="glyphicon glyphicon-download"></span>  
-                For more complete and readable validation results, see the full <a href="<?php echo $validation_url?>">schema validator results</a> 
+                <span class="glyphicon glyphicon-download"></span>
+                For more complete and readable validation results, see the full <a href="<?php echo $validation_url?>">schema validator results</a>
             </td>
-        </tr>         
+        </tr>
 
 
         <tr class="danger">
@@ -1052,58 +1052,58 @@
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
                 Schema Errors
-            </th>  
+            </th>
             <td>
             <span>
             <?php
-    
+
                 $datajson_errors = (array) $office_campaign->datajson_status->schema_errors;
 
                 $error_count        = (!empty($office_campaign->datajson_status->error_count)) ? $office_campaign->datajson_status->error_count : 0;
 
                 echo 'There are validation errors on ' . $error_count . ' records <br><br>';
-                
+
                 if($error_count > 10) {
-                    echo 'Only showing errors from the first 10 records: <br><br>';                  
+                    echo 'Only showing errors from the first 10 records: <br><br>';
                 }
                 ?>
-             
+
 
                 <?php foreach ($datajson_errors as $key => $fields) : ?>
-                    
+
                     <strong>Errors on record <?php echo $key ?>: </strong> <br>
 
                     <?php if(!empty($fields->ALL)): ?>
-    
+
                             <ul class="validation-full-record">
                                 <?php foreach ($fields->ALL->errors as $error_description) : ?>
                                     <?php if(strpos($error_description, 'but a null is required')) continue; ?>
                                     <li><?php echo $error_description ?></li>
                                 <?php endforeach; ?>
                             </ul>
-    
-                    <?php 
+
+                    <?php
                         unset($fields->ALL);
-                        endif; 
+                        endif;
                     ?>
-                
-    
-    
+
+
+
                     <?php
                         foreach ($fields as $field => $details) {
                             echo "<code>$field</code><br>";
-    
+
                             if(!empty($details->errors)) {
                                 echo "<ul>";
-    
+
                                 foreach($details->errors as $error) {
                                     echo "<li>$error</li>";
                                 }
-                            
+
                                 echo "</ul>";
-    
+
                             }
-                            
+
                         }
                     ?>
 
@@ -1112,24 +1112,24 @@
             </span>
             </td>
 
-        </tr>   
-        <?php endif; ?> 
+        </tr>
+        <?php endif; ?>
 
 
 
 
-        
+
         <tr>
             <th id="metrics_total_records">
                 <a class="info-icon" href="<?php echo site_url('docs') . '#metrics_total_records' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
                 Datasets
-            </th>             
-            <td id="pdl_datasets">      
+            </th>
+            <td id="pdl_datasets">
                 <span class="core-metric-value"><?php echo $total_records;?></span>
             </td>
-        </tr> 
+        </tr>
 
 
         <?php if(!empty($office_campaign->datajson_status->qa)): ?>
@@ -1142,12 +1142,12 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Number of Collections
-                </th>                 
+                </th>
                 <td id="pdl_collections">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->collections_total; ?></span>
                 </td>
-            </tr> 
-            <?php endif; ?> 
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->non_collection_total)): ?>
             <tr>
@@ -1156,11 +1156,11 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Number of datasets not in a collection
-                </th>                 
+                </th>
                 <td id="pdl_non_collections">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->non_collection_total ?></span>
                 </td>
-            </tr> 
+            </tr>
             <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->accessURL_present)): ?>
@@ -1170,12 +1170,12 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Datasets with Distribution URLs
-                </th>                  
+                </th>
                 <td id="pdl_downloadable">
-                    <?php echo process_percentage($office_campaign->datajson_status->qa->accessURL_present, $total_records); ?> 
+                    <?php echo process_percentage($office_campaign->datajson_status->qa->accessURL_present, $total_records); ?>
                     <span style="color:#666">(<span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessURL_present . '</span> of ' . $total_records; ?>)</span>
                 </td>
-            </tr> 
+            </tr>
             <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->downloadURL_present)): ?>
@@ -1185,13 +1185,13 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Datasets with Download URLs
-                </th>                  
+                </th>
                 <td>
                     <?php echo process_percentage($office_campaign->datajson_status->qa->downloadURL_present, $total_records); ?>
                     <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->downloadURL_present . ' of ' . $total_records; ?>)</span>
                 </td>
-            </tr> 
-            <?php endif; ?>            
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->accessURL_total)): ?>
             <tr>
@@ -1200,9 +1200,9 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Total Distribution URLs
-                </th>                 
+                </th>
                 <td id="metrics_accessURL_working">
-                    <span id="pdl_link_total"> 
+                    <span id="pdl_link_total">
                         <span class="core-metric-value">
                             <?php echo $office_campaign->datajson_status->qa->accessURL_total; ?>
                         </span>
@@ -1212,8 +1212,8 @@
                     <?php endif; ?>
                     </span>
                 </td>
-            </tr> 
-            <?php endif; ?>            
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->downloadURL_total)): ?>
             <tr>
@@ -1222,12 +1222,12 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Total Download URLs
-                </th>                 
+                </th>
                 <td>
                     <?php echo $office_campaign->datajson_status->qa->downloadURL_total; ?>
                 </td>
-            </tr> 
-            <?php endif; ?>  
+            </tr>
+            <?php endif; ?>
 
 
             <?php if(isset($office_campaign->datajson_status->qa->API_total)): ?>
@@ -1237,12 +1237,12 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Total APIs
-                </th>                 
+                </th>
                 <td id="pdl_apis">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->API_total; ?></span>
                 </td>
-            </tr> 
-            <?php endif; ?>  
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->API_public)): ?>
             <tr>
@@ -1251,12 +1251,12 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Public APIs
-                </th>                 
+                </th>
                 <td id="pdl_api_access_public">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->API_public; ?></span>
                 </td>
-            </tr> 
-            <?php endif; ?>  
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->API_restricted)): ?>
             <tr>
@@ -1265,12 +1265,12 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Restricted Public APIs
-                </th>                 
+                </th>
                 <td id="pdl_api_access_restricted">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->API_restricted; ?></span>
                 </td>
-            </tr> 
-            <?php endif; ?>  
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->API_nonpublic)): ?>
             <tr>
@@ -1279,12 +1279,12 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Non-public APIs
-                </th>                 
+                </th>
                 <td id="pdl_api_access_nonpublic">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->API_nonpublic; ?></span>
                 </td>
-            </tr> 
-            <?php endif; ?>                                                  
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->accessLevel_public)): ?>
             <tr>
@@ -1293,12 +1293,12 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Public Datasets
-                </th>                 
+                </th>
                 <td id="pdl_access_public">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessLevel_public; ?></span>
                 </td>
-            </tr> 
-            <?php endif; ?>  
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->accessLevel_restricted)): ?>
             <tr>
@@ -1307,12 +1307,12 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Restricted Public Datasets
-                </th>                 
+                </th>
                 <td id="pdl_access_restricted">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessLevel_restricted; ?></span>
                 </td>
-            </tr> 
-            <?php endif; ?>  
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->accessLevel_nonpublic)): ?>
             <tr>
@@ -1321,19 +1321,19 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Non-public Datasets
-                </th>                 
+                </th>
                 <td id="pdl_access_nonpublic">
                     <span class="core-metric-value"><?php echo $office_campaign->datajson_status->qa->accessLevel_nonpublic; ?></span>
                 </td>
-            </tr> 
-            <?php endif; ?> 
+            </tr>
+            <?php endif; ?>
 
-            <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx) && 
-                    ($office_campaign->datajson_status->qa->validation_counts->http_0 + 
-                     $office_campaign->datajson_status->qa->validation_counts->http_2xx + 
+            <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx) &&
+                    ($office_campaign->datajson_status->qa->validation_counts->http_0 +
+                     $office_campaign->datajson_status->qa->validation_counts->http_2xx +
                      $office_campaign->datajson_status->qa->validation_counts->http_3xx +
                      $office_campaign->datajson_status->qa->validation_counts->http_4xx +
-                     $office_campaign->datajson_status->qa->validation_counts->http_5xx 
+                     $office_campaign->datajson_status->qa->validation_counts->http_5xx
                     ) > 0): ?>
 
                 <tr class="info" id="pdl_link_check">
@@ -1341,21 +1341,21 @@
                         <p>The fields below serve as quality assurance to verify that the download links included within the metadata are functioning properly</p>
 
                         <?php if($milestone->selected_milestone == $milestone->current): ?>
-                            <?php 
+                            <?php
                                 $error_log = $office->id . '.csv';
                                 $error_path = $config['archive_dir'] . '/error_log/' . $error_log;
-                                
-                                if(file_exists($error_path)): 
+
+                                if(file_exists($error_path)):
                             ?>
-                                                           
-                            <span class="glyphicon glyphicon-download"></span> 
+
+                            <span class="glyphicon glyphicon-download"></span>
                             To see a detailed breakdown of these issues, download the <a href="<?php echo site_url('archive/error_log/' . $error_log)?>">full error log as a CSV</a>
-                                
+
                             <?php endif;?>
                         <?php endif;?>
 
                     </td>
-                </tr>                
+                </tr>
 
                 <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_0)): ?>
                 <tr class="<?php echo ($office_campaign->datajson_status->qa->validation_counts->http_0 > 0) ? 'danger' : 'success'?>">
@@ -1364,15 +1364,15 @@
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
                         Server Not Found
-                    </th>                 
+                    </th>
                     <td>
-                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_0, $office_campaign->datajson_status->qa->accessURL_total);?> 
-                         
+                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_0, $office_campaign->datajson_status->qa->accessURL_total);?>
+
                         <span style="color:#666">
                         <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->http_0 . ' of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
                         </span>
                     </td>
-                </tr> 
+                </tr>
                 <?php endif;?>
 
                 <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
@@ -1382,15 +1382,15 @@
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
                         Working links (HTTP 2xx)
-                    </th>                 
+                    </th>
                     <td id="pdl_link_2xx">
-                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_2xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
-                         
+                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_2xx, $office_campaign->datajson_status->qa->accessURL_total);?>
+
                         <span style="color:#666">
                         <?php echo '(<span class="core-metric-value">' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . '</span> of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
                         </span>
                     </td>
-                </tr> 
+                </tr>
                 <?php endif;?>
 
                 <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_4xx)): ?>
@@ -1400,15 +1400,15 @@
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
                         Broken links (HTTP 4xx)
-                    </th>                 
+                    </th>
                     <td id="pdl_link_4xx">
-                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_4xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
-                         
+                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_4xx, $office_campaign->datajson_status->qa->accessURL_total);?>
+
                         <span style="color:#666">
                         <?php echo '(<span class="core-metric-value">' . $office_campaign->datajson_status->qa->validation_counts->http_4xx . '</span> of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
                         </span>
                     </td>
-                </tr> 
+                </tr>
                 <?php endif;?>
 
                 <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_5xx)): ?>
@@ -1418,15 +1418,15 @@
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
                         Error Links (HTTP 5xx)
-                    </th>                 
+                    </th>
                     <td id="pdl_link_5xx">
-                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_5xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
-                         
+                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_5xx, $office_campaign->datajson_status->qa->accessURL_total);?>
+
                         <span style="color:#666">
                         <?php echo '(<span class="core-metric-value">' . $office_campaign->datajson_status->qa->validation_counts->http_5xx . '</span> of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
                         </span>
                     </td>
-                </tr>  
+                </tr>
                 <?php endif;?>
 
                 <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_3xx)): ?>
@@ -1436,15 +1436,15 @@
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
                         Redirected Links (HTTP 3xx)
-                    </th>                 
+                    </th>
                     <td id="pdl_link_3xx">
-                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_3xx, $office_campaign->datajson_status->qa->accessURL_total);?> 
-                         
+                       <?php echo process_percentage($office_campaign->datajson_status->qa->validation_counts->http_3xx, $office_campaign->datajson_status->qa->accessURL_total);?>
+
                         <span style="color:#666">
                         <?php echo '(<span class="core-metric-value">' . $office_campaign->datajson_status->qa->validation_counts->http_3xx . '</span> of ' . $office_campaign->datajson_status->qa->accessURL_total . ')' ?>
                         </span>
                     </td>
-                </tr>             
+                </tr>
                 <?php endif;?>
 
                 <?php if(isset($office_campaign->datajson_status->qa->validation_counts->http_2xx)): ?>
@@ -1454,18 +1454,18 @@
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
                         Correct format
-                    </th>                 
+                    </th>
                     <td id="pdl_link_format_match">
 
-                        <?php 
+                        <?php
                         $correct_format_count = $office_campaign->datajson_status->qa->validation_counts->http_2xx - $office_campaign->datajson_status->qa->validation_counts->format_mismatch;
-                        echo '<span class="core-metric-value">' . process_percentage($correct_format_count, $office_campaign->datajson_status->qa->validation_counts->http_2xx) . '</span>'; 
-                        ?> 
+                        echo '<span class="core-metric-value">' . process_percentage($correct_format_count, $office_campaign->datajson_status->qa->validation_counts->http_2xx) . '</span>';
+                        ?>
                         <span style="color:#666">
                         <?php echo '(' . $correct_format_count . ' of ' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . ')' ?>
                         </span>
                     </td>
-                </tr>             
+                </tr>
                 <?php endif;?>
 
                 <?php if(isset($office_campaign->datajson_status->qa->validation_counts->pdf)): ?>
@@ -1475,15 +1475,15 @@
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
                         PDF for raw data
-                    </th>                 
+                    </th>
                     <td id="pdl_link_format_pdf">
-                       <?php echo '<span class="core-metric-value">' . process_percentage($office_campaign->datajson_status->qa->validation_counts->pdf, $office_campaign->datajson_status->qa->validation_counts->http_2xx) . '</span>';?> 
-                         
+                       <?php echo '<span class="core-metric-value">' . process_percentage($office_campaign->datajson_status->qa->validation_counts->pdf, $office_campaign->datajson_status->qa->validation_counts->http_2xx) . '</span>';?>
+
                         <span style="color:#666">
                         <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->pdf . ' of ' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . ')' ?>
                         </span>
                     </td>
-                </tr> 
+                </tr>
                 <?php endif;?>
 
                 <?php if(isset($office_campaign->datajson_status->qa->validation_counts->html)): ?>
@@ -1493,27 +1493,27 @@
                             <span class="glyphicon glyphicon-info-sign"></span>
                         </a>
                         HTML for raw data
-                    </th>                 
+                    </th>
                     <td id="pdl_link_format_html">
-                       <?php echo '<span class="core-metric-value">' . process_percentage($office_campaign->datajson_status->qa->validation_counts->html, $office_campaign->datajson_status->qa->validation_counts->http_2xx) . '</span>';?> 
-                         
+                       <?php echo '<span class="core-metric-value">' . process_percentage($office_campaign->datajson_status->qa->validation_counts->html, $office_campaign->datajson_status->qa->validation_counts->http_2xx) . '</span>';?>
+
                         <span style="color:#666">
                         <?php echo '(' . $office_campaign->datajson_status->qa->validation_counts->html . ' of ' . $office_campaign->datajson_status->qa->validation_counts->http_2xx . ')' ?>
                         </span>
                     </td>
-                </tr>             
+                </tr>
                 <?php endif;?>
 
             <?php else: ?>
 
                 <tr class="info" id="pdl_link_check">
                     <td colspan="2">
-                        Normally there would be a set of quality assurance fields here to verify that the download links included within the metadata are functioning properly, but the results of those tests are not currently available. 
+                        Normally there would be a set of quality assurance fields here to verify that the download links included within the metadata are functioning properly, but the results of those tests are not currently available.
                     </td>
-                </tr>            
+                </tr>
 
 
-            <?php endif; ?>    
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->bureauCodes)): ?>
             <tr>
@@ -1522,11 +1522,11 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Bureaus Represented
-                </th>                
+                </th>
                 <td id="pdl_bureaus">
                     <span class="core-metric-value"><?php echo count($office_campaign->datajson_status->qa->bureauCodes); ?></span>
                 </td>
-            </tr> 
+            </tr>
             <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->programCodes)): ?>
@@ -1536,11 +1536,11 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Programs Represented
-                </th>                 
+                </th>
                 <td id="pdl_programs">
                     <span class="core-metric-value"><?php echo count($office_campaign->datajson_status->qa->programCodes); ?></span>
                 </td>
-            </tr> 
+            </tr>
             <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->license_present)): ?>
@@ -1550,13 +1550,13 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     License Specified
-                </th>                 
+                </th>
                 <td id="edi_license_present">
                     <span class="core-metric-value"><?php echo process_percentage($office_campaign->datajson_status->qa->license_present, $total_records); ?></span>
-                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->license_present . ' of ' . $total_records; ?>)</span>                    
+                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->license_present . ' of ' . $total_records; ?>)</span>
                 </td>
-            </tr> 
-            <?php endif; ?>   
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->redaction_present)): ?>
             <tr>
@@ -1565,13 +1565,13 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Datasets with Redactions
-                </th>                 
+                </th>
                 <td id="edi_redaction_present">
                     <?php echo process_percentage($office_campaign->datajson_status->qa->redaction_present, $total_records); ?>
-                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->redaction_present . ' of ' . $total_records; ?>)</span>                    
+                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->redaction_present . ' of ' . $total_records; ?>)</span>
                 </td>
-            </tr> 
-            <?php endif; ?>   
+            </tr>
+            <?php endif; ?>
 
             <?php if(isset($office_campaign->datajson_status->qa->redaction_no_explanation)): ?>
             <tr>
@@ -1580,19 +1580,19 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                     Redactions without explanation (rights field)
-                </th>                 
+                </th>
                 <td id="edi_redaction_no_explanation">
                     <?php echo process_percentage($office_campaign->datajson_status->qa->redaction_no_explanation, $total_records); ?>
-                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->redaction_no_explanation . ' of ' . $total_records; ?>)</span>                    
+                    <span style="color:#666">(<?php echo $office_campaign->datajson_status->qa->redaction_no_explanation . ' of ' . $total_records; ?>)</span>
                 </td>
-            </tr> 
-            <?php endif; ?>                                 
+            </tr>
+            <?php endif; ?>
 
 
         <?php endif; ?>
 
 
-			
+
         <?php if(isset($office_campaign->expected_datajson_status->download_content_length)): ?>
         <tr>
             <th id="metrics-datajson-file-size">
@@ -1600,14 +1600,14 @@
                     <span class="glyphicon glyphicon-info-sign"></span>
                 </a>
                 File Size
-            </th>             
+            </th>
             <td>
                 <span>
                     <?php echo human_filesize($office_campaign->expected_datajson_status->download_content_length)?>
-                </span>         
+                </span>
             </td>
-        </tr>   
-        <?php endif; ?>		
+        </tr>
+        <?php endif; ?>
 
 
         <?php if(isset($office_campaign->expected_datajson_status->filetime) && $office_campaign->expected_datajson_status->filetime > 0): ?>
@@ -1621,10 +1621,10 @@
             <td>
                 <span>
                     <?php echo date("l, d-M-Y H:i:s T", $office_campaign->expected_datajson_status->filetime)?>
-                </span>         
+                </span>
             </td>
-        </tr>   
-        <?php endif; ?> 
+        </tr>
+        <?php endif; ?>
 
 
         <?php if(isset($office_campaign->expected_datajson_status->last_crawl)): ?>
@@ -1638,15 +1638,15 @@
             <td>
                 <span>
                     <?php echo date("l, d-M-Y H:i:s T", $office_campaign->expected_datajson_status->last_crawl)?>
-                </span>         
+                </span>
             </td>
-        </tr>   
-        <?php endif; ?>         
+        </tr>
+        <?php endif; ?>
 
 
 
 
-        <?php 
+        <?php
 
 
 
@@ -1679,10 +1679,10 @@
             <td>
                 <span>
                     <a href="<?php echo $archive_validation ?>">Analyze archive from <?php echo $origin_date; ?></a>
-                </span>         
+                </span>
             </td>
-        </tr>   
-        <?php endif; ?>   
+        </tr>
+        <?php endif; ?>
 
 
 
@@ -1697,47 +1697,47 @@
                 Nearby Daily Crawls
             </th>
             <td>
-                <?php foreach ($nearby_crawls as $daily_crawl): 
+                <?php foreach ($nearby_crawls as $daily_crawl):
                         if(!empty($daily_crawl['crawl_start'])):
-                ?>     
+                ?>
 
                         <div> <a href="<?php echo site_url('offices/detail/' . $office->id . '/' . $milestone->selected_milestone . '/status/' . $daily_crawl['status_id']); ?>"><?php echo date("l, d-M-Y H:i:s T", strtotime($daily_crawl['crawl_start'])); ?></a>
 
                     <?php endif; ?>
                 <?php endforeach; ?>
             </td>
-        </tr>   
-        <?php endif; ?>  
+        </tr>
+        <?php endif; ?>
 
 
-		
+
 		</table>
 		</div>
-		
-		
+
+
 
 		<?php if(!empty($office_campaign->datapage_status)): ?>
         <a name="pdl_slashdata" class="anchor-point"></a>
 
     	<div id="slashdata-heading" class="panel panel-default">
     	<div class="panel-heading">
-            /data page 
+            /data page
             <a class="info-icon" href="<?php echo site_url('docs') . '#datapage' ?>">
                 <span class="glyphicon glyphicon-info-sign"></span>
-            </a>            
+            </a>
         </div>
 
-    	<table class="table table-striped table-hover">		
+    	<table class="table table-striped table-hover">
 
     	<tr>
     		<th>Expected /data URL</th>
     		<td>
     			<?php if(!empty($office_campaign->datapage_status->expected_url)): ?>
     				<a href="<?php echo $office_campaign->datapage_status->expected_url ?>"><?php echo $office_campaign->datapage_status->expected_url ?></a>
-    		        <span style="color:#ccc"> (From <a style="color:#ccc; text-decoration:underline" href="http://www.usa.gov/About/developer-resources/federal-agency-directory/">USA.gov Directory</a>)</span>			
+    		        <span style="color:#ccc"> (From <a style="color:#ccc; text-decoration:underline" href="http://www.usa.gov/About/developer-resources/federal-agency-directory/">USA.gov Directory</a>)</span>
     			<?php endif; ?>
 
-    			<?php 
+    			<?php
 
     				$http_code = (!empty($office_campaign->datapage_status->http_code)) ? $office_campaign->datapage_status->http_code : 0;
 
@@ -1750,17 +1750,17 @@
     				        break;
     				    case 0:
     				        $status_color = '';
-    				        break;					
+    				        break;
     				    default:
     						$status_color = 'warning';
-    				}	
+    				}
 
     				if(!empty($office_campaign->datapage_status->content_type)) {
     					if (strpos($office_campaign->datapage_status->content_type, 'text/html') !== false) {
     						$mime_color = 'success';
     					} else {
     						$mime_color = 'danger';
-    					}						
+    					}
     				} else {
     						$mime_color = 'danger';
     				}
@@ -1777,7 +1777,7 @@
         	<td>
         		<a href="<?php echo $office_campaign->datapage_status->url ?>"><?php echo $office_campaign->datapage_status->url ?></a>
         	</td>
-        </tr>	
+        </tr>
 
         <tr>
         	<th>Redirects</th>
@@ -1785,13 +1785,13 @@
         		<?php if(!empty($office_campaign->datapage_status->redirect_count)): ?>
         		<span class="text-<?php echo ($office_campaign->datapage_status->redirect_count > 5) ? 'danger' : 'warning'?>">
         			<?php echo $office_campaign->datapage_status->redirect_count . ' redirects'; ?>
-        		</span>	
-            		<?php if($office_campaign->datapage_status->redirect_count > 5): ?>			
+        		</span>
+            		<?php if($office_campaign->datapage_status->redirect_count > 5): ?>
             		    <span style="color:#ccc"> (stops tracking after 6)</span>
-            		<?php endif; ?>			        		
-        		<?php endif; ?>			
+            		<?php endif; ?>
+        		<?php endif; ?>
         	</td>
-        </tr>		
+        </tr>
 
 
         <tr class="<?php echo $status_color;?>">
@@ -1799,18 +1799,18 @@
         	<td>
         		<span class="text-<?php echo $status_color;?>">
         			<?php echo $office_campaign->datapage_status->http_code?>
-        		</span>			
+        		</span>
         	</td>
-        </tr>				
+        </tr>
 
         <tr class="<?php echo $mime_color;?>">
         	<th>Content Type</th>
         	<td>
         		<span class="text-<?php echo $mime_color;?>">
         			<?php echo $office_campaign->datapage_status->content_type?>
-        		</span>			
+        		</span>
         	</td>
-        </tr>	
+        </tr>
 
         <?php if(!empty($office_campaign->datapage_status->filetime) && $office_campaign->datapage_status->filetime > 0): ?>
         <tr>
@@ -1818,10 +1818,10 @@
             <td>
                 <span>
                     <?php echo date("l, d-M-Y H:i:s T", $office_campaign->datapage_status->filetime)?>
-                </span>         
+                </span>
             </td>
-        </tr>   
-        <?php endif; ?> 
+        </tr>
+        <?php endif; ?>
 
 
 
@@ -1832,41 +1832,41 @@
             <td>
                 <span>
                     <?php echo date("l, d-M-Y H:i:s T", $office_campaign->datapage_status->last_crawl)?>
-                </span>         
+                </span>
             </td>
-        </tr>   
-        <?php endif; ?>          
+        </tr>
+        <?php endif; ?>
 
 
         </table>
         </div>
-        <?php endif; ?>	
-                
-                
-                
+        <?php endif; ?>
+
+
+
 		<?php if(!empty($office_campaign->digitalstrategy_status)): ?>
 
 
 
     	<div id="digitalstrategy-heading" class="panel panel-default">
     	<div class="panel-heading">
-            /digitalstrategy.json 
+            /digitalstrategy.json
             <a class="info-icon" href="<?php echo site_url('docs') . '#digitalstrategy' ?>">
                 <span class="glyphicon glyphicon-info-sign"></span>
-            </a>             
+            </a>
         </div>
 
-    	<table class="table table-striped table-hover">		
+    	<table class="table table-striped table-hover">
 
     	<tr>
     		<th>Expected /digitalstrategy.json URL</th>
     		<td>
     			<?php if(!empty($office_campaign->digitalstrategy_status->expected_url)): ?>
     				<a href="<?php echo $office_campaign->digitalstrategy_status->expected_url ?>"><?php echo $office_campaign->digitalstrategy_status->expected_url ?></a>
-    		        <span style="color:#ccc"> (From <a style="color:#ccc; text-decoration:underline" href="http://www.usa.gov/About/developer-resources/federal-agency-directory/">USA.gov Directory</a>)</span>			
+    		        <span style="color:#ccc"> (From <a style="color:#ccc; text-decoration:underline" href="http://www.usa.gov/About/developer-resources/federal-agency-directory/">USA.gov Directory</a>)</span>
     			<?php endif; ?>
 
-    			<?php 
+    			<?php
 
     				$http_code = (!empty($office_campaign->digitalstrategy_status->http_code)) ? $office_campaign->digitalstrategy_status->http_code : 0;
 
@@ -1879,17 +1879,17 @@
     				        break;
     				    case 0:
     				        $status_color = '';
-    				        break;					
+    				        break;
     				    default:
     						$status_color = 'warning';
-    				}	
+    				}
 
     				if(!empty($office_campaign->digitalstrategy_status->content_type)) {
     					if (strpos($office_campaign->digitalstrategy_status->content_type, 'application/json') !== false) {
     						$mime_color = 'success';
     					} else {
     						$mime_color = 'danger';
-    					}						
+    					}
     				} else {
     						$mime_color = 'danger';
     				}
@@ -1906,7 +1906,7 @@
         	<td>
         		<a href="<?php echo $office_campaign->digitalstrategy_status->url ?>"><?php echo $office_campaign->digitalstrategy_status->url ?></a>
         	</td>
-        </tr>	
+        </tr>
 
         <tr>
         	<th>Redirects</th>
@@ -1914,13 +1914,13 @@
         		<?php if(!empty($office_campaign->digitalstrategy_status->redirect_count)): ?>
         		<span class="text-<?php echo ($office_campaign->digitalstrategy_status->redirect_count > 5) ? 'danger' : 'warning'?>">
         			<?php echo $office_campaign->digitalstrategy_status->redirect_count . ' redirects'; ?>
-        		</span>	
-            		<?php if($office_campaign->digitalstrategy_status->redirect_count > 5): ?>			
+        		</span>
+            		<?php if($office_campaign->digitalstrategy_status->redirect_count > 5): ?>
             		    <span style="color:#ccc"> (stops tracking after 6)</span>
-            		<?php endif; ?>			        		
-        		<?php endif; ?>			
+            		<?php endif; ?>
+        		<?php endif; ?>
         	</td>
-        </tr>		
+        </tr>
 
 
         <tr class="<?php echo $status_color;?>">
@@ -1928,38 +1928,38 @@
         	<td>
         		<span class="text-<?php echo $status_color;?>">
         			<?php echo $office_campaign->digitalstrategy_status->http_code?>
-        		</span>			
+        		</span>
         	</td>
-        </tr>				
+        </tr>
 
         <tr class="<?php echo $mime_color;?>">
         	<th>Content Type</th>
         	<td>
         		<span class="text-<?php echo $mime_color;?>">
         			<?php echo $office_campaign->digitalstrategy_status->content_type?>
-        		</span>			
+        		</span>
         	</td>
-        </tr>	
-        
+        </tr>
+
         <?php if($http_code == 200 && $digital_strategy = curl_from_json($office_campaign->digitalstrategy_status->url, false, true)) {
                 $valid_json = true;
               } else {
                 $valid_json = false;
               }
         ?>
-        
-        
-        
+
+
+
 		<tr class="<?php echo ($valid_json == true) ? 'success' : 'danger'?>">
 			<th>Valid JSON</th>
 			<td>
 			<span class="text-<?php echo ($valid_json == true) ? 'success' : 'danger'?>">
-			<?php		
+			<?php
 				if($valid_json == true) echo 'Valid';
-				if(($valid_json == false && $valid_json !== null) || ($office_campaign->digitalstrategy_status->http_code == 200 && $valid_json != true)) echo 'Invalid <span><a href="http://jsonlint.com/">Check a JSON Validator</a></span>';			
+				if(($valid_json == false && $valid_json !== null) || ($office_campaign->digitalstrategy_status->http_code == 200 && $valid_json != true)) echo 'Invalid <span><a href="http://jsonlint.com/">Check a JSON Validator</a></span>';
 			?>
 			</td>
-		</tr>        	
+		</tr>
 
         <?php if(!empty($office_campaign->digitalstrategy_status->filetime) && $office_campaign->digitalstrategy_status->filetime > 0): ?>
         <tr>
@@ -1967,10 +1967,10 @@
             <td>
                 <span>
                     <?php echo date("l, d-M-Y H:i:s T", $office_campaign->digitalstrategy_status->filetime)?>
-                </span>         
+                </span>
             </td>
-        </tr>   
-        <?php endif; ?> 
+        </tr>
+        <?php endif; ?>
 
 
        <?php if(!empty($office_campaign->digitalstrategy_status->last_crawl)): ?>
@@ -1979,33 +1979,33 @@
             <td>
                 <span>
                     <?php echo date("l, d-M-Y H:i:s T", $office_campaign->digitalstrategy_status->last_crawl)?>
-                </span>         
+                </span>
             </td>
-        </tr>   
-        <?php endif; ?>  
+        </tr>
+        <?php endif; ?>
 
 
         </table>
         </div>
         <?php endif; ?>
-                 
-                
+
+
          <?php if($valid_json == true && !empty($digital_strategy)): ?>
 
      	    <div class="panel panel-default">
      	    <div class="panel-heading">
-                Digital Strategy 
+                Digital Strategy
                 <a class="info-icon" href="<?php echo site_url('docs') . '#digitalstrategy_excerpts' ?>">
                     <span class="glyphicon glyphicon-info-sign"></span>
-                </a>                  
+                </a>
             </div>
      	    <div style="padding : 1em;">
-            <?php 
-                $sections = array(  "1.2.4" => "edi_schedule_delivered", 
-                                    "1.2.5" => "schedule", 
-                                    "1.2.6" => "pe_feedback_specified", 
+            <?php
+                $sections = array(  "1.2.4" => "edi_schedule_delivered",
+                                    "1.2.5" => "schedule",
+                                    "1.2.6" => "pe_feedback_specified",
                                     "1.2.7" => "ps_publication_process");
-        
+
 
 
                 if (!empty($digital_strategy->generated)) {
@@ -2015,7 +2015,7 @@
 
 
 
-                        
+
 
                     }
                 }
@@ -2025,7 +2025,7 @@
                 }
 
                 echo "<hr>";
-                
+
             ?>
 
             <?php
@@ -2036,43 +2036,43 @@
 
                             echo "<a name=\"{$sections[$item->id]}\" class=\"anchor-point\"></a>";
                             echo "<h3>{$item->id} {$item->text}</h3>";
-                            
+
                             if($item->multiple === false) {
                                 echo "<h4>{$item->fields[0]->label}</h4>";
                                 echo '<br>';
-                                echo '<pre style="white-space: pre-wrap; word-break: keep-all; ">' . $item->fields[0]->value . '</pre>';                           
+                                echo '<pre style="white-space: pre-wrap; word-break: keep-all; ">' . $item->fields[0]->value . '</pre>';
                             } else {
-                                
+
                                 $columns = count($item->fields);
                                 $rows   = count($item->fields[0]->value);
-                                
-                                
+
+
 
                                 for ($row=0; $row < $rows; $row++) {
-                                    
+
                                     echo '<table class="table table-striped table-hover" style="margin-bottom : 4em; border-bottom : 3px solid #ccc">';
-                                    
+
                                     for ($column=0; $column< $columns; $column++) {
                                         echo '<tr>';
                                         echo '<th class="col-sm-2 col-md-2 col-lg-2">' . "{$item->fields[$column]->label}</th>";
-                                        
+
                                         echo '<td class="col-sm-10 col-md-10 col-lg-10">';
                                         if(!empty($item->fields[$column]->value[$row])) {
                                             echo $item->fields[$column]->value[$row];
                                         }
                                         echo "</td>";
-                                        
-                                        echo "</tr>";                                    
+
+                                        echo "</tr>";
                                     }
-                                    
-                                    echo '</table>';                                 
+
+                                    echo '</table>';
 
                                 }
-                                
+
                             }
-                            
+
                             echo '<hr>';
-                                                
+
                         }
                     }
 
@@ -2082,38 +2082,38 @@
              </div>
              </div>
 
- 		<?php endif;?>       
-                
-                
-
-        <?php endif; ?>	
+ 		<?php endif;?>
 
 
 
-
-
-		
-		
-		
-		
-		
-		
+        <?php endif; ?>
 
 
 
-		
+
+
+
+
+
+
+
+
+
+
+
+
 		<?php endif; ?>
 
 
 		<?php
-				
+
 		if(!empty($child_offices)) {
-			status_table('Sub Agencies', $child_offices); 	
+			status_table('Sub Agencies', $child_offices);
 		}
-					
+
 		?>
 
-	
+
 
 
       </div>
