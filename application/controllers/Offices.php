@@ -216,8 +216,11 @@ class Offices extends CI_Controller {
 
 		$selected_category	= ($this->input->get_post('highlight', TRUE)) ? $this->input->get_post('highlight', TRUE) : null;
 
-		$milestone 				= $this->campaign->milestone_filter($selected_milestone, $milestones);
+		if (!array_key_exists($selected_milestone, $milestones)) {
+			show_404('Milestone not found');
+		}
 
+		$milestone 				= $this->campaign->milestone_filter($selected_milestone, $milestones);
 
 		$view_data = array();
 
