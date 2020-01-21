@@ -345,8 +345,6 @@ function filter_remote_url($url, $allowed_schemes = array('http', 'https')) {
                 }
 
             }
-            else
-                $url = false;
         }
 
 

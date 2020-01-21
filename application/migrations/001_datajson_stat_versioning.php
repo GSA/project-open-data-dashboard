@@ -16,6 +16,7 @@ class Migration_Datajson_stat_versioning extends CI_Migration {
 			`datapage_status` longtext CHARACTER SET latin1,
 			`digitalstrategy_status` longtext CHARACTER SET latin1,
 			`tracker_fields` longtext CHARACTER SET latin1 NOT NULL,
+			`tracker_status` longtext COLLATE utf8_unicode_ci,
 			PRIMARY KEY (`office_id`,`milestone`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
 
