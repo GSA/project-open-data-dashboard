@@ -2,7 +2,7 @@
 
 <?php include 'header_inc_view.php';?>
 
-<?php include 'office_table_inc_view.php';?>
+<?php include_once 'office_table_inc_view.php';?>
 
 
     <div class="container">

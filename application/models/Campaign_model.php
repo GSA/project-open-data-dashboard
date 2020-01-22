@@ -73,8 +73,7 @@ class Campaign_model extends CI_Model
         $this->db->select('status_id, crawl_start, crawl_end');
         $this->db->where('office_id', $office_id);
         $this->db->where('milestone', $milestone);
-        $this->db->where('status_id ' . $direction, $status_id);
-
+        if ($status_id) $this->db->where('status_id ' . $direction, $status_id);
         if ($direction == '<') $order_dir = 'DESC';
         if ($direction == '>') $order_dir = 'ASC';
 

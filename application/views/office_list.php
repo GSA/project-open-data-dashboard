@@ -1,4 +1,4 @@
-<?php 
+<?php
 if($show_all_fields) $container_class = "full-width";
 ?>
 
@@ -6,9 +6,9 @@ if($show_all_fields) $container_class = "full-width";
 
 <?php include 'header_inc_view.php';?>
 
-<?php include 'office_table_inc_view.php';?>
+<?php include_once 'office_table_inc_view.php';?>
 
-<?php 
+<?php
 
 if($show_all_fields) {
   $dashboard_type = 'full';
@@ -26,7 +26,7 @@ if($show_all_fields) {
       <!-- Example row of columns -->
       <div class="row">
         <div>
-          
+
           <p class="intro-blurb">This is a public dashboard showing how Federal agencies are performing on the Open Data Policy. <a href="<?php echo site_url();?>docs">Learn more</a></p>
 
            <?php if($milestone->selected_milestone == $milestone->current): ?>
@@ -36,19 +36,19 @@ if($show_all_fields) {
 
            <?php if($milestone->selected_milestone == $milestone->previous && empty($review_status)): ?>
                 <p class="form-flash text-warning bg-warning"><strong>Previous Milestone:</strong> The milestone selected is the most recently completed one. The status of each field won't be final until a few weeks after the milestone has passed</p>
-            <?php endif; ?>  
+            <?php endif; ?>
 
            <?php if($milestone->selected_milestone == $milestone->previous && !empty($review_status) && $review_status == "in-progress"): ?>
                 <p class="form-flash text-warning bg-warning"><strong>Under Review:</strong> The milestone selected is the most recently completed one, but OMB is still reviewing some agencies</p>
-            <?php endif; ?>     
+            <?php endif; ?>
 
            <?php if(!empty($review_status) && $review_status == "complete"): ?>
-                <p class="form-flash text-success bg-success"><strong>Reviews Complete:</strong> 
+                <p class="form-flash text-success bg-success"><strong>Reviews Complete:</strong>
                   <?php if($milestone->selected_milestone == $milestone->previous): ?>
-                    The milestone selected is the most recently completed one and 
+                    The milestone selected is the most recently completed one and
                   <?php endif; ?>
                   OMB has completed all agency reviews</p>
-            <?php endif; ?>       
+            <?php endif; ?>
 
             <ul class="milestone-selector nav nav-pills">
                 <li class="dropdown active">
@@ -70,13 +70,13 @@ if($show_all_fields) {
 			if(!empty($cfo_offices)) {
 
         if($show_all_fields) {
-          status_table_full('CFO Act Agencies', $cfo_offices, $tracker, $config, $milestone->selected_milestone, $milestone->specified);        
+          status_table_full('CFO Act Agencies', $cfo_offices, $tracker, $config, $milestone->selected_milestone, $milestone->specified);
         } elseif ($show_qa_fields) {
           status_table_qa('CFO Act Agencies', $cfo_offices, $tracker, $config, $section_breakdown, $milestone);
         } else {
           status_table('CFO Act Agencies', $cfo_offices, $tracker, $config, $section_breakdown, $milestone);
         }
-				
+
 			}
 
 			if(!empty($executive_offices)) {
@@ -102,10 +102,10 @@ if($show_all_fields) {
           <div class="well">
           <h3>Percentage Weighting</h3>
 
-<?php 
-     
+<?php
+
         foreach($weighted_measures as $weighted_measure) {
-        
+
           $color_graph_class = ($weighted_measure == 'accessURL_working') ? 'show-graph' : 'hide-graph';
 
           echo '<div class="' . $color_graph_class . '">';
@@ -137,13 +137,13 @@ if($show_all_fields) {
      </div>
    </div>
 
-      <?php   
+      <?php
       }
 
       if(!empty($office_totals)) {
       ?>
         <h4>Totals for CFO-Act Agencies</h4>
-        <table class="table">          
+        <table class="table">
             <tr>
               <th>Field</th>
               <th>Total</th>
@@ -152,14 +152,14 @@ if($show_all_fields) {
               <th>Errors</th>
             </tr>
 
-            <?php foreach ($office_totals as $field => $total): 
+            <?php foreach ($office_totals as $field => $total):
 
             if ($total['type'] == 'percent') {
               if ($total['average'] > 1) {
                 $average = 'See errors';
               } else {
                 $average = $total['average']  * 100 . '%';
-              }              
+              }
             } else {
               $average = $total['average'];
             }

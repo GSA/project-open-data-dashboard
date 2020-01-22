@@ -78,11 +78,16 @@ $config['base_url'] = $protocol . '://' . $default_host;
 
 $cookie_path_prefix = '';
 
-// If the default host includes a path, and we find that path at the start of the request URI...
-@(list($domain, $path) = @explode('/', $default_host, 2));
-if (!is_null($path) && isset($_SERVER['REQUEST_URI']) && 1 === ($pos = stripos($_SERVER['REQUEST_URI'], $path))){
-    // ...ignore that path and handle the request based on the rest of the URI
-    $_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'], $pos + strlen($path));
+// If the default host includes a path...
+if (count($parts = explode('/', $default_host, 2)) > 1) {
+
+    list($domain, $path) = $parts;
+
+    // ...and if and we find that path at the start of the request URI...
+    if (!is_null($path) && isset($_SERVER['REQUEST_URI']) && 1 === ($pos = stripos($_SERVER['REQUEST_URI'], $path))){
+        // ...ignore that part and handle the request based on the rest of the URI
+        $_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'], $pos + strlen($path));
+    }
 }
 
 /*
