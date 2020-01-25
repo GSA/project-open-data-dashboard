@@ -10,6 +10,12 @@ class OfficesTest extends TestCase
         $this->assertResponseCode(200);
     }
 
+    public function testOfficesListIncludesOmbMonitoredOffices() {
+        $output = $this->request('GET', 'offices');
+        $this->assertResponseCode(200);
+        $this->assertContains('<td>Other OMB-Monitored Agencies</td>', $output);
+    }
+
     /**
      * These are strapping tests that just assert that no PHP errors are encountered on clicks of nav links
      * @dataProvider badMilestoneProvider

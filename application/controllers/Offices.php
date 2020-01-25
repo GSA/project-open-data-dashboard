@@ -52,6 +52,7 @@ class Offices extends CI_Controller {
 
 		$view_data = array();
 
+		// Get all the CFO Act offices
 		$this->db->select('*');
 		$this->db->from('offices');
 		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
@@ -67,6 +68,24 @@ class Offices extends CI_Controller {
 			$query->free_result();
 		}
 
+		// Get all the non-CFO Act agencies that are monitored by OMB
+		$this->db->select('*');
+		$this->db->from('offices');
+		$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
+		$this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
+		$this->db->where('offices.cfo_act_agency', 'false');
+		$this->db->where('offices.omb_monitored', 'true');
+		$this->db->where('offices.no_parent', 'true');
+		$this->db->where("(datagov_campaign.crawl_status IS NULL OR datagov_campaign.crawl_status = '$crawl_status_filter')");
+		$this->db->order_by("offices.name", "asc");
+		$query = $this->db->get();
+
+		if ($query->num_rows() > 0) {
+			$view_data['omb_monitored_offices'] = $query->result();
+			$query->free_result();
+		}
+
+		// Show other offices, divided by executive and independents
 		if ($this->config->item('show_all_offices') || $show_all_offices) {
 
 			$this->db->select('*');
@@ -74,6 +93,7 @@ class Offices extends CI_Controller {
 			$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
 			$this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
 			$this->db->where('offices.cfo_act_agency', 'false');
+			$this->db->where('offices.omb_monitored', 'false');
 			$this->db->where('offices.reporting_authority_type', 'executive');
 			$this->db->where('offices.no_parent', 'true');
 			$this->db->where("(datagov_campaign.crawl_status IS NULL OR datagov_campaign.crawl_status = '$crawl_status_filter')");
@@ -90,6 +110,7 @@ class Offices extends CI_Controller {
 			$this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
 			$this->db->where('datagov_campaign.milestone', $milestone->selected_milestone);
 			$this->db->where('offices.cfo_act_agency', 'false');
+			$this->db->where('offices.omb_monitored', 'false');
 			$this->db->where('offices.reporting_authority_type', 'independent');
 			$this->db->where('offices.no_parent', 'true');
 			$this->db->where("(datagov_campaign.crawl_status IS NULL OR datagov_campaign.crawl_status = '$crawl_status_filter')");
