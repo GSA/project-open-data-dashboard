@@ -711,7 +711,7 @@ class Campaign extends CI_Controller
         $this->db->select('*');
         $this->db->from('offices');
         $this->db->join('datagov_campaign', 'datagov_campaign.office_id = offices.id', 'left');
-        $this->db->where('offices.cfo_act_agency', 'true');
+        $this->db->where('offices.omb_monitored', 'true');
         $this->db->where('offices.no_parent', 'true');
 
         if (!empty($id) && $id != 'all') {
