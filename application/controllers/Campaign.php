@@ -735,7 +735,7 @@ class Campaign extends CI_Controller
 
 
     /*
-    $id can be all, cfo-act, or a specific id
+    $id can be all, cfo-act, omb-monitored, or a specific id
     $component can be full-scan, all, datajson, datapage, digitalstrategy, download
     */
     public function status($id = null, $component = null, $selected_milestone = null, $url_override = null)
@@ -768,6 +768,8 @@ class Campaign extends CI_Controller
         // Filter for certain offices
         if ($id == 'cfo-act') {
             $this->db->where('cfo_act_agency', 'true');
+        } else if ($id == 'omb-monitored') {
+            $this->db->where('omb_monitored', 'true');
         }
 
         if (is_numeric($id)) {
