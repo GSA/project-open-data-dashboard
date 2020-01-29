@@ -22,10 +22,6 @@
                 "reference": "1.1.0"
             }
         }
-    },
-    {
-        "type": "vcs",
-        "url": "https://github.com/mogul/ci-phpunit-test"
     }],
     "require": {
         "php": ">=7.3.0",
@@ -40,7 +36,7 @@
     "require-dev": {
         "mikey179/vfsstream": "1.1.*",
         "phpunit/phpunit": "~7.5",
-        "kenjis/ci-phpunit-test": "dev-patch-2"
+        "kenjis/ci-phpunit-test": "master@dev"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit --no-coverage --testdox -c application/tests"
