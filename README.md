@@ -19,28 +19,33 @@ In addition to the web interface, there's also a Command Line Interface to manag
 
 From the root of the application, you can update the status of agencies using a few different options on the `campaign` controller. The syntax is:
 
-`$ php index.php campaign status [id] [component]`
+`$ php public/index.php campaign status [id] [component]`
 
 If you wanted to update all components (data.json, digitalstrategy.json, /data) for all agencies, you'd run this command:
 
-`$ php index.php campaign status all all`
+`$ php public/index.php campaign status all all`
 
 If you just wanted to update the data.json status for CFO Act agencies you'd run:
 
-`$ php index.php campaign status cfo-act datajson`
+`$ php public/index.php campaign status cfo-act datajson`
+
+If you just wanted to update the data.json status for agencies being monitored by the OMB you'd run:
+
+`$ php public/index.php campaign status omb-monitored datajson`
 
 If you just wanted to update the digitalstrategy.json status for the Department of Agriculture you'd run:
 
-`$ php index.php campaign status 49015 digitalstrategy`
+`$ php public/index.php campaign status 49015 digitalstrategy`
 
-The options for [id] are: `all`,`cfo-act`, or the ID provided by the [USA.gov Federal Agency Directory API](http://www.usa.gov/About/developer-resources/federal-agency-directory/)
+The options for [id] are: `all`,`cfo-act`, `omb-monitored`, or the ID provided by the [USA.gov Federal Agency Directory API](http://www.usa.gov/About/developer-resources/federal-agency-directory/)
 
-The options for [component] are: `all`, `datajson`, `datapage`, `digitalstrategy`, `download`. 
+The options for [component] are: `all`, `datajson`, `datapage`, `digitalstrategy`, `download`, `full-scan`. 
 
 * The `datajson` component captures the basic characteristics of a request to an agency's data.json file (like whether it returns an HTTP 200) and then attempts to parse the file, validate against the schema, and provide other reporting metrics like the number of datasets listed. 
 * The `digitalstrategy` component captures the basic characteristics of a request to an agency's digitalstrategy.json file (like whether it returns an HTTP 200) 
 * The `datapage` component captures the basic characteristics of a request to an agency's /data page (like whether it returns an HTTP 200)
 * The `download` component downloads an archive of the data.json and digitalstrategy.json files
+* The `full-scan` component does further validation based on the content of the response
 * As you'd expect, `all` does all of these things at once. 
 
 ## Development
@@ -160,8 +165,8 @@ The agency hierarchy is designed to be populated from the `contacts` API at http
 following steps no longer work:
 
 > * Federal agencies were seeded using the [USA.gov Federal Agency Directory API](http://www.usa.gov/About/developer-resources/federal-agency-directory/) and the IDs provided by that resource are used as the primary IDs on this dashboard. 
-> * First populate the top of the agency hierarchy: `$ php index.php import`
-> * Second, populate all the subagencies: `$ php index.php import children`
+> * First populate the top of the agency hierarchy: `$ php public/index.php import`
+> * Second, populate all the subagencies: `$ php public/index.php import children`
 > * If you have an empty database `offices` table in the database, you'll also want to seed it with agency data by running the import script (`/application/controllers/import.php`) from a command line. You'll also need to temporarily change the `import_active` option in config.php to `true`
 
 
