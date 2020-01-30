@@ -997,9 +997,9 @@ class Campaign extends CI_Controller
                         $status['last_crawl'] = time();
 
 
-                        if (is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
+                        if (array_key_exists('schema_errors', $status) && is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
                             $status['error_count'] = count($status['schema_errors']);
-                        } else if ($status['schema_errors'] === false) {
+                        } else if (array_key_exists('schema_errors', $status) && $status['schema_errors'] === false) {
                             $status['error_count'] = 0;
                         } else {
                             $status['error_count'] = null;
