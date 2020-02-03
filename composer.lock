@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f93cf3d6a21578a440d7148b73950eca",
+    "content-hash": "d87a9cfe097892908e8b3f8da2af4036",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -4118,16 +4118,16 @@
         },
         {
             "name": "kenjis/ci-phpunit-test",
-            "version": "dev-patch-2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/GSA/ci-phpunit-test.git",
-                "reference": "84c82b6cd957f36da4df356fdee8bf6cf921adbc"
+                "url": "https://github.com/kenjis/ci-phpunit-test.git",
+                "reference": "cf331373ac5de475c7d31f4f635a6158fe42bfbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GSA/ci-phpunit-test/zipball/84c82b6cd957f36da4df356fdee8bf6cf921adbc",
-                "reference": "84c82b6cd957f36da4df356fdee8bf6cf921adbc",
+                "url": "https://api.github.com/repos/kenjis/ci-phpunit-test/zipball/cf331373ac5de475c7d31f4f635a6158fe42bfbd",
+                "reference": "cf331373ac5de475c7d31f4f635a6158fe42bfbd",
                 "shasum": ""
             },
             "require": {
@@ -4140,6 +4140,7 @@
                     "dev-master": "1.0.x-dev"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4158,11 +4159,7 @@
                 "test",
                 "unit testing"
             ],
-            "support": {
-                "forum": "http://forum.codeigniter.com/thread-61725.html",
-                "source": "https://github.com/GSA/ci-phpunit-test/tree/patch-2"
-            },
-            "time": "2020-01-29T03:22:11+00:00"
+            "time": "2020-01-31T01:56:41+00:00"
         },
         {
             "name": "mikey179/vfsstream",
