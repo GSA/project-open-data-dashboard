@@ -46,7 +46,7 @@
       <ul class="nav navbar-nav">
 
 
-        <li><a href="<?php echo site_url('offices')?>">Agencies</a></li>
+        <li><a href="<?php echo site_url('offices/qa')?>">Agencies</a></li>
         <li><a href="<?php echo site_url('validate')?>">Validator</a></li>
 
         <li class="dropdown">
