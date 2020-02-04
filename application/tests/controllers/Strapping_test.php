@@ -32,13 +32,12 @@ class StrappingTest extends TestCase
     public function navLinksProvider() {
         return [
             'Home' => ['offices/qa'],
-            'Agencies' => ['offices'],
+            'Agencies' => ['offices/qa'],
             'Validator' => ['validate'],
             'Converters > ExportAPI' => ['export'],
             'Converters > CSV Converter' => ['datagov/csv_to_json'],
             'Converters > Schema Converter' => ['upgrade-schema'],
             'Converters > Data.json merger' => ['merge'],
-            'Rubric' => ['docs/rubric'],
             'Help > Docs' => ['docs'],
             'About' => ['docs/about']
         ];

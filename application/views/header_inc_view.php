@@ -46,7 +46,7 @@
       <ul class="nav navbar-nav">
 
 
-        <li><a href="<?php echo site_url('offices')?>">Agencies</a></li>
+        <li><a href="<?php echo site_url('offices/qa')?>">Agencies</a></li>
         <li><a href="<?php echo site_url('validate')?>">Validator</a></li>
 
         <li class="dropdown">
@@ -58,8 +58,6 @@
             <li><a href="<?php echo site_url('merge')?>">Data.json Merger</a></li>
           </ul>
         </li>
-
-        <li><a href="<?php echo site_url('docs/rubric')?>">Rubric</a></li>
 
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>

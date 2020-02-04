@@ -82,11 +82,11 @@ if($show_all_fields) {
 			if(!empty($omb_monitored_offices)) {
 
         if($show_all_fields) {
-          status_table_full('Other OMB-Monitored Agencies', $omb_monitored_offices, $tracker, $config, $milestone->selected_milestone, $milestone->specified);
+          status_table_full('Other Agencies', $omb_monitored_offices, $tracker, $config, $milestone->selected_milestone, $milestone->specified);
         } elseif ($show_qa_fields) {
-          status_table_qa('Other OMB-Monitored Agencies', $omb_monitored_offices, $tracker, $config, $section_breakdown, $milestone);
+          status_table_qa('Other Agencies', $omb_monitored_offices, $tracker, $config, $section_breakdown, $milestone);
         } else {
-          status_table('Other OMB-Monitored Agencies', $omb_monitored_offices, $tracker, $config, $section_breakdown, $milestone);
+          status_table('Other Agencies', $omb_monitored_offices, $tracker, $config, $section_breakdown, $milestone);
         }
 
 			}
