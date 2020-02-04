@@ -286,11 +286,17 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 		<?php foreach ($rows as $office):?>
 
 		<?php
-			
+
 			if(!empty($office->datajson_status)) {
 				$office->datajson_status = json_decode($office->datajson_status);
 			}
 
+			// Initialize all the fields to empty
+			foreach ($model as $qa_field_name => $qa_field) {
+				$qa_field->value = '';
+			}
+
+			// If we were able to validate anything, show a summary
 			if(!empty($office->datajson_status->qa->validation_counts)) {
 
 				$error_count 		= (!empty($office->datajson_status->error_count)) ? $office->datajson_status->error_count : 0;
@@ -298,10 +304,10 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 
 				$percent_valid		= (!empty($total_records)) ? process_percentage(($total_records - $error_count), $total_records) : '';
 
-				$model->last_modified->value 			= (!empty($office->datajson_status->filetime) && $office->datajson_status->filetime > 0) ? date("d-M-Y H:i:s T", $office->datajson_status->filetime) : '';
 				$model->last_crawl->value 				= date("d-M-Y H:i:s T", $office->datajson_status->last_crawl);
+				$model->last_modified->value 			= (!empty($office->datajson_status->filetime) && $office->datajson_status->filetime > 0) ? date("d-M-Y H:i:s T", $office->datajson_status->filetime) : '';
 				$model->total_records->value 			= $office->datajson_status->total_records;
-	    		$model->valid_count->value 				= $office->datajson_status->total_records - $office->datajson_status->error_count;
+				$model->valid_count->value 				= $office->datajson_status->total_records - $office->datajson_status->error_count;
 				$model->programs->value 				= count($office->datajson_status->qa->programCodes);
 				$model->bureaus->value 					= count($office->datajson_status->qa->bureauCodes);
 
@@ -315,19 +321,17 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 				$model->accessURL_html->value 			= $office->datajson_status->qa->validation_counts->html;
 				$model->accessURL_pdf->value 			= $office->datajson_status->qa->validation_counts->pdf;
 
-				$accessURL_working_checksum = ($office->datajson_status->qa->validation_counts->http_5xx + 
-											  $office->datajson_status->qa->validation_counts->http_4xx + 
-											  $office->datajson_status->qa->validation_counts->http_3xx + 
-											  $office->datajson_status->qa->validation_counts->http_0);
+				$accessURL_working_checksum = ($office->datajson_status->qa->validation_counts->http_5xx +
+											$office->datajson_status->qa->validation_counts->http_4xx +
+											$office->datajson_status->qa->validation_counts->http_3xx +
+											$office->datajson_status->qa->validation_counts->http_0);
 
-				reset($model);	
+			} else if (!empty($model->last_crawl)) {
 
-			} else {
-				foreach ($model as $qa_field_name => $qa_field) {
-					$qa_field->value = '';
-				}
-				reset($model);	 
-			}	
+				// If we weren't able to validate anything, just show when the last crawl happened
+				$model->last_crawl->value = date("d-M-Y H:i:s T", $office->datajson_status->last_crawl);
+
+			}
 
 		?>
 
