@@ -244,7 +244,7 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 	</div>
 
 <?php
-} 
+}
 ?>
 
 
@@ -252,12 +252,18 @@ function status_table($title, $rows, $tracker, $config = null, $sections_breakdo
 <?php
 function status_table_qa($title, $rows, $tracker, $config = null, $sections_breakdown = null, $milestone = null) {
 
-	$model = $sections_breakdown;	
+	$model = $sections_breakdown;
 
 ?>
 
 	<table class="dashboard table table-striped table-hover table-bordered qa-table">
 
+		<tr class="dashboard-meta-heading">
+			<td><?php echo $title ?></td>
+			<td colspan="16">
+				Crawl Summary
+			</td>
+		</tr>
 		<tr class="dashboard-heading">
 			<th class="col-sm-3">		<div class="sr-only">Agency			</div></th>
 
