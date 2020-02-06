@@ -33,6 +33,16 @@ jobs:
       - run:
           name: Run unit tests
           command: make unit-tests
+  deploy:
+    docker:
+      - image: 18fgsa/cloud-foundry-cli
+        environment:
+          CF_API: https://api.fr.cloud.gov
+    steps:
+      - checkout
+      - deploy:
+          name: Push to Cloud Foundry
+          command: cf_deploy.sh dashboard sandbox-gsa bret.mogilefsky
 
 workflows:
   version: 2
@@ -40,14 +50,12 @@ workflows:
     jobs:
       - integration
       - unit
-  weekly:
-    triggers:
-      - schedule:
-          cron: "0 4 * * 1"
+      - deploy:
           filters:
             branches:
               only:
                 - master
-    jobs:
-      - integration
-      - unit
+          requires:
+            - integration
+            - unit
+

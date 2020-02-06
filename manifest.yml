@@ -12,7 +12,7 @@ default_config: &defaults
                # }'
 
 applications:
-- name: app
+- name: dashboard
   <<: *defaults
   memory: 256M
   instances: 1
