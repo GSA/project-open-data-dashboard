@@ -1,0 +1,32 @@
+; This file is for unifying the coding style for different editors and IDEs.
+; More information at http://editorconfig.org
+
+; Don't look higher than this file for this project
+root = true
+
+; Use UTF8, Unix-style line endings, indent with 4 spaces, end files with a newline, trim trailing whitespace
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+; C-style doc comments
+block_comment_start = /*
+block_comment = *
+block_comment_end = */
+
+; Trailing whitespace can be important in Markdown for continuing lines
+; Limit lines to 80 characters wide to make files easily readable in a terminal
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = 80
+
+; Use smaller indent size for YAML files, since nesting tends to be deep
+[*.{yml,yaml}]
+indent_size = 2
+
+; Tabs are significant for Makefiles
+[Makefile]
+indent_style = tab
