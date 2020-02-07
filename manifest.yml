@@ -14,7 +14,7 @@ default_config: &defaults
 applications:
 - name: dashboard
   <<: *defaults
-  memory: 256M
+  memory: 64M
   instances: 1
   random-route: true
   env:
@@ -23,12 +23,4 @@ applications:
   - type: web
     command: $HOME/.bp/bin/start
     disk_quota: 512M
-    memory: 256M
     timeout: 10
-  - type: worker
-    command: $APP_DIR/cronish.sh
-    instances: 1
-    disk_quota: 1G
-    health-check-type: process
-    memory: 256M
-    timeout: 15
