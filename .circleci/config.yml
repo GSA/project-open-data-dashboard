@@ -43,6 +43,24 @@ jobs:
       - deploy:
           name: Push to Cloud Foundry
           command: cf_deploy.sh dashboard sandbox-gsa bret.mogilefsky
+  run-crawls:
+    docker:
+      - image: 18fgsa/cloud-foundry-cli
+        environment:
+          CF_API: https://api.fr.cloud.gov
+    steps:
+      - run:
+          name: Login and target a CF space
+          command: |
+            cf api "$CF_API"
+            cf auth "$CF_DEPLOY_USER" "$CF_DEPLOY_PASSWORD"
+            cf target -o sandbox-gsa -s bret.mogilefsky
+      - run:
+          name: Download data.json files
+          command: cf run-task dashboard "php php/bin/composer.phar crawl-download" -m 64M --name crawl-download
+      - run:
+          name: Scan the content of data.json files
+          command: cf run-task dashboard "php php/bin/composer.phar crawl-full-scan" -m 64M --name crawl-full-scan
 
 workflows:
   version: 2
@@ -58,4 +76,14 @@ workflows:
           requires:
             - integration
             - unit
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 4 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - run-crawls
 
