@@ -785,261 +785,302 @@ class Campaign extends CI_Controller
                 $offices = $this->campaign->prioritize_crawl($offices, $milestone->current);
             }
 
+            // We don't want child processes to have access to our DB connection descriptor or they'll close it down when they exit.
+            // So we close it pre-emptively here.
+            $this->db->close();
+
             foreach ($offices as $office) {
 
-                // Set current office id
-                $this->campaign->current_office_id = $office->id;
-                $this->campaign->validation_pointer = 0;
+                // Since we're dealing with externally-supplied content, let's
+                // do our crawl in a sub-process to guard against anything that
+                // might crashes us.
+                $pid = pcntl_fork();
+                if ($pid == -1) {
 
-                // initialize update object
-                $update = $this->campaign->datagov_model();
-                $update->office_id = $office->id;
+                    die('could not fork');
 
-                $update->crawl_status = 'in_progress';
-                $update->crawl_start = gmdate("Y-m-d H:i:s");
+                } else if ($pid) {
 
-                $url = parse_url($office->url);
-                $url = $url['scheme'] . '://' . $url['host'];
+                    // This logic is only hit in the parent process
+                    $status = null;
+                    echo "Waiting on process ".$pid."\n";
+                    pcntl_waitpid($pid, $status); //Protect against Zombie children
+                    echo "Process ".$pid." exited with status ".(pcntl_wifexited($status)?pcntl_wexitstatus($status):"-1").".\n";
+                    continue;
 
-                if (!empty($selected_milestone)) {
-                    $update->milestone = $selected_milestone;
-                }
+                } else {
 
-                $force_head_shim = false;
+                    // This logic is only hit in the child process
 
-                // See if this is a domain where we can't rely on HTTP HEAD responses
-                if ($this->config->item('no_http_head')) {
+                    // The child process needs its own connection to the database
+                    $this->load->database();
+                    $this->status_single_office($office, $component, $selected_milestone, $url_override);
+                    exit;
 
-                    if (is_array($this->config->item('no_http_head'))) {
-                        foreach ($this->config->item('no_http_head') as $head_domain) {
-                            if (strpos($url, $head_domain)) {
-                                $force_head_shim = true;
-                            }
-                        }
-                    }
-
-                }
-
-                /*
-                ################ datapage ################
-                */
-
-                if ($component == 'full-scan' || $component == 'all' || $component == 'datapage') {
-
-
-                    // Get status of html /data page
-                    $page_status_url = $url . '/data';
-
-                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                        echo 'Attempting to request ' . $page_status_url . PHP_EOL;
-                    }
-
-                    $page_status = $this->campaign->uri_header($page_status_url);
-                    $page_status['expected_url'] = $page_status_url;
-                    $page_status['last_crawl'] = time();
-
-                    $update->datapage_status = (!empty($page_status)) ? json_encode($page_status, JSON_PRETTY_PRINT) : null;
-
-                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                        echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datapage_status . PHP_EOL . PHP_EOL;
-                    }
-
-                    if ($component == 'datapage') {
-                        $update->crawl_status = 'current';
-                        $update->crawl_end = gmdate("Y-m-d H:i:s");
-                    }
-
-                    $update->status_id = $this->campaign->update_status($update);
-
-                }
-
-
-                /*
-                ################ digitalstrategy ################
-                */
-
-                if ($component == 'full-scan' || $component == 'all' || $component == 'digitalstrategy' || $component == 'download') {
-
-
-                    // Get status of html /data page
-                    $digitalstrategy_status_url = $url . '/digitalstrategy.json';
-
-                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                        echo 'Attempting to request ' . $digitalstrategy_status_url . PHP_EOL;
-                    }
-
-                    $page_status = $this->campaign->uri_header($digitalstrategy_status_url);
-                    $page_status['expected_url'] = $digitalstrategy_status_url;
-                    $page_status['last_crawl'] = time();
-
-                    $update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status, JSON_PRETTY_PRINT) : null;
-
-                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                        echo 'Attempting to set ' . $update->office_id . ' with ' . $update->digitalstrategy_status . PHP_EOL . PHP_EOL;
-                    }
-
-                    if ($component == 'digitalstrategy') {
-                        $update->crawl_status = 'current';
-                        $update->crawl_end = gmdate("Y-m-d H:i:s");
-                    }
-
-                    $update->status_id = $this->campaign->update_status($update);
-
-                    // download and version this json file.
-                    if ($component == 'all' || $component == 'download') {
-                        $digitalstrategy_archive_status = $this->campaign->archive_file('digitalstrategy', $office->id, $digitalstrategy_status_url);
-
-
-//                      If digitalstrategy.json was downloaded successfully, then it was archived to AWS S3, so let's remove local copy
-                        if (!$this->config->item('use_local_storage') && $digitalstrategy_archive_status && is_file($digitalstrategy_archive_status)) {
-                            unlink($digitalstrategy_archive_status);
-                        }
-                    }
-                }
-
-
-                /*
-                ################ datajson ################
-                */
-
-                if ($component == 'full-scan' || $component == 'all' || $component == 'datajson' || $component == 'download') {
-
-                    if (empty($url_override)) {
-                        $expected_datajson_url = $url . '/data.json';
-                    } else {
-                        $expected_datajson_url = urldecode($url_override);
-                    }
-
-                    $expected_datajson_url = filter_remote_url($expected_datajson_url);
-                    if ($expected_datajson_url === false) {
-                      show_error('Not valid data.json URL.', 400);
-                      return;
-                    }
-
-                    // attempt to break any caching
-                    $expected_datajson_url_refresh = $expected_datajson_url . '?refresh=' . time();
-
-                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                        echo 'Attempting to request ' . $expected_datajson_url . ' and ' . $expected_datajson_url_refresh . PHP_EOL;
-                    }
-
-                    // Try to force refresh the cache, follow redirects and get headers
-                    $json_refresh = true;
-                    $status = $this->campaign->uri_header($expected_datajson_url_refresh, 0, $force_head_shim);
-
-                    if (!$status OR $status['http_code'] != 200) {
-                        $json_refresh = false;
-                        $status = $this->campaign->uri_header($expected_datajson_url, 0, $force_head_shim);
-                    }
-
-                    //$status['url']          = $expected_datajson_url;
-                    $status['expected_url'] = $expected_datajson_url;
-
-
-                    $real_url = ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
-
-
-                    /*
-                    ################ download ################
-                    */
-                    if ($component == 'full-scan' || $component == 'all' || $component == 'download') {
-
-                        if (!empty($url_override)) {
-                            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                                echo 'Skipping download because custom URL was provided' . PHP_EOL;
-                            }
-                        } else if (!($status['http_code'] == 200)) {
-
-                            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                                echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
-                            }
-
-                            continue;
-
-                        } else {
-                            // download and version this data.json file.
-                            $datajson_archive_status = $this->campaign->archive_file('datajson', $office->id, $real_url);
-                        }
-
-                        // If data.json was downloaded successfully, then it was archived to AWS S3, so let's remove local copy
-                        if (!$this->config->item('use_local_storage') && $datajson_archive_status && is_file($datajson_archive_status)) {
-                            unlink($datajson_archive_status);
-                        }
-                    }
-
-                    /*
-                    ################ datajson ################
-                    */
-                    if ($component == 'full-scan' || $component == 'all' || $component == 'datajson') {
-
-                        // Save current update status in case things break during json_status
-                        $update->datajson_status = (!empty($status)) ? json_encode($status, JSON_PRETTY_PRINT) : null;
-
-                        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                            echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-                        }
-
-                        $update->status_id = $this->campaign->update_status($update);
-
-                        // Check JSON status
-                        $status = $this->json_status($status, $real_url, $component);
-
-                        // Set correct URL
-                        if (!empty($status['url'])) {
-                            if (strpos($status['url'], '?refresh=')) {
-                                $status['url'] = substr($status['url'], 0, strpos($status['url'], '?refresh='));
-                            }
-                        } else {
-                            $status['url'] = $expected_datajson_url;
-                        }
-
-                        $status['expected_url'] = $expected_datajson_url;
-                        $status['last_crawl'] = time();
-
-
-                        if (array_key_exists('schema_errors', $status) && is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
-                            $status['error_count'] = count($status['schema_errors']);
-                        } else if (array_key_exists('schema_errors', $status) && $status['schema_errors'] === false) {
-                            $status['error_count'] = 0;
-                        } else {
-                            $status['error_count'] = null;
-                        }
-
-                        $status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;
-
-                        $update->datajson_status = (!empty($status)) ? json_encode($status, JSON_PRETTY_PRINT) : null;
-                        //$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode(array_slice($status['schema_errors'], 0, 10, true)) : null;
-                        if (!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);
-
-
-                        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                            echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-                        }
-
-                        $update->crawl_status = 'current';
-                        $update->crawl_end = gmdate("Y-m-d H:i:s");
-
-                        $this->campaign->update_status($update);
-                    }
-
-                }
-
-
-                if (!empty($id) && $this->environment != 'terminal' && $this->environment != 'cron') {
-                    $this->load->helper('url');
-                    redirect('/offices/detail/' . $id, 'location');
                 }
 
             }
+
+            // Done with forking, so get the parent connection to the DB restarted
+            $this->load->database();
 
             // Close file connections that are still open
             if (is_resource($this->campaign->validation_log)) {
                 fclose($this->campaign->validation_log);
             }
+        }
+
+        if (!empty($id) && $this->environment != 'terminal' && $this->environment != 'cron') {
+            $this->load->helper('url');
+            redirect('/offices/detail/' . $id, 'location');
+        }
+
+    }
+
+
+    public function status_single_office($office, $component, $selected_milestone, $url_override)
+    {
+
+        // Set current office id
+        $this->campaign->current_office_id = $office->id;
+        $this->campaign->validation_pointer = 0;
+
+        // initialize update object
+        $update = $this->campaign->datagov_model();
+        $update->office_id = $office->id;
+
+        $update->crawl_status = 'in_progress';
+        $update->crawl_start = gmdate("Y-m-d H:i:s");
+
+        $url = parse_url($office->url);
+        $url = $url['scheme'] . '://' . $url['host'];
+
+        if (!empty($selected_milestone)) {
+            $update->milestone = $selected_milestone;
+        }
+
+        $force_head_shim = false;
+
+        // See if this is a domain where we can't rely on HTTP HEAD responses
+        if ($this->config->item('no_http_head')) {
+
+            if (is_array($this->config->item('no_http_head'))) {
+                foreach ($this->config->item('no_http_head') as $head_domain) {
+                    if (strpos($url, $head_domain)) {
+                        $force_head_shim = true;
+                    }
+                }
+            }
+
+        }
+
+        /*
+        ################ datapage ################
+        */
+
+        if ($component == 'full-scan' || $component == 'all' || $component == 'datapage') {
+
+
+            // Get status of html /data page
+            $page_status_url = $url . '/data';
+
+            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                echo 'Attempting to request ' . $page_status_url . PHP_EOL;
+            }
+
+            $page_status = $this->campaign->uri_header($page_status_url);
+            $page_status['expected_url'] = $page_status_url;
+            $page_status['last_crawl'] = time();
+
+            $update->datapage_status = (!empty($page_status)) ? json_encode($page_status, JSON_PRETTY_PRINT) : null;
+
+            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datapage_status . PHP_EOL . PHP_EOL;
+            }
+
+            if ($component == 'datapage') {
+                $update->crawl_status = 'current';
+                $update->crawl_end = gmdate("Y-m-d H:i:s");
+            }
+
+            $update->status_id = $this->campaign->update_status($update);
+
+        }
+
+
+        /*
+        ################ digitalstrategy ################
+        */
+
+        if ($component == 'full-scan' || $component == 'all' || $component == 'digitalstrategy' || $component == 'download') {
+
+
+            // Get status of html /data page
+            $digitalstrategy_status_url = $url . '/digitalstrategy.json';
+
+            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                echo 'Attempting to request ' . $digitalstrategy_status_url . PHP_EOL;
+            }
+
+            $page_status = $this->campaign->uri_header($digitalstrategy_status_url);
+            $page_status['expected_url'] = $digitalstrategy_status_url;
+            $page_status['last_crawl'] = time();
+
+            $update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status, JSON_PRETTY_PRINT) : null;
+
+            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                echo 'Attempting to set ' . $update->office_id . ' with ' . $update->digitalstrategy_status . PHP_EOL . PHP_EOL;
+            }
+
+            if ($component == 'digitalstrategy') {
+                $update->crawl_status = 'current';
+                $update->crawl_end = gmdate("Y-m-d H:i:s");
+            }
+
+            $update->status_id = $this->campaign->update_status($update);
+
+            // download and version this json file.
+            if ($component == 'all' || $component == 'download') {
+                $digitalstrategy_archive_status = $this->campaign->archive_file('digitalstrategy', $office->id, $digitalstrategy_status_url);
+
+
+                // If digitalstrategy.json was downloaded successfully, then it was archived to AWS S3, so let's remove local copy
+                if (!$this->config->item('use_local_storage') && $digitalstrategy_archive_status && is_file($digitalstrategy_archive_status)) {
+                    unlink($digitalstrategy_archive_status);
+                }
+            }
+        }
+
+
+        /*
+        ################ datajson ################
+        */
+
+        if ($component == 'full-scan' || $component == 'all' || $component == 'datajson' || $component == 'download') {
+
+            if (empty($url_override)) {
+                $expected_datajson_url = $url . '/data.json';
+            } else {
+                $expected_datajson_url = urldecode($url_override);
+            }
+
+            $expected_datajson_url = filter_remote_url($expected_datajson_url);
+            if ($expected_datajson_url === false) {
+                show_error('Not valid data.json URL.', 400);
+                return;
+            }
+
+            // attempt to break any caching
+            $expected_datajson_url_refresh = $expected_datajson_url . '?refresh=' . time();
+
+            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                echo 'Attempting to request ' . $expected_datajson_url . ' and ' . $expected_datajson_url_refresh . PHP_EOL;
+            }
+
+            // Try to force refresh the cache, follow redirects and get headers
+            $json_refresh = true;
+            $status = $this->campaign->uri_header($expected_datajson_url_refresh, 0, $force_head_shim);
+
+            if (!$status OR $status['http_code'] != 200) {
+                $json_refresh = false;
+                $status = $this->campaign->uri_header($expected_datajson_url, 0, $force_head_shim);
+            }
+
+            //$status['url']          = $expected_datajson_url;
+            $status['expected_url'] = $expected_datajson_url;
+
+
+            $real_url = ($json_refresh) ? $expected_datajson_url_refresh : $expected_datajson_url;
+
+
+            /*
+            ################ download ################
+            */
+            if ($component == 'full-scan' || $component == 'all' || $component == 'download') {
+
+                if (!empty($url_override)) {
+                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                        echo 'Skipping download because custom URL was provided' . PHP_EOL;
+                    }
+                } else if (!($status['http_code'] == 200)) {
+
+                    if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                        echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
+                    }
+
+                    exit;
+
+                } else {
+                    // download and version this data.json file.
+                    $datajson_archive_status = $this->campaign->archive_file('datajson', $office->id, $real_url);
+                }
+
+                // If data.json was downloaded successfully, then it was archived to AWS S3, so let's remove local copy
+                if (!$this->config->item('use_local_storage') && $datajson_archive_status && is_file($datajson_archive_status)) {
+                    unlink($datajson_archive_status);
+                }
+            }
+
+            /*
+            ################ datajson ################
+            */
+            if ($component == 'full-scan' || $component == 'all' || $component == 'datajson') {
+
+                // Save current update status in case things break during json_status
+                $update->datajson_status = (!empty($status)) ? json_encode($status, JSON_PRETTY_PRINT) : null;
+
+                if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                    echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
+                }
+
+                $update->status_id = $this->campaign->update_status($update);
+
+                // Check JSON status
+                $status = $this->json_status($status, $real_url, $component);
+
+                // Set correct URL
+                if (!empty($status['url'])) {
+                    if (strpos($status['url'], '?refresh=')) {
+                        $status['url'] = substr($status['url'], 0, strpos($status['url'], '?refresh='));
+                    }
+                } else {
+                    $status['url'] = $expected_datajson_url;
+                }
+
+                $status['expected_url'] = $expected_datajson_url;
+                $status['last_crawl'] = time();
+
+
+                if (array_key_exists('schema_errors', $status) && is_array($status['schema_errors']) && !empty($status['schema_errors'])) {
+                    $status['error_count'] = count($status['schema_errors']);
+                } else if (array_key_exists('schema_errors', $status) && $status['schema_errors'] === false) {
+                    $status['error_count'] = 0;
+                } else {
+                    $status['error_count'] = null;
+                }
+
+                $status['schema_errors'] = (!empty($status['schema_errors'])) ? array_slice($status['schema_errors'], 0, 10, true) : null;
+
+                $update->datajson_status = (!empty($status)) ? json_encode($status, JSON_PRETTY_PRINT) : null;
+                //$update->datajson_errors = (!empty($status) && !empty($status['schema_errors'])) ? json_encode(array_slice($status['schema_errors'], 0, 10, true)) : null;
+                if (!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);
+
+
+                if ($this->environment == 'terminal' OR $this->environment == 'cron') {
+                    echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
+                }
+
+                $update->crawl_status = 'current';
+                $update->crawl_end = gmdate("Y-m-d H:i:s");
+
+                $this->campaign->update_status($update);
+            }
 
         }
 
     }
+
+
 
     public function finalize_milestone($milestone)
     {
