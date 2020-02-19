@@ -54,7 +54,7 @@ jobs:
           command: |
             cf api "$CF_API"
             cf auth "$CF_DEPLOY_USER" "$CF_DEPLOY_PASSWORD"
-            cf target -o sandbox-gsa -s bret.mogilefsky
+            cf target -o gsa-datagov -s staging
       - run:
           name: Download data.json files
           command: cf run-task dashboard "php php/bin/composer.phar crawl-download" -m 64M --name crawl-download
