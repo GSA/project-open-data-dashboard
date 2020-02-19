@@ -5,9 +5,9 @@ default_config: &defaults
   disk_quota: 512M
   timeout: 180
   services:
-    - database # cf create-service aws-rds shared-mysql database
-    - s3       # cf create-service s3 basic s3
-    - secrets  # cf create-user-provided-service secrets -p '{
+    - dashboard-db       # cf create-service aws-rds shared-mysql dashboard-db
+    - dashboard-s3       # cf create-service s3 basic dashboard-s3
+    - dashboard-secrets  # cf create-user-provided-service dashboard-secrets -p '{
                # "ENCRYPTION_KEY": "long-random-string"
                # }'
 
