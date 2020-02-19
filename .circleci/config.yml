@@ -42,7 +42,7 @@ jobs:
       - checkout
       - deploy:
           name: Push to Cloud Foundry
-          command: cf_deploy.sh dashboard sandbox-gsa bret.mogilefsky
+          command: cf_deploy.sh dashboard gsa-datagov staging
   run-crawls:
     docker:
       - image: 18fgsa/cloud-foundry-cli
