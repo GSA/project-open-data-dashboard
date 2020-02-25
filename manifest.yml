@@ -1,7 +1,5 @@
 ---
 default_config: &defaults
-  buildpacks:
-    - php_buildpack
   disk_quota: 512M
   timeout: 180
   services:
