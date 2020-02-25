@@ -1033,7 +1033,7 @@ class Campaign extends CI_Controller
                         echo 'Resource ' . $real_url . ' not available' . PHP_EOL;
                     }
 
-                    exit;
+                    return;
 
                 } else {
                     // download and version this data.json file.
