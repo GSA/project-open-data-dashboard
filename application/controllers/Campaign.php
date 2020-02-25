@@ -831,12 +831,12 @@ class Campaign extends CI_Controller
                 // This logic is only hit in the PARENT process
 
                 $status = null;
-                echo "Waiting on child process ".$pid."\n";
+                log_message('debug', "Waiting on child process ".$pid."\n");
                 pcntl_waitpid($pid, $status);
 
                 // If the process exited normally, show that status, otherwise just use -1 to indicate failure
                 $status = pcntl_wifexited($status) ? pcntl_wexitstatus($status) : "-1";
-                echo "Child process ".$pid." exited with status ".$status.".\n";
+                log_message('debug', "Child process ".$pid." exited with status ".$status.".\n");
 
                 // We handed off responsibility for this office to the child; skip to the next office!
                 continue;
@@ -909,9 +909,7 @@ class Campaign extends CI_Controller
             // Get status of html /data page
             $page_status_url = $url . '/data';
 
-            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo 'Attempting to request ' . $page_status_url . PHP_EOL;
-            }
+            log_message('debug', 'Attempting to request ' . $page_status_url . PHP_EOL);
 
             $page_status = $this->campaign->uri_header($page_status_url);
             $page_status['expected_url'] = $page_status_url;
@@ -919,9 +917,7 @@ class Campaign extends CI_Controller
 
             $update->datapage_status = (!empty($page_status)) ? json_encode($page_status, JSON_PRETTY_PRINT) : null;
 
-            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datapage_status . PHP_EOL . PHP_EOL;
-            }
+            log_message('debug', 'Attempting to set ' . $update->office_id . ' with ' . $update->datapage_status . PHP_EOL . PHP_EOL);
 
             if ($component == 'datapage') {
                 $update->crawl_status = 'current';
@@ -943,9 +939,7 @@ class Campaign extends CI_Controller
             // Get status of html /data page
             $digitalstrategy_status_url = $url . '/digitalstrategy.json';
 
-            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo 'Attempting to request ' . $digitalstrategy_status_url . PHP_EOL;
-            }
+            log_message('debug', 'Attempting to request ' . $digitalstrategy_status_url . PHP_EOL);
 
             $page_status = $this->campaign->uri_header($digitalstrategy_status_url);
             $page_status['expected_url'] = $digitalstrategy_status_url;
@@ -953,9 +947,7 @@ class Campaign extends CI_Controller
 
             $update->digitalstrategy_status = (!empty($page_status)) ? json_encode($page_status, JSON_PRETTY_PRINT) : null;
 
-            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo 'Attempting to set ' . $update->office_id . ' with ' . $update->digitalstrategy_status . PHP_EOL . PHP_EOL;
-            }
+            log_message('debug', 'Attempting to set ' . $update->office_id . ' with ' . $update->digitalstrategy_status . PHP_EOL . PHP_EOL);
 
             if ($component == 'digitalstrategy') {
                 $update->crawl_status = 'current';
@@ -998,9 +990,7 @@ class Campaign extends CI_Controller
             // attempt to break any caching
             $expected_datajson_url_refresh = $expected_datajson_url . '?refresh=' . time();
 
-            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo 'Attempting to request ' . $expected_datajson_url . ' and ' . $expected_datajson_url_refresh . PHP_EOL;
-            }
+            log_message('debug', 'Attempting to request ' . $expected_datajson_url . PHP_EOL);
 
             // Try to force refresh the cache, follow redirects and get headers
             $json_refresh = true;
@@ -1054,9 +1044,7 @@ class Campaign extends CI_Controller
                 // Save current update status in case things break during json_status
                 $update->datajson_status = (!empty($status)) ? json_encode($status, JSON_PRETTY_PRINT) : null;
 
-                if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                    echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-                }
+                log_message('debug', 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL);
 
                 $update->status_id = $this->campaign->update_status($update);
 
@@ -1091,9 +1079,7 @@ class Campaign extends CI_Controller
                 if (!empty($status) && !empty($status['schema_errors'])) unset($status['schema_errors']);
 
 
-                if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                    echo 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL;
-                }
+                log_message('debug', 'Attempting to set ' . $update->office_id . ' with ' . $update->datajson_status . PHP_EOL . PHP_EOL);
 
                 $update->crawl_status = 'current';
                 $update->crawl_end = gmdate("Y-m-d H:i:s");

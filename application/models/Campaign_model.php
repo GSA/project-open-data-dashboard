@@ -1364,17 +1364,12 @@ class Campaign_model extends CI_Model
 
         if (!is_dir($directory)) {
 
-            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo 'Creating directory ' . $directory . PHP_EOL;
-            }
-
+            log_message('debug', 'Creating directory ' . $directory . PHP_EOL);
             mkdir($directory, 0777, true);
         }
 
 
-        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-            echo 'Attempting to download ' . $url . ' to ' . $filepath . PHP_EOL;
-        }
+        log_message('debug', 'Attempting to download ' . $url . '... ');
 
 
         $opts = array(
@@ -1393,18 +1388,20 @@ class Campaign_model extends CI_Model
         // If we can't read from this file, skip
         if ($copy === false) {
 
+            $errmsg = 'Resource ' . $url . ' not available' . PHP_EOL;
+            log_message('error', $errmsg);
             if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo 'Could not read from ' . $url . PHP_EOL;
+                echo $errmsg;
             }
-
-
         }
 
         // If we can't write to this file, skip
         if ($paste === false) {
 
+            $errmsg = 'Could not open ' . $filepath . PHP_EOL;
+            log_message('error', $errmsg);
             if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo 'Could not open ' . $filepath . PHP_EOL;
+                echo $errmsg;
             }
 
         }
@@ -1413,14 +1410,13 @@ class Campaign_model extends CI_Model
             while (!feof($copy)) {
                 if (fwrite($paste, fread($copy, 1024)) === FALSE) {
 
+                    $errmsg = 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
+                    log_message('error', $errmsg);
                     if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                        echo 'Download error: Cannot write to file ' . $filepath . PHP_EOL;
+                        echo $errmsg;
                     }
 
                 }
-            }
-            if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo 'Success' . PHP_EOL;
             }
         } else {
 
@@ -1434,9 +1430,7 @@ class Campaign_model extends CI_Model
             $this->archive_to_s3($filetype, $office_id, $filepath);
         }
 
-        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-            echo 'Done' . PHP_EOL . PHP_EOL;
-        }
+        log_message('debug', 'Done' . PHP_EOL . PHP_EOL);
 
         return $filepath;
 
@@ -1472,9 +1466,8 @@ class Campaign_model extends CI_Model
 
         $s3 = $this->init_s3();
 
-        if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-            echo 'Adding to S3: https://s3.amazonaws.com/' . $s3_bucket . '/' . $s3_prefix . $s3_filepath . PHP_EOL;
-        }
+        $s3destination =  'https://s3.amazonaws.com/' . $s3_bucket . '/' . $s3_prefix . $s3_filepath;
+        log_message('debug', 'Adding to S3: '. $s3destination . PHP_EOL);
 
         // Upload a publicly accessible file. The file size and type are determined by the SDK.
         try {
@@ -1485,8 +1478,11 @@ class Campaign_model extends CI_Model
                 'ACL' => $acl,
             ]);
         } catch (Aws\Exception\S3Exception $e) {
+
+            $errmsg = 'Error uploading file to ' . $s3destination;
+            log_message('error', $errmsg);
             if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                echo "There was an error uploading the file.\n";
+                echo $errmsg;
             }
         }
     }
@@ -1924,9 +1920,7 @@ class Campaign_model extends CI_Model
                 // Open new file
                 $this->validation_log = fopen($filepath, 'w');
 
-                if ($this->environment == 'terminal' OR $this->environment == 'cron') {
-                    echo 'Creating new file at ' . $filepath . PHP_EOL;
-                }
+                log_message ('debug', 'Creating new file at ' . $filepath . PHP_EOL);
 
                 // Set file headings
                 $headings = array_keys($error_report);
@@ -2090,9 +2084,7 @@ class Campaign_model extends CI_Model
                 unset($update->status_id);
             }
 
-            if ($this->environment == 'terminal') {
-                echo 'Adding ' . $update->office_id . PHP_EOL . PHP_EOL;
-            }
+            log_message('debug','Adding ' . $update->office_id . PHP_EOL . PHP_EOL);
 
             $this->db->insert('datagov_campaign', $update);
             $status_id = $this->db->insert_id();
@@ -2134,7 +2126,7 @@ class Campaign_model extends CI_Model
         $milestone_count = 1;
 
         while ($milestone_count < 100) {
-            
+
             $milestone_month_lastday = date('t',$milestone_month_firstday);
             $year = date('Y',$milestone_month_firstday);
             $month = date('m',$milestone_month_firstday);
@@ -2147,7 +2139,7 @@ class Campaign_model extends CI_Model
             $milestones = array_merge($milestones, array("$milestone_month_lastday" => "Milestone $milestone_count"));
 
             $milestone_count++;
-        }        
+        }
 
         return $milestones;
     }
