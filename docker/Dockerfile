@@ -18,6 +18,7 @@ RUN a2enmod rewrite
 
 # Install php extensions
 RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install pcntl
 
 # Install composer
 COPY docker/install-composer.sh /tmp/install-composer.sh
