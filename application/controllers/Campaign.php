@@ -803,63 +803,69 @@ class Campaign extends CI_Controller
     public function status_offices($offices, $component, $selected_milestone, $url_override) {
 
         /*
-        *
-        * Since we're dealing with externally-hosted content, let's
-        * guard against anything that might crashes the process and halt the crawl.
-        *
-        * The body of this method is a version of this loop, but with each office handled in a sub-process:
-        *
-        *   foreach ($offices as $office) {
-        *         $this->status_single_office($office, $component, $selected_milestone, $url_override);
-        *   }
-        *
+        * Since we're dealing with externally-hosted content, let's see if we can use sub-processes to
+        * guard against anything that might crashes the main process (eg OOM) and halt the crawl.
         */
 
-        // We don't want child processes to have access to our DB connection descriptor or they'll close it down when they exit.
-        // So before we start forking, we close it pre-emptively here.
-        $this->db->close();
+        if(!function_exists('pcntl_fork')) {
 
-        foreach ($offices as $office) {
-
-            $pid = pcntl_fork();
-            if ($pid == -1) {
-
-                die('could not fork');
-
-            } else if ($pid) {
-
-                // This logic is only hit in the PARENT process
-
-                $status = null;
-                log_message('debug', "Waiting on child process ".$pid."\n");
-                pcntl_waitpid($pid, $status);
-
-                // If the process exited normally, show that status, otherwise just use -1 to indicate failure
-                $status = pcntl_wifexited($status) ? pcntl_wexitstatus($status) : "-1";
-                log_message('debug', "Child process ".$pid." exited with status ".$status.".\n");
-
-                // We handed off responsibility for this office to the child; skip to the next office!
-                continue;
-
-            } else {
-
-                // This logic is only hit in the CHILD process
-
-                // The child process needs its own connection to the database to report in when it finishes
-                $this->load->database();
-
-                // Process the office
+            # The functions from the pcntl extension are unavailable...
+            # Do all crawls within this process and hope for the best.
+            foreach ($offices as $office) {
                 $this->status_single_office($office, $component, $selected_milestone, $url_override);
+            }
 
-                // Once the child has reported its status, it can end normally.
-                exit(0);
+        } else {
+
+            /*
+            * We don't want child processes to have access to the parent's DB connection descriptor
+            * or they'll close it down when they exit. So before we start forking, we close it
+            * pre-emptively here.
+            */
+            $this->db->close();
+
+            foreach ($offices as $office) {
+
+                $pid = pcntl_fork();
+                if ($pid == -1) {
+
+                    die('could not fork');
+
+                } else if ($pid) {
+
+                    // This logic is only hit in the PARENT process
+
+                    $status = null;
+                    log_message('debug', "Waiting on child process ".$pid."\n");
+                    pcntl_waitpid($pid, $status);
+
+                    // If the process exited normally, show that status, otherwise just use -1 to indicate failure
+                    $status = pcntl_wifexited($status) ? pcntl_wexitstatus($status) : "-1";
+                    log_message('debug', "Child process ".$pid." exited with status ".$status.".\n");
+
+                    // We handed off responsibility for this office to the child; skip to the next office!
+                    continue;
+
+                } else {
+
+                    // This logic is only hit in the CHILD process
+
+                    // The child process needs its own connection to the database to report in when it finishes
+                    $this->load->database();
+
+                    // Process the office
+                    $this->status_single_office($office, $component, $selected_milestone, $url_override);
+
+                    // Once the child has reported its status, it can end normally.
+                    exit(0);
+
+                }
 
             }
 
+            // We're done with forking, so get the parent connection to the DB restarted
+            $this->load->database();
         }
-
-        // We're done with forking, so get the parent connection to the DB restarted
-        $this->load->database();
 
     }
 
