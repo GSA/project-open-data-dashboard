@@ -99,7 +99,7 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
   curl_setopt($ch, CURLOPT_FILE, $output);
 
   curl_setopt($ch, CURLOPT_WRITEHEADER, $headerfile);
-  curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 240);
   curl_setopt($ch, CURLOPT_HEADER, true);
 
   curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
