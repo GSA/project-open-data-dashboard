@@ -2122,10 +2122,27 @@ class Campaign_model extends CI_Model
     {
 
         $milestones = array();
-        $milestone_month_firstday = strtotime("2013-11-01");
+        
         $milestone_count = 1;
+        $milestone_type = 'M-13-13 Milestone';
+        $milestone_month_firstday = strtotime("2013-11-01");
+        $milestone_month_endday = strtotime("2019-08-31");
+      
+        $milestones = $this->milestone_increment($milestones, $milestone_month_firstday, $milestone_count, $milestone_type, $milestone_month_endday);
 
-        while ($milestone_count < 100) {
+        $milestone_count = 1;
+        $milestone_type = 'Evidence Act Milestone';
+        $milestone_month_firstday = strtotime("2019-09-01");
+        $milestone_month_endday = strtotime("2029-12-31");
+
+        $milestones = $this->milestone_increment($milestones, $milestone_month_firstday, $milestone_count, $milestone_type, $milestone_month_endday);
+
+        return $milestones;
+    }
+
+    public function milestone_increment($milestones, $milestone_month_firstday, $milestone_count, $milestone_type, $milestone_month_endday)
+    {
+        while ($milestone_month_firstday < $milestone_month_endday) {
 
             $milestone_month_lastday = date('t',$milestone_month_firstday);
             $year = date('Y',$milestone_month_firstday);
@@ -2136,12 +2153,13 @@ class Campaign_model extends CI_Model
             // calculate next milestone
             $milestone_month_firstday = strtotime("+3 months", $milestone_month_firstday);
 
-            $milestones = array_merge($milestones, array("$milestone_month_lastday" => "Milestone $milestone_count"));
+            $milestones = array_merge($milestones, array("$milestone_month_lastday" => "$milestone_type $milestone_count"));
 
             $milestone_count++;
         }
 
         return $milestones;
+
     }
 
     public function milestone_filter($selected_milestone, $milestones)
