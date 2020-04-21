@@ -4,7 +4,7 @@ class MigrationsTest extends TestCase
 {
 
     /**
-     * These are strapping tests that just assert that no PHP errors are encountered on clicks of nav links
+     * Ensure that offices explicitly monitored by the OMB are present and being crawled
      */
     public function testOmbMonitoredOfficesArePresentAndFlaggedInDatabase()
   	{
