@@ -26,6 +26,17 @@ class Migration_add_idempotent_migration_scaffolding extends CI_Migration
      * Create functions and stored procedures useful for writing idempotent DDL statements
      * in future migrations.
      *
+     * Example usage:
+     *  SELECT column_exists('my_table', 'my_column');       -- 0
+     *  CALL add_column_if_not_exists('my_table', 'my_column', varchar(15)); -- success
+     *  SELECT column_exists('my_table', 'my_column');       -- 1
+     *  CALL add_column_if_not_exists('my_table', 'my_column', varchar(15)); -- success
+     *  SELECT column_exists('my_table', 'my_column');       -- 1
+     *  CALL drop_column_if_exists('my_table', 'my_column'); -- success
+     *  SELECT column_exists('my_table', 'my_column');       -- 0
+     *  CALL drop_column_if_exists('my_table', 'my_column'); -- success
+     *  SELECT column_exists('my_table', 'my_column');       -- 0
+     *
      * Source for these procedures: https://stackoverflow.com/a/49676339
     */
     private function create_idempotent_helpers() {
