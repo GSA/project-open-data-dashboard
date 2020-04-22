@@ -1,7 +1,86 @@
 <?php
 
-class MigrationsTest extends TestCase
+class MigrateTest extends TestCase
 {
+
+    public function setUp() {
+
+        parent::setUp();
+        $this->resetInstance();
+
+        // Set the expected initial DB state in case there were aborted previous runs
+        $this->CI->load->database();
+        $this->CI->db->query('DROP TABLE IF EXISTS test_table');
+
+    }
+
+    public function testColumnExistsWorks() {
+
+        // Create an expected table with an expected column
+        $this->CI->db->query('CREATE TABLE IF NOT EXISTS test_table(test_column varchar(15))');
+
+        // Test that it returns 1 when the expected table and column exist
+        $query = $this->CI->db->query("SELECT column_exists('test_table', 'test_column')");
+        $row = $query->first_row('array');
+        $tableAndColumnExist = (bool) array_shift($row);
+        $this->assertTrue($tableAndColumnExist);
+
+        // Get rid of the table
+        $this->CI->db->query('DROP TABLE IF EXISTS test_table');
+
+        // Test that it returns 0 when the expected table and column DON'T exist
+        $query = $this->CI->db->query("SELECT column_exists('test_table', 'test_column')");
+        $row = $query->first_row('array');
+        $tableAndColumnExist = (bool) array_shift($row);
+        $this->assertFalse($tableAndColumnExist);
+    }
+
+    public function testIdempotentDropColumnWorks() {
+
+        // Create an expected table with an expected column
+        $this->CI->db->query('CREATE TABLE IF NOT EXISTS test_table(other_column varchar(15), test_column varchar(15))');
+
+        // Drop the column once
+        $this->CI->db->query("CALL drop_column_if_exists('test_table', 'test_column')");
+
+        // Check and assert that the column was dropped
+        $query = $this->CI->db->query("SELECT column_exists('test_table', 'test_column')");
+        $row = $query->first_row('array');
+        $tableAndColumnExist = (bool) array_shift($row);
+        $this->assertFalse($tableAndColumnExist);
+
+        // Try to drop the column again and make sure there's no error
+        $noErrorOnIdempotentDrop = (bool) $this->CI->db->query("CALL drop_column_if_exists('test_table', 'test_column')");
+
+        // Check and assert that there was no error
+        $this->assertTrue($noErrorOnIdempotentDrop);
+
+        // Get rid of the table
+        $this->CI->db->query('DROP TABLE IF EXISTS test_table');
+    }
+
+    public function testIdempotentAddColumnWorks() {
+
+        // Create a table WITHOUT the column
+        $this->CI->db->query('CREATE TABLE IF NOT EXISTS test_table(other_column varchar(15))');
+
+        // Add the column and assert no errors
+        $addedColumn = (bool) $this->CI->db->query("CALL add_column_if_not_exists('test_table', 'test_column', 'varchar(15)')");
+        $this->assertTrue($addedColumn);
+
+        // Test that the expected table and column exist
+        $query = $this->CI->db->query("SELECT column_exists('test_table', 'test_column')");
+        $row = $query->first_row('array');
+        $tableAndColumnExist = (bool) array_shift($row);
+        $this->assertTrue($tableAndColumnExist);
+
+        // Add the column AGAIN and assert no errors
+        $addedColumnAgainWithoutErrors = (bool) $this->CI->db->query("CALL add_column_if_not_exists('test_table', 'test_column', 'varchar(15)')");
+        $this->assertTrue($addedColumnAgainWithoutErrors);
+
+        // Get rid of the table
+        $this->CI->db->query('DROP TABLE IF EXISTS test_table');
+    }
 
     /**
      * Ensure that offices explicitly monitored by the OMB are present and being crawled
@@ -9,13 +88,11 @@ class MigrationsTest extends TestCase
     public function testOmbMonitoredOfficesArePresentAndFlaggedInDatabase()
   	{
         // Get an array of the names of all the OMB-monitored Offices in the DB, sorted
-        $CI =& get_instance();
-        $CI->load->database();
-        $CI->db->select('*');
-		$CI->db->from('offices');
-		$CI->db->where('offices.omb_monitored', 'true');
-		$CI->db->order_by("offices.name", "asc");
-        $query = $CI->db->get();
+        $this->CI->db->select('*');
+		$this->CI->db->from('offices');
+		$this->CI->db->where('offices.omb_monitored', 'true');
+		$this->CI->db->order_by("offices.name", "asc");
+        $query = $this->CI->db->get();
         $results = $query->result();
         $query->free_result();
 
