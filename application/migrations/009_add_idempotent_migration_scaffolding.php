@@ -37,7 +37,7 @@ class Migration_add_idempotent_migration_scaffolding extends CI_Migration
      *  CALL drop_column_if_exists('my_table', 'my_column'); -- success
      *  SELECT column_exists('my_table', 'my_column');       -- 0
      *
-     * Source for these procedures: https://stackoverflow.com/a/49676339
+     * Source for this approach: https://stackoverflow.com/a/49676339
     */
     private function create_idempotent_helpers() {
 
