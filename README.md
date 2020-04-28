@@ -86,6 +86,34 @@ After a database restore, test by viewing a USDA detail page:
 
     curl http://localhost:8000/offices/detail/49015/2017-08-31
 
+### Making database schema changes
+
+#### To update the schema
+
+Add a new [numbered migration class](application/migrations), then change [the configured version number](application/config/migration.php#L72) to match. To perform the migration, CodeIgniter will automatically run `up()` migration methods until the schema version in the database matches the configured version.
+
+If you want to invoke the migration explicitly to test that it's working, you can run `php public/index.php migrate`. Otherwise expect that the migration will be invoked automatically before CodeIgniter will handle any other requests.
+
+#### To revert the schema
+
+Change [the configured version number](application/config/migration.php#L72) to match the schema version you want to revert to. CodeIgniter will automatically run `down()` migration methods until the schema version in the database matches the configured version. 
+
+You can invoke the reversion as described for updates above.
+
+#### Migration requirements
+
+The dashboard uses MySQL for the backend database. [MySQL doesn't support transactions around schema-altering statements.](https://hashrocket.com/blog/posts/mysql-has-transactions-sorta) If any problems are encountered during a migration, the app is likely to wind up in a confused state where schema-altering statements have been applied, but the version of the schema in the database remains at the previous version. The migration will be attempted over and over again, often exhibiting user-visible errors or other bad behavior until manual intervention happens.
+
+To avoid this, we need to be careful to write migrations that are both idempotent and reversible. (That is, we should be able to run them again without generating errors, and we should be able to downgrade to previous schema versions automatically.)
+
+This requires some care because there's no guaranteed way to make it happen. Whenever we do a PR review that includes a schema change, the answer should be "yes" to all of these questions: 
+* Does each of the schema-altering statements happen in its own migration?
+* Does the `down()` method exist on the migration, and does it undo any schema-changing action performed in the `up()` method?
+* Does every `CREATE TABLE` statement use `IF NOT EXISTS`?
+* Does every `DROP TABLE` statement use `IF EXISTS`? 
+* Does every `ADD/CHANGE/ALTER COLUMN` happen via a call to the idempotent [add_column_if_not_exists](application/migrations/009_add_idempotent_migration_scaffolding.php#L75) helper?
+* Does every `DROP COLUMN` happen via a call to the idempotent [drop_column_if_exists](application/migrations/009_add_idempotent_migration_scaffolding.php#L60) helper?
+
 ### CircleCI testing
 
 All pushes to GitHub are integration tested with our [CircleCI tests](https://circleci.com/gh/GSA/project-open-data-dashboard).
