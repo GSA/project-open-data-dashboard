@@ -326,7 +326,7 @@ function status_table_qa($title, $rows, $tracker, $config = null, $sections_brea
 											$office->datajson_status->qa->validation_counts->http_3xx +
 											$office->datajson_status->qa->validation_counts->http_0);
 
-			} else if (!empty($model->last_crawl)) {
+			} else if (!empty($model->last_crawl) && !empty($office->datajson_status) && isset($office->datajson_status->last_crawl)) {
 
 				// If we weren't able to validate anything, just show when the last crawl happened
 				$model->last_crawl->value = date("d-M-Y H:i:s T", $office->datajson_status->last_crawl);
