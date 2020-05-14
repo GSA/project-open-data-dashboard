@@ -445,8 +445,8 @@ class Offices extends CI_Controller {
 					if (is_numeric($value) OR strpos($value, '%') !== false) {
 
 						if (strpos($value, '%') !== false) {
-							if(empty($totals[$field]['type'])) $totals[$field]['type'] = 'percent';
-							$value = $value * 0.01;
+                            if(empty($totals[$field]['type'])) $totals[$field]['type'] = 'percent';
+                            	$value = floatval($value) * 0.01;
 
 							if($totals[$field]['type'] == 'integer') {
 								$totals[$field]['errors'] .= 'Inconsistent data type found on ' . $office->id . ' ';
