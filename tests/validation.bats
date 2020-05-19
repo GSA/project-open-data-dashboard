@@ -117,3 +117,9 @@ setup() {
     $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=http://169.254.169.254/latest/meta-data/hostname
   echo ${lines[5]} | grep -q "$INVALID_URL_WARNING"
 }
+
+@test "GET of http://0x7f000001:80/latest/meta-data/hostname should not be valid" {
+  run $CMD -s \
+    $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=http://0x7f000001:80/latest/meta-data/hostname
+  echo ${lines[5]} | grep -q "$INVALID_URL_WARNING"
+}

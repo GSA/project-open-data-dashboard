@@ -326,6 +326,11 @@ function filter_remote_url($url, $allowed_schemes = array('http', 'https')) {
         {
             $url = false;
         }
+        /* This blocks INT, including IP in hex format such as 0x7f000001 */
+        if (filter_var($host, FILTER_VALIDATE_INT, FILTER_FLAG_ALLOW_HEX))
+        {
+            $url = false;
+        }
         /*We should check if it is a hostname - resolving url*/
         else
         {
