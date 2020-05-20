@@ -1381,9 +1381,7 @@ class Campaign_model extends CI_Model
 
         $context = stream_context_create($opts);
 
-        $copy = @fopen($url, 'rb', false, $context);
-        $paste = @fopen($filepath, 'wb');
-
+        $copy = @fopen(filter_remote_url($url), 'rb', false, $context);
 
         // If we can't read from this file, skip
         if ($copy === false) {
@@ -1394,6 +1392,8 @@ class Campaign_model extends CI_Model
                 echo $errmsg;
             }
         }
+
+        $paste = @fopen($filepath, 'wb');
 
         // If we can't write to this file, skip
         if ($paste === false) {
