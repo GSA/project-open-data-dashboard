@@ -988,7 +988,7 @@ class Campaign extends CI_Controller
             }
 
             $expected_datajson_url = filter_remote_url($expected_datajson_url);
-            if ($expected_datajson_url === false) {
+            if (!$expected_datajson_url) {
                 show_error('Not valid data.json URL.', 400);
                 return;
             }
