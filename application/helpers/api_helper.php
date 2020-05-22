@@ -305,57 +305,43 @@ function filter_json( $source_datajson, $dataset_array = false ) {
 }
 
 
-function filter_remote_url($url, $allowed_schemes = array('http', 'https')) {
+function filter_remote_url($url) {
     if (empty($url)) {
-        return null ;
+        return null;
     }
     $url = filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED);
+
     // ban non http/https:
+    $allowed_schemes = array('http', 'https');
     $scheme = parse_url($url, PHP_URL_SCHEME);
-    if ($url && !in_array($scheme, $allowed_schemes)) {
-        $url = false;
+    if (!in_array($scheme, $allowed_schemes)) {
+        return false;
     }
 
-    // ban localhost/portscan/ssrf
+    // We don't accept unresolvable hostnames or raw IP addresses
+    $host = parse_url($url, PHP_URL_HOST);
+    $resolved = dns_get_record($host, DNS_A + DNS_AAAA);
+    if (!$resolved) {
+        return false;
+    }
 
-    if ($url) {
-
-        $host = parse_url($url, PHP_URL_HOST);
-        /* We should check if host is IP first*/
-        if (filter_var($host, FILTER_VALIDATE_IP))// is ip
-        {
-            $url = false;
-        }
-        /* This blocks INT, including IP in hex format such as 0x7f000001 */
-        if (filter_var($host, FILTER_VALIDATE_INT, FILTER_FLAG_ALLOW_HEX))
-        {
-            $url = false;
-        }
-        /*We should check if it is a hostname - resolving url*/
-        else
-        {
-            // If record resolved
-            $resolved = dns_get_record($host, DNS_A + DNS_AAAA);
-            if ($resolved)
-            {
-                // We should read the array of A and AAAA records, and check them against private ranges
-                for ($i=0; $i < count($resolved); $i++)
-                {
-                    if ($resolved[$i]["type"] === "A")
-                    if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ))
-                        $url = false;
-                    if ($resolved[$i]["type"] === "AAAA")
-                    if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ))
-                        $url = false;
+    // We should read the array of A and AAAA records, and check them against private ranges to protect against SSRF
+    for ($i=0; $i < count($resolved); $i++)
+    {
+        if ($resolved[$i]["type"] === "A") {
+            if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+                return false;
+            }
+            if ($resolved[$i]["type"] === "AAAA") {
+                if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+                    return false;
                 }
-
             }
         }
-
-
     }
+
     // filter xss
-    if ($url && function_exists('xss_clean')) {
+    if (function_exists('xss_clean')) {
         $url = xss_clean($url);
     }
     return $url;
