@@ -172,7 +172,6 @@ class MigrateTest extends TestCase
             'Presidio Trust',
             'Public Defender Service of the District of Columbia',
             'Railroad Retirement Board',
-            'Securities and Exchange Commission',
             'Selective Service System',
             'Surface Transportation Board',
             'U.S. Access Board',
