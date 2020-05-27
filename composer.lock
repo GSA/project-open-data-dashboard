@@ -681,16 +681,16 @@
         },
         {
             "name": "phpmailer/phpmailer",
-            "version": "v6.1.5",
+            "version": "v6.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "a8bf068f64a580302026e484ee29511f661b2ad3"
+                "reference": "c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/a8bf068f64a580302026e484ee29511f661b2ad3",
-                "reference": "a8bf068f64a580302026e484ee29511f661b2ad3",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3",
+                "reference": "c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3",
                 "shasum": ""
             },
             "require": {
@@ -739,7 +739,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2020-03-14T14:23:48+00:00"
+            "time": "2020-05-27T12:24:03+00:00"
         },
         {
             "name": "psr/container",
@@ -4123,12 +4123,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kenjis/ci-phpunit-test.git",
-                "reference": "fd0a0feb6b1c1a39234181f3a1848cb3b932efd3"
+                "reference": "0b501b0f33056a46519f7ed1a659d84b64aeffa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kenjis/ci-phpunit-test/zipball/fd0a0feb6b1c1a39234181f3a1848cb3b932efd3",
-                "reference": "fd0a0feb6b1c1a39234181f3a1848cb3b932efd3",
+                "url": "https://api.github.com/repos/kenjis/ci-phpunit-test/zipball/0b501b0f33056a46519f7ed1a659d84b64aeffa3",
+                "reference": "0b501b0f33056a46519f7ed1a659d84b64aeffa3",
                 "shasum": ""
             },
             "require": {
@@ -4160,7 +4160,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2020-04-04T04:47:45+00:00"
+            "time": "2020-05-17T10:52:24+00:00"
         },
         {
             "name": "mikey179/vfsstream",
