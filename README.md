@@ -10,7 +10,7 @@ The primary place for the user-facing documentation is https://labs.data.gov/das
 * **Permissioned Content Editing** for the fields in the dashboard that can't be automated. The fields are stored as JSON objects so the data model is very flexible and can be customized without database changes. User accounts are handled via Github.
 * **Automated crawls** for each agency to report metrics from Project Open Data assets (data.json, digitalstrategy.json, /data page, etc). This includes reporting on the number of data sets and validation against the Project Open Data metadata schema. 
 * **A [validator](https://labs.data.gov/dashboard/validate)** to validate Project Open Data data.json files via URL, file upload, or text input. This can be used for testing both data.json Public Data Listing files as well as the Enterprise Data Inventory JSON. The validator can be used both by Federal agencies as well as non-federal entities by specifying the Non-Federal schema. 
-* **Converters** to transform a [CSV into a data.json](https://labs.data.gov/dashboard/datagov/csv_to_json) file or to [export](https://labs.data.gov/dashboard/export) existing data from Data.gov
+* **Converters** to [export](https://labs.data.gov/dashboard/export) existing data from data.gov
 * **[Changeset viewer](https://labs.data.gov/dashboard/changeset)** to see how a data.json file for an agency compares to metadata currently hosted on data.gov
 
 ## CLI Interface
@@ -203,7 +203,6 @@ Currently this tool does not handle large files in a memory efficient way. If yo
 **What about S3?**
 
 S3 is used in a few places when `config[use_local_storage]` is false:
-- for put/fetch of csv_to_json (private)
 - for archiving data.json and digitalstrategy (public)
 
 The `use_local_storage` setting does not impact all uses of the `upload` class, just those cases above.
@@ -212,19 +211,12 @@ The `archive_file` function will use config[use_local_storage] anytime it's call
 
 Here's an outline of where S3 is used in the code:
 
-`controllers/campaign.php`:
-  - `public function csv_to_json($schema = null)`
-    - once to PUT the file
-    - again to GET the file
-    - There is no remove from S3
-  - It archives `digitalstrategy.json` and `data.json` using `archive_file` which puts a fetch date in the URL.
-
 `models/Campaign_model.php`:
   - `archive_file` which calls  `archive_to_s3` when `use_local_storage` is false
     - the `validate_datajson` function calls `archive_file` but sets `filetype` to `datajson-lines` so the `archive_file` function does not store it in S3, regardless of `use_local_storage` setting.
   - `archive_to_s3` which calls put_to_s3 and stores with a PUBLIC acl
   - `put_to_s3` which stores private by default
-  - `get_from_s3` only used by `csv_to_json` 
+  - `get_from_s3` previously used by `csv_to_json`; unused now 
 
 `views/office_detail.php`:
   - Builds a URL based on values of `config/s3_bucket` for displaying the "Analyze archive copies" line of _Automated Metrics_.
@@ -232,5 +224,4 @@ Here's an outline of where S3 is used in the code:
 
 **S3 changes for cloud.gov***
 
-- Based on the commit that added S3 for `csv_to_json`, https://github.com/GSA/project-open-data-dashboard/commit/7cea18229707203a5f6de5b722f0c90ce3a74f79, it's not evident why S3 is used for storing the CSV file before converting. This logic can probably be removed, and just use ephemeral local storage. There may be situations when an instance disappears during a conversion, maybe this is OK>
-- Beyond that, there's a need for one public S3 bucket for archiving data.json from crawls, and fetching them in the `office_detail.php`.
+- There's a need for one public S3 bucket for archiving data.json from crawls, and fetching them in the `office_detail.php`.
