@@ -30,7 +30,6 @@
         "michelf/php-markdown": "*",
         "salsify/json-streaming-parser": "~5",
         "vlucas/phpdotenv": "^2.4",
-        "simplesamlphp/simplesamlphp": "~1.18.4",
         "aws/aws-sdk-php": "*"
     },
     "require-dev": {
