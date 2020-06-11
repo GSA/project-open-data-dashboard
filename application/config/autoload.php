@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database', 'migration', 'session', 'OAuth2', 'lib_gearman');
+$autoload['libraries'] = array('database', 'migration', 'session', 'lib_gearman');
 
 /*
 | -------------------------------------------------------------------
