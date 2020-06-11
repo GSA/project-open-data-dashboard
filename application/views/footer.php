@@ -37,56 +37,6 @@
             </div>
         </div>
       </footer>
-      <?php if ($this->session->userdata('username')) : ?>
-          <script>
-          var loc = window.location;
-          var pathhost = loc.protocol + "//" + loc.hostname + (loc.port? ":"+loc.port : "") + "/";
-          var pathcheck = loc.pathname.split( '/' );
-          var fullpath="";
-          var logoutpath="";
-          if(pathcheck[1]=="dashboard"){
-            fullpath = pathhost+pathcheck[1]+"/campaign/lastActivity";
-            logoutpath = pathhost+pathcheck[1]+"/logout";
-          }else{
-            fullpath = pathhost+"campaign/lastActivity";
-            logoutpath = pathhost+"logout";
-          }
-          $(document).ready(function(){
-            setTimeout(function() {
-              setInterval(function(){
-                $.post( fullpath, function( data ) {
-                    var jsonobj = $.parseJSON(data);
-                    var currenttime = moment.unix(jsonobj.currenttime);
-                    var lastactivity = moment.unix(jsonobj.lastactivity);
-                    var lastaddminutes =  moment(lastactivity).add(14, 'm');
-                    var timer = moment.duration(lastaddminutes.diff(currenttime)).seconds();
-                    var manualtime = 60;
-                    if((lastaddminutes).isSameOrBefore(currenttime)){
-                        $("#sessionSecondsRemaining").text(manualtime);
-                        $("#secondsRemaining").show();
-                        setInterval(function() {
-                          if(manualtime>0){
-                            $("#sessionSecondsRemaining").text(manualtime--);
-                          }
-                        }, 1000);
-                      setTimeout(function() {
-                        window.location = logoutpath;
-                      }, 60000);
-                    }
-                });
-              }, 240000);
-             }, 600000);
-          });
-          $("#logoutSession").on('click', function(){
-            $("#secondsRemaining").hide();
-            window.location = logoutpath;
-          });
-          $("#extendSession").on('click', function(){
-            $("#secondsRemaining").hide();
-            location.reload();
-          });
-          </script>
-      <?php endif; ?>
     </div> <!-- /container -->
 
     </body>
