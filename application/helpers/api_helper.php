@@ -355,7 +355,7 @@ function filter_remote_url($url) {
     }
     $url = filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED);
 
-    // ban non http/https:
+    // We only accept http/https
     $allowed_schemes = array('http', 'https');
     $scheme = parse_url($url, PHP_URL_SCHEME);
     if (!in_array($scheme, $allowed_schemes)) {
@@ -366,6 +366,12 @@ function filter_remote_url($url) {
     $host = parse_url($url, PHP_URL_HOST);
     $resolved = dns_get_record($host, DNS_A + DNS_AAAA);
     if (!$resolved) {
+        return false;
+    }
+
+    // We only accept reasonable ports
+    $port = parse_url($url, PHP_URL_PORT);
+    if ($port != 80 && $port != 443 && $port != 8080) {
         return false;
     }
 

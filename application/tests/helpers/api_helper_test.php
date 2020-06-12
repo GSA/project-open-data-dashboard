@@ -17,6 +17,10 @@ class APIHelperTest extends TestCase
         $this->assertSame(false, filter_remote_url($url));
     }
 
+    public function testFilterRemoteUrlRejectsUnusualPorts() {
+        $this->assertSame(false, filter_remote_url("https://www.google.com:567"));
+    }
+
     public function testFilterRemoteUrlRejectsNonHostnames() {
 
         // A null hostname should explicitly return null
