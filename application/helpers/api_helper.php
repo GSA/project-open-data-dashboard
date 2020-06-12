@@ -17,11 +17,20 @@ function curl_from_json($url, $array=false, $decode=true) {
     curl_setopt($ch, CURLOPT_COOKIESESSION, true);
     curl_setopt($ch, CURLOPT_COOKIE, "");
 
+    curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+    curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
 
 
-	$data=curl_exec($ch);
+    $data=curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        log_message('error', "curl_header error: " . curl_error($ch));
+        throw new Exception(curl_error($ch), curl_errno($ch));
+    }
+
 	curl_close($ch);
 
     if($decode == true) {
@@ -62,10 +71,18 @@ function curl_header($url, $follow_redirect = true, $tmp_dir = null, $force_shim
   curl_setopt($ch, CURLOPT_COOKIESESSION, true);
   curl_setopt($ch, CURLOPT_COOKIE, "");
 
+  curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+  curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+
   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
   curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
 
   $http_heading = curl_exec($ch);
+
+  if (curl_errno($ch)) {
+    log_message('error', "curl_header error: " . curl_error($ch));
+    throw new Exception(curl_error($ch), curl_errno($ch));
+  }
 
   $info['header'] = http_parse_headers($http_heading);
   $info['info'] = curl_getinfo($ch);
@@ -104,10 +121,18 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
 
   curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
 
+  curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+  curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+
   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
   curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
 
   curl_exec($ch);
+
+  if (curl_errno($ch)) {
+    log_message('error', "curl_header error: " . curl_error($ch));
+    throw new Exception(curl_error($ch), curl_errno($ch));
+  }
 
   fclose($headerfile);
 

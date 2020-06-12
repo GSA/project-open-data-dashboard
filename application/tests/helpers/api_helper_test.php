@@ -31,9 +31,48 @@ class APIHelperTest extends TestCase
         $url = "http://0123/data.json";
         $this->assertSame(false, filter_remote_url($url));
 
+        // We don't like mixed hex and octal either
+        $url = "http://0x7f.0x0.0.0/data.json";
+        $this->assertSame(false, filter_remote_url($url));
+
         // We don't even like dotted-quads
         $url = "http://111.22.34.56/data.json";
         $this->assertSame(false, filter_remote_url($url));
+    }
+
+    /**
+     * @dataProvider badProtocolProvider
+     */
+    public function testCurlHeaderIgnoresBadProtocols($protocol) {
+        $this->expectException(Exception::class);
+        curl_header($protocol."://127.0.0.1");
+    }
+
+    /**
+     * @dataProvider badProtocolProvider
+     */
+    public function testCurlHeadShimIgnoresBadProtocols($protocol) {
+        $CI =& get_instance();
+        $this->expectException(Exception::class);
+        curl_head_shim($protocol."://127.0.0.1", true, $CI->config->item('archive_dir'));
+    }
+
+    /**
+     * @dataProvider badProtocolProvider
+     */
+    public function testCurlFromJsonIgnoresBadProtocols($protocol) {
+        $this->expectException(Exception::class);
+        curl_from_json($protocol."://127.0.0.1");
+    }
+
+    public function badProtocolProvider() {
+
+        // These are all the protocols that libcurl supports that we don't want to be valid
+        $protocols = explode(' ', "dict file ftp ftps gopher imap imaps ldap ldaps pop3 pop3s rtmp rtsp scp sftp smb smtp smtps");
+        foreach($protocols as $protocol) {
+            $protocolarray[] = array($protocol);
+        }
+        return $protocolarray;
     }
 
 }
