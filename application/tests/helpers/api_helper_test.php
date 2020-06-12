@@ -6,6 +6,10 @@ class APIHelperTest extends TestCase
     public function setUp() {
         $CI =& get_instance();
         $CI->load->helper('api');
+
+        // This tool is provided by sp1d3R in the HackerOne Bug Bounty program
+        // If it goes away, we'll need some other way to easily generate a redirect to an internal URL
+        $this->ssrfRedirectURL = "http://redir.xpoc.pro/127.0.0.1";
     }
 
     public function testFilterRemoteUrlRejectsUnresolvableHostnames() {
@@ -38,6 +42,22 @@ class APIHelperTest extends TestCase
         // We don't even like dotted-quads
         $url = "http://111.22.34.56/data.json";
         $this->assertSame(false, filter_remote_url($url));
+    }
+
+    public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect() {
+        $this->expectException(Exception::class);
+        curl_header($this->ssrfRedirectURL, true);
+    }
+
+    public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect() {
+        $CI =& get_instance();
+        $this->expectException(Exception::class);
+        curl_head_shim($this->ssrfRedirectURL, true, $CI->config->item('archive_dir'));
+    }
+
+    public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect() {
+        $this->expectException(Exception::class);
+        curl_from_json($this->ssrfRedirectURL);
     }
 
     /**

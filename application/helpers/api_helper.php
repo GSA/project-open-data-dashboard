@@ -20,11 +20,7 @@ function curl_from_json($url, $array=false, $decode=true) {
     curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
     curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-
-
-    $data=curl_exec($ch);
+    $data = safe_curl_exec($ch, true);
 
     if (curl_errno($ch)) {
         log_message('error', "curl_header error: " . curl_error($ch));
@@ -74,15 +70,7 @@ function curl_header($url, $follow_redirect = true, $tmp_dir = null, $force_shim
   curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
   curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
-  curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-
-  $http_heading = curl_exec($ch);
-
-  if (curl_errno($ch)) {
-    log_message('error', "curl_header error: " . curl_error($ch));
-    throw new Exception(curl_error($ch), curl_errno($ch));
-  }
+  $http_heading = safe_curl_exec($ch, $follow_redirect);
 
   $info['header'] = http_parse_headers($http_heading);
   $info['info'] = curl_getinfo($ch);
@@ -124,10 +112,7 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
   curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
   curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
-  curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-
-  curl_exec($ch);
+  safe_curl_exec($ch, $follow_redirect);
 
   if (curl_errno($ch)) {
     log_message('error', "curl_header error: " . curl_error($ch));
@@ -148,6 +133,40 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
   return $info;
 
 }
+
+// Do a (potentially recursive) curl request while defending against SSRF attacks
+function safe_curl_exec($ch, $follow_redirect = true, $maxRedirs = 10) {
+
+    // We take care of redirects ourselves to deflect SSRF attempts
+      curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+
+    $numRedirects = 0;
+    while(true) {
+
+      $http_heading = curl_exec($ch);
+
+      // Watch out for problems
+      if (curl_errno($ch)) {
+        log_message('error', "curl_header error: " . curl_error($ch));
+        throw new Exception(curl_error($ch), curl_errno($ch));
+      }
+
+      // We're done if redirects weren't requested, we reached the maximum, or if we didn't get a redirect
+      if(!$follow_redirect ||
+         $numRedirects++ == $maxRedirs ||
+         (($nextURL = curl_getinfo($ch, CURLINFO_REDIRECT_URL)) == '')) {
+      break;
+      }
+
+      // Inspect that redirect URL before we follow it to guard against SSRF!
+      if (!filter_remote_url($nextURL)) {
+          throw new Exception('Encountered bad URL during redirect: ' . $nextURL);
+      }
+
+      curl_setopt($ch, CURLOPT_URL, $nextURL);
+    }
+    return $http_heading;
+  }
 
 
 if (!function_exists('http_parse_headers')) {
