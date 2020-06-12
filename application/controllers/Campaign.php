@@ -129,7 +129,7 @@ class Campaign extends CI_Controller
 		$this->load->view('csv_upload_removed');
     }
 
-    public function do_upload($field_name = null)
+    private function do_upload($field_name = null)
     {
 
         if (!$this->upload->do_upload($field_name)) {
@@ -591,7 +591,7 @@ class Campaign extends CI_Controller
 
     }
 
-    public function status_offices($offices, $component, $selected_milestone, $url_override) {
+    private function status_offices($offices, $component, $selected_milestone, $url_override) {
 
         /*
         * Since we're dealing with externally-hosted content, let's see if we can use sub-processes to
@@ -660,7 +660,7 @@ class Campaign extends CI_Controller
 
     }
 
-    public function status_single_office($office, $component, $selected_milestone, $url_override)
+    private function status_single_office($office, $component, $selected_milestone, $url_override)
     {
 
         // Set current office id
@@ -890,13 +890,13 @@ class Campaign extends CI_Controller
 
 
 
-    public function finalize_milestone($milestone)
+    private function finalize_milestone($milestone)
     {
         $this->load->model('campaign_model', 'campaign');
         return $this->campaign->finalize_milestone($milestone);
     }
 
-    public function json_status($status, $real_url = null, $component = null)
+    private function json_status($status, $real_url = null, $component = null)
     {
 
         // if this isn't an array, assume it's a urlencoded URI
@@ -1326,7 +1326,7 @@ class Campaign extends CI_Controller
 
     }
 
-    public function assemble_org_structure()
+    private function assemble_org_structure()
     {
 
         $url = 'https://www.data.gov/app/themes/roots-nextdatagov/assets/Json/fed_agency.json';
@@ -1469,35 +1469,35 @@ class Campaign extends CI_Controller
                     unset($datajson_model->$id);
                     $datajson_model->$context = 'https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld';
                     $datajson_model->conformsTo = 'https://project-open-data.cio.gov/v1.1/schema';
-                        $datajson_model->describedBy = 'https://project-open-data.cio.gov/v1.1/schema/catalog.json';
+                    $datajson_model->describedBy = 'https://project-open-data.cio.gov/v1.1/schema/catalog.json';
 
-                        $datajson_model->dataset = $convert;
-
-
-                        // provide json for download
-                        header("Pragma: public");
-                        header("Expires: 0");
-                        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-                        header("Cache-Control: private", false);
-                        header('Content-type: application/json');
-                        header("Content-Disposition: attachment; filename=\"$filename\";");
-                        header("Content-Transfer-Encoding: binary");
-
-                        print json_encode($datajson_model, JSON_PRETTY_PRINT);
-                        exit;
-                    } else {
-                        $data = array();
-                        $data['errors'] = 'The file was not valid JSON';
-                        $this->load->view('upgrade_schema', $data);
-                    }
+                    $datajson_model->dataset = $convert;
 
 
+                    // provide json for download
+                    header("Pragma: public");
+                    header("Expires: 0");
+                    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                    header("Cache-Control: private", false);
+                    header('Content-type: application/json');
+                    header("Content-Disposition: attachment; filename=\"$filename\";");
+                    header("Content-Transfer-Encoding: binary");
+
+                    print json_encode($datajson_model, JSON_PRETTY_PRINT);
+                    exit;
+                } else {
+                    $data = array();
+                    $data['errors'] = 'The file was not valid JSON';
+                    $this->load->view('upgrade_schema', $data);
                 }
-            } else {
-                $this->load->view('upgrade_schema');
+
+
             }
+        } else {
+            $this->load->view('upgrade_schema');
+        }
 
-                }
+    }
 
 
 }

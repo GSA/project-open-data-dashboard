@@ -138,7 +138,7 @@ class Import extends CI_Controller {
 
 	}
 
-	public function slug_match($slugs, $parent, $child = null) {
+	private function slug_match($slugs, $parent, $child = null) {
 
 		foreach ($slugs as $slug) {
 			$slug = $slug["taxonomy"];
@@ -156,7 +156,7 @@ class Import extends CI_Controller {
 		}
 	}
 
-	public function run_match($agency_slugs, $office, $child_office = null) {
+	private function run_match($agency_slugs, $office, $child_office = null) {
 
 		if(!empty($child_office)){
 			$update_id = $child_office->id;

@@ -430,7 +430,7 @@ class Offices extends CI_Controller {
 
 	}
 
-	public function calculate_totals($offices) {
+	private function calculate_totals($offices) {
 		$totals = array();
 		$valid_metadata = array();
 		foreach ($offices as $office) {
@@ -482,7 +482,7 @@ class Offices extends CI_Controller {
 
 
 
-	public function get_trends($office_id) {
+	private function get_trends($office_id) {
 
 		$this->db->select('tracker_fields');
 		$this->db->select('milestone');
