@@ -2,9 +2,8 @@
 
 function curl_from_json($url, $array=false, $decode=true) {
 
-	$ch = curl_init();
+    $ch = curl_init();
     curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
-	curl_setopt($ch, CURLOPT_URL, $url);
 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -20,7 +19,7 @@ function curl_from_json($url, $array=false, $decode=true) {
     curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
     curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-    $data = safe_curl_exec($ch, true);
+    $data = safe_curl_exec($url, $ch, true);
 
     if (curl_errno($ch)) {
         log_message('error', "curl_header error: " . curl_error($ch));
@@ -51,7 +50,6 @@ function curl_header($url, $follow_redirect = true, $tmp_dir = null, $force_shim
   $ch = curl_init();
 
   curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
-  curl_setopt($ch, CURLOPT_URL, $url);
 
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
   curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -70,7 +68,7 @@ function curl_header($url, $follow_redirect = true, $tmp_dir = null, $force_shim
   curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
   curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-  $http_heading = safe_curl_exec($ch, $follow_redirect);
+  $http_heading = safe_curl_exec($url, $ch, $follow_redirect);
 
   $info['header'] = http_parse_headers($http_heading);
   $info['info'] = curl_getinfo($ch);
@@ -99,8 +97,6 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
   $header_dir = $tmp_dir . '/curl_header';
   $headerfile = fopen($header_dir, 'w+');
 
-  curl_setopt($ch, CURLOPT_URL, $url);
-
   curl_setopt($ch, CURLOPT_FILE, $output);
 
   curl_setopt($ch, CURLOPT_WRITEHEADER, $headerfile);
@@ -112,7 +108,7 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
   curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
   curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-  safe_curl_exec($ch, $follow_redirect);
+  safe_curl_exec($url, $ch, $follow_redirect);
 
   if (curl_errno($ch)) {
     log_message('error', "curl_header error: " . curl_error($ch));
@@ -135,10 +131,19 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
 }
 
 // Do a (potentially recursive) curl request while defending against SSRF attacks
-function safe_curl_exec($ch, $follow_redirect = true, $maxRedirs = 10) {
+// TODO https://github.com/GSA/datagov-deploy/issues/1759
+function safe_curl_exec($url, $ch, $follow_redirect = true, $maxRedirs = 10) {
+
+    // Check the initial URL in case the caller forgot to check it themselves
+    if (!filter_remote_url($url)) {
+        throw new Exception("Encountered bad URL during curl request: ".$url);
+    }
+
+    // Set the target URL
+    curl_setopt($ch, CURLOPT_URL, $url);
 
     // We take care of redirects ourselves to deflect SSRF attempts
-      curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 
     $numRedirects = 0;
     while(true) {
@@ -153,7 +158,7 @@ function safe_curl_exec($ch, $follow_redirect = true, $maxRedirs = 10) {
 
       // We're done if redirects weren't requested, we reached the maximum, or if we didn't get a redirect
       if(!$follow_redirect ||
-         $numRedirects++ == $maxRedirs ||
+         $numRedirects++ >= $maxRedirs ||
          (($nextURL = curl_getinfo($ch, CURLINFO_REDIRECT_URL)) == '')) {
       break;
       }
@@ -353,7 +358,7 @@ function filter_remote_url($url) {
     if (empty($url)) {
         return null;
     }
-    $url = filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED);
+    $url = filter_var($url, FILTER_VALIDATE_URL);
 
     // We only accept http/https
     $allowed_schemes = array('http', 'https');
@@ -371,7 +376,7 @@ function filter_remote_url($url) {
 
     // We only accept reasonable ports
     $port = parse_url($url, PHP_URL_PORT);
-    if ($port != 80 && $port != 443 && $port != 8080) {
+    if ($port != null && $port != 80 && $port != 443 && $port != 8080) {
         return false;
     }
 
@@ -382,10 +387,11 @@ function filter_remote_url($url) {
             if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
                 return false;
             }
-            if ($resolved[$i]["type"] === "AAAA") {
-                if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
-                    return false;
-                }
+        }
+
+        if ($resolved[$i]["type"] === "AAAA") {
+            if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+                return false;
             }
         }
     }
