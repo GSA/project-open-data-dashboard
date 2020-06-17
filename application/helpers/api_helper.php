@@ -134,20 +134,20 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
 // TODO https://github.com/GSA/datagov-deploy/issues/1759
 function safe_curl_exec($url, $ch, $follow_redirect = true, $maxRedirs = 10) {
 
-    // Check the initial URL in case the caller forgot to check it themselves
-    if (!filter_remote_url($url)) {
-        throw new Exception("Encountered bad URL during curl request: ".$url);
-    }
-
-    // Set the target URL
-    curl_setopt($ch, CURLOPT_URL, $url);
-
     // We take care of redirects ourselves to deflect SSRF attempts
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 
     $numRedirects = 0;
-    while(true) {
+    do {
+    if (!filter_remote_url($url)) {
+        throw new Exception("Encountered bad URL during curl request: ".$url);
+    }
 
+        // Make sure that the IP curl actually hits is the one that we just validated as OK
+        curl_setopt($ch, CURLOPT_RESOLVE);
+
+    // Set the target URL
+    curl_setopt($ch, CURLOPT_URL, $url);
       $http_heading = curl_exec($ch);
 
       // Watch out for problems
@@ -156,20 +156,13 @@ function safe_curl_exec($url, $ch, $follow_redirect = true, $maxRedirs = 10) {
         throw new Exception(curl_error($ch), curl_errno($ch));
       }
 
-      // We're done if redirects weren't requested, we reached the maximum, or if we didn't get a redirect
-      if(!$follow_redirect ||
-         $numRedirects++ >= $maxRedirs ||
-         (($nextURL = curl_getinfo($ch, CURLINFO_REDIRECT_URL)) == '')) {
-      break;
-      }
+        // Check for a redirect
+        $url = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
 
-      // Inspect that redirect URL before we follow it to guard against SSRF!
-      if (!filter_remote_url($nextURL)) {
-          throw new Exception('Encountered bad URL during redirect: ' . $nextURL);
-      }
+    } while ($follow_redirect               // Continue if redirects were requested
+        && $url != ''                       // ...and we got a redirect
+        && $numRedirects++ < $maxRedirs);   // ...and we haven't we reached the maximum
 
-      curl_setopt($ch, CURLOPT_URL, $nextURL);
-    }
     return $http_heading;
   }
 
