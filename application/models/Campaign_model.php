@@ -2410,7 +2410,7 @@ class Campaign_model extends CI_Model
             $datagov_json = curl_from_json($uri, false);
         }
         catch (Exception $e) {
-
+$datagov_json = null;
         }
 
         if (empty($datagov_json)) return false;
