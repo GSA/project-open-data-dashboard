@@ -906,7 +906,14 @@ class Campaign_model extends CI_Model
                     $datajson_header['download_content_length'] > 0 &&
                     $datajson_header['download_content_length'] < $max_remote_size)
             ) {
-                $datajson = curl_from_json($datajson_url, false, false);
+                $datajson = null;
+                try {
+                    $datajson = curl_from_json($datajson_url, false, false);
+                }
+                catch (Exception $e) {
+                    $datajson=false;
+                }
+
                 if (!$datajson) {
                     $errors[] = "File not found or couldn't be downloaded";
                 }
@@ -2397,7 +2404,14 @@ class Campaign_model extends CI_Model
         $orgs = rawurlencode($orgs);
         $query = $filter . "-type:harvest%20AND%20organization:(" . $orgs . ")&rows=" . $rows . '&start=' . $offset;
         $uri = 'http://catalog.data.gov/api/3/action/package_search?q=' . $query;
-        $datagov_json = curl_from_json($uri, false);
+
+        $datagov_json = null;
+        try {
+            $datagov_json = curl_from_json($uri, false);
+        }
+        catch (Exception $e) {
+
+        }
 
         if (empty($datagov_json)) return false;
 
