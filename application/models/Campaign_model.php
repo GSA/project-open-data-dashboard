@@ -852,20 +852,13 @@ class Campaign_model extends CI_Model
 
     public function uri_header($url, $redirect_count = 0, $force_shim = false)
     {
-
-        $tmp_dir = $tmp_dir = $this->config->item('archive_dir');
-
-        $status = curl_header($url, true, $tmp_dir, $force_shim);
-        $status = $status['info'];    //content_type and http_code
-
-        if ($status['redirect_count'] == 0 && !(empty($redirect_count))) $status['redirect_count'] = 1;
-        $status['redirect_count'] = $status['redirect_count'] + $redirect_count;
-
-        if (!empty($status['redirect_url'])) {
-            if ($status['redirect_count'] == 0 && $redirect_count == 0) $status['redirect_count'] = 1;
-
-            if ($status['redirect_count'] > 5) return $status;
-            $status = $this->uri_header($status['redirect_url'], $status['redirect_count'], $force_shim);
+        $status = null;
+        try {
+            $status = curl_header($url, true, $this->config->item('archive_dir', $force_shim));
+            $status = $status['info'];    //content_type and http_code
+        }
+        catch (Exception $e) {
+            return false;
         }
 
         if (!empty($status)) {
@@ -913,7 +906,14 @@ class Campaign_model extends CI_Model
                     $datajson_header['download_content_length'] > 0 &&
                     $datajson_header['download_content_length'] < $max_remote_size)
             ) {
-                $datajson = curl_from_json($datajson_url, false, false);
+                $datajson = null;
+                try {
+                    $datajson = curl_from_json($datajson_url, false, false);
+                }
+                catch (Exception $e) {
+                    $datajson=false;
+                }
+
                 if (!$datajson) {
                     $errors[] = "File not found or couldn't be downloaded";
                 }
@@ -1847,7 +1847,14 @@ class Campaign_model extends CI_Model
 
         $tmp_dir = $this->config->item('archive_dir');
 
-        $header = curl_header($url, false, $tmp_dir);
+        $header = null;
+        try {
+            $header = curl_header($url, false, $tmp_dir);
+        }
+        catch (Exception $e) {
+            return false;
+        }
+
         $good_link = false;
         $good_format = true;
 
@@ -2122,12 +2129,12 @@ class Campaign_model extends CI_Model
     {
 
         $milestones = array();
-        
+
         $milestone_count = 1;
         $milestone_type = 'M-13-13 Milestone';
         $milestone_month_firstday = strtotime("2013-11-01");
         $milestone_month_endday = strtotime("2019-08-31");
-      
+
         $milestones = $this->milestone_increment($milestones, $milestone_month_firstday, $milestone_count, $milestone_type, $milestone_month_endday);
 
         $milestone_count = 1;
@@ -2397,7 +2404,14 @@ class Campaign_model extends CI_Model
         $orgs = rawurlencode($orgs);
         $query = $filter . "-type:harvest%20AND%20organization:(" . $orgs . ")&rows=" . $rows . '&start=' . $offset;
         $uri = 'http://catalog.data.gov/api/3/action/package_search?q=' . $query;
-        $datagov_json = curl_from_json($uri, false);
+
+        $datagov_json = null;
+        try {
+            $datagov_json = curl_from_json($uri, false);
+        }
+        catch (Exception $e) {
+$datagov_json = null;
+        }
 
         if (empty($datagov_json)) return false;
 

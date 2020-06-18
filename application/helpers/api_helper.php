@@ -2,9 +2,8 @@
 
 function curl_from_json($url, $array=false, $decode=true) {
 
-	$ch = curl_init();
+    $ch = curl_init();
     curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
-	curl_setopt($ch, CURLOPT_URL, $url);
 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -17,11 +16,16 @@ function curl_from_json($url, $array=false, $decode=true) {
     curl_setopt($ch, CURLOPT_COOKIESESSION, true);
     curl_setopt($ch, CURLOPT_COOKIE, "");
 
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+    curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+    curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
+    $data = safe_curl_exec($url, $ch, true);
 
-	$data=curl_exec($ch);
+    if (curl_errno($ch)) {
+        log_message('error', "curl_header error: " . curl_error($ch));
+        throw new Exception(curl_error($ch), curl_errno($ch));
+    }
+
 	curl_close($ch);
 
     if($decode == true) {
@@ -46,7 +50,6 @@ function curl_header($url, $follow_redirect = true, $tmp_dir = null, $force_shim
   $ch = curl_init();
 
   curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
-  curl_setopt($ch, CURLOPT_URL, $url);
 
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
   curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -62,10 +65,10 @@ function curl_header($url, $follow_redirect = true, $tmp_dir = null, $force_shim
   curl_setopt($ch, CURLOPT_COOKIESESSION, true);
   curl_setopt($ch, CURLOPT_COOKIE, "");
 
-  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
-  curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+  curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+  curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-  $http_heading = curl_exec($ch);
+  $http_heading = safe_curl_exec($url, $ch, $follow_redirect);
 
   $info['header'] = http_parse_headers($http_heading);
   $info['info'] = curl_getinfo($ch);
@@ -94,8 +97,6 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
   $header_dir = $tmp_dir . '/curl_header';
   $headerfile = fopen($header_dir, 'w+');
 
-  curl_setopt($ch, CURLOPT_URL, $url);
-
   curl_setopt($ch, CURLOPT_FILE, $output);
 
   curl_setopt($ch, CURLOPT_WRITEHEADER, $headerfile);
@@ -104,10 +105,15 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
 
   curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
 
-  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $follow_redirect);
-  curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+  curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+  curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-  curl_exec($ch);
+  safe_curl_exec($url, $ch, $follow_redirect);
+
+  if (curl_errno($ch)) {
+    log_message('error', "curl_header error: " . curl_error($ch));
+    throw new Exception(curl_error($ch), curl_errno($ch));
+  }
 
   fclose($headerfile);
 
@@ -123,6 +129,43 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
   return $info;
 
 }
+
+// Do a (potentially recursive) curl request while defending against SSRF attacks
+// TODO https://github.com/GSA/datagov-deploy/issues/1759
+function safe_curl_exec($url, $ch, $follow_redirect = true, $maxRedirs = 10) {
+
+    // We take care of redirects ourselves to deflect SSRF attempts
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+
+    $numRedirects = 0;
+    do {
+        if (!filter_remote_url($url, $ipresolution)) {
+            throw new Exception("Encountered bad URL during curl request: ".$url);
+        }
+
+        // Make sure that the IP curl actually hits is the one that we just validated as OK
+        // This combats DNS Rebinding attacks by binding our request to the IP iniitially resolved.
+        curl_setopt($ch, CURLOPT_RESOLVE, array($ipresolution));
+
+        // Set the target URL
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $http_heading = curl_exec($ch);
+
+        // Watch out for problems
+        if (curl_errno($ch)) {
+            log_message('error', "curl_header error: " . curl_error($ch));
+            throw new Exception(curl_error($ch), curl_errno($ch));
+        }
+
+        // Check for a redirect
+        $url = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
+
+    } while ($follow_redirect               // Continue if redirects were requested
+        && $url != ''                       // ...and we got a redirect
+        && $numRedirects++ < $maxRedirs);   // ...and we haven't we reached the maximum
+
+    return $http_heading;
+  }
 
 
 if (!function_exists('http_parse_headers')) {
@@ -304,14 +347,19 @@ function filter_json( $source_datajson, $dataset_array = false ) {
     return $source_datajson;
 }
 
-
-function filter_remote_url($url) {
+/*
+* Check if a URL is "safe", that is, whether it's not going to result in an SSRF attack.
+* Optionally set a passed reference to a specific IP that was resolved.
+* The format of the string is suitable for use with CURLOPT_RESOLVE.
+*
+*/
+function filter_remote_url($url, &$curlopt_resolve = null) {
     if (empty($url)) {
         return null;
     }
-    $url = filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED);
+    $url = filter_var($url, FILTER_VALIDATE_URL);
 
-    // ban non http/https:
+    // We only accept http/https
     $allowed_schemes = array('http', 'https');
     $scheme = parse_url($url, PHP_URL_SCHEME);
     if (!in_array($scheme, $allowed_schemes)) {
@@ -325,6 +373,12 @@ function filter_remote_url($url) {
         return false;
     }
 
+    // We only accept reasonable ports
+    $port = parse_url($url, PHP_URL_PORT);
+    if ($port != null && $port != 80 && $port != 443 && $port != 8080) {
+        return false;
+    }
+
     // We should read the array of A and AAAA records, and check them against private ranges to protect against SSRF
     for ($i=0; $i < count($resolved); $i++)
     {
@@ -332,12 +386,23 @@ function filter_remote_url($url) {
             if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
                 return false;
             }
-            if ($resolved[$i]["type"] === "AAAA") {
-                if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
-                    return false;
-                }
-            }
+            $lastValidIPV4 = $resolved[$i]["ip"];
         }
+
+        if ($resolved[$i]["type"] === "AAAA") {
+            if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+                return false;
+            }
+            $lastValidIPV6 = $resolved[$i]["ipv6"];
+        }
+    }
+
+    // A return ref was provided, so give callers a string they can use to make sure they're hitting the IP that we approved
+    if (func_num_args() > 1) {
+        $curlopt_resolve = $host
+        . ':' . ($port ? $port : '')
+        . ':'
+        . ($lastValidIPV4 ? $lastValidIPV4 : $lastvalidIPV6);
     }
 
     // filter xss
