@@ -139,22 +139,23 @@ function safe_curl_exec($url, $ch, $follow_redirect = true, $maxRedirs = 10) {
 
     $numRedirects = 0;
     do {
-    if (!filter_remote_url($url)) {
-        throw new Exception("Encountered bad URL during curl request: ".$url);
-    }
+        if (!filter_remote_url($url, $ipresolution)) {
+            throw new Exception("Encountered bad URL during curl request: ".$url);
+        }
 
         // Make sure that the IP curl actually hits is the one that we just validated as OK
-        curl_setopt($ch, CURLOPT_RESOLVE);
+        // This combats DNS Rebinding attacks by binding our request to the IP iniitially resolved.
+        curl_setopt($ch, CURLOPT_RESOLVE, array($ipresolution));
 
-    // Set the target URL
-    curl_setopt($ch, CURLOPT_URL, $url);
-      $http_heading = curl_exec($ch);
+        // Set the target URL
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $http_heading = curl_exec($ch);
 
-      // Watch out for problems
-      if (curl_errno($ch)) {
-        log_message('error', "curl_header error: " . curl_error($ch));
-        throw new Exception(curl_error($ch), curl_errno($ch));
-      }
+        // Watch out for problems
+        if (curl_errno($ch)) {
+            log_message('error', "curl_header error: " . curl_error($ch));
+            throw new Exception(curl_error($ch), curl_errno($ch));
+        }
 
         // Check for a redirect
         $url = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
@@ -346,8 +347,13 @@ function filter_json( $source_datajson, $dataset_array = false ) {
     return $source_datajson;
 }
 
-
-function filter_remote_url($url) {
+/*
+* Check if a URL is "safe", that is, whether it's not going to result in an SSRF attack.
+* Optionally set a passed reference to a specific IP that was resolved.
+* The format of the string is suitable for use with CURLOPT_RESOLVE.
+*
+*/
+function filter_remote_url($url, &$curlopt_resolve = null) {
     if (empty($url)) {
         return null;
     }
@@ -380,13 +386,23 @@ function filter_remote_url($url) {
             if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
                 return false;
             }
+            $lastValidIPV4 = $resolved[$i]["ip"];
         }
 
         if ($resolved[$i]["type"] === "AAAA") {
             if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
                 return false;
             }
+            $lastValidIPV6 = $resolved[$i]["ipv6"];
         }
+    }
+
+    // A return ref was provided, so give callers a string they can use to make sure they're hitting the IP that we approved
+    if (func_num_args() > 1) {
+        $curlopt_resolve = $host
+        . ':' . ($port ? $port : '')
+        . ':'
+        . ($lastValidIPV4 ? $lastValidIPV4 : $lastvalidIPV6);
     }
 
     // filter xss
