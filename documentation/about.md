@@ -8,7 +8,7 @@ The Project Open Data Dashboard is informed by [M-13-13](https://project-open-da
 
  1.	Quarterly review by OMB staff of Leading Indicators in six categories: Enterprise Data Inventory, Public Data Listing, Public Engagement, Privacy & Security, Human Capital, and Use & Impact. For more information see [Leading Indicators Strategy Rubric](./rubric).  
 
- 2.	Automated metrics determined by a script that analyzes [agency.gov] /data.json, /digitalstrategy.json, and /data files every 24 hours until the end of the quarter when a historic snapshot is generated. For more information see [Documentation](./main).   
+ 2.	Automated metrics determined by a script that analyzes agency.gov /data.json, /digitalstrategy.json, and /data files every 24 hours until the end of the quarter when a historic snapshot is generated. For more information see [Documentation](./main).   
 
 ### Open Source 
 The Project Open Data Dashboard is an open source project. Some ways you can contribute are: by reporting bugs, by suggesting new features, by translating content to a new language, by writing or editing documentation, by writing specifications, by writing code and documentation (no pull request is too small: fix typos, add code comments, clean up inconsistent whitespace), by reviewing pull requests, and by closing issues. Before contributing, we encourage you to read our CONTRIBUTING guide, our LICENSE, and our README.
