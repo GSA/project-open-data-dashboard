@@ -9,7 +9,7 @@ class ApiTest extends TestCase
      * We could ignore __construct, but since CodeIgniter filters that method out anyway its OK to include it.
      */
     public function testOnlyExpectedControllerMethodsAreExposed() {
-        $expected_public_methods = '{"Campaign":["__construct","index","convert","csv_to_json","csv_field_mapper","schema_map_filter","csv","digitalstrategy","status","status_review_update","status_update","validate","upgrade_schema","get_instance"],"Docs":["__construct","index","routes","merge","get_instance"],"Healthcheck":["index","__construct","get_instance"],"Import":["__construct","index","tracker","match_agency_slugs","match_bureaus","get_instance"],"Migrate":["__construct","index","get_instance"],"Offices":["__construct","index","export","detail","routes","get_instance"],"Welcome":["index","__construct","get_instance"]}';
+        $expected_public_methods = '{"Campaign":["__construct","index","convert","csv_to_json","csv_field_mapper","schema_map_filter","csv","digitalstrategy","status","status_review_update","status_update","validate","upgrade_schema","get_instance"],"Docs":["__construct","index","get_instance"],"Export":["__construct","index","get_instance"],"Healthcheck":["index","__construct","get_instance"],"Import":["__construct","index","tracker","match_agency_slugs","match_bureaus","get_instance"],"Merge":["__construct","index","get_instance"],"Migrate":["__construct","index","get_instance"],"Offices":["__construct","index","export","detail","all","qa","milestone","get_instance"],"Welcome":["index","__construct","get_instance"]}';
 
         $public_methods = array();
         $controllerFiles = glob(APPPATH.'controllers/*.php');

@@ -49,14 +49,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'docs/routes';
+$route['default_controller'] = 'offices/qa';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['healthcheck'] = 'healthcheck/index';
-
-$route['export'] = "docs/routes/export";
-$route['merge'] = "docs/merge";
 $route['upgrade-schema'] = "campaign/upgrade_schema";
 
 $route['digitalstrategy'] = "campaign/digitalstrategy";
@@ -67,26 +63,13 @@ $route['changeset'] = "campaign/changeset";
 $route['datagov/status-update'] = "campaign/status_update";
 $route['datagov/status-review-update'] = "campaign/status_review_update";
 
-
 $route['datagov/(:any)']                = "campaign/$1";
 $route['datagov/(:any)/']               = "campaign/$1";
 $route['datagov/(:any)/(:any)']         = "campaign/$1/$2";
 $route['datagov/(:any)/(:any)/(:any)']  = "campaign/$1/$2/$3";
 
-$route['offices/all']       = "offices/routes/all";
-$route['offices/detail']    = "offices/routes/detail";
-$route['offices/qa']        = "offices/routes/qa";
+$route['docs/(:any)']       = "docs/index/$1";
 
 // Specific date reports (of the form Y-m-d) can have up to four parameters
 $route['offices/(\d{4}-\d{2}-\d{2})/?(:any)?/?(:any)?/?(:any)?/?(:any)?'] =
-    "offices/routes/$1/$2/$3/$4";
-
-// "Special" doc pages
-$route['docs/(intro|export|user)']  = "docs/routes/$1";
-
-// Search for a file named `$1.md` to transform)
-$route['docs/(:any)']               = "docs/routes/$1";
-
-//$route['login'] = "auth/session/github";
-$route['logout'] = "user/logout";
-$route['account'] = "docs/routes/user";
+    "offices/milestone/$1/$2/$3/$4";

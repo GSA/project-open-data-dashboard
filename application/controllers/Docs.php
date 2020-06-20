@@ -61,29 +61,4 @@ class Docs extends CI_Controller {
 		$this->load->view('docs', $data);
 	}
 
-
-	public function routes($route = 'intro') {
-
-		if ($route == 'intro') {
-            redirect(base_url().'offices/qa');
-		} else if ($route == 'export') {
-			$this->load->view('export');
-		} else if ($route == 'user') {
-			$this->load->view('user');
-		} else {
-			$this->index($route);
-		}
-
-	}
-
-
-	public function merge() {
-		$this->load->view('merge');
-	}
-
-
-
 }
-
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
