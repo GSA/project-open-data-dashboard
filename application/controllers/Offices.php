@@ -381,24 +381,20 @@ class Offices extends CI_Controller {
 
 	}
 
-	public function routes($route, $parameter1 = null, $parameter2 = null, $parameter3 = null, $parameter4 = null) {
+    public function all() {
+        return $this->index($milestone=null, $output=null, $show_all_offices = true);
+    }
 
-		if($route == 'all') {
-			return $this->index($milestone=null, $output=null, $show_all_offices = true);
-		}
+    public function qa() {
+        $this->load->model('campaign_model', 'campaign');
+        $milestones = $this->campaign->milestones_model();
+        $milestone 	= $this->campaign->milestone_filter(null, $milestones);
 
-		if($route == 'detail') {
-			return $this->detail($parameter1, $parameter2, $parameter3, $parameter4);
-		}
+        return $this->index($milestone=$milestone->current, $output=null, $show_all_offices=true, $show_all_fields=false, $show_qa_fields=true);
 
-		if($route == 'qa') {
+    }
 
-			$this->load->model('campaign_model', 'campaign');
-			$milestones = $this->campaign->milestones_model();
-			$milestone 	= $this->campaign->milestone_filter(null, $milestones);
-
-			return $this->index($milestone=$milestone->current, $output=null, $show_all_offices=true, $show_all_fields=false, $show_qa_fields=true);
-		}
+    public function milestone($route, $parameter1 = null, $parameter2 = null, $parameter3 = null, $parameter4 = null) {
 
 		// check if it's a milestone date
     	$d = DateTime::createFromFormat('Y-m-d', $route);
@@ -421,7 +417,6 @@ class Offices extends CI_Controller {
     		} else {
     			$show_qa_fields = false;
     		}
-
 
     		return $this->index($milestone=$route, $output=null, $show_all_offices, $show_all_fields, $show_qa_fields);
     	}

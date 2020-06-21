@@ -10,7 +10,6 @@ $project_shared_path = getenv('PROJECT_SHARED_PATH') ?: realpath(APPPATH . '..')
 $config['project_shared_path'] = $project_shared_path;
 $config['download_dir'] = $project_shared_path . '/downloads';
 $config['archive_dir'] = $project_shared_path . '/archive';
-$config['docs_path'] = 'https://raw.githubusercontent.com/GSA/project-open-data-dashboard/master/documentation/';
 
 $config['s3_bucket'] = getenv('S3_BUCKET') ?: '';
 $config['s3_prefix'] = getenv('S3_PREFIX') ?: '';
