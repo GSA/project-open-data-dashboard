@@ -146,7 +146,8 @@ class APIHelperTest extends TestCase
         $badRedirects[] = array("https://x.1.ip6.name/");
 
         // xip.io dynamically creates a IPv4 DNS entry that resolves to the subdomain
-        // $badRedirects[] = array("https://127.0.0.1.xip.io/");
+        // Should change to local DNS service, see here for details: https://github.com/GSA/datagov-deploy/issues/1760
+        $badRedirects[] = array("https://127.0.0.1.xip.io/");
 
         return $badRedirects;
     }
