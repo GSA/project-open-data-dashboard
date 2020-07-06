@@ -57,6 +57,8 @@ Prerequisites:
 * [Docker Engine](https://docs.docker.com/install/) v18+
 * [Docker Compose](https://docs.docker.com/compose/install/) v1.24+
 
+By default, the `ENVIRONMENT` variable is set to production so that error messages will not be displayed. To display these messages while developing, you should edit your `.env` file to include the variable `CI_ENV` set to anything other than `production`. See [index.php](https://github.com/GSA/project-open-data-dashboard/blob/master/public/index.php#L56-L91) for more details.
+
 ### Setup
 
 Install application dependencies
