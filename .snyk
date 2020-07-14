@@ -2,8 +2,8 @@
 version: v1.13.4
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-PHP-TWIGTWIG-72239:
+  SNYK-PHP-CODEIGNITERFRAMEWORK-560941:
     - '*':
-        reason: CVE is disputed and incomplete
-        expires: 2019-04-06T06:54:58.310Z
+        reason: Dashboard does not have privileged users so not relevant, and no mitigation in place
+        expires: 2020-09-01T06:00:00.000Z
 patch: {}
