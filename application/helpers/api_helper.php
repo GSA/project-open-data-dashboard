@@ -7,6 +7,7 @@ function curl_from_json($url, $array=false, $decode=true) {
 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 60);
 
     curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
     curl_setopt($ch, CURLOPT_FILETIME, true);
@@ -100,7 +101,7 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
   curl_setopt($ch, CURLOPT_FILE, $output);
 
   curl_setopt($ch, CURLOPT_WRITEHEADER, $headerfile);
-  curl_setopt($ch, CURLOPT_TIMEOUT, 240);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 60);
   curl_setopt($ch, CURLOPT_HEADER, true);
 
   curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
