@@ -561,6 +561,8 @@ class Campaign extends CI_Controller
             $this->db->where('cfo_act_agency', 'true');
         } else if ($id == 'omb-monitored') {
             $this->db->where('omb_monitored', 'true');
+        } else if ($id == 'long_running') {
+            $this->db->where('long_running', 'true');
         }
 
         if (is_numeric($id)) {
