@@ -114,10 +114,6 @@ class Campaign_model extends CI_Model
                 if ($crawl['crawl_status'] == 'in_progress' && empty($prioritize[$crawl['office_id']])) {
                     $de_prioritize[$crawl['office_id']] = true;
                 }
-                // deprioritize if long_running is true
-                if ($crawl['long_running'] == 'TRUE') {
-                    $de_prioritize[$crawl['office_id']] = true;
-                }
             }
 
             $start = array();

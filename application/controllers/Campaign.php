@@ -556,12 +556,14 @@ class Campaign extends CI_Controller
         // Build query for list of offices to update
         $this->db->select('url, id');
 
-        // Filter for certain offices
+        // Filter for certain offices and don't use the long-running unless explicity called
         if ($id == 'cfo-act') {
             $this->db->where('cfo_act_agency', 'true');
+            $this->db->where('long_running', 'false')
         } else if ($id == 'omb-monitored') {
             $this->db->where('omb_monitored', 'true');
-        } else if ($id == 'long_running') {
+            $this->db->where('long_running', 'false');
+        } else if ($id == 'long-running') {
             $this->db->where('long_running', 'true');
         }
 
