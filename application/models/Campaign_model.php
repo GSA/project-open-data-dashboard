@@ -91,7 +91,7 @@ class Campaign_model extends CI_Model
     public function prioritize_crawl($offices, $milestone)
     {
 
-        $this->db->select('office_id, crawl_status, crawl_start, crawl_end', 'long_running');
+        $this->db->select('office_id, crawl_status, crawl_start, crawl_end');
         $this->db->where('milestone', $milestone);
 
         $this->db->where('crawl_status <> ', 'archive');
@@ -127,7 +127,7 @@ class Campaign_model extends CI_Model
                     $start[] = $office;
                 }
 
-                // End with offices that didn't complete last crawl or are long_running
+                // End with offices that didn't complete last crawl
                 if (!empty($de_prioritize[$office->id])) {
                     $end[] = $office;
                 }
