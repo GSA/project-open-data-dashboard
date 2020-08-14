@@ -8,11 +8,14 @@ class Migration_add_long_running_flag extends CI_Migration
     public function up()
     {
         // add our column if it doesn't exist
-        $this->CI->db->query("CALL add_column_if_not_exists('offices', 'long_running', varchar(256) CHARACTER SET latin1 DEFAULT 'FALSE' AFTER `cfo_act_agency`)");
+        $this->db->query("ALTER TABLE `offices` ADD `long_running` varchar(256) CHARACTER SET latin1 DEFAULT 'FALSE' AFTER `omb_monitored`;");
+        // **fails** $this->CI->db->query("CALL add_column_if_not_exists('offices', 'long_running', 'varchar(15)')");
+        // **fails** $this->CI->db->query("CALL add_column_if_not_exists('offices', 'long_running', 'varchar(15) DEFAULT "FALSE"')");
+        // **fails** $this->CI->db->query(`CALL add_column_if_not_exists('offices', 'long_running', 'varchar(256) CHARACTER SET latin1 DEFAULT "FALSE" AFTER "cfo_act_agency"')`);
         // these are the offices that have long running crawls
         $this->db->query("UPDATE offices SET long_running = 'TRUE' WHERE name IN (
             'Department of Commerce',
-            'Depart of Health and Human Services',
+            'Department of Health and Human Services',
             'Department of the Interior',
             'Department of Transportation',
             'Environmental Protection Agency',

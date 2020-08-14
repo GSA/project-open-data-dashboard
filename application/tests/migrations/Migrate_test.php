@@ -210,7 +210,7 @@ class MigrateTest extends TestCase
 
        $long_running_agencies = [
          'Department of Commerce',
-         'Depart of Health and Human Services',
+         'Department of Health and Human Services',
          'Department of the Interior',
          'Department of Transportation',
          'Environmental Protection Agency',
@@ -218,6 +218,7 @@ class MigrateTest extends TestCase
          'National Aeronautics and Space Administration',
          'U.S. Agency for International Development'
        ];
+       sort($long_running_agencies);
 
        $this->assertEquals($agencies, $long_running_agencies);
    }

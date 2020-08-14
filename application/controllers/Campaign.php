@@ -559,7 +559,7 @@ class Campaign extends CI_Controller
         // Filter for certain offices and don't use the long-running unless explicity called
         if ($id == 'cfo-act') {
             $this->db->where('cfo_act_agency', 'true');
-            $this->db->where('long_running', 'false')
+            $this->db->where('long_running', 'false');
         } else if ($id == 'omb-monitored') {
             $this->db->where('omb_monitored', 'true');
             $this->db->where('long_running', 'false');
