@@ -37,9 +37,9 @@ If you just wanted to update the digitalstrategy.json status for the Department 
 
 `$ php public/index.php campaign status 49015 digitalstrategy`
 
-The options for [id] are: `all`,`cfo-act`, `omb-monitored`, or the ID provided by the [USA.gov Federal Agency Directory API](http://www.usa.gov/About/developer-resources/federal-agency-directory/)
+There are agencies whose crawls take a long time to complete. These are identified with the `id` of `long-running`. You can find a current list of these [in this db migration](application/migrations/010_add_long_running_flag.php). To initiate a full-scan for these agencies, you'd run:
 
-The options for [component] are: `all`, `datajson`, `datapage`, `digitalstrategy`, `download`, `full-scan`. 
+`$ php public/index.php campaign status long-running full-scan`
 
 * The `datajson` component captures the basic characteristics of a request to an agency's data.json file (like whether it returns an HTTP 200) and then attempts to parse the file, validate against the schema, and provide other reporting metrics like the number of datasets listed. 
 * The `digitalstrategy` component captures the basic characteristics of a request to an agency's digitalstrategy.json file (like whether it returns an HTTP 200) 
