@@ -41,6 +41,10 @@ There are agencies whose crawls take a long time to complete. These are identifi
 
 `$ php public/index.php campaign status long-running full-scan`
 
+The options for [id] are: `all`,`cfo-act`, `omb-monitored`, `long-running` or the ID provided by the [USA.gov Federal Agency Directory API](http://www.usa.gov/About/developer-resources/federal-agency-directory/).
+
+The options for [component] are: `all`, `datajson`, `datapage`, `digitalstrategy`, `download`, `full-scan`. 
+
 * The `datajson` component captures the basic characteristics of a request to an agency's data.json file (like whether it returns an HTTP 200) and then attempts to parse the file, validate against the schema, and provide other reporting metrics like the number of datasets listed. 
 * The `digitalstrategy` component captures the basic characteristics of a request to an agency's digitalstrategy.json file (like whether it returns an HTTP 200) 
 * The `datapage` component captures the basic characteristics of a request to an agency's /data page (like whether it returns an HTTP 200)
