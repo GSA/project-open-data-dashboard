@@ -190,4 +190,36 @@ class MigrateTest extends TestCase
 
    }
 
+
+   public function testLongRunningOfficesArePresentAndFlagged()
+   {
+       // Get an array of the names of all the OMB-monitored Offices in the DB, sorted
+       $this->CI->db->select('*');
+       $this->CI->db->from('offices');
+       $this->CI->db->where('offices.long_running', 'true');
+       $this->CI->db->order_by("offices.name", "asc");
+       $query = $this->CI->db->get();
+       $results = $query->result();
+       $query->free_result();
+
+       $agencies = [];
+       foreach ($results as $agency) {
+           $agencies[] = $agency->name;
+       }
+       sort($agencies);
+
+       $long_running_agencies = [
+         'Department of Commerce',
+         'Department of Health and Human Services',
+         'Department of the Interior',
+         'Department of Transportation',
+         'Environmental Protection Agency',
+         'Federal Energy Regulatory Commission',
+         'National Aeronautics and Space Administration',
+         'U.S. Agency for International Development'
+       ];
+       sort($long_running_agencies);
+
+       $this->assertEquals($agencies, $long_running_agencies);
+   }
 }
