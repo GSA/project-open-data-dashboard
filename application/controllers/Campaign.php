@@ -576,9 +576,9 @@ class Campaign extends CI_Controller
         if ($query->num_rows() > 0) {
             $offices = $query->result();
 
-            // if (count($offices) > 1) {
-            //     $offices = $this->campaign->prioritize_crawl($offices, $milestone->current);
-            // }
+            if (count($offices) > 1) {
+                $offices = $this->campaign->prioritize_crawl($offices, $milestone->current);
+            }
 
             $this->status_offices($offices, $component, $selected_milestone, $url_override);
 
