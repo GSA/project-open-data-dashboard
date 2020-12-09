@@ -5,5 +5,5 @@ ignore:
   SNYK-PHP-CODEIGNITERFRAMEWORK-560941:
     - '*':
         reason: Dashboard does not have privileged users so not relevant, and no mitigation in place
-        expires: 2020-12-01T06:00:00.000Z
+        expires: 2021-03-01T06:00:00.000Z
 patch: {}
