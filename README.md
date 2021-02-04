@@ -141,9 +141,11 @@ Commit the updated composer.json and composer.lock.
 Assuming you're logged in for the Cloud Foundry CLI:
 
 ```sh
-$ cf create-service aws-rds shared-mysql database
+$ cf create-service aws-rds shared-mysql dashboard-db
 
-$ cf create-user-provided-service secrets -p '{
+$ cf create-service s3 basic dashboard-s3
+
+$ cf create-user-provided-service dashboard-secrets -p '{
   "ENCRYPTION_KEY": "long-random-string"
 }'
 
