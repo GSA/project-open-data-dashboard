@@ -87,7 +87,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - fcs
           requires:
             - integration
             - unit
@@ -97,7 +97,7 @@ workflows:
             - unit
           filters:
             branches:
-              only: master
+              only: fcs
   nightly:
     triggers:
       - schedule:
@@ -105,6 +105,6 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - fcs
     jobs:
       - run-crawls
