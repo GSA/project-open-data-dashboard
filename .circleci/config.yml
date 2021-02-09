@@ -56,18 +56,6 @@ jobs:
       - deploy:
           name: Push to Cloud Foundry
           command: cf_deploy.sh dashboard gsa-datagov prod
-
-  deploy-sandbox:
-    docker:
-      - image: circleci/python:3.6
-    environment:
-      JENKINS_URL: https://ci.sandbox.datagov.us
-    steps:
-      - checkout
-      - deploy:
-          name: jenkins
-          command: bin/jenkins_build deploy-ci-app-dashboard
-
   run-crawls:
     docker:
       - image: 18fgsa/cloud-foundry-cli
@@ -94,13 +82,6 @@ workflows:
     jobs:
       - integration
       - unit
-      - deploy-sandbox:
-          requires:
-            - integration
-            - unit
-          filters:
-            branches:
-              only: fcs
       - deploy-staging:
           requires:
           - integration
