@@ -13,7 +13,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: run-tests
-        run: make cloud-test
+        run: make test
 
   deploy-development:
     if: github.ref == 'refs/heads/develop'
