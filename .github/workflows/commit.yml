@@ -12,10 +12,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: unit-tests
-        run: make unit-tests
-      - name: integration-tests
-        run: make integration-tests
+      - name: run-tests
+        run: make test
 
   deploy-development:
     if: github.ref == 'refs/heads/develop'

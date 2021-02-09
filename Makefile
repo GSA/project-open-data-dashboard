@@ -11,7 +11,7 @@ clean:
 down:
 	docker-compose down
 
-test: unit-tests integration-tests
+test: build up unit-tests integration-tests
 
 install-dependencies:
 	bin/composer install --no-dev
