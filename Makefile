@@ -28,11 +28,11 @@ unit-tests: install-dev-dependencies
 	docker-compose exec app composer test
 
 up:
-	docker-compose up -dt
-	@for i in `seq 1 10`; do docker-compose exec app true && exit 0; echo "Waiting for docker ready..."; sleep 2; done; exit 1
-	@docker-compose exec app docker/wait_for_db
-	mkdir -p ./uploads && docker-compose exec app chmod 777 ./uploads
-	docker-compose exec app chmod 777 ./archive
+	docker-compose up -d
+	@for i in `seq 1 10`; do docker-compose exec -T app true && exit 0; echo "Waiting for docker ready..."; sleep 2; done; exit 1
+	@docker-compose exec -T app docker/wait_for_db
+	docker-compose execp app -T mkdir -p ./uploads && docker-compose exec -T app chmod 777 ./uploads
+	docker-compose exec -T app chmod 777 ./archive
 
 update-dependencies:
 	bin/composer update
