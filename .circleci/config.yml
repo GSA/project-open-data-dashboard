@@ -35,7 +35,7 @@ jobs:
           name: Run unit tests
           command: make unit-tests
 
-  deploy:
+  deploy-staging:
     docker:
       - image: 18fgsa/cloud-foundry-cli
         environment:
@@ -45,6 +45,17 @@ jobs:
       - deploy:
           name: Push to Cloud Foundry
           command: cf_deploy.sh dashboard gsa-datagov staging
+
+  deploy-production:
+    docker:
+      - image: 18fgsa/cloud-foundry-cli
+        environment:
+          CF_API: https://api.fr.cloud.gov
+    steps:
+      - checkout
+      - deploy:
+          name: Push to Cloud Foundry
+          command: cf_deploy.sh dashboard gsa-datagov prod
 
   deploy-sandbox:
     docker:
@@ -98,6 +109,14 @@ workflows:
           filters:
             branches:
               only: master
+      - deploy-production:
+          requires:
+            - integration
+            - unit
+            - deploy-staging
+          filters:
+            branches:
+              only: main
   nightly:
     triggers:
       - schedule:

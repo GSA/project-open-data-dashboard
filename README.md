@@ -137,19 +137,22 @@ Commit the updated composer.json and composer.lock.
 
 ### Quickstart with an empty database
 
+Copy the [vars.yml.template file](./vars.yml.template) and rename it to vars.yml. Edit any values following the comments in the file.
 
-Assuming you're logged in for the Cloud Foundry CLI:
+If you are not logged in for the Cloud Foundry CLI, follow the steps [in this guide](https://docs.cloudfoundry.org/cf-cli/getting-started.html)
+
+Assuming you're logged in for the Cloud Foundry CLI, Run the following commands and replacing ${app_name} with the value in your vars.yml file.
 
 ```sh
-$ cf create-service aws-rds shared-mysql dashboard-db
+$ cf create-service aws-rds shared-mysql ${app_name}-db
 
-$ cf create-service s3 basic dashboard-s3
+$ cf create-service s3 basic ${app_name}-s3
 
-$ cf create-user-provided-service dashboard-secrets -p '{
+$ cf create-user-provided-service ${app_name}-secrets -p '{
   "ENCRYPTION_KEY": "long-random-string"
 }'
 
-$ cf push
+$ cf push --vars-file vars.yml
 Waiting for app to start...
 
 name:              app
