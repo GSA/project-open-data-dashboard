@@ -2,6 +2,13 @@
 
 all: clean build install-dev-dependencies up test
 
+cloud-test: build cloud-up test
+
+cloud-up:
+	docker-compose up -d
+	docker-compose exec app docker/wait_for_db
+	docker-compose exec app mkdir -p ./uploads && docker-compose exec app chmod 777 ./uploads && chmod 777 ./archive
+
 build:
 	docker-compose build
 
@@ -11,7 +18,7 @@ clean:
 down:
 	docker-compose down
 
-test: build up unit-tests integration-tests
+test: unit-tests integration-tests
 
 install-dependencies:
 	bin/composer install --no-dev
