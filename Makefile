@@ -22,10 +22,10 @@ install-dev-dependencies:
 	bin/composer install
 
 integration-tests:
-	docker-compose exec app bats -r tests/
+	docker-compose exec -T app bats -r tests/
 
 unit-tests: install-dev-dependencies
-	docker-compose exec app composer test
+	docker-compose exec -T app composer test
 
 up:
 	docker-compose up -d
