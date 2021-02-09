@@ -1,0 +1,81 @@
+---
+name: commit
+
+on:
+  push:
+
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: unit-tests
+        run: make unit-tests
+      - name: integration-tests
+        run: make integration-tests
+
+  deploy-development:
+    if: github.ref == 'refs/heads/develop'
+    name: deploy (development)
+    environment: development
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: deploy
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: push dashboard --vars-file vars.development.yml --strategy rolling
+          org: gsa-datagov
+          space: development
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}
+      - name: smoke test
+        run: curl --fail --silent https://dashboard-dev-datagov.app.cloud.gov/healthcheck?$(date +%s)
+
+  deploy-staging:
+    if: github.ref == 'refs/heads/main'
+    name: deploy (staging)
+    environment: staging
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: deploy
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: push dashboard --vars-file vars.staging.yml --strategy rolling
+          org: gsa-datagov
+          space: staging
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}
+      - name: smoke test
+        run: curl --fail --silent https://dashboard-stage-datagov.app.cloud.gov/healthcheck?$(date +%s)
+
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
+    name: deploy (production)
+    environment: production
+    runs-on: ubuntu-latest
+    needs:
+      - deploy-staging
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: deploy
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: push dashboard --vars-file vars.production.yml --strategy rolling
+          org: gsa-datagov
+          space: prod
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}
+      - name: smoke test
+        run: curl --fail --silent https://dashboard-prod-datagov.app.cloud.gov/healthcheck?$(date +%s)

@@ -198,6 +198,17 @@ In a separate terminal session, use the connection information to make a MySQL c
 
 After a restore, you should be able to view an agency's detail page, such as: https://&lt;ROUTE&gt;/offices/detail/49015/2017-08-31
 
+### CI configuration
+
+Create a GitHub environment for each application you're deploying. Each
+GH environment should be configured with secrets from a [ci-deployer service
+account](https://github.com/GSA/datagov-deploy/wiki/Cloud.gov-Cheat-Sheet#space-organization).
+
+Secret name | Description
+----------- | -----------
+CF_SERVICE_AUTH | The service key password.
+CF_SERVICE_USER | The service key username.
+
 ## Known issues
 
 The agency hierarchy is designed to be populated from the `contacts` API at https://www.usa.gov/api/USAGovAPI/contacts.json/contact, but that is no longer available, so these
