@@ -27,7 +27,7 @@ unit-tests: install-dev-dependencies
 
 up:
 	docker-compose up -d
-	mkdir -p ./uploads && docker-compose exec app chmod 777 ./uploads
+	docker-compose exec app mkdir -p ./uploads && docker-compose exec app chmod 777 ./uploads
 	docker-compose exec app chmod 777 ./archive
 
 
