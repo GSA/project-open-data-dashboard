@@ -87,7 +87,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
           requires:
             - integration
             - unit
@@ -97,7 +97,7 @@ workflows:
             - unit
           filters:
             branches:
-              only: master
+              only: main
   nightly:
     triggers:
       - schedule:
@@ -105,6 +105,6 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
     jobs:
       - run-crawls
