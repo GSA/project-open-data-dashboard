@@ -94,25 +94,22 @@ workflows:
     jobs:
       - integration
       - unit
-      - deploy:
-          filters:
-            branches:
-              only:
-                - master
-          requires:
-            - integration
-            - unit
       - deploy-sandbox:
           requires:
             - integration
             - unit
           filters:
             branches:
-              only: master
+              only: fcs
+      - deploy-staging:
+          requires:
+          - integration
+          - unit
+          filters:
+            branches:
+              only: main
       - deploy-production:
           requires:
-            - integration
-            - unit
             - deploy-staging
           filters:
             branches:
