@@ -18,7 +18,6 @@ applications:
   routes: ((routes))
   health-check-type: http
   health-check-http-endpoint: /healthcheck
-  random-route: true
   env:
     APP_DIR: /home/vcap/app
   processes:
