@@ -1,20 +1,23 @@
 ---
+# To apply this manifest: cf push --vars-file vars.yml
 default_config: &defaults
   disk_quota: 512M
   timeout: 180
   services:
-    - dashboard-db       # cf create-service aws-rds shared-mysql dashboard-db
-    - dashboard-s3       # cf create-service s3 basic dashboard-s3
-    - dashboard-secrets  # cf create-user-provided-service dashboard-secrets -p '{
+    - ((app_name))-db       # cf create-service aws-rds shared-mysql dashboard-db
+    - ((app_name))-s3       # cf create-service s3 basic dashboard-s3
+    - ((app_name))-secrets  # cf create-user-provided-service dashboard-secrets -p '{
                # "ENCRYPTION_KEY": "long-random-string"
                # }'
 
 applications:
-- name: dashboard
+- name: ((app_name))
   <<: *defaults
   memory: 64M
-  instances: 1
-  random-route: true
+  instances: ((instances))
+  routes: ((routes))
+  health-check-type: http
+  health-check-http-endpoint: /healthcheck
   env:
     APP_DIR: /home/vcap/app
   processes:

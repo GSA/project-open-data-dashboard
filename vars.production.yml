@@ -1,0 +1,8 @@
+app_name: dashboard
+
+# Number of application instances to run in cloud.gov
+instances: 2
+
+# Routes to assign to this application. This must be globally unique within cloud.gov.
+routes:
+  - route: dashboard-prod-datagov.app.cloud.gov

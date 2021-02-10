@@ -22,3 +22,5 @@ composer.phar
 # Intellij
 .idea
 
+# cloud.gov deployment variables
+vars.yml
