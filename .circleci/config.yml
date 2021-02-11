@@ -1,0 +1,12 @@
+---
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python
+    steps:
+      - run:
+          name: N/A
+          command: |
+            echo See GitHub actions for CI.
+            echo ok
