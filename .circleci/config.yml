@@ -97,7 +97,7 @@ workflows:
             - unit
           filters:
             branches:
-              only: main
+              only: fcs
   nightly:
     triggers:
       - schedule:
