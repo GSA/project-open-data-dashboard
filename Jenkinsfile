@@ -13,7 +13,7 @@ pipeline {
           steps {
             ansiColor('xterm') {
               echo 'Deploying with Ansible'
-              copyArtifacts parameters: "branch_name=develop", projectName: 'deploy-ci-platform', selector: lastSuccessful()
+              copyArtifacts projectName: 'deploy-ci-platform-mb/develop', selector: lastSuccessful()
               sh 'mkdir deploy && tar xzf datagov-deploy.tar.gz -C deploy'
               dir('deploy') {
                 sh 'bin/jenkins-deploy init'
@@ -38,7 +38,7 @@ pipeline {
         stage('deploy:init') {
           steps {
             ansiColor('xterm') {
-              copyArtifacts parameters: 'branch_name=master', projectName: 'deploy-ci-platform', selector: lastSuccessful()
+              copyArtifacts projectName: 'deploy-ci-platform-mb/master', selector: lastSuccessful()
               sh 'mkdir deploy && tar xzf datagov-deploy.tar.gz -C deploy'
               dir('deploy') {
                 sh 'bin/jenkins-deploy init'
@@ -77,7 +77,7 @@ pipeline {
   }
   post {
     always {
-      step([$class: 'GitHubIssueNotifier', issueAppend: true])
+      step([$class: 'GitHubIssueNotifier', issueAppend: true, issueRepo: 'https://github.com/GSA/datagov-deploy.git'])
       cleanWs()
     }
   }
