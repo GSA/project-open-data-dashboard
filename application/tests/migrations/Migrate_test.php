@@ -164,7 +164,6 @@ class MigrateTest extends TestCase
             'National Endowment for the Humanities',
             'National Mediation Board',
             'National Transportation Safety Board',
-            'Navy',
             'Nuclear Waste Technical Review Board',
             'Occupational Safety and Health Review Commission',
             'Office of Government Ethics',
@@ -184,6 +183,7 @@ class MigrateTest extends TestCase
             'U.S. Commission of Fine Arts',
             'U.S. Commodity Futures Trading Commission',
             'U.S. International Trade Commission',
+            'U.S. Navy',
             'U.S. Trade and Development Agency',
             'US Agency for Global Media'
         ];
