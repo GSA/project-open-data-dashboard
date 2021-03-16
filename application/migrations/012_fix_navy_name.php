@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_fix_nasa_url extends CI_Migration
+class Migration_fix_navy_name extends CI_Migration
 {
 
     public function up()
