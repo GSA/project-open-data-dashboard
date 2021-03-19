@@ -3,6 +3,9 @@ app_name: dashboard
 # Number of application instances to run in cloud.gov
 instances: 1
 
+new_relic_app_name: dashboard
+new_relic_monitor_mode: true
+
 # Routes to assign to this application. This must be globally unique within cloud.gov.
 routes:
   - route: dashboard-prod-datagov.app.cloud.gov
