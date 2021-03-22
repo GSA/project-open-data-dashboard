@@ -14,7 +14,7 @@ function vcap_get_service () {
   echo $VCAP_SERVICES | jq --raw-output --arg service_name "$service_name" ".[][] | select(.name == \$service_name) | $path"
 }
 
-export NEW_RELIC_LICENSE_KEY=$(vcap_get_service secrets .credentials.NEW_RELIC_LICENSE_KEY)
+export NEWRELIC_LICENSE=$(vcap_get_service secrets .credentials.NEWRELIC_LICENSE)
 
 mkdir -p $APP_DIR/uploads
 chmod 777 $APP_DIR/uploads
