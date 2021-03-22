@@ -16,6 +16,7 @@ function vcap_get_service () {
 
 APP_NAME=$(echo $VCAP_APPLICATION | jq -r '.application_name')
 
+export NEWRELIC_HOST: gov-collector.newrelic.com
 export NEWRELIC_LICENSE=$(vcap_get_service secrets .credentials.NEWRELIC_LICENSE)
 
 mkdir -p $APP_DIR/uploads
