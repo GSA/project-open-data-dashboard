@@ -380,18 +380,18 @@ function filter_remote_url($url, &$curlopt_resolve = null) {
         return false;
     }
 
-    // We should read the array of A and AAAA records, and check them against private ranges to protect against SSRF
+    // Check the array of A and AAAA records to make sure they don't resolve to private ranges to protect against SSRF
     for ($i=0; $i < count($resolved); $i++)
     {
         if ($resolved[$i]["type"] === "A") {
-            if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+            if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
                 return false;
             }
             $lastValidIPV4 = $resolved[$i]["ip"];
         }
 
         if ($resolved[$i]["type"] === "AAAA") {
-            if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+            if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
                 return false;
             }
             $lastValidIPV6 = $resolved[$i]["ipv6"];
