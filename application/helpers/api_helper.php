@@ -367,8 +367,14 @@ function filter_remote_url($url, &$curlopt_resolve = null) {
         return false;
     }
 
-    // We don't accept unresolvable hostnames or raw IP addresses
     $host = parse_url($url, PHP_URL_HOST);
+
+    // We don't accept raw IP addresses
+    if (filter_var($host, FILTER_VALIDATE_IP)) {
+        return false;
+    }
+
+    // ...or unresolvable hostnames
     $resolved = dns_get_record($host, DNS_A + DNS_AAAA);
     if (!$resolved) {
         return false;
