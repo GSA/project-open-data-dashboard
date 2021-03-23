@@ -4,6 +4,7 @@ FROM alpine:latest
 RUN apk --no-cache upgrade
 RUN apk add --no-cache apache2 \
     bash \
+    curl \
     git \
     jq \
     mariadb \
