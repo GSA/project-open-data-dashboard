@@ -20,9 +20,9 @@ applications:
   health-check-http-endpoint: /healthcheck
   env:
     APP_DIR: /home/vcap/app
-    NEW_RELIC_APP_NAME: ((new_relic_app_name))
-    NEW_RELIC_HOST: gov-collector.newrelic.com
-    NEW_RELIC_MONITOR_MODE: ((new_relic_monitor_mode))
+    # NEW_RELIC_APP_NAME and NEW_RELIC_MONITOR_MODE
+    # can't be set in the PHP buildpack extension
+    NEWRELIC_HOST: gov-collector.newrelic.com
   processes:
   - type: web
     command: $HOME/.bp/bin/start
