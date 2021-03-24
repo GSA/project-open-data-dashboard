@@ -30,7 +30,7 @@ jobs:
         env:
           NEWRELIC_LICENSE: ${{secrets.NEWRELIC_LICENSE}}
         with:
-          command: push dashboard --vars-file vars.development.yml --vars NEWRELIC_LICENSE=$NEWRELIC_LICENSE --strategy rolling
+          command: push dashboard --vars-file vars.development.yml --var NEWRELIC_LICENSE=$NEWRELIC_LICENSE --strategy rolling
           org: gsa-datagov
           space: development
           user: ${{secrets.CF_SERVICE_USER}}
@@ -53,7 +53,7 @@ jobs:
         env:
           NEWRELIC_LICENSE: ${{secrets.NEWRELIC_LICENSE}}
         with:
-          command: push dashboard --vars-file vars.staging.yml --vars NEWRELIC_LICENSE=$NEWRELIC_LICENSE --strategy rolling
+          command: push dashboard --vars-file vars.staging.yml --var NEWRELIC_LICENSE=$NEWRELIC_LICENSE --strategy rolling
           org: gsa-datagov
           space: staging
           user: ${{secrets.CF_SERVICE_USER}}
@@ -76,7 +76,7 @@ jobs:
         env:
           NEWRELIC_LICENSE: ${{secrets.NEWRELIC_LICENSE}}
         with:
-          command: push dashboard --vars-file vars.production.yml --vars NEWRELIC_LICENSE=$NEWRELIC_LICENSE --strategy rolling
+          command: push dashboard --vars-file vars.production.yml --var NEWRELIC_LICENSE=$NEWRELIC_LICENSE --strategy rolling
           org: gsa-datagov
           space: prod
           user: ${{secrets.CF_SERVICE_USER}}
