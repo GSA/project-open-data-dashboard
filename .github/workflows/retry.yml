@@ -1,0 +1,43 @@
+---
+name: restart application
+
+on:
+  schedule:
+    - cron: '13/15 * * * *'
+
+jobs:
+  restart-staging:
+    name: restart (staging)
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: restart
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: restart dashboard --strategy rolling
+          org: gsa-datagov
+          space: staging
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}
+      - name: smoke test
+        run: curl --fail --silent https://dashboard-stage-datagov.app.cloud.gov/healthcheck?$(date +%s)
+  
+  restart-prod:
+    name: restart (prod)
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: restart
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: restart dashboard --strategy rolling
+          org: gsa-datagov
+          space: prod
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}
+      - name: smoke test
+        run: curl --fail --silent https://dashboard-prod-datagov.app.cloud.gov/healthcheck?$(date +%s)
