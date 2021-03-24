@@ -32,7 +32,7 @@ jobs:
           org: gsa-datagov
           space: development
           user: ${{secrets.CF_SERVICE_USER}}
-          password: ${{secrets.CF_SERVICE_AUTH}} 
+          password: ${{secrets.CF_SERVICE_AUTH}}
       - name: smoke test
         run: curl --fail --silent https://dashboard-dev-datagov.app.cloud.gov/healthcheck?$(date +%s)
 
