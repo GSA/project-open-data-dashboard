@@ -11,7 +11,7 @@ default_config: &defaults
                # }'
 
 applications:
-- name: ((app_name))
+- name: ((app_full_name))
   <<: *defaults
   memory: 64M
   instances: ((instances))
