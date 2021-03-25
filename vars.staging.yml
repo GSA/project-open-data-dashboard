@@ -1,4 +1,4 @@
-app_name: dashboard
+app_name: dashboard-staging
 
 # Number of application instances to run in cloud.gov
 instances: 1
