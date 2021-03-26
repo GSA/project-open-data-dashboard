@@ -4,6 +4,8 @@
 # (eg "dashboard-<yourname>") to avoid collisions with others are also working on 
 # dashboard in the same space.
 app_name: dashboard
+# This name exists for newrelic to specify the environment in the name
+app_full_name: dashboard-custom
 
 # Number of application instances to run in cloud.gov
 instances: 1
