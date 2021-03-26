@@ -16,7 +16,7 @@ jobs:
       - name: restart
         uses: usds/cloud-gov-cli@master
         with:
-          command: restart dashboard --strategy rolling
+          command: restart dashboard-stage --strategy rolling
           org: gsa-datagov
           space: staging
           user: ${{secrets.CF_SERVICE_USER}}

@@ -1,4 +1,6 @@
-app_name: dashboard-dev
+app_name: dashboard
+# This name exists for newrelic to specify the environment in the name
+app_full_name: dashboard-dev
 
 # Number of application instances to run in cloud.gov
 instances: 1
