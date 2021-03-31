@@ -6,4 +6,9 @@ ignore:
     - '*':
         reason: Dashboard does not have privileged users so not relevant, and no mitigation in place
         expires: 2021-03-01T06:00:00.000Z
+        expires: 2021-06-01T06:00:00.000Z
+  SNYK-ALPINE313-MUSL-1067865:
+    - '*':
+        reason: false positive. see https://github.com/alpinelinux/docker-alpine/issues/123 & https://github.com/snyk/snyk/issues/1722
+        expires: 2021-07-01T06:00:00.000Z
 patch: {}
