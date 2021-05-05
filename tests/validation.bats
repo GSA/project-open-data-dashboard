@@ -56,7 +56,7 @@ setup() {
 @test "HTTP://...cio.gov/catalog-sample should follow redirect and be valid" {
   # Make sure it's still a redirect:
   datajson_url=http://project-open-data.cio.gov/v1.1/examples/catalog-sample.json
-  $CMD -w "%{http_code}" -s -o /dev/null $datajson_url | grep -q '^302$'
+  $CMD -w "%{http_code}" -s -o /dev/null $datajson_url | grep -q '^301$'
   # now test the follow
   run $CMD -s \
     $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=$datajson_url
