@@ -60,26 +60,3 @@ jobs:
           password: ${{secrets.CF_SERVICE_AUTH}}
       - name: smoke test
         run: curl --fail --silent https://dashboard-stage-datagov.app.cloud.gov/healthcheck?$(date +%s)
-
-  deploy-production:
-    if: github.ref == 'refs/heads/main'
-    name: deploy (production)
-    environment: production
-    runs-on: ubuntu-latest
-    needs:
-      - deploy-staging
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: deploy
-        uses: usds/cloud-gov-cli@master
-        env:
-          NEWRELIC_LICENSE: ${{secrets.NEWRELIC_LICENSE}}
-        with:
-          command: push dashboard --vars-file vars.production.yml --var NEWRELIC_LICENSE=$NEWRELIC_LICENSE --strategy rolling
-          org: gsa-datagov
-          space: prod
-          user: ${{secrets.CF_SERVICE_USER}}
-          password: ${{secrets.CF_SERVICE_AUTH}}
-      - name: smoke test
-        run: curl --fail --silent https://dashboard-prod-datagov.app.cloud.gov/healthcheck?$(date +%s)
