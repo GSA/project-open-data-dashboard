@@ -1,17 +1,16 @@
 <?php
 
+use Symfony\Bridge\PhpUnit\DnsMock;
+
+/**
+ * @group dns-sensitive
+ */
 class APIHelperTest extends TestCase
 {
 
     public function setUp() {
         $CI =& get_instance();
         $CI->load->helper('api');
-    }
-
-    // TODO Use https://packagist.org/packages/remotelyliving/php-dns to mock DNS
-    public function testRedirectServicesUsedInTestsAreAvailable() {
-        $this->assertInternalType('array', dns_get_record('ip6.name', DNS_AAAA));
-        // $this->assertInternalType('array', dns_get_record('xip.io', DNS_A));
     }
 
     public function testFilterRemoteUrlRejectsUnresolvableHostnames() {
@@ -40,7 +39,8 @@ class APIHelperTest extends TestCase
     /**
      * @dataProvider badUrlProvider
      */
-    public function testFilterRemoteUrlRejectsNonHostnames($url) {
+    public function testFilterRemoteUrlRejectsNonAndBadHostnames($url) {
+        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $this->assertSame(false, filter_remote_url($url));
     }
 
@@ -48,6 +48,7 @@ class APIHelperTest extends TestCase
      * @dataProvider badRedirectProvider
      */
     public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect($url) {
+        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $this->expectException(Exception::class);
         curl_header($url, true);
     }
@@ -56,6 +57,7 @@ class APIHelperTest extends TestCase
      * @dataProvider badRedirectProvider
      */
     public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect($url) {
+        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $CI =& get_instance();
         $this->expectException(Exception::class);
         curl_head_shim($url, true, $CI->config->item('archive_dir'));
@@ -65,6 +67,7 @@ class APIHelperTest extends TestCase
      * @dataProvider badRedirectProvider
      */
     public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect($url) {
+        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $this->expectException(Exception::class);
         curl_from_json($url);
     }
@@ -73,6 +76,7 @@ class APIHelperTest extends TestCase
      * @dataProvider badProtocolProvider
      */
     public function testCurlHeaderIgnoresBadProtocols($protocol) {
+        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $this->expectException(Exception::class);
         curl_header($protocol."://127.0.0.1");
     }
@@ -81,6 +85,7 @@ class APIHelperTest extends TestCase
      * @dataProvider badProtocolProvider
      */
     public function testCurlHeadShimIgnoresBadProtocols($protocol) {
+        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $CI =& get_instance();
         $this->expectException(Exception::class);
         curl_head_shim($protocol."://127.0.0.1", true, $CI->config->item('archive_dir'));
@@ -90,13 +95,13 @@ class APIHelperTest extends TestCase
      * @dataProvider badProtocolProvider
      */
     public function testCurlFromJsonIgnoresBadProtocols($protocol) {
+        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $this->expectException(Exception::class);
         curl_from_json($protocol."://127.0.0.1");
     }
 
     // These are all the protocols that libcurl supports that we don't want to be valid
     public function badProtocolProvider() {
-
         $protocols = explode(' ', "dict file ftp ftps gopher imap imaps ldap ldaps pop3 pop3s rtmp rtsp scp sftp smb smtp smtps");
         foreach($protocols as $protocol) {
             $protocolarray[] = array($protocol);
@@ -142,14 +147,64 @@ class APIHelperTest extends TestCase
         // Don't you come around here with any of that IPv6 crap
         $badRedirects[] = array("http://[::1]");
 
-        // ip6.name dynamically creates an IPv6 DNS entry that resolves to the subdomain
-        $badRedirects[] = array("https://x.1.ip6.name/");
+        // Domains that resolve to IPv4 localhost? NFW. (Mocked below.)
+        $badRedirects[] = array("https://localhost.ip4/");
 
-        // xip.io dynamically creates a IPv4 DNS entry that resolves to the subdomain
-        // Should change to local DNS service, see here for details: https://github.com/GSA/datagov-deploy/issues/1760
-        $badRedirects[] = array("https://127.0.0.1.xip.io/");
+        // Domains that resolve to IPv6 localhost? Get out! (Mocked below.)
+        $badRedirects[] = array("https://localhost.ip6/");
+        $badRedirects[] = array("https://localhost2.ip6");
+
+        // Domains that resolve to IPv6 addresses that represent IPv4 private ranges? Not on our watch! (Mocked below.)
+        $badRedirects[] = array("https://localhost.ip6:443");
+        $badRedirects[] = array("https://localhost2.ip6:80");
+
+        // Domains that resolve to IPv6 link-local adddresses? Hell no! (Mocked below.)
+        $badRedirects[] = array("https://linklocal.ip6/");
 
         return $badRedirects;
+    }
+
+    // We mock these DNS requests to hardcode particular responses
+    // See https://symfony.com/doc/current/components/phpunit_bridge.html#dns-sensitive-tests for docs
+    public function mockedDNSEntries() {
+        return [
+            'localhost.ip4' => [
+                [
+                    'type' => 'A',
+                    'ipv6' => '127.0.0.1',
+                ],
+            ],
+            'localhost.ip6' => [
+                [
+                    'type' => 'AAAA',
+                    'ipv6' => '::1',
+                ],
+            ],
+            'localhost2.ip6' => [
+                [
+                    'type' => 'AAAA',
+                    'ipv6' => '::ffff:127.0.0.1',
+                ],
+            ],
+            'private1.ip6' => [
+                [
+                    'type' => 'AAAA',
+                    'ipv6' => '::ffff:192.168.1.18',
+                ],
+            ],
+            'private2.ip6' => [
+                [
+                    'type' => 'AAAA',
+                    'ipv6' => '::ffff:10.0.0.1',
+                ],
+            ],
+            'linklocal.ip6' => [
+                [
+                    'type' => 'AAAA',
+                    'ipv6' => 'fe80::',
+                ],
+            ],
+        ];
     }
 
 }
