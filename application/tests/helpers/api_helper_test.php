@@ -8,7 +8,7 @@ use Symfony\Bridge\PhpUnit\DnsMock;
 class APIHelperTest extends TestCase
 {
 
-    public function setUp() {
+    public function setUp(): void {
         $CI =& get_instance();
         $CI->load->helper('api');
     }

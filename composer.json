@@ -34,9 +34,9 @@
     },
     "require-dev": {
         "mikey179/vfsstream": "1.1.*",
-        "phpunit/phpunit": "~7.5",
-        "kenjis/ci-phpunit-test": "master@dev",
-        "symfony/phpunit-bridge": "5.2"
+        "phpunit/phpunit": "~9",
+        "kenjis/ci-phpunit-test": "^3.0",
+        "symfony/phpunit-bridge": "5.2",
     },
     "scripts": {
         "test": "./vendor/bin/phpunit --no-coverage --testdox -c application/tests",

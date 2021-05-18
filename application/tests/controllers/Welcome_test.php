@@ -13,7 +13,7 @@ class WelcomeTest extends TestCase
 	public function testGeneratesTheExpectedTitle()
 	{
 		$output = $this->request('GET', 'welcome/index');
-		$this->assertContains('<title>Project Open Data Dashboard</title>', $output);
+		$this->assertStringContainsString('<title>Project Open Data Dashboard</title>', $output);
 	}
 
 	public function testGeneratesA404InResponseToRequestsForAMissingMethod()
