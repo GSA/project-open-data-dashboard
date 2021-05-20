@@ -24,7 +24,7 @@
         }
     }],
     "require": {
-        "php": ">=7.3.0",
+        "php": "^7.3.0",
         "codeigniter/framework": "3.1.*",
         "justinrainbow/json-schema": "~4",
         "michelf/php-markdown": "*",
@@ -37,6 +37,7 @@
         "phpunit/phpunit": "~9",
         "kenjis/ci-phpunit-test": "^3.0",
         "symfony/phpunit-bridge": "5.2",
+        "symfony/http-foundation": "5.2.8"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit --no-coverage --testdox -c application/tests",

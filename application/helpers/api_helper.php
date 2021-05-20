@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpFoundation\IpUtils;
+
 function curl_from_json($url, $array=false, $decode=true) {
 
     $ch = curl_init();
@@ -400,6 +402,19 @@ function filter_remote_url($url, &$curlopt_resolve = null) {
             if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
                 return false;
             }
+
+            // FILTER_FLAG_NO_PRIV_RANGE doesn't check for IPv4 private-range IPs hiding in IPv6 form:
+            // https://www.php.net/manual/en/filter.filters.validate.php#125006PHP
+            // So we have to check for this case explicitly.
+            // The suggestion to use the (tested, supported) Symfony util function is from:
+            // https://stackoverflow.com/a/36152302
+            // if (IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:10.0.0.0/104')     ||  // 10.0.0.0/8
+            //     IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:172.16.0.0/108')   ||  // 172.16.0.0/12
+            //     IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:192.168.0.0/112')  ||  // 192.168.0.0/16
+            //     IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:127.0.0.1/128')) {     // 127.0.0.1/32
+            //      return false;
+            // }
+
             $lastValidIPV6 = $resolved[$i]["ipv6"];
         }
     }

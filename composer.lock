@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc47ca933b4906a7007f926cfd0ef100",
+    "content-hash": "cec148863178f4ef4831ce354a165c60",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.182.0",
+            "version": "3.183.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "998e5caf1b1bb52516a32fb8084eb7006ab5ae7d"
+                "reference": "bf4a4e56859b89ab307033bf695467f6d6042dda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/998e5caf1b1bb52516a32fb8084eb7006ab5ae7d",
-                "reference": "998e5caf1b1bb52516a32fb8084eb7006ab5ae7d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/bf4a4e56859b89ab307033bf695467f6d6042dda",
+                "reference": "bf4a4e56859b89ab307033bf695467f6d6042dda",
                 "shasum": ""
             },
             "require": {
@@ -92,9 +92,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.182.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.183.0"
             },
-            "time": "2021-05-17T18:14:44+00:00"
+            "time": "2021-05-18T18:13:37+00:00"
         },
         {
             "name": "codeigniter/framework",
@@ -3403,7 +3403,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.3.0"
+        "php": "^7.3.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"

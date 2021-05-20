@@ -157,6 +157,8 @@ class APIHelperTest extends TestCase
         // Domains that resolve to IPv6 addresses that represent IPv4 private ranges? Not on our watch! (Mocked below.)
         $badRedirects[] = array("https://localhost.ip6:443");
         $badRedirects[] = array("https://localhost2.ip6:80");
+        $badRedirects[] = array("https://private1.ip6:80");
+        $badRedirects[] = array("https://private2.ip6:80");
 
         // Domains that resolve to IPv6 link-local adddresses? Hell no! (Mocked below.)
         $badRedirects[] = array("https://linklocal.ip6/");
