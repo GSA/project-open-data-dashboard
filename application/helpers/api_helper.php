@@ -424,7 +424,7 @@ function filter_remote_url($url, &$curlopt_resolve = null) {
         $curlopt_resolve = $host
         . ':' . ($port ? $port : '')
         . ':'
-        . ($lastValidIPV4 ? $lastValidIPV4 : $lastvalidIPV6);
+        . ($lastValidIPV4 ? $lastValidIPV4 : $lastValidIPV6);
     }
 
     // filter xss
