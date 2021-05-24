@@ -144,7 +144,7 @@ If you are not logged in for the Cloud Foundry CLI, follow the steps [in this gu
 Assuming you're logged in for the Cloud Foundry CLI, Run the following commands and replacing ${app_name} with the value in your vars.yml file.
 
 ```sh
-$ cf create-service aws-rds shared-mysql ${app_name}-db
+$ cf create-service aws-rds small-mysql-redundant ${app_name}-db
 
 $ cf create-service s3 basic ${app_name}-s3
 
