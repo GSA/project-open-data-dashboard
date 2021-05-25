@@ -402,17 +402,17 @@ function filter_remote_url($url, &$curlopt_resolve = null) {
                 return false;
             }
 
-            // FILTER_FLAG_NO_PRIV_RANGE doesn't check for IPv4 private-range IPs hiding in IPv6 form:
+            // FILTER_FLAG_NO_PRIV_RANGE doesn't check for private-range IPv4-mapped addresses in IPv6:
             // https://www.php.net/manual/en/filter.filters.validate.php#125006PHP
             // So we have to check for this case explicitly.
-            // The suggestion to use the (tested, supported) Symfony util function is from:
+            // The suggestion to use the (tested, supported) Symfony IpUtils function is from:
             // https://stackoverflow.com/a/36152302
-            // if (IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:10.0.0.0/104')     ||  // 10.0.0.0/8
-            //     IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:172.16.0.0/108')   ||  // 172.16.0.0/12
-            //     IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:192.168.0.0/112')  ||  // 192.168.0.0/16
-            //     IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:127.0.0.1/128')) {     // 127.0.0.1/32
-            //      return false;
-            // }
+            if (IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:10.0.0.0/104')     ||  // 10.0.0.0/8
+                IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:172.16.0.0/108')   ||  // 172.16.0.0/12
+                IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:192.168.0.0/112')  ||  // 192.168.0.0/16
+                IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:127.0.0.1/128')) {     // 127.0.0.1/32
+                return false;
+            }
 
             $lastValidIPV6 = $resolved[$i]["ipv6"];
         }
