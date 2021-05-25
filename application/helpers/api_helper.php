@@ -7,8 +7,8 @@ function curl_from_json($url, $array=false, $decode=true) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
 
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
     curl_setopt($ch, CURLOPT_TIMEOUT, 60);
 
     curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
@@ -29,11 +29,11 @@ function curl_from_json($url, $array=false, $decode=true) {
         throw new Exception(curl_error($ch), curl_errno($ch));
     }
 
-	curl_close($ch);
+    curl_close($ch);
 
     if($decode == true) {
-      $data = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($data));
-	    return json_decode($data, $array);
+        $data = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($data));
+        return json_decode($data, $array);
     } else {
         return $data;
     }
@@ -44,92 +44,91 @@ function curl_from_json($url, $array=false, $decode=true) {
 
 function curl_header($url, $follow_redirect = true, $tmp_dir = null, $force_shim = false) {
 
-  if ($force_shim) {
-    return curl_head_shim($url, $follow_redirect, $tmp_dir);
-  }
+    if ($force_shim) {
+        return curl_head_shim($url, $follow_redirect, $tmp_dir);
+    }
 
-  $info = array();
+    $info = array();
 
-  $ch = curl_init();
+    $ch = curl_init();
 
-  curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
+    curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
 
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 
-  curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 
-  curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-  curl_setopt($ch, CURLOPT_FILETIME, true);
+    curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+    curl_setopt($ch, CURLOPT_FILETIME, true);
 
-  curl_setopt($ch, CURLOPT_NOBODY, true);
-  curl_setopt($ch, CURLOPT_HEADER, true);
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_setopt($ch, CURLOPT_HEADER, true);
 
-  curl_setopt($ch, CURLOPT_COOKIESESSION, true);
-  curl_setopt($ch, CURLOPT_COOKIE, "");
+    curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+    curl_setopt($ch, CURLOPT_COOKIE, "");
 
-  curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-  curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+    curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+    curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-  $http_heading = safe_curl_exec($url, $ch, $follow_redirect);
+    $http_heading = safe_curl_exec($url, $ch, $follow_redirect);
 
-  $info['header'] = http_parse_headers($http_heading);
-  $info['info'] = curl_getinfo($ch);
-  curl_close($ch);
+    $info['header'] = http_parse_headers($http_heading);
+    $info['info'] = curl_getinfo($ch);
+    curl_close($ch);
 
 
-  // If the server didn't support HTTP HEAD, use the shim.
-  if( (!empty($info['header']['X-Error-Message']) && trim($info['header']['X-Error-Message']) == 'HEAD is not supported')
-      OR empty($info['header']['Content-Type'])) {
-    return curl_head_shim($url, $follow_redirect, $tmp_dir);
-  } else {
-    return $info;
-  }
+    // If the server didn't support HTTP HEAD, use the shim.
+    if( (!empty($info['header']['X-Error-Message']) && trim($info['header']['X-Error-Message']) == 'HEAD is not supported')
+    OR empty($info['header']['Content-Type'])) {
+        return curl_head_shim($url, $follow_redirect, $tmp_dir);
+    } else {
+        return $info;
+    }
 
 }
 
 
-
 function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
 
-  $info = array();
+    $info = array();
 
-  $ch = curl_init();
+    $ch = curl_init();
 
-  $output = fopen('/dev/null', 'w');
-  $header_dir = $tmp_dir . '/curl_header';
-  $headerfile = fopen($header_dir, 'w+');
+    $output = fopen('/dev/null', 'w');
+    $header_dir = $tmp_dir . '/curl_header';
+    $headerfile = fopen($header_dir, 'w+');
 
-  curl_setopt($ch, CURLOPT_FILE, $output);
+    curl_setopt($ch, CURLOPT_FILE, $output);
 
-  curl_setopt($ch, CURLOPT_WRITEHEADER, $headerfile);
-  curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-  curl_setopt($ch, CURLOPT_HEADER, true);
+    curl_setopt($ch, CURLOPT_WRITEHEADER, $headerfile);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+    curl_setopt($ch, CURLOPT_HEADER, true);
 
-  curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
+    curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
 
-  curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-  curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+    curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+    curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-  safe_curl_exec($url, $ch, $follow_redirect);
+    safe_curl_exec($url, $ch, $follow_redirect);
 
-  if (curl_errno($ch)) {
-    log_message('error', "curl_header error: " . curl_error($ch));
-    throw new Exception(curl_error($ch), curl_errno($ch));
-  }
+    if (curl_errno($ch)) {
+        log_message('error', "curl_header error: " . curl_error($ch));
+        throw new Exception(curl_error($ch), curl_errno($ch));
+    }
 
-  fclose($headerfile);
+    fclose($headerfile);
 
-  $http_heading = file_get_contents($header_dir);
-  unset($header_dir);
+    $http_heading = file_get_contents($header_dir);
+    unset($header_dir);
 
-  $info['info'] = curl_getinfo($ch);
+    $info['info'] = curl_getinfo($ch);
 
-  curl_close($ch);
+    curl_close($ch);
 
-  $info['header'] = http_parse_headers($http_heading);
+    $info['header'] = http_parse_headers($http_heading);
 
-  return $info;
+    return $info;
 
 }
 
@@ -164,16 +163,16 @@ function safe_curl_exec($url, $ch, $follow_redirect = true, $maxRedirs = 10) {
         $url = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
 
     } while ($follow_redirect               // Continue if redirects were requested
-        && $url != ''                       // ...and we got a redirect
-        && $numRedirects++ < $maxRedirs);   // ...and we haven't we reached the maximum
+    && $url != ''                       // ...and we got a redirect
+    && $numRedirects++ < $maxRedirs);   // ...and we haven't we reached the maximum
 
     return $http_heading;
-  }
+}
 
 
 if (!function_exists('http_parse_headers')) {
 
-function http_parse_headers($raw_headers)
+    function http_parse_headers($raw_headers)
     {
         $headers = array();
         $key = ''; // [+]
@@ -185,7 +184,7 @@ function http_parse_headers($raw_headers)
             if (isset($h[1]))
             {
                 if (!isset($headers[$h[0]]))
-                    $headers[$h[0]] = trim($h[1]);
+                $headers[$h[0]] = trim($h[1]);
                 elseif (is_array($headers[$h[0]]))
                 {
                     // $tmp = array_merge($headers[$h[0]], array(trim($h[1]))); // [-]
@@ -204,9 +203,9 @@ function http_parse_headers($raw_headers)
             else // [+]
             { // [+]
                 if (substr($h[0], 0, 1) == "\t") // [+]
-                    $headers[$key] .= "\r\n\t".trim($h[0]); // [+]
+                $headers[$key] .= "\r\n\t".trim($h[0]); // [+]
                 elseif (!$key) // [+]
-                    $headers[0] = trim($h[0]);trim($h[0]); // [+]
+                $headers[0] = trim($h[0]);trim($h[0]); // [+]
             } // [+]
         }
 
@@ -216,136 +215,136 @@ function http_parse_headers($raw_headers)
 
 
 /**
- * This mashes together two arrays with the same keys
- * It fills in any empty values, but gives precedence to the $primary array
- */
+* This mashes together two arrays with the same keys
+* It fills in any empty values, but gives precedence to the $primary array
+*/
 
 function array_mash($primary, $secondary) {
-	$primary = (array)$primary;
-	$secondary = (array)$secondary;
-	$out = array();
-	foreach($primary as $name => $value) {
-		if ( array_key_exists($name, $secondary) && !empty($secondary[$name]) && empty($value)) {
-			$out[$name] = $secondary[$name];
-		}
-		else {
-			$out[$name] = $value;
-		}
-	}
-	return $out;
+    $primary = (array)$primary;
+    $secondary = (array)$secondary;
+    $out = array();
+    foreach($primary as $name => $value) {
+        if ( array_key_exists($name, $secondary) && !empty($secondary[$name]) && empty($value)) {
+            $out[$name] = $secondary[$name];
+        }
+        else {
+            $out[$name] = $value;
+        }
+    }
+    return $out;
 }
 
 
 function get_between($input, $start, $end)
 {
-  $substr = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
-  return $substr;
+    $substr = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
+    return $substr;
 }
 
 
 /**
- * Performs the same function as array_search except that it is case
- * insensitive
- * @param mixed $needle
- * @param array $haystack
- * @return mixed
- */
+* Performs the same function as array_search except that it is case
+* insensitive
+* @param mixed $needle
+* @param array $haystack
+* @return mixed
+*/
 
 function array_nsearch($needle, array $haystack) {
-   $it = new IteratorIterator(new ArrayIterator($haystack));
-   foreach($it as $key => $val) {
-       if(strcasecmp($val,$needle) === 0) {
-           return $key;
-       }
-   }
-   return false;
+    $it = new IteratorIterator(new ArrayIterator($haystack));
+    foreach($it as $key => $val) {
+        if(strcasecmp($val,$needle) === 0) {
+            return $key;
+        }
+    }
+    return false;
 }
 
 
 /**
- * Provides a human readable file size from an integer of bytes
- */
+* Provides a human readable file size from an integer of bytes
+*/
 function human_filesize($size,$unit="") {
-  if( (!$unit && $size >= 1<<30) || $unit == "GB")
+    if( (!$unit && $size >= 1<<30) || $unit == "GB")
     return number_format($size/(1<<30),2)."GB";
-  if( (!$unit && $size >= 1<<20) || $unit == "MB")
+    if( (!$unit && $size >= 1<<20) || $unit == "MB")
     return number_format($size/(1<<20),2)."MB";
-  if( (!$unit && $size >= 1<<10) || $unit == "KB")
+    if( (!$unit && $size >= 1<<10) || $unit == "KB")
     return number_format($size/(1<<10),2)."KB";
-  return number_format($size)." bytes";
+    return number_format($size)." bytes";
 }
 
 
 function make_utf8 ($input) {
-  return iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($input));
+    return iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($input));
 }
 
 
 function is_json($string) {
- json_decode($string);
- return (json_last_error() == JSON_ERROR_NONE);
+    json_decode($string);
+    return (json_last_error() == JSON_ERROR_NONE);
 }
 
 
 function json_text_filter($datajson) {
 
-  // Clean up the data a bit
+    // Clean up the data a bit
 
-  /*
-  This is to help accomodate encoding issues, eg invalid newlines. See:
-  http://forum.jquery.com/topic/json-with-newlines-in-strings-should-be-valid#14737000000866332
-  http://stackoverflow.com/posts/17846592/revisions
-  */
-  $datajson = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($datajson));
-  //$data = str_replace(array("\r", "\n", "\\n", "\r\n"), " ", $data);
-  //$data = preg_replace('!\s+!', ' ', $data);
-  //$data = str_replace(' "', '"', $data);
+    /*
+    This is to help accomodate encoding issues, eg invalid newlines. See:
+    http://forum.jquery.com/topic/json-with-newlines-in-strings-should-be-valid#14737000000866332
+    http://stackoverflow.com/posts/17846592/revisions
+    */
+    $datajson = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($datajson));
+    //$data = str_replace(array("\r", "\n", "\\n", "\r\n"), " ", $data);
+    //$data = preg_replace('!\s+!', ' ', $data);
+    //$data = str_replace(' "', '"', $data);
 
-  $datajson = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($datajson));
+    $datajson = preg_replace('/,\s*([\]}])/m', '$1', utf8_encode($datajson));
 
 
-  /*
-  This is to replace any possible BOM "Byte order mark" that might be present
-  See: http://stackoverflow.com/questions/10290849/how-to-remove-multiple-utf-8-bom-sequences-before-doctype
-  and
-  http://stackoverflow.com/questions/3255993/how-do-i-remove-i-from-the-beginning-of-a-file
-  */
-  // $bom = pack('H*','EFBBBF');
-  // $datajson = preg_replace("/^$bom/", '', $datajson);
-  $datajson = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $datajson);
+    /*
+    This is to replace any possible BOM "Byte order mark" that might be present
+    See: http://stackoverflow.com/questions/10290849/how-to-remove-multiple-utf-8-bom-sequences-before-doctype
+    and
+    http://stackoverflow.com/questions/3255993/how-do-i-remove-i-from-the-beginning-of-a-file
+    */
+    // $bom = pack('H*','EFBBBF');
+    // $datajson = preg_replace("/^$bom/", '', $datajson);
+    $datajson = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $datajson);
 
-  return $datajson;
+    return $datajson;
 
 }
 
 
 function filter_json( $source_datajson, $dataset_array = false ) {
 
-  if ($dataset_array) {
-    $datasets = $source_datajson->dataset;
-  } else {
-    $datasets = $source_datajson;
-  }
+    if ($dataset_array) {
+        $datasets = $source_datajson->dataset;
+    } else {
+        $datasets = $source_datajson;
+    }
 
-  foreach ($datasets as $key => $dataset) {
+    foreach ($datasets as $key => $dataset) {
 
-    foreach ($dataset as $field_name => $field_value) {
+        foreach ($dataset as $field_name => $field_value) {
 
-      if (is_string($field_value)) {
-        $field_value =  filter_var( $field_value, FILTER_SANITIZE_STRING );
-      }
+            if (is_string($field_value)) {
+                $field_value =  filter_var( $field_value, FILTER_SANITIZE_STRING );
+            }
 
-      $dataset->$field_name = $field_value;
+            $dataset->$field_name = $field_value;
+
+        }
 
     }
 
-  }
-
-  if ($dataset_array) {
-    $source_datajson->dataset = $datasets;
-  } else {
-    $source_datajson = $datasets;
-  }
+    if ($dataset_array) {
+        $source_datajson->dataset = $datasets;
+    } else {
+        $source_datajson = $datasets;
+    }
 
     return $source_datajson;
 }
@@ -437,9 +436,9 @@ function filter_remote_url($url, &$curlopt_resolve = null) {
 
 function linkToAnchor($text) {
 
-$convertedText = preg_replace( '@(?<![.*">])\b(?:(?:https?|ftp|file)://|[a-z]\.)[-A-Z0-9+&#/%=~_|$?!:,.]*[A-Z0-9+&#/%=~_|$]@i', '<a href="\0" target="_blank">\0</a>', $text );
+    $convertedText = preg_replace( '@(?<![.*">])\b(?:(?:https?|ftp|file)://|[a-z]\.)[-A-Z0-9+&#/%=~_|$?!:,.]*[A-Z0-9+&#/%=~_|$]@i', '<a href="\0" target="_blank">\0</a>', $text );
 
-return $convertedText;
+    return $convertedText;
 
 }
 
