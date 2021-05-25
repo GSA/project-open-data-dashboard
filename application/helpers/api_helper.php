@@ -1,6 +1,98 @@
 <?php
 
+namespace App\APIHelper {
+
 use Symfony\Component\HttpFoundation\IpUtils;
+
+/*
+* Check if a URL is "safe", that is, whether it's not going to result in an SSRF attack.
+* Optionally set a passed reference to a specific IP that was resolved.
+* The format of the string is suitable for use with CURLOPT_RESOLVE.
+*
+*/
+function filter_remote_url($url, &$curlopt_resolve = null) {
+    if (empty($url)) {
+        return null;
+    }
+    $url = filter_var($url, FILTER_VALIDATE_URL);
+
+    // We only accept http/https
+    $allowed_schemes = array('http', 'https');
+    $scheme = parse_url($url, PHP_URL_SCHEME);
+    if (!in_array($scheme, $allowed_schemes)) {
+        return false;
+    }
+
+    $host = parse_url($url, PHP_URL_HOST);
+
+    // We don't accept raw IP addresses
+    if (filter_var($host, FILTER_VALIDATE_IP)) {
+        return false;
+    }
+
+    // ...or unresolvable hostnames
+    $resolved = dns_get_record($host.".", DNS_A + DNS_AAAA);
+    if (!$resolved) {
+        return false;
+    }
+
+    // We only accept reasonable ports
+    $port = parse_url($url, PHP_URL_PORT);
+    if ($port != null && $port != 80 && $port != 443 && $port != 8080) {
+        return false;
+    }
+
+    // Check the array of A and AAAA records to make sure they don't resolve to private ranges to protect against SSRF
+    for ($i=0; $i < count($resolved); $i++)
+    {
+        if ($resolved[$i]["type"] === "A") {
+            if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+                return false;
+            }
+            $lastValidIPV4 = $resolved[$i]["ip"];
+        }
+
+        if ($resolved[$i]["type"] === "AAAA") {
+            if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+                return false;
+            }
+
+            // FILTER_FLAG_NO_PRIV_RANGE doesn't check for private-range IPv4-mapped addresses in IPv6:
+            // https://www.php.net/manual/en/filter.filters.validate.php#125006PHP
+            // So we have to check for this case explicitly.
+            // The suggestion to use the (tested, supported) Symfony IpUtils function is from:
+            // https://stackoverflow.com/a/36152302
+            if (IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:10.0.0.0/104')     ||  // 10.0.0.0/8
+                IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:172.16.0.0/108')   ||  // 172.16.0.0/12
+                IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:192.168.0.0/112')  ||  // 192.168.0.0/16
+                IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:127.0.0.1/128')) {     // 127.0.0.1/32
+                return false;
+            }
+
+            $lastValidIPV6 = $resolved[$i]["ipv6"];
+        }
+    }
+
+    // A return ref was provided, so give callers a string they can use to make sure they're hitting the IP that we approved
+    if (func_num_args() > 1) {
+        $curlopt_resolve = $host
+        . ':' . ($port ? $port : '')
+        . ':'
+        . ($lastValidIPV4 ? $lastValidIPV4 : $lastValidIPV6);
+    }
+
+    // filter xss
+    if (function_exists('xss_clean')) {
+        $url = xss_clean($url);
+    }
+    return $url;
+}
+
+
+}
+
+namespace {
+use App\APIHelper;
 
 function curl_from_json($url, $array=false, $decode=true) {
 
@@ -141,7 +233,7 @@ function safe_curl_exec($url, $ch, $follow_redirect = true, $maxRedirs = 10) {
 
     $numRedirects = 0;
     do {
-        if (!filter_remote_url($url, $ipresolution)) {
+        if (!APIHelper\filter_remote_url($url, $ipresolution)) {
             throw new Exception("Encountered bad URL during curl request: ".$url);
         }
 
@@ -349,91 +441,6 @@ function filter_json( $source_datajson, $dataset_array = false ) {
     return $source_datajson;
 }
 
-/*
-* Check if a URL is "safe", that is, whether it's not going to result in an SSRF attack.
-* Optionally set a passed reference to a specific IP that was resolved.
-* The format of the string is suitable for use with CURLOPT_RESOLVE.
-*
-*/
-function filter_remote_url($url, &$curlopt_resolve = null) {
-    if (empty($url)) {
-        return null;
-    }
-    $url = filter_var($url, FILTER_VALIDATE_URL);
-
-    // We only accept http/https
-    $allowed_schemes = array('http', 'https');
-    $scheme = parse_url($url, PHP_URL_SCHEME);
-    if (!in_array($scheme, $allowed_schemes)) {
-        return false;
-    }
-
-    $host = parse_url($url, PHP_URL_HOST);
-
-    // We don't accept raw IP addresses
-    if (filter_var($host, FILTER_VALIDATE_IP)) {
-        return false;
-    }
-
-    // ...or unresolvable hostnames
-    $resolved = dns_get_record($host.".", DNS_A + DNS_AAAA);
-    if (!$resolved) {
-        return false;
-    }
-
-    // We only accept reasonable ports
-    $port = parse_url($url, PHP_URL_PORT);
-    if ($port != null && $port != 80 && $port != 443 && $port != 8080) {
-        return false;
-    }
-
-    // Check the array of A and AAAA records to make sure they don't resolve to private ranges to protect against SSRF
-    for ($i=0; $i < count($resolved); $i++)
-    {
-        if ($resolved[$i]["type"] === "A") {
-            if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
-                return false;
-            }
-            $lastValidIPV4 = $resolved[$i]["ip"];
-        }
-
-        if ($resolved[$i]["type"] === "AAAA") {
-            if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
-                return false;
-            }
-
-            // FILTER_FLAG_NO_PRIV_RANGE doesn't check for private-range IPv4-mapped addresses in IPv6:
-            // https://www.php.net/manual/en/filter.filters.validate.php#125006PHP
-            // So we have to check for this case explicitly.
-            // The suggestion to use the (tested, supported) Symfony IpUtils function is from:
-            // https://stackoverflow.com/a/36152302
-            if (IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:10.0.0.0/104')     ||  // 10.0.0.0/8
-                IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:172.16.0.0/108')   ||  // 172.16.0.0/12
-                IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:192.168.0.0/112')  ||  // 192.168.0.0/16
-                IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:127.0.0.1/128')) {     // 127.0.0.1/32
-                return false;
-            }
-
-            $lastValidIPV6 = $resolved[$i]["ipv6"];
-        }
-    }
-
-    // A return ref was provided, so give callers a string they can use to make sure they're hitting the IP that we approved
-    if (func_num_args() > 1) {
-        $curlopt_resolve = $host
-        . ':' . ($port ? $port : '')
-        . ':'
-        . ($lastValidIPV4 ? $lastValidIPV4 : $lastValidIPV6);
-    }
-
-    // filter xss
-    if (function_exists('xss_clean')) {
-        $url = xss_clean($url);
-    }
-    return $url;
-}
-
-
 function linkToAnchor($text) {
 
     $convertedText = preg_replace( '@(?<![.*">])\b(?:(?:https?|ftp|file)://|[a-z]\.)[-A-Z0-9+&#/%=~_|$?!:,.]*[A-Z0-9+&#/%=~_|$]@i', '<a href="\0" target="_blank">\0</a>', $text );
@@ -495,5 +502,5 @@ function prettyPrint( $json )
 
     return $result;
 }
-
+}
 ?>
