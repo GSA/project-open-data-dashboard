@@ -376,7 +376,7 @@ function filter_remote_url($url, &$curlopt_resolve = null) {
     }
 
     // ...or unresolvable hostnames
-    $resolved = dns_get_record($host, DNS_A + DNS_AAAA);
+    $resolved = dns_get_record($host.".", DNS_A + DNS_AAAA);
     if (!$resolved) {
         return false;
     }
