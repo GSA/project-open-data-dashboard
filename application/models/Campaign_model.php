@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-use App\APIHelper;
+use APIHelper\APIHelper;
 
 class Campaign_model extends CI_Model
 {
@@ -872,12 +872,12 @@ class Campaign_model extends CI_Model
     public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null)
     {
         log_message('debug', 'datajson_url before processing: ' . $datajson_url);
-        $datajson_url = APIHelper\filter_remote_url($datajson_url);
+        $datajson_url = APIHelper::filter_remote_url($datajson_url);
 
         if ($datajson_url) {
             $datajson_header = ($headers) ? $headers : $this->campaign->uri_header($datajson_url);
 
-            if (!isset($datajson_header['url']) || !APIHelper\filter_remote_url($datajson_header['url'])) {
+            if (!isset($datajson_header['url']) || !APIHelper::filter_remote_url($datajson_header['url'])) {
                 $datajson_url = false;
             }
         }
@@ -1382,7 +1382,7 @@ class Campaign_model extends CI_Model
 
         $context = stream_context_create($opts);
 
-        $copy = @fopen(APIHelper\filter_remote_url($url), 'rb', false, $context);
+        $copy = @fopen(APIHelper::filter_remote_url($url), 'rb', false, $context);
 
         // If we can't read from this file, skip
         if ($copy === false) {

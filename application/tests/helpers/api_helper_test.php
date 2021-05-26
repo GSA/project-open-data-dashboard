@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Tests\APIHelper;
+use PHPUnit\Framework\TestCase;
+use APIHelper\APIHelper;
 
-use PHPUnit;
 use Symfony\Bridge\PhpUnit\DnsMock;
-use App\APIHelper;
 
 /**
  * @group dns-sensitive
  */
-class APIHelperTest extends PHPUnit\Framework\TestCase
+class APIHelperTest extends TestCase
 {
 
     public function setUp(): void {
@@ -19,25 +18,24 @@ class APIHelperTest extends PHPUnit\Framework\TestCase
 
     public function testFilterRemoteUrlRejectsUnresolvableHostnames() {
         $url = "http://some.unresolvable.hostname.fer-reals/data.json";
-        $this->assertSame(false, APIHelper\filter_remote_url($url));
+        $this->assertSame(false, APIHelper::filter_remote_url($url));
     }
 
     public function testFilterRemoteUrlRejectsUnusualPorts() {
-        $this->assertSame(false, APIHelper\filter_remote_url("https://www.google.com:567/data.json"));
+        $this->assertSame(false, APIHelper::filter_remote_url("https://www.google.com:567/data.json"));
     }
 
     public function testFilterRemoteUrlAcceptsExpectedPorts() {
-        $this->assertSame("https://www.google.com/data.json", APIHelper\filter_remote_url("https://www.google.com/data.json"));
-        $this->assertSame("https://www.google.com:443/data.json", APIHelper\filter_remote_url("https://www.google.com:443/data.json"));
-        $this->assertSame("http://www.google.com:80/data.json", APIHelper\filter_remote_url("http://www.google.com:80/data.json"));
-        $this->assertSame("http://www.google.com:8080/data.json", APIHelper\filter_remote_url("http://www.google.com:8080/data.json"));
+        $this->assertSame("https://www.google.com/data.json", APIHelper::filter_remote_url("https://www.google.com/data.json"));
+        $this->assertSame("https://www.google.com:443/data.json", APIHelper::filter_remote_url("https://www.google.com:443/data.json"));
+        $this->assertSame("http://www.google.com:80/data.json", APIHelper::filter_remote_url("http://www.google.com:80/data.json"));
+        $this->assertSame("http://www.google.com:8080/data.json", APIHelper::filter_remote_url("http://www.google.com:8080/data.json"));
     }
 
     // A null hostname should explicitly return null
     public function testFilterRemoteUrlRejectsNullHostnames() {
         $url = null;
-        $this->assertSame(null, APIHelper\filter_remote_url($url));
-
+        $this->assertSame(null, APIHelper::filter_remote_url($url));
     }
 
     /**
@@ -45,7 +43,7 @@ class APIHelperTest extends PHPUnit\Framework\TestCase
      */
     public function testFilterRemoteUrlRejectsNonAndBadHostnames($url) {
         DnsMock::withMockedHosts($this->mockedDNSEntries());
-        $this->assertSame(false, APIHelper\filter_remote_url($url));
+        $this->assertSame(false, APIHelper::filter_remote_url($url));
     }
 
     /**
