@@ -123,88 +123,45 @@ class APIHelperTest extends TestCase
     }
 
     // Examples of SSRF URLs we should never follow
+    // The first array element is a URL that should be filtered out
+    // The second argument is a mock array of records for dns_get_record() to return
     public function badUrlProvider() {
 
-        $badRedirects[] = array("http://127.0.0.1");
+        $badRedirects["ip: 127.0.0.1"] = array("http://127.0.0.1", false);
 
         // Anything that resolves to zero needs to be tested carefully due to falsiness
-        $badRedirects[] = array("http://0/data.json");
+        $badRedirects["ip: 0"] = array("http://0/data.json", false);
 
         // Hex is bad
-        $badRedirects[] = array("http://0x7f000001/data.json");
+        $badRedirects["ip: hex"] = array("http://0x7f000001/data.json", false);
 
         // So is octal
-        $badRedirects[] = array("http://0123/data.json");
+        $badRedirects["ip: octal"] = array("http://0123/data.json", false);
 
         // We don't like mixed hex and octal either
-        $badRedirects[] = array("http://0x7f.0x0.0.0/data.json");
+        $badRedirects["ip: mixed hex/octal/decimal"] = array("http://0x7f.0x0.0.0/data.json", false);
 
         // We don't even like dotted-quads
-        $badRedirects[] = array("http://111.22.34.56/data.json");
+        $badRedirects["ip: dotted-quad"] = array("http://111.22.34.56/data.json", false);
 
         // Don't you come around here with any of that IPv6 crap
-        $badRedirects[] = array("http://[::1]");
+        $badRedirects["ipv6: localhost"] = array("http://[::1]", false);
 
-        // Domains that resolve to IPv4 localhost? NFW. (Mocked below.)
-        $badRedirects[] = array("https://localhost.ip4/");
+        // Domains that resolve to IPv4 localhost? NFW.
+        $badRedirects["localhost.ip4"] = array("https://localhost.ip4/", [['type' => 'A', 'ip' => '127.0.0.1']]);
 
-        // Domains that resolve to IPv6 localhost? Get out! (Mocked below.)
-        $badRedirects[] = array("https://localhost.ip6/");
-        $badRedirects[] = array("https://localhost2.ip6");
+        // Domains that resolve to IPv6 localhost? Get out!
+        $badRedirects["localhost.ip6"] = array("https://localhost.ip6:443", [['type' => 'AAAA', 'ipv6' => '::1']]);
 
-        // Domains that resolve to IPv6 addresses that represent IPv4 private ranges? Not on our watch! (Mocked below.)
-        $badRedirects[] = array("https://localhost.ip6:443");
-        $badRedirects[] = array("http://localhost2.ip6:80");
-        $badRedirects[] = array("https://private1.ip6:80");
-        $badRedirects[] = array("https://private2.ip6:80");
+        // Domains that resolve to IPv6 addresses that represent IPv4 private ranges? Not on our watch!
+        $badRedirects["localhost2.ip6"] = array("http://localhost2.ip6:80", [['type' => 'AAAA', 'ipv6' => '::ffff:127.0.0.1']]);
+        $badRedirects["private1.ip6"] = array("https://private1.ip6:80", [['type' => 'AAAA', 'ipv6' => '::ffff:192.168.1.18']]);
+        $badRedirects["private2.ip6"] = array("https://private2.ip6:80", [['type' => 'AAAA', 'ipv6' => '::ffff:10.0.0.1']]);
 
-        // Domains that resolve to IPv6 link-local adddresses? Hell no! (Mocked below.)
-        $badRedirects[] = array("https://linklocal.ip6/");
+        // Domains that resolve to IPv6 link-local adddresses? Hell no!
+        $badRedirects["linklocal.ip6"] = array("https://linklocal.ip6/", [['type' => 'AAAA', 'ipv6' => 'fe80::']]);
 
         return $badRedirects;
-    }
-
-    // We mock these DNS requests to hardcode particular responses
-    // See https://symfony.com/doc/current/components/phpunit_bridge.html#dns-sensitive-tests for docs
-    public function mockedDNSEntries() {
-        return [
-            'localhost.ip4' => [
-                [
-                    'type' => 'A',
-                    'ipv6' => '127.0.0.1',
-                ],
-            ],
-            'localhost.ip6' => [
-                [
-                    'type' => 'AAAA',
-                    'ipv6' => '::1',
-                ],
-            ],
-            'localhost2.ip6' => [
-                [
-                    'type' => 'AAAA',
-                    'ipv6' => '::ffff:127.0.0.1',
-                ],
-            ],
-            'private1.ip6' => [
-                [
-                    'type' => 'AAAA',
-                    'ipv6' => '::ffff:192.168.1.18',
-                ],
-            ],
-            'private2.ip6' => [
-                [
-                    'type' => 'AAAA',
-                    'ipv6' => '::ffff:10.0.0.1',
-                ],
-            ],
-            'linklocal.ip6' => [
-                [
-                    'type' => 'AAAA',
-                    'ipv6' => 'fe80::',
-                ],
-            ],
-        ];
     }
 
 }
