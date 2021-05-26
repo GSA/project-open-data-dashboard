@@ -3,11 +3,6 @@
 use PHPUnit\Framework\TestCase;
 use APIHelper\APIHelper;
 
-use Symfony\Bridge\PhpUnit\DnsMock;
-
-/**
- * @group dns-sensitive
- */
 class APIHelperTest extends TestCase
 {
 
@@ -42,7 +37,6 @@ class APIHelperTest extends TestCase
      * @dataProvider badUrlProvider
      */
     public function testFilterRemoteUrlRejectsNonAndBadHostnames($url) {
-        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $this->assertSame(false, APIHelper::filter_remote_url($url));
     }
 
@@ -50,7 +44,6 @@ class APIHelperTest extends TestCase
      * @dataProvider badRedirectProvider
      */
     public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect($url) {
-        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $this->expectException(\Exception::class);
         curl_header($url, true);
     }
@@ -59,7 +52,6 @@ class APIHelperTest extends TestCase
      * @dataProvider badRedirectProvider
      */
     public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect($url) {
-        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $CI =& get_instance();
         $this->expectException(\Exception::class);
         curl_head_shim($url, true, $CI->config->item('archive_dir'));
@@ -69,7 +61,6 @@ class APIHelperTest extends TestCase
      * @dataProvider badRedirectProvider
      */
     public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect($url) {
-        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $this->expectException(\Exception::class);
         curl_from_json($url);
     }
@@ -78,7 +69,6 @@ class APIHelperTest extends TestCase
      * @dataProvider badProtocolProvider
      */
     public function testCurlHeaderIgnoresBadProtocols($protocol) {
-        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $this->expectException(\Exception::class);
         curl_header($protocol."://127.0.0.1");
     }
@@ -87,7 +77,6 @@ class APIHelperTest extends TestCase
      * @dataProvider badProtocolProvider
      */
     public function testCurlHeadShimIgnoresBadProtocols($protocol) {
-        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $CI =& get_instance();
         $this->expectException(\Exception::class);
         curl_head_shim($protocol."://127.0.0.1", true, $CI->config->item('archive_dir'));
@@ -97,7 +86,6 @@ class APIHelperTest extends TestCase
      * @dataProvider badProtocolProvider
      */
     public function testCurlFromJsonIgnoresBadProtocols($protocol) {
-        DnsMock::withMockedHosts($this->mockedDNSEntries());
         $this->expectException(\Exception::class);
         curl_from_json($protocol."://127.0.0.1");
     }
