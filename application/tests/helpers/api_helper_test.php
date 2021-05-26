@@ -5,10 +5,18 @@ use APIHelper\APIHelper;
 
 class APIHelperTest extends TestCase
 {
+    use \phpmock\phpunit\PHPMock;
 
     public function setUp(): void {
         $CI =& get_instance();
         $CI->load->helper('api');
+    }
+
+    public function testMockingGlobalsWorks() {
+        $testURL = "https://localhost"; // Use a hostname that's definitely resolvable
+        $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
+        $dns_get_record->expects($this->once())->willReturn(false); // Mock that it's not resolvable
+        $this->assertEquals(false, APIHelper::filter_remote_url($testURL));
     }
 
     public function testFilterRemoteUrlRejectsUnresolvableHostnames() {
