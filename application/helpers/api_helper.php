@@ -2,72 +2,72 @@
 
 namespace APIHelper {
 
-use Symfony\Component\HttpFoundation\IpUtils;
+    use Symfony\Component\HttpFoundation\IpUtils;
 
 
-class APIHelper {
-    /*
-    * Check if a URL is "safe", that is, whether it's not going to result in an SSRF attack.
-    * Optionally set a passed reference to a specific IP that was resolved.
-    * The format of the string is suitable for use with CURLOPT_RESOLVE.
-    */
-    public static function filter_remote_url($url, &$curlopt_resolve = null) {
-        if (empty($url)) {
-            return null;
-        }
-        $url = filter_var($url, FILTER_VALIDATE_URL);
+    class APIHelper {
+        /*
+        * Check if a URL is "safe", that is, whether it's not going to result in an SSRF attack.
+        * Optionally set a passed reference to a specific IP that was resolved.
+        * The format of the string is suitable for use with CURLOPT_RESOLVE.
+        */
+        public static function filter_remote_url($url, &$curlopt_resolve = null) {
+            if (empty($url)) {
+                return null;
+            }
+            $url = filter_var($url, FILTER_VALIDATE_URL);
 
-        // We only accept http/https
-        $allowed_schemes = array('http', 'https');
-        $scheme = parse_url($url, PHP_URL_SCHEME);
-        if (!in_array($scheme, $allowed_schemes)) {
-            return false;
-        }
-
-        $host = parse_url($url, PHP_URL_HOST);
-
-        // We don't accept raw IP addresses
-        if (filter_var($host, FILTER_VALIDATE_IP)) {
-            return false;
-        }
-
-        // ...or unresolvable hostnames
-        $resolved = dns_get_record($host.".", DNS_A + DNS_AAAA);
-        if (!$resolved) {
-            echo "Host $host is UNRESOLVED!";
-            return false;
-        }
-
-        // We only accept reasonable ports
-        $port = parse_url($url, PHP_URL_PORT);
-        if ($port != null && $port != 80 && $port != 443 && $port != 8080) {
-            return false;
-        }
-
-        // Check the array of A and AAAA records to make sure they don't resolve to private ranges to protect against SSRF
-        for ($i=0; $i < count($resolved); $i++)
-        {
-            if ($resolved[$i]["type"] === "A") {
-                if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
-                    return false;
-                }
-                $lastValidIPV4 = $resolved[$i]["ip"];
+            // We only accept http/https
+            $allowed_schemes = array('http', 'https');
+            $scheme = parse_url($url, PHP_URL_SCHEME);
+            if (!in_array($scheme, $allowed_schemes)) {
+                return false;
             }
 
-            if ($resolved[$i]["type"] === "AAAA") {
-                if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
-                    return false;
+            $host = parse_url($url, PHP_URL_HOST);
+
+            // We don't accept raw IP addresses
+            if (filter_var($host, FILTER_VALIDATE_IP)) {
+                return false;
+            }
+
+            // ...or unresolvable hostnames
+            $resolved = dns_get_record($host.".", DNS_A + DNS_AAAA);
+            if (!$resolved) {
+                echo "Host $host is UNRESOLVED!";
+                return false;
+            }
+
+            // We only accept reasonable ports
+            $port = parse_url($url, PHP_URL_PORT);
+            if ($port != null && $port != 80 && $port != 443 && $port != 8080) {
+                return false;
+            }
+
+            // Check the array of A and AAAA records to make sure they don't resolve to private ranges to protect against SSRF
+            for ($i=0; $i < count($resolved); $i++)
+            {
+                if ($resolved[$i]["type"] === "A") {
+                    if (!filter_var($resolved[$i]["ip"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+                        return false;
+                    }
+                    $lastValidIPV4 = $resolved[$i]["ip"];
                 }
 
-                // FILTER_FLAG_NO_PRIV_RANGE doesn't check for private-range IPv4-mapped addresses in IPv6:
+                if ($resolved[$i]["type"] === "AAAA") {
+                    if (!filter_var($resolved[$i]["ipv6"], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE )) {
+                        return false;
+                    }
+
+                    // FILTER_FLAG_NO_PRIV_RANGE doesn't check for private-range IPv4-mapped addresses in IPv6:
                     // https://www.php.net/manual/en/filter.filters.validate.php#125006PHP
                     // So we have to check for this case explicitly.
                     // The suggestion to use the (tested, supported) Symfony IpUtils function is from:
                     // https://stackoverflow.com/a/36152302
                     if (IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:10.0.0.0/104')     ||  // 10.0.0.0/8
-                    IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:172.16.0.0/108')   ||  // 172.16.0.0/12
-                    IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:192.168.0.0/112')  ||  // 192.168.0.0/16
-                    IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:127.0.0.1/128')) {     // 127.0.0.1/32
+                        IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:172.16.0.0/108')   ||  // 172.16.0.0/12
+                        IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:192.168.0.0/112')  ||  // 192.168.0.0/16
+                        IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:127.0.0.1/128')) {     // 127.0.0.1/32
                         return false;
                     }
 
