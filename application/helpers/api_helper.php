@@ -59,8 +59,8 @@ namespace APIHelper {
                         return false;
                     }
 
-                    // FILTER_FLAG_NO_PRIV_RANGE doesn't check for private-range IPv4-mapped addresses in IPv6:
-                    // https://www.php.net/manual/en/filter.filters.validate.php#125006PHP
+                    // FILTER_FLAG_NO_PRIV_RANGE doesn't check for private-range IPv4 addresses mapped in the IPv6 namespace:
+                    // https://www.php.net/manual/en/filter.filters.validate.php#125006
                     // So we have to check for this case explicitly.
                     // The suggestion to use the (tested, supported) Symfony IpUtils function is from:
                     // https://stackoverflow.com/a/36152302

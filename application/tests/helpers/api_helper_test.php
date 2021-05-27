@@ -44,7 +44,12 @@ class APIHelperTest extends TestCase
     /**
      * @dataProvider badUrlProvider
      */
-    public function testFilterRemoteUrlRejectsNonAndBadHostnames($url) {
+    public function testFilterRemoteUrlRejectsNonAndBadHostnames($url, $mockedRecord) {
+        if ($mockedRecord) {
+            // Mock out the DNS request with the expected value
+            $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
+            $dns_get_record->expects($this->once())->willReturn($mockedRecord);
+        }
         $this->assertSame(false, APIHelper::filter_remote_url($url));
     }
 
@@ -111,13 +116,13 @@ class APIHelperTest extends TestCase
     public function badRedirectProvider() {
         $badUrls = $this->badUrlProvider();
         $badRedirects = array();
-        foreach($badUrls as $badUrl) {
+        foreach($badUrls as $name => $badUrl) {
             $urlParts = parse_url(array_shift($badUrl));
             unset($urlParts['scheme']);
 
             // The redir.xpoc.pro tool is provided by sp1d3R in the HackerOne Bug Bounty program
             // If it goes away, we'll need some other way to easily generate a redirect to an internal URL
-            $badRedirects[] = array("http://redir.xpoc.pro/".implode($urlParts));
+            $badRedirects[$name] = array("http://redir.xpoc.pro/".implode($urlParts), array_shift($badUrl));
         }
         return $badRedirects;
     }
