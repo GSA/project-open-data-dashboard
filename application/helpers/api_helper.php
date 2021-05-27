@@ -119,7 +119,7 @@ function curl_from_json($url, $array=false, $decode=true) {
     $data = safe_curl_exec($url, $ch, true);
 
     if (curl_errno($ch)) {
-        log_message('error', "curl_header error: " . curl_error($ch));
+        log_message('error', "curl_from_json error: " . curl_error($ch));
         throw new Exception(curl_error($ch), curl_errno($ch));
     }
 
@@ -207,7 +207,7 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
     safe_curl_exec($url, $ch, $follow_redirect);
 
     if (curl_errno($ch)) {
-        log_message('error', "curl_header error: " . curl_error($ch));
+        log_message('error', "curl_head_shim error: " . curl_error($ch));
         throw new Exception(curl_error($ch), curl_errno($ch));
     }
 
