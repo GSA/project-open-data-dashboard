@@ -24,21 +24,23 @@
         }
     }],
     "require": {
-        "php": ">=7.3.0",
+        "php": "^7.3.0",
         "codeigniter/framework": "3.1.*",
         "justinrainbow/json-schema": "~4",
         "michelf/php-markdown": "*",
         "salsify/json-streaming-parser": "~5",
         "vlucas/phpdotenv": "^2.4",
-        "aws/aws-sdk-php": "*"
+        "aws/aws-sdk-php": "*",
+        "symfony/http-foundation": "5.2.8"
     },
     "require-dev": {
         "mikey179/vfsstream": "1.1.*",
-        "phpunit/phpunit": "~7.5",
-        "kenjis/ci-phpunit-test": "master@dev"
+        "phpunit/phpunit": "^9.5",
+        "php-mock/php-mock-phpunit": "^2.6",
+        "kenjis/ci-phpunit-test": "^3.0"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit --no-coverage --testdox -c application/tests",
+        "test": "./vendor/bin/phpunit --do-not-cache-result --no-coverage --testdox -c application/tests",
         "crawl-download": [
             "Composer\\Config::disableProcessTimeout",
             "php public/index.php campaign status omb-monitored download"

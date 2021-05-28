@@ -188,7 +188,7 @@ class OfficesTest extends DbTestCase
 
         $output = $this->request('GET', 'offices/qa');
         $this->assertResponseCode(200);
-        $this->assertContains('<td>Other Agencies</td>', $output);
+        $this->assertStringContainsString('<td>Other Agencies</td>', $output);
     }
 
     /**
