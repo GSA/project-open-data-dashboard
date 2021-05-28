@@ -1,5 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+use APIHelper\APIHelper;
+
 class Campaign extends CI_Controller
 {
 
@@ -782,7 +784,7 @@ class Campaign extends CI_Controller
                 $expected_datajson_url = urldecode($url_override);
             }
 
-            $expected_datajson_url = filter_remote_url($expected_datajson_url);
+            $expected_datajson_url = APIHelper::filter_remote_url($expected_datajson_url);
             if (!$expected_datajson_url) {
                 show_error('Not valid data.json URL.', 400);
                 return;

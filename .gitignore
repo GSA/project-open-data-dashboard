@@ -24,3 +24,4 @@ composer.phar
 
 # cloud.gov deployment variables
 vars.yml
+application/tests/.phpunit.result.cache

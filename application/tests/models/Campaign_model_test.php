@@ -2,7 +2,7 @@
 
 class CampaignModelTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->resetInstance();
         $this->CI->load->model('Campaign_model');
