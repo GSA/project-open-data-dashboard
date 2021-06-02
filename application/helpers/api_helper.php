@@ -89,6 +89,43 @@ namespace APIHelper {
             }
             return $url;
         }
+
+        // Do a (potentially recursive) curl request while defending against SSRF attacks
+        public static function safe_curl_exec($url, $ch, $follow_redirect = true, $maxRedirs = 10) {
+
+            // We take care of redirects ourselves to deflect SSRF attempts
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+
+            $numRedirects = 0;
+            do {
+                if (!APIHelper::filter_remote_url($url, $ipresolution)) {
+                    throw new \Exception("Encountered bad URL during curl request: ".$url);
+                }
+
+                // Make sure that the IP curl actually hits is the one that we just validated as OK
+                // This combats DNS Rebinding attacks by binding our request to the IP iniitially resolved.
+                curl_setopt($ch, CURLOPT_RESOLVE, array($ipresolution));
+
+                // Set the target URL
+                curl_setopt($ch, CURLOPT_URL, $url);
+                $http_heading = curl_exec($ch);
+
+                // Watch out for problems
+                if (curl_errno($ch)) {
+                    log_message('error', "curl_header error: " . curl_error($ch));
+                    throw new \Exception(curl_error($ch), curl_errno($ch));
+                }
+
+                // Check for a redirect
+                $url = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
+
+            } while ($follow_redirect               // Continue if redirects were requested
+            && $url != ''                       // ...and we got a redirect
+            && $numRedirects++ < $maxRedirs);   // ...and we haven't we reached the maximum
+
+            return $http_heading;
+        }
+
     }
 }
 
@@ -116,7 +153,7 @@ function curl_from_json($url, $array=false, $decode=true) {
     curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
     curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-    $data = safe_curl_exec($url, $ch, true);
+    $data = APIHelper::safe_curl_exec($url, $ch, true);
 
     if (curl_errno($ch)) {
         log_message('error', "curl_from_json error: " . curl_error($ch));
@@ -165,7 +202,7 @@ function curl_header($url, $follow_redirect = true, $tmp_dir = null, $force_shim
     curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
     curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-    $http_heading = safe_curl_exec($url, $ch, $follow_redirect);
+    $http_heading = APIHelper::safe_curl_exec($url, $ch, $follow_redirect);
 
     $info['header'] = http_parse_headers($http_heading);
     $info['info'] = curl_getinfo($ch);
@@ -204,7 +241,7 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
     curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
     curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
-    safe_curl_exec($url, $ch, $follow_redirect);
+    APIHelper::safe_curl_exec($url, $ch, $follow_redirect);
 
     if (curl_errno($ch)) {
         log_message('error', "curl_head_shim error: " . curl_error($ch));
@@ -224,43 +261,6 @@ function curl_head_shim($url, $follow_redirect = true, $tmp_dir = '') {
 
     return $info;
 
-}
-
-// Do a (potentially recursive) curl request while defending against SSRF attacks
-// TODO https://github.com/GSA/datagov-deploy/issues/1759
-function safe_curl_exec($url, $ch, $follow_redirect = true, $maxRedirs = 10) {
-
-    // We take care of redirects ourselves to deflect SSRF attempts
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-
-    $numRedirects = 0;
-    do {
-        if (!APIHelper::filter_remote_url($url, $ipresolution)) {
-            throw new Exception("Encountered bad URL during curl request: ".$url);
-        }
-
-        // Make sure that the IP curl actually hits is the one that we just validated as OK
-        // This combats DNS Rebinding attacks by binding our request to the IP iniitially resolved.
-        curl_setopt($ch, CURLOPT_RESOLVE, array($ipresolution));
-
-        // Set the target URL
-        curl_setopt($ch, CURLOPT_URL, $url);
-        $http_heading = curl_exec($ch);
-
-        // Watch out for problems
-        if (curl_errno($ch)) {
-            log_message('error', "curl_header error: " . curl_error($ch));
-            throw new Exception(curl_error($ch), curl_errno($ch));
-        }
-
-        // Check for a redirect
-        $url = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
-
-    } while ($follow_redirect               // Continue if redirects were requested
-    && $url != ''                       // ...and we got a redirect
-    && $numRedirects++ < $maxRedirs);   // ...and we haven't we reached the maximum
-
-    return $http_heading;
 }
 
 

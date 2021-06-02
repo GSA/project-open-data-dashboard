@@ -54,26 +54,102 @@ class APIHelperTest extends TestCase
     }
 
     /**
-     * @dataProvider badRedirectProvider
+     * @dataProvider badUrlProvider
      */
-    public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect($url) {
+    public function testSafeCurlExecBarfsOnSsrfInRedirect($ssrfUrl, $mockedRecord) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+        curl_setopt($ch, CURLOPT_FILETIME, true);
+
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+
+        curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+        curl_setopt($ch, CURLOPT_COOKIE, "");
+
+        curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+        curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+
+        // Provide a response body with a redirect to our $ssrfUrl
+        $redirectBody = "HTTP/1.1 301 Moved Permanently\nLocation: $ssrfUrl\n";
+        $curl_exec = $this->getFunctionMock("APIHelper", "curl_exec");
+        $curl_exec->expects($this->once())->willReturn($redirectBody); // 301 redirect $ssrfUrl
+
+        $urlParts = parse_url($ssrfUrl);
+        unset($urlParts['scheme']);
+        $redirectUrl = "http://ssrf.redirecting.host/".implode($urlParts);
+
+        // $filter_remote_url = $this->getFunctionMock("APIHelper", APIHelper::filter_remote_url);
+        $filter_remote_url = $this->getMockBuilder(APIHelper\APIHelper::class)
+             ->setMethods(['filter'])
+             ->getMock();
+        $filter_remote_url->expects($this->exactly(2))->will($this->onConsecutiveCalls($redirectUrl, false)); // 301 redirect $ssrfurl
+
         $this->expectException(\Exception::class);
-        curl_header($url, true);
+        APIHelper::safe_curl_exec($redirectUrl, $ch, true);
     }
 
     /**
-     * @dataProvider badRedirectProvider
+     * @dataProvider badUrlProvider
      */
-    public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect($url) {
+    public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect($ssrfUrl, $mockedRecord) {
+
+        // Expected sequence:
+        // 1) dns_get_record for the ssrf.redirecting.host gets a mocked record
+        // 2) curl_exec (to the mocked IP) gets a mocked "301 to $ssrfUrl" response
+        // 3) dns_get_record for the $ssrfurl host gets mocked record (if provided)
+
+
+        // (2)
+        // Expect that curl_exec will get called once with the special IP
+        // Provide a response body with a redirect to our $ssrfurl
+        $redirectBody = "HTTP/1.1 301 Moved Permanently\nLocation: $ssrfUrl";
+        $curl_exec = $this->getFunctionMock("APIHelper", "curl_exec");
+        $curl_exec->expects($this->once())->willReturn($redirectBody); // 301 redirect $ssrfurl
+
+        $dnsRecordMap = [
+            // (1)
+            // Make sure the first request to resolve the ssrf.redirecting.host succeeds
+            ["ssrf.redirecting.host", [['type' => 'A', 'ip' => '1.2.3.4']]]
+        ];
+        if ($mockedRecord) {
+            // (3)
+            // Make sure the subsequent request for the $ssrfurl host resolves to mocked records, if provided.
+            $dnsRecordMap[] = [
+                [$ssrfUrl, $mockedRecord]
+            ];
+        }
+        $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
+        $dns_get_record->expects($this->once())->will($this->returnValueMap($dnsRecordMap));
+
+        $urlParts = parse_url($ssrfUrl);
+        unset($urlParts['scheme']);
+        $redirectUrl = "http://ssrf.redirecting.host/".implode($urlParts);
+
+        $this->expectException(\Exception::class);
+        curl_header($redirectUrl, true);
+    }
+
+    /**
+     * @dataProvider badUrlProvider
+     */
+    public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect($url, $mockedRecord) {
         $CI =& get_instance();
         $this->expectException(\Exception::class);
         curl_head_shim($url, true, $CI->config->item('archive_dir'));
     }
 
     /**
-     * @dataProvider badRedirectProvider
+     * @dataProvider badUrlProvider
      */
-    public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect($url) {
+    public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect($url, $mockedRecord) {
         $this->expectException(\Exception::class);
         curl_from_json($url);
     }
@@ -110,21 +186,6 @@ class APIHelperTest extends TestCase
             $protocolarray[] = array($protocol);
         }
         return $protocolarray;
-    }
-
-    // This data provider puts each of the bad URL examples we're trying to avoid in the middle of a redirect
-    public function badRedirectProvider() {
-        $badUrls = $this->badUrlProvider();
-        $badRedirects = array();
-        foreach($badUrls as $name => $badUrl) {
-            $urlParts = parse_url(array_shift($badUrl));
-            unset($urlParts['scheme']);
-
-            // The redir.xpoc.pro tool is provided by sp1d3R in the HackerOne Bug Bounty program
-            // If it goes away, we'll need some other way to easily generate a redirect to an internal URL
-            $badRedirects[$name] = array("http://redir.xpoc.pro/".implode($urlParts), array_shift($badUrl));
-        }
-        return $badRedirects;
     }
 
     // Examples of SSRF URLs we should never follow
