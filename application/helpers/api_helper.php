@@ -34,7 +34,6 @@ namespace APIHelper {
             // ...or unresolvable hostnames
             $resolved = dns_get_record($host.".", DNS_A + DNS_AAAA);
             if (!$resolved) {
-                echo "Host $host is UNRESOLVED!";
                 return false;
             }
 
@@ -67,7 +66,7 @@ namespace APIHelper {
                     if (IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:10.0.0.0/104')     ||  // 10.0.0.0/8
                         IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:172.16.0.0/108')   ||  // 172.16.0.0/12
                         IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:192.168.0.0/112')  ||  // 192.168.0.0/16
-                        IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:127.0.0.1/128')) {     // 127.0.0.1/32
+                        IpUtils::checkIp6($resolved[$i]["ipv6"], '::ffff:127.0.0.1/104')) {     // 127.0.0.1/8
                         return false;
                     }
 
