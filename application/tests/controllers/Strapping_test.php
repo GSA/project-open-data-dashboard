@@ -19,6 +19,17 @@ class StrappingTest extends TestCase
         $this->assertNull(NULL);
     }
 
+    // Confirm that we'll catch the use of uninitialized variables during tests
+    // NOTE: This is commented out. PHPUnit *does* detect the error condition we want,
+    // but the test fails because an expected PHPUnit exception is not thrown.
+    // The closest reference I've found to this situation(albeit with an unrelated root cause):
+    // https://github.com/sebastianbergmann/phpunit/issues/4663
+    //
+    // public function testErrorWhenUnknownVarsAreUsed() : void {
+    //     $this->expectError();
+    //     echo $this_is_not_a_previously_set_variable;
+    // }
+
     /**
      * These are strapping tests that just assert that no PHP errors are encountered on clicks of nav links
      * @dataProvider navLinksProvider
