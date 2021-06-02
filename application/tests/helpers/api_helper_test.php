@@ -162,6 +162,7 @@ class APIHelperTest extends TestCase
         $badRedirects["localhost2.ip6"] = array("http://localhost2.ip6:80", [['type' => 'AAAA', 'ipv6' => '::ffff:127.0.0.1']]);
         $badRedirects["private1.ip6"] = array("https://private1.ip6:80", [['type' => 'AAAA', 'ipv6' => '::ffff:192.168.1.18']]);
         $badRedirects["private2.ip6"] = array("https://private2.ip6:80", [['type' => 'AAAA', 'ipv6' => '::ffff:10.0.0.1']]);
+        $badRedirects["private3.ip6"] = array("http://private3.ip6:80", [['type' => 'AAAA', 'ipv6' => '::ffff:127.0.0.2']]);
 
         // Domains that resolve to IPv6 link-local adddresses? Hell no!
         $badRedirects["linklocal.ip6"] = array("https://linklocal.ip6/", [['type' => 'AAAA', 'ipv6' => 'fe80::']]);
