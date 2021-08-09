@@ -19,7 +19,7 @@
         <script src="<?php echo site_url('js/vendor/modernizr.min.js')?>"></script>
         <link href="<?php echo site_url('css/font-awesome.min.css')?>" rel="stylesheet">
 
-        <script src="<?php echo site_url('js/vendor/jquery-3.5.1.min.js')?>"></script>
+        <script src="<?php echo site_url('js/vendor/jquery-3.6.0.min.js')?>"></script>
         <script src="<?php echo site_url('js/vendor/bootstrap.min.js')?>"></script>
         <script src="<?php echo site_url('js/vendor/moment.min.js')?>"></script>
         <script src="<?php echo site_url('js/main.js')?>"></script>
