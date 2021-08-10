@@ -1,5 +1,5 @@
 # FROM php:7.3-alpine
-FROM alpine:3.11
+FROM alpine:3
 
 RUN apk --no-cache upgrade
 RUN apk add --no-cache apache2 \
