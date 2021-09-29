@@ -77,7 +77,7 @@ namespace APIHelper {
             // A return ref was provided, so give callers a string they can use to make sure they're hitting the IP that we approved
             if (func_num_args() > 1) {
                 $curlopt_resolve = $host
-                . ':' . ($port ? $port : '')
+                . ':' . ($port ? $port : ($scheme == 'https' ? '443' : '80'))
                 . ':'
                 . ($lastValidIPV4 ? $lastValidIPV4 : $lastValidIPV6);
             }
