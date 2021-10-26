@@ -125,7 +125,8 @@ function curl_from_json($url, $array=false, $decode=true) {
     curl_close($ch);
 
     if($decode == true) {
-        $data = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($data));
+        ini_set('mbstring.substitute_character', "none");
+        $data = mb_convert_encoding($data, 'UTF-8', 'UTF-8');
         return json_decode($data, $array);
     } else {
         return $data;
