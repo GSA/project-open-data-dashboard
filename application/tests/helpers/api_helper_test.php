@@ -7,38 +7,41 @@ class APIHelperTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 
+    protected $api_helper;
+
     public function setUp(): void {
         $CI =& get_instance();
         $CI->load->helper('api');
+        $this->api_helper = new APIHelper();
     }
 
     public function testMockingGlobalsWorks() {
         $testURL = "https://localhost"; // Use a hostname that's definitely resolvable
         $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
         $dns_get_record->expects($this->once())->willReturn(false); // Mock that it's not resolvable
-        $this->assertEquals(false, APIHelper::filter_remote_url($testURL));
+        $this->assertEquals(false, $this->api_helper->filter_remote_url($testURL));
     }
 
     public function testFilterRemoteUrlRejectsUnresolvableHostnames() {
         $url = "http://some.unresolvable.hostname.fer-reals/data.json";
-        $this->assertSame(false, APIHelper::filter_remote_url($url));
+        $this->assertSame(false, $this->api_helper->filter_remote_url($url));
     }
 
     public function testFilterRemoteUrlRejectsUnusualPorts() {
-        $this->assertSame(false, APIHelper::filter_remote_url("https://www.google.com:567/data.json"));
+        $this->assertSame(false, $this->api_helper->filter_remote_url("https://www.google.com:567/data.json"));
     }
 
     public function testFilterRemoteUrlAcceptsExpectedPorts() {
-        $this->assertSame("https://www.google.com/data.json", APIHelper::filter_remote_url("https://www.google.com/data.json"));
-        $this->assertSame("https://www.google.com:443/data.json", APIHelper::filter_remote_url("https://www.google.com:443/data.json"));
-        $this->assertSame("http://www.google.com:80/data.json", APIHelper::filter_remote_url("http://www.google.com:80/data.json"));
-        $this->assertSame("http://www.google.com:8080/data.json", APIHelper::filter_remote_url("http://www.google.com:8080/data.json"));
+        $this->assertSame("https://www.google.com/data.json", $this->api_helper->filter_remote_url("https://www.google.com/data.json"));
+        $this->assertSame("https://www.google.com:443/data.json", $this->api_helper->filter_remote_url("https://www.google.com:443/data.json"));
+        $this->assertSame("http://www.google.com:80/data.json", $this->api_helper->filter_remote_url("http://www.google.com:80/data.json"));
+        $this->assertSame("http://www.google.com:8080/data.json", $this->api_helper->filter_remote_url("http://www.google.com:8080/data.json"));
     }
 
     // A null hostname should explicitly return null
     public function testFilterRemoteUrlRejectsNullHostnames() {
         $url = null;
-        $this->assertSame(null, APIHelper::filter_remote_url($url));
+        $this->assertSame(null, $this->api_helper->filter_remote_url($url));
     }
 
     /**
@@ -50,7 +53,7 @@ class APIHelperTest extends TestCase
             $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
             $dns_get_record->expects($this->once())->willReturn($mockedRecord);
         }
-        $this->assertSame(false, APIHelper::filter_remote_url($url));
+        $this->assertSame(false, $this->api_helper->filter_remote_url($url));
     }
 
     /**
@@ -58,7 +61,7 @@ class APIHelperTest extends TestCase
      */
     public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect($url) {
         $this->expectException(\Exception::class);
-        curl_header($url, true);
+        $this->api_helper->curl_header($url, true);
     }
 
     /**
@@ -67,7 +70,7 @@ class APIHelperTest extends TestCase
     public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect($url) {
         $CI =& get_instance();
         $this->expectException(\Exception::class);
-        curl_head_shim($url, true, $CI->config->item('archive_dir'));
+        $this->api_helper->curl_head_shim($url, true, $CI->config->item('archive_dir'));
     }
 
     /**
@@ -75,7 +78,7 @@ class APIHelperTest extends TestCase
      */
     public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect($url) {
         $this->expectException(\Exception::class);
-        curl_from_json($url);
+        $this->api_helper->curl_from_json($url);
     }
 
     /**
@@ -83,7 +86,7 @@ class APIHelperTest extends TestCase
      */
     public function testCurlHeaderIgnoresBadProtocols($protocol) {
         $this->expectException(\Exception::class);
-        curl_header($protocol."://127.0.0.1");
+        $this->api_helper->curl_header($protocol."://127.0.0.1");
     }
 
     /**
@@ -92,7 +95,7 @@ class APIHelperTest extends TestCase
     public function testCurlHeadShimIgnoresBadProtocols($protocol) {
         $CI =& get_instance();
         $this->expectException(\Exception::class);
-        curl_head_shim($protocol."://127.0.0.1", true, $CI->config->item('archive_dir'));
+        $this->api_helper->curl_head_shim($protocol."://127.0.0.1", true, $CI->config->item('archive_dir'));
     }
 
     /**
@@ -100,7 +103,7 @@ class APIHelperTest extends TestCase
      */
     public function testCurlFromJsonIgnoresBadProtocols($protocol) {
         $this->expectException(\Exception::class);
-        curl_from_json($protocol."://127.0.0.1");
+        $this->api_helper->curl_from_json($protocol."://127.0.0.1");
     }
 
     // These are all the protocols that libcurl supports that we don't want to be valid

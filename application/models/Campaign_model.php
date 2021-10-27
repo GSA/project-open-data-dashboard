@@ -853,9 +853,10 @@ class Campaign_model extends CI_Model
 
     public function uri_header($url, $redirect_count = 0, $force_shim = false)
     {
+        $api_helper = new APIHelper();
         $status = null;
         try {
-            $status = curl_header($url, true, $this->config->item('archive_dir', $force_shim));
+            $status = $api_helper->curl_header($url, true, $this->config->item('archive_dir', $force_shim));
             $status = $status['info'];    //content_type and http_code
         }
         catch (Exception $e) {
@@ -871,13 +872,14 @@ class Campaign_model extends CI_Model
 
     public function validate_datajson($datajson_url = null, $datajson = null, $headers = null, $schema = null, $return_source = false, $quality = false, $component = null)
     {
+        $api_helper = new APIHelper();
         log_message('debug', 'datajson_url before processing: ' . $datajson_url);
-        $datajson_url = APIHelper::filter_remote_url($datajson_url);
+        $datajson_url = $api_helper->filter_remote_url($datajson_url);
 
         if ($datajson_url) {
             $datajson_header = ($headers) ? $headers : $this->campaign->uri_header($datajson_url);
 
-            if (!isset($datajson_header['url']) || !APIHelper::filter_remote_url($datajson_header['url'])) {
+            if (!isset($datajson_header['url']) || $api_helper->filter_remote_url($datajson_header['url'])) {
                 $datajson_url = false;
             }
         }
@@ -909,7 +911,7 @@ class Campaign_model extends CI_Model
             ) {
                 $datajson = null;
                 try {
-                    $datajson = curl_from_json($datajson_url, false, false);
+                    $datajson = $api_helper->curl_from_json($datajson_url, false, false);
                 }
                 catch (Exception $e) {
                     $datajson=false;
@@ -1350,6 +1352,7 @@ class Campaign_model extends CI_Model
 
     public function archive_file($filetype, $office_id, $url)
     {
+        $api_helper = new APIHelper();
 
         $download_dir = $this->config->item('archive_dir');
 
@@ -1382,7 +1385,7 @@ class Campaign_model extends CI_Model
 
         $context = stream_context_create($opts);
 
-        $copy = @fopen(APIHelper::filter_remote_url($url), 'rb', false, $context);
+        $copy = @fopen($api_helper->filter_remote_url($url), 'rb', false, $context);
 
         // If we can't read from this file, skip
         if ($copy === false) {
@@ -1845,12 +1848,12 @@ class Campaign_model extends CI_Model
 
     public function validation_check($id, $title, $url, $format = null)
     {
-
+        $api_helper = new APIHelper();
         $tmp_dir = $this->config->item('archive_dir');
 
         $header = null;
         try {
-            $header = curl_header($url, false, $tmp_dir);
+            $header = $api_helper->curl_header($url, false, $tmp_dir);
         }
         catch (Exception $e) {
             return false;
@@ -2387,7 +2390,7 @@ class Campaign_model extends CI_Model
 
     public function get_datagov_json($orgs, $geospatial = false, $rows = 100, $offset = 0, $raw = false, $allow_harvest_sources = 'true')
     {
-
+        $api_helper = new APIHelper();
         $allow_harvest_sources = (empty($allow_harvest_sources)) ? 'true' : $allow_harvest_sources;
 
         if ($geospatial == 'both') {
@@ -2408,7 +2411,7 @@ class Campaign_model extends CI_Model
 
         $datagov_json = null;
         try {
-            $datagov_json = curl_from_json($uri, false);
+            $datagov_json = $api_helper->curl_from_json($uri, false);
         }
         catch (Exception $e) {
 $datagov_json = null;

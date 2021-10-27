@@ -777,6 +777,7 @@ class Campaign extends CI_Controller
         */
 
         if ($component == 'full-scan' || $component == 'all' || $component == 'datajson' || $component == 'download') {
+            $api_helper = new APIHelper();
 
             if (empty($url_override)) {
                 $expected_datajson_url = $url . '/data.json';
@@ -784,7 +785,7 @@ class Campaign extends CI_Controller
                 $expected_datajson_url = urldecode($url_override);
             }
 
-            $expected_datajson_url = APIHelper::filter_remote_url($expected_datajson_url);
+            $expected_datajson_url = $api_helper->filter_remote_url($expected_datajson_url);
             if (!$expected_datajson_url) {
                 show_error('Not valid data.json URL.', 400);
                 return;

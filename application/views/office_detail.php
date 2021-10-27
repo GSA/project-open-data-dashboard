@@ -1964,11 +1964,13 @@
         	</td>
         </tr>
 
-        <?php if($http_code == 200 && $digital_strategy = curl_from_json($office_campaign->digitalstrategy_status->url, false, true)) {
+        <?php
+            $api_helper = new APIHelper();
+            if($http_code == 200 && $digital_strategy = $api_helper->curl_from_json($office_campaign->digitalstrategy_status->url, false, true)) {
                 $valid_json = true;
-              } else {
+            } else {
                 $valid_json = false;
-              }
+            }
         ?>
 
 
