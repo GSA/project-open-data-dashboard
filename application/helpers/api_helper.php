@@ -44,6 +44,16 @@ namespace APIHelper {
                 return false;
             }
 
+            // ...or octal/hex numbers
+            if (filter_var($host, FILTER_VALIDATE_INT) === 0 || filter_var($host, FILTER_VALIDATE_INT)) {
+                return false;
+            }
+
+            // ...or domains where any sub-element is just a dec/oct/hex number
+            if(preg_match('/(^|\.)((0x[[:xdigit:]]+)|\d+)(\.|$)/', $host) === 1) {
+                return false;
+            }
+
             // ...or unresolvable hostnames
             $resolved = dns_get_record($host.".", DNS_A + DNS_AAAA);
             if (!$resolved) {
