@@ -2,17 +2,20 @@
 
 use PHPUnit\Framework\TestCase;
 use APIHelper\APIHelper;
+use FROG\PhpCurlSAI\SAI_CurlStub;
 
 class APIHelperTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 
     protected $api_helper;
+    protected $curl_stub;
 
     public function setUp(): void {
         $CI =& get_instance();
         $CI->load->helper('api');
-        $this->api_helper = new APIHelper();
+        $this->curl_stub = new SAI_CurlStub();
+        $this->api_helper = new APIHelper($this->curl_stub);
     }
 
     public function testMockingGlobalsWorks() {
@@ -57,28 +60,28 @@ class APIHelperTest extends TestCase
     }
 
     /**
-     * @dataProvider badRedirectProvider
+     * @dataProvider badUrlProvider
      */
     public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect($url) {
         $this->expectException(\Exception::class);
-        $this->api_helper->curl_header($url, true);
+        $this->api_helper->curl_header($this->mockRedirectTo($url), true);
     }
 
     /**
-     * @dataProvider badRedirectProvider
+     * @dataProvider badUrlProvider
      */
     public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect($url) {
         $CI =& get_instance();
         $this->expectException(\Exception::class);
-        $this->api_helper->curl_head_shim($url, true, $CI->config->item('archive_dir'));
+        $this->api_helper->curl_head_shim($this->mockRedirectTo($url), true, $CI->config->item('archive_dir'));
     }
 
     /**
-     * @dataProvider badRedirectProvider
+     * @dataProvider badUrlProvider
      */
     public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect($url) {
         $this->expectException(\Exception::class);
-        $this->api_helper->curl_from_json($url);
+        $this->api_helper->curl_from_json($this->mockRedirectTo($url));
     }
 
     /**
@@ -115,19 +118,21 @@ class APIHelperTest extends TestCase
         return $protocolarray;
     }
 
-    // This data provider puts each of the bad URL examples we're trying to avoid in the middle of a redirect
-    public function badRedirectProvider() {
-        $badUrls = $this->badUrlProvider();
-        $badRedirects = array();
-        foreach($badUrls as $name => $badUrl) {
-            $urlParts = parse_url(array_shift($badUrl));
-            unset($urlParts['scheme']);
+    private function mockRedirectTo($url) {
+        $requiredOptions = [
+            CURLOPT_URL => 'https://redirect.for.me',
+        ];
+        $expectedInfo = [
+            CURLINFO_REDIRECT_URL => $url,
+        ];
+        $this->curl_stub->setResponse('{
+                "Location": "$url"
+            }',
+            $requiredOptions,
+        );
+        $this->curl_stub->setInfo($expectedInfo, $requiredOptions);
 
-            // The redir.xpoc.pro tool is provided by sp1d3R in the HackerOne Bug Bounty program
-            // If it goes away, we'll need some other way to easily generate a redirect to an internal URL
-            $badRedirects[$name] = array("http://redir.xpoc.pro/".implode($urlParts), array_shift($badUrl));
-        }
-        return $badRedirects;
+        return $requiredOptions[CURLOPT_URL];
     }
 
     // Examples of SSRF URLs we should never follow
