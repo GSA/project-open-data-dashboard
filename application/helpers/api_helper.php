@@ -3,9 +3,22 @@
 namespace APIHelper {
 
     use Symfony\Component\HttpFoundation\IpUtils;
+    use FROG\PhpCurlSAI\SAI_Curl;
+    use FROG\PhpCurlSAI\SAI_CurlInterface;
 
 
     class APIHelper {
+
+        // Define the variable to hold the cURL instance that will make a connection
+        protected $cURL;
+
+        public function __construct(SAI_CurlInterface $cURL = null) {
+            // If no curl instance is provided, the one that makes the actual connection shall be used
+            if ($cURL == null) $this->cURL = new SAI_Curl();
+            else
+                $this->cURL = $cURL;
+        }
+
         /*
         * Check if a URL is "safe", that is, whether it's not going to result in an SSRF attack.
         * Optionally set a passed reference to a specific IP that was resolved.
@@ -91,32 +104,32 @@ namespace APIHelper {
 
         function curl_from_json($url, $array=false, $decode=true) {
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
+            $ch = $this->cURL->curl_init();
+            $this->cURL->curl_setopt($ch, CURLOPT_USERAGENT, 'Data.gov data.json crawler');
 
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+            $this->cURL->curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            $this->cURL->curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            $this->cURL->curl_setopt($ch, CURLOPT_TIMEOUT, 60);
 
-            curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-            curl_setopt($ch, CURLOPT_FILETIME, true);
+            $this->cURL->curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+            $this->cURL->curl_setopt($ch, CURLOPT_FILETIME, true);
 
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+            $this->cURL->curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 
-            curl_setopt($ch, CURLOPT_COOKIESESSION, true);
-            curl_setopt($ch, CURLOPT_COOKIE, "");
+            $this->cURL->curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+            $this->cURL->curl_setopt($ch, CURLOPT_COOKIE, "");
 
-            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-            curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+            $this->cURL->curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+            $this->cURL->curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
             $data = $this->safe_curl_exec($url, $ch, true);
 
-            if (curl_errno($ch)) {
-                log_message('error', "curl_from_json error: " . curl_error($ch));
-                throw new \Exception(curl_error($ch), curl_errno($ch));
+            if ($this->cURL->curl_errno($ch)) {
+                log_message('error', "curl_from_json error: " . $this->cURL->curl_error($ch));
+                throw new \Exception($this->cURL->curl_error($ch), $this->cURL->curl_errno($ch));
             }
 
-            curl_close($ch);
+            $this->cURL->curl_close($ch);
 
             if($decode == true) {
                 ini_set('mbstring.substitute_character', "none");
@@ -138,32 +151,32 @@ namespace APIHelper {
 
             $info = array();
 
-            $ch = curl_init();
+            $ch = $this->cURL->curl_init();
 
-            curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
+            $this->cURL->curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
 
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            $this->cURL->curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            $this->cURL->curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 
-            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            $this->cURL->curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 
-            curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-            curl_setopt($ch, CURLOPT_FILETIME, true);
+            $this->cURL->curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+            $this->cURL->curl_setopt($ch, CURLOPT_FILETIME, true);
 
-            curl_setopt($ch, CURLOPT_NOBODY, true);
-            curl_setopt($ch, CURLOPT_HEADER, true);
+            $this->cURL->curl_setopt($ch, CURLOPT_NOBODY, true);
+            $this->cURL->curl_setopt($ch, CURLOPT_HEADER, true);
 
-            curl_setopt($ch, CURLOPT_COOKIESESSION, true);
-            curl_setopt($ch, CURLOPT_COOKIE, "");
+            $this->cURL->curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+            $this->cURL->curl_setopt($ch, CURLOPT_COOKIE, "");
 
-            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-            curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+            $this->cURL->curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+            $this->cURL->curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
             $http_heading = $this->safe_curl_exec($url, $ch, $follow_redirect);
 
             $info['header'] = http_parse_headers($http_heading);
-            $info['info'] = curl_getinfo($ch);
-            curl_close($ch);
+            $info['info'] = $this->cURL->curl_getinfo($ch);
+            $this->cURL->curl_close($ch);
 
 
             // If the server didn't support HTTP HEAD, use the shim.
@@ -181,28 +194,28 @@ namespace APIHelper {
 
             $info = array();
 
-            $ch = curl_init();
+            $ch = $this->cURL->curl_init();
 
             $output = fopen('/dev/null', 'w');
             $header_dir = $tmp_dir . '/curl_header';
             $headerfile = fopen($header_dir, 'w+');
 
-            curl_setopt($ch, CURLOPT_FILE, $output);
+            $this->cURL->curl_setopt($ch, CURLOPT_FILE, $output);
 
-            curl_setopt($ch, CURLOPT_WRITEHEADER, $headerfile);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-            curl_setopt($ch, CURLOPT_HEADER, true);
+            $this->cURL->curl_setopt($ch, CURLOPT_WRITEHEADER, $headerfile);
+            $this->cURL->curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+            $this->cURL->curl_setopt($ch, CURLOPT_HEADER, true);
 
-            curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
+            $this->cURL->curl_setopt($ch, CURLOPT_USERAGENT,'Data.gov data.json crawler');
 
-            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
-            curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+            $this->cURL->curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+            $this->cURL->curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 
             $this->safe_curl_exec($url, $ch, $follow_redirect);
 
-            if (curl_errno($ch)) {
-                log_message('error', "curl_head_shim error: " . curl_error($ch));
-                throw new \Exception(curl_error($ch), curl_errno($ch));
+            if ($this->cURL->curl_errno($ch)) {
+                log_message('error', "curl_head_shim error: " . $this->cURL->curl_error($ch));
+                throw new \Exception($this->cURL->curl_error($ch), $this->cURL->curl_errno($ch));
             }
 
             fclose($headerfile);
@@ -210,9 +223,9 @@ namespace APIHelper {
             $http_heading = file_get_contents($header_dir);
             unset($header_dir);
 
-            $info['info'] = curl_getinfo($ch);
+            $info['info'] = $this->cURL->curl_getinfo($ch);
 
-            curl_close($ch);
+            $this->cURL->curl_close($ch);
 
             $info['header'] = http_parse_headers($http_heading);
 
@@ -225,7 +238,7 @@ namespace APIHelper {
         function safe_curl_exec($url, $ch, $follow_redirect = true, $maxRedirs = 10) {
 
             // We take care of redirects ourselves to deflect SSRF attempts
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+            $this->cURL->curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 
             $numRedirects = 0;
             do {
@@ -235,20 +248,20 @@ namespace APIHelper {
 
                 // Make sure that the IP curl actually hits is the one that we just validated as OK
                 // This combats DNS Rebinding attacks by binding our request to the IP iniitially resolved.
-                curl_setopt($ch, CURLOPT_RESOLVE, array($ipresolution));
+                $this->cURL->curl_setopt($ch, CURLOPT_RESOLVE, array($ipresolution));
 
                 // Set the target URL
-                curl_setopt($ch, CURLOPT_URL, $url);
-                $http_heading = curl_exec($ch);
+                $this->cURL->curl_setopt($ch, CURLOPT_URL, $url);
+                $http_heading = $this->cURL->curl_exec($ch);
 
                 // Watch out for problems
-                if (curl_errno($ch)) {
-                    log_message('error', "curl_header error: " . curl_error($ch));
-                    throw new \Exception(curl_error($ch), curl_errno($ch));
+                if ($this->cURL->curl_errno($ch)) {
+                    log_message('error', "curl_header error: " . $this->cURL->curl_error($ch));
+                    throw new \Exception($this->cURL->curl_error($ch), $this->cURL->curl_errno($ch));
                 }
 
                 // Check for a redirect
-                $url = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
+                $url = $this->cURL->curl_getinfo($ch, CURLINFO_REDIRECT_URL);
 
             } while ($follow_redirect           // Continue if redirects were requested
             && $url != ''                       // ...and we got a redirect
