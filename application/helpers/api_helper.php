@@ -186,6 +186,11 @@ namespace APIHelper {
 
             $info['header'] = http_parse_headers($http_heading);
             $info['info'] = $this->cURL->curl_getinfo($ch);
+            if(is_bool($info['info'])) {
+                // There's some problem with the wrapper; call curl_info() directly.
+                $info['info'] = curl_getinfo($ch);
+            }
+            // echo "\n\n\n===\ninfo[info]: ".print_r($info['info'], true)."===\n"; ob_flush();
             $this->cURL->curl_close($ch);
 
 
@@ -234,6 +239,11 @@ namespace APIHelper {
             unset($header_dir);
 
             $info['info'] = $this->cURL->curl_getinfo($ch);
+            if(empty($info['info'])) {
+                // There's some problem with the curl_info() wrapper; call it directly.
+                $info['info'] = curl_getinfo($ch);
+            }
+            // echo "\n\n\n===\ninfo[info]: ".print_r($info['info'], true)."\n===\n"; ob_flush();
 
             $this->cURL->curl_close($ch);
 
@@ -271,7 +281,13 @@ namespace APIHelper {
                 }
 
                 // Check for a redirect
-                $url = $this->cURL->curl_getinfo($ch, CURLINFO_REDIRECT_URL);
+                $info = $this->cURL->curl_getinfo($ch);
+                if(!is_bool($info)) {
+                    $url = $this->cURL->curl_getinfo($ch, CURLINFO_REDIRECT_URL);
+                } else {
+                    // There's some problem with the curl_info() wrapper; call it directly.
+                    $url = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
+                }
 
             } while ($follow_redirect           // Continue if redirects were requested
             && $url != ''                       // ...and we got a redirect

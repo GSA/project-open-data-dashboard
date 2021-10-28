@@ -879,7 +879,7 @@ class Campaign_model extends CI_Model
         if ($datajson_url) {
             $datajson_header = ($headers) ? $headers : $this->campaign->uri_header($datajson_url);
 
-            if (!isset($datajson_header['url']) || $api_helper->filter_remote_url($datajson_header['url'])) {
+            if (!isset($datajson_header['url']) || !$api_helper->filter_remote_url($datajson_header['url'])) {
                 $datajson_url = false;
             }
         }
