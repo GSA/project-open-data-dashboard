@@ -62,7 +62,12 @@ class APIHelperTest extends TestCase
     /**
      * @dataProvider badUrlProvider
      */
-    public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect($url) {
+    public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect($url, $mockedRecord) {
+        if ($mockedRecord) {
+            // Mock out the DNS request with the expected value
+            $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
+            $dns_get_record->expects($this->once())->willReturn($mockedRecord);
+        }
         $this->expectException(\Exception::class);
         $this->api_helper->curl_header($this->mockRedirectTo($url), true);
     }
@@ -70,8 +75,13 @@ class APIHelperTest extends TestCase
     /**
      * @dataProvider badUrlProvider
      */
-    public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect($url) {
+    public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect($url, $mockedRecord) {
         $CI =& get_instance();
+        if ($mockedRecord) {
+            // Mock out the DNS request with the expected value
+            $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
+            $dns_get_record->expects($this->once())->willReturn($mockedRecord);
+        }
         $this->expectException(\Exception::class);
         $this->api_helper->curl_head_shim($this->mockRedirectTo($url), true, $CI->config->item('archive_dir'));
     }
@@ -79,7 +89,12 @@ class APIHelperTest extends TestCase
     /**
      * @dataProvider badUrlProvider
      */
-    public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect($url) {
+    public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect($url, $mockedRecord) {
+        if ($mockedRecord) {
+            // Mock out the DNS request with the expected value
+            $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
+            $dns_get_record->expects($this->once())->willReturn($mockedRecord);
+        }
         $this->expectException(\Exception::class);
         $this->api_helper->curl_from_json($this->mockRedirectTo($url));
     }
