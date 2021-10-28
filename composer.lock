@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1106a3e3536a62941522065867784ab",
+    "content-hash": "59707be0258ca5a9a21a5fb6411cad2a",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -189,16 +189,16 @@
         },
         {
             "name": "frog/php-curl-sai",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/frogtechnologies/php-curl-sai.git",
-                "reference": "087abb414089be40f5b84a91c9ed2fb6dfc330b8"
+                "reference": "073fb1551d3101e7597522e5323a412de393a99b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frogtechnologies/php-curl-sai/zipball/087abb414089be40f5b84a91c9ed2fb6dfc330b8",
-                "reference": "087abb414089be40f5b84a91c9ed2fb6dfc330b8",
+                "url": "https://api.github.com/repos/frogtechnologies/php-curl-sai/zipball/073fb1551d3101e7597522e5323a412de393a99b",
+                "reference": "073fb1551d3101e7597522e5323a412de393a99b",
                 "shasum": ""
             },
             "require": {
@@ -231,9 +231,9 @@
             ],
             "support": {
                 "issues": "https://github.com/frogtechnologies/php-curl-sai/issues",
-                "source": "https://github.com/frogtechnologies/php-curl-sai/tree/1.1.1"
+                "source": "https://github.com/frogtechnologies/php-curl-sai/tree/1.1.2"
             },
-            "time": "2021-02-22T12:51:05+00:00"
+            "time": "2021-10-28T17:02:43+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
