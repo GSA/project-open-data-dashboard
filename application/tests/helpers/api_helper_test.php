@@ -2,43 +2,49 @@
 
 use PHPUnit\Framework\TestCase;
 use APIHelper\APIHelper;
+use FROG\PhpCurlSAI\SAI_CurlStub;
 
 class APIHelperTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 
+    protected $api_helper;
+    protected $curl_stub;
+
     public function setUp(): void {
         $CI =& get_instance();
         $CI->load->helper('api');
+        $this->curl_stub = new SAI_CurlStub();
+        $this->api_helper = new APIHelper($this->curl_stub);
     }
 
     public function testMockingGlobalsWorks() {
         $testURL = "https://localhost"; // Use a hostname that's definitely resolvable
         $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
         $dns_get_record->expects($this->once())->willReturn(false); // Mock that it's not resolvable
-        $this->assertEquals(false, APIHelper::filter_remote_url($testURL));
+        $this->assertEquals(false, $this->api_helper->filter_remote_url($testURL));
     }
 
     public function testFilterRemoteUrlRejectsUnresolvableHostnames() {
         $url = "http://some.unresolvable.hostname.fer-reals/data.json";
-        $this->assertSame(false, APIHelper::filter_remote_url($url));
+        $this->assertSame(false, $this->api_helper->filter_remote_url($url));
     }
 
     public function testFilterRemoteUrlRejectsUnusualPorts() {
-        $this->assertSame(false, APIHelper::filter_remote_url("https://www.google.com:567/data.json"));
+        $this->assertSame(false, $this->api_helper->filter_remote_url("https://www.google.com:567/data.json"));
     }
 
     public function testFilterRemoteUrlAcceptsExpectedPorts() {
-        $this->assertSame("https://www.google.com/data.json", APIHelper::filter_remote_url("https://www.google.com/data.json"));
-        $this->assertSame("https://www.google.com:443/data.json", APIHelper::filter_remote_url("https://www.google.com:443/data.json"));
-        $this->assertSame("http://www.google.com:80/data.json", APIHelper::filter_remote_url("http://www.google.com:80/data.json"));
-        $this->assertSame("http://www.google.com:8080/data.json", APIHelper::filter_remote_url("http://www.google.com:8080/data.json"));
+        $this->assertSame("https://www.google.com/data.json", $this->api_helper->filter_remote_url("https://www.google.com/data.json"));
+        $this->assertSame("https://www.google.com:443/data.json", $this->api_helper->filter_remote_url("https://www.google.com:443/data.json"));
+        $this->assertSame("http://www.google.com:80/data.json", $this->api_helper->filter_remote_url("http://www.google.com:80/data.json"));
+        $this->assertSame("http://www.google.com:8080/data.json", $this->api_helper->filter_remote_url("http://www.google.com:8080/data.json"));
     }
 
     // A null hostname should explicitly return null
     public function testFilterRemoteUrlRejectsNullHostnames() {
         $url = null;
-        $this->assertSame(null, APIHelper::filter_remote_url($url));
+        $this->assertSame(null, $this->api_helper->filter_remote_url($url));
     }
 
     /**
@@ -50,32 +56,47 @@ class APIHelperTest extends TestCase
             $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
             $dns_get_record->expects($this->once())->willReturn($mockedRecord);
         }
-        $this->assertSame(false, APIHelper::filter_remote_url($url));
+        $this->assertSame(false, $this->api_helper->filter_remote_url($url));
     }
 
     /**
-     * @dataProvider badRedirectProvider
+     * @dataProvider badUrlProvider
      */
-    public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect($url) {
+    public function testCurlHeaderIsNotSusceptibleToSsrfDuringRedirect($url, $mockedRecord) {
+        if ($mockedRecord) {
+            // Mock out the DNS request with the expected value
+            $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
+            $dns_get_record->expects($this->once())->willReturn($mockedRecord);
+        }
         $this->expectException(\Exception::class);
-        curl_header($url, true);
+        $this->api_helper->curl_header($this->mockRedirectTo($url), true);
     }
 
     /**
-     * @dataProvider badRedirectProvider
+     * @dataProvider badUrlProvider
      */
-    public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect($url) {
+    public function testCurlHeadShimIsNotSusceptibleToSsrfDuringRedirect($url, $mockedRecord) {
         $CI =& get_instance();
+        if ($mockedRecord) {
+            // Mock out the DNS request with the expected value
+            $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
+            $dns_get_record->expects($this->once())->willReturn($mockedRecord);
+        }
         $this->expectException(\Exception::class);
-        curl_head_shim($url, true, $CI->config->item('archive_dir'));
+        $this->api_helper->curl_head_shim($this->mockRedirectTo($url), true, $CI->config->item('archive_dir'));
     }
 
     /**
-     * @dataProvider badRedirectProvider
+     * @dataProvider badUrlProvider
      */
-    public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect($url) {
+    public function testCurlFromJsonIsNotSusceptibleToSsrfDuringRedirect($url, $mockedRecord) {
+        if ($mockedRecord) {
+            // Mock out the DNS request with the expected value
+            $dns_get_record = $this->getFunctionMock("APIHelper", "dns_get_record");
+            $dns_get_record->expects($this->once())->willReturn($mockedRecord);
+        }
         $this->expectException(\Exception::class);
-        curl_from_json($url);
+        $this->api_helper->curl_from_json($this->mockRedirectTo($url));
     }
 
     /**
@@ -83,7 +104,7 @@ class APIHelperTest extends TestCase
      */
     public function testCurlHeaderIgnoresBadProtocols($protocol) {
         $this->expectException(\Exception::class);
-        curl_header($protocol."://127.0.0.1");
+        $this->api_helper->curl_header($protocol."://127.0.0.1");
     }
 
     /**
@@ -92,7 +113,7 @@ class APIHelperTest extends TestCase
     public function testCurlHeadShimIgnoresBadProtocols($protocol) {
         $CI =& get_instance();
         $this->expectException(\Exception::class);
-        curl_head_shim($protocol."://127.0.0.1", true, $CI->config->item('archive_dir'));
+        $this->api_helper->curl_head_shim($protocol."://127.0.0.1", true, $CI->config->item('archive_dir'));
     }
 
     /**
@@ -100,7 +121,7 @@ class APIHelperTest extends TestCase
      */
     public function testCurlFromJsonIgnoresBadProtocols($protocol) {
         $this->expectException(\Exception::class);
-        curl_from_json($protocol."://127.0.0.1");
+        $this->api_helper->curl_from_json($protocol."://127.0.0.1");
     }
 
     // These are all the protocols that libcurl supports that we don't want to be valid
@@ -112,19 +133,21 @@ class APIHelperTest extends TestCase
         return $protocolarray;
     }
 
-    // This data provider puts each of the bad URL examples we're trying to avoid in the middle of a redirect
-    public function badRedirectProvider() {
-        $badUrls = $this->badUrlProvider();
-        $badRedirects = array();
-        foreach($badUrls as $name => $badUrl) {
-            $urlParts = parse_url(array_shift($badUrl));
-            unset($urlParts['scheme']);
+    private function mockRedirectTo($url) {
+        $requiredOptions = [
+            CURLOPT_URL => 'https://redirect.for.me',
+        ];
+        $expectedInfo = [
+            CURLINFO_REDIRECT_URL => $url,
+        ];
+        $this->curl_stub->setResponse('{
+                "Location": "$url"
+            }',
+            $requiredOptions,
+        );
+        $this->curl_stub->setInfo($expectedInfo, $requiredOptions);
 
-            // The redir.xpoc.pro tool is provided by sp1d3R in the HackerOne Bug Bounty program
-            // If it goes away, we'll need some other way to easily generate a redirect to an internal URL
-            $badRedirects[$name] = array("http://redir.xpoc.pro/".implode($urlParts), array_shift($badUrl));
-        }
-        return $badRedirects;
+        return $requiredOptions[CURLOPT_URL];
     }
 
     // Examples of SSRF URLs we should never follow
@@ -136,6 +159,9 @@ class APIHelperTest extends TestCase
 
         // Anything that resolves to zero needs to be tested carefully due to falsiness
         $badRedirects["ip: 0"] = array("http://0/data.json", false);
+
+        // No dotted-quad decimals
+        $badRedirects["ip: decimal"] = array("http://169.254.169.254/latest/meta-data/hostname", false);
 
         // Hex is bad
         $badRedirects["ip: hex"] = array("http://0x7f000001/data.json", false);

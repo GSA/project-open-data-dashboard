@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+use APIHelper\APIHelper;
+
 class Import extends CI_Controller {
 
 	public $environment = null;
@@ -101,11 +103,12 @@ class Import extends CI_Controller {
 	}
 
 	public function match_agency_slugs() {
+        $api_helper = new APIHelper();
 
 		if (php_sapi_name() != 'cli') return;
 
 		$agency_slug_api = 'https://www.data.gov/app/themes/roots-nextdatagov/assets/Json/fed_agency.json';
-		$agency_slugs = curl_from_json($agency_slug_api, true);
+		$agency_slugs = $api_helper->curl_from_json($agency_slug_api, true);
 		$agency_slugs = $agency_slugs["taxonomies"];
 
 		$this->db->select('id, name');

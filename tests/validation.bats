@@ -2,7 +2,7 @@
 
 # select test environment with
 # TARGET=tk bats validation.bats
-# or 
+# or
 # docker-compose exec -e TARGET=dc app bats -r tests/validation.bats
 case "${TARGET:-dc}" in
   docker-compose | dc)
@@ -43,7 +43,7 @@ setup() {
 }
 
 @test "Sanity check 404 w/ curl of asldjf" {
-  $CMD -w "%{http_code}" -s -o /dev/null "$URLROOT/asldfj"  | 
+  $CMD -w "%{http_code}" -s -o /dev/null "$URLROOT/asldfj"  |
     grep -q '^404$'
 }
 
@@ -89,27 +89,6 @@ setup() {
   echo $output | grep -q '"valid": false,'
   echo $output | grep -q '"valid_json": true,'
   echo $output | grep -q '"total_records": 2'
-}
-
-# Note: 248 length is the HTTP -> HTTPS redirect message in production
-# redir.xpoc.pro is a redirection service run by Evgeniy Yakovchuk
-# (https://github.com/sp1d3r), who reported the SSRF issue.
-@test "Redir to 127.0.0.1:443 should not be a valid URL" {
-  run $CMD -s \
-    $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=http://redir.xpoc.pro/127.0.0.1:443
-  echo ${lines[5]} | grep -q "$INVALID_URL_WARNING"
-}
-
-@test "Redir to 127.0.0.1:442 should not be a valid URL" {
-  run $CMD -s \
-    $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=http://redir.xpoc.pro/127.0.0.1:442
-  echo ${lines[5]} | grep -q "$INVALID_URL_WARNING"
-}
-
-@test "Redir to http://169.254.169.254/latest/meta-data/hostname should not be valid" {
-  run $CMD -s \
-    $URLROOT/validate?schema=federal-v1.1\&output=json\&datajson_url=http://redir.xpoc.pro/169.254.169.254/latest/meta-data/hostname
-  echo ${lines[5]} | grep -q "$INVALID_URL_WARNING"
 }
 
 @test "GET of http://169.254.169.254/latest/meta-data/hostname should not be valid" {

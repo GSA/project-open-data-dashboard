@@ -3,8 +3,6 @@
 <?php include 'header_inc_view.php';?>
 
 <?php include_once 'office_table_inc_view.php';?>
-
-
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">
@@ -22,8 +20,8 @@
         			if(!empty($office->digitalstrategy_status)) {
 
         				if ($office->digitalstrategy_status = json_decode($office->digitalstrategy_status)) {
-
-        				    if($office->digitalstrategy_status->http_code == 200 && $digital_strategy = curl_from_json($office->digitalstrategy_status->url, false, true)) {
+                            $api_helper = new APIHelper();
+        				    if($office->digitalstrategy_status->http_code == 200 && $digital_strategy = $api_helper->curl_from_json($office->digitalstrategy_status->url, false, true)) {
 
 				                $office_strategy[$office->name] = $digital_strategy;
 
