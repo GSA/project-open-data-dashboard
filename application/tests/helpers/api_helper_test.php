@@ -145,6 +145,9 @@ class APIHelperTest extends TestCase
         // Anything that resolves to zero needs to be tested carefully due to falsiness
         $badRedirects["ip: 0"] = array("http://0/data.json", false);
 
+        // No dotted-quad decimals
+        $badRedirects["ip: decimal"] = array("http://169.254.169.254/latest/meta-data/hostname", false);
+
         // Hex is bad
         $badRedirects["ip: hex"] = array("http://0x7f000001/data.json", false);
 
