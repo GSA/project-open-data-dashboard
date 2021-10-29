@@ -27,8 +27,6 @@ jobs:
         uses: actions/checkout@v2
       - name: deploy
         uses: usds/cloud-gov-cli@master
-        env:
-          NEWRELIC_LICENSE: ${{secrets.NEWRELIC_LICENSE}}
         with:
           command: push dashboard --vars-file vars.development.yml --strategy rolling
           org: gsa-datagov
