@@ -13,6 +13,8 @@ SECRETS=$(echo $VCAP_SERVICES | jq -r '.["user-provided"][] | select(.name == "s
   fail "Unable to parse SECRETS from VCAP_SERVICES"
 ENCRYPTION_KEY=$(echo $SECRETS | jq --exit-status -r '.ENCRYPTION_KEY') ||
   fail "Unable to parse ENCRYPTION_KEY from SECRETS"
+NEWRELIC_LICENSE=$(echo $SECRETS | jq --exit-status -r '.NEWRELIC_LICENSE') ||
+  fail "Unable to parse NEWRELIC_LICENSE from SECRETS"
 
 DB_NAME=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.db_name')
 DB_USER=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.username')
