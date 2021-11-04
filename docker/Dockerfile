@@ -51,8 +51,6 @@ RUN /tmp/install-composer.sh
 # Add composer-installed libs to path
 ENV PATH=/var/www/app/vendor/bin:$PATH
 
-COPY docker/apache2-foreground /usr/local/bin/
-
 ARG APP_DIR=/var/www/app
 RUN sed -i 's#localhost/htdocs#app/public#g' /etc/apache2/httpd.conf
 
