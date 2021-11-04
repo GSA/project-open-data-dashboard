@@ -25,6 +25,6 @@ applications:
     NEWRELIC_HOST: gov-collector.newrelic.com
   processes:
   - type: web
-    command: $HOME/.bp/bin/start
+    #command: $HOME/.bp/bin/start
     disk_quota: 512M
     timeout: 10

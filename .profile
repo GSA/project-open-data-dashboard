@@ -54,4 +54,4 @@ echo "USE_LOCAL_STORAGE=true" >> $APP_DIR/.env
 
 echo "ENVIRONMENT=development" >> $APP_DIR/.env
 
-which apache2-foreground && exec "apache2-foreground" || exit 0
+#which apache2-foreground && exec "apache2-foreground" || exit 0
