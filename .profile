@@ -53,5 +53,3 @@ echo "PROJECT_SHARED_PATH=$APP_DIR" >> $APP_DIR/.env
 echo "USE_LOCAL_STORAGE=true" >> $APP_DIR/.env
 
 echo "ENVIRONMENT=development" >> $APP_DIR/.env
-
-#which apache2-foreground && exec "apache2-foreground" || exit 0
