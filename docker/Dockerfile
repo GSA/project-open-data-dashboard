@@ -55,5 +55,3 @@ ARG APP_DIR=/var/www/app
 RUN sed -i 's#localhost/htdocs#app/public#g' /etc/apache2/httpd.conf
 
 WORKDIR $APP_DIR
-
-CMD ["apache2-foreground"]
