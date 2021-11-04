@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     entrypoint: "/var/www/app/docker/startup.sh"
-    command: "echo hey im here && which httpd && httpd -DFOREGROUND"
+    command: "httpd -D FOREGROUND"
     depends_on:
       - database
     environment:
