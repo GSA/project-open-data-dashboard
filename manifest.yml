@@ -23,9 +23,7 @@ applications:
     # NEW_RELIC_APP_NAME and NEW_RELIC_MONITOR_MODE
     # can't be set in the PHP buildpack extension
     NEWRELIC_HOST: gov-collector.newrelic.com
-    NEWRELIC_LICENSE: ((NEWRELIC_LICENSE))
   processes:
   - type: web
-    command: $HOME/.bp/bin/start
     disk_quota: 512M
     timeout: 10

@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     entrypoint: "/var/www/app/docker/startup.sh"
+    command: "httpd -D FOREGROUND"
     depends_on:
       - database
     environment:
@@ -61,7 +62,8 @@ services:
             {
               "name": "secrets",
               "credentials": {
-                "ENCRYPTION_KEY": "not-a-real-key-from-vcap"
+                "ENCRYPTION_KEY": "not-a-real-key-from-vcap",
+                "NEWRELIC_LICENSE": "another-dummy-value"
               }
             }
           ]
@@ -74,6 +76,7 @@ services:
 
   database:
     image: mysql:5.7
+    platform: linux/x86_64
     volumes:
       - database_data:/var/lib/mysql:delegated
     environment:

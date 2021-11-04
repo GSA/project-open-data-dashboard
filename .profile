@@ -13,6 +13,8 @@ SECRETS=$(echo $VCAP_SERVICES | jq -r '.["user-provided"][] | select(.name == "s
   fail "Unable to parse SECRETS from VCAP_SERVICES"
 ENCRYPTION_KEY=$(echo $SECRETS | jq --exit-status -r '.ENCRYPTION_KEY') ||
   fail "Unable to parse ENCRYPTION_KEY from SECRETS"
+NEWRELIC_LICENSE=$(echo $SECRETS | jq --exit-status -r '.NEWRELIC_LICENSE') ||
+  fail "Unable to parse NEWRELIC_LICENSE from SECRETS"
 
 DB_NAME=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.db_name')
 DB_USER=$(echo $VCAP_SERVICES | jq -r '.["aws-rds"][] | .credentials.username')
@@ -51,5 +53,3 @@ echo "PROJECT_SHARED_PATH=$APP_DIR" >> $APP_DIR/.env
 echo "USE_LOCAL_STORAGE=true" >> $APP_DIR/.env
 
 echo "ENVIRONMENT=development" >> $APP_DIR/.env
-
-which apache2-foreground && exec "apache2-foreground" || exit 0
