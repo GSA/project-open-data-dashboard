@@ -2,8 +2,9 @@
 name: restart application
 
 on:
-  schedule:
-    - cron: '14/15 * * * *'
+  #schedule:
+  #  - cron: '14/15 * * * *'
+  workflow_dispatch:
 
 jobs:
   restart-staging:
@@ -23,7 +24,7 @@ jobs:
           password: ${{secrets.CF_SERVICE_AUTH}}
       - name: smoke test
         run: curl --fail --silent https://dashboard-stage-datagov.app.cloud.gov/healthcheck?$(date +%s)
-  
+
   restart-prod:
     name: restart (prod)
     environment: production
