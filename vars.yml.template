@@ -1,7 +1,7 @@
   # Copy this file to vars.yml and then edit in your own values here
 
 # This is the name to use for the dashboard app in Cloud Foundry. You might want to customize this
-# (eg "dashboard-<yourname>") to avoid collisions with others are also working on 
+# (eg "dashboard-<yourname>") to avoid collisions with others are also working on
 # dashboard in the same space.
 app_name: dashboard
 # This name exists for newrelic to specify the environment in the name
@@ -13,3 +13,5 @@ instances: 1
 # Routes to assign to this application. This must be globally unique within cloud.gov.
 routes:
   - route: dashboard-foo-datagov.app.cloud.gov
+
+default_host: dashboard-foo-datagov.app.cloud.gov
