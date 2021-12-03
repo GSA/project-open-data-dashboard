@@ -1,6 +1,9 @@
 # FROM php:7.3-alpine
 FROM alpine:3
 
+ENV ENVIRONMENT=development
+ENV DEFAULT_HOST=localhost:8000
+
 RUN apk --no-cache upgrade
 RUN apk add --no-cache apache2 \
     bash \
