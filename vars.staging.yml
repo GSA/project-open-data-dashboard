@@ -8,3 +8,5 @@ instances: 1
 # Routes to assign to this application. This must be globally unique within cloud.gov.
 routes:
   - route: dashboard-stage-datagov.app.cloud.gov
+
+default_host: dashboard-stage-datagov.app.cloud.gov
