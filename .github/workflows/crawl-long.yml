@@ -3,8 +3,8 @@ name: Dashboard crawl-long
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '30 12 1 1,4,7,10 *'
+  schedule:
+    - cron: '30 12 1 1,4,7,10 *'
 
 jobs:
   dashboard-crawl-long-staging:

@@ -3,8 +3,8 @@ name: Dashboard crawl (daily)
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '15 4 * * *'
+  schedule:
+    - cron: '15 4 * * *'
 
 jobs:
   dashboard-crawl-staging:
@@ -46,7 +46,7 @@ jobs:
           user: ${{secrets.CF_SERVICE_USER}}
           password: ${{secrets.CF_SERVICE_AUTH}}
       - name: crawl full scan
-        uses: usds/cloud-gov-cli@master
+        uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
         with:
           command: run-task dashboard-stage --wait --command "php public/index.php campaign status omb-monitored full-scan"
           org: gsa-datagov
