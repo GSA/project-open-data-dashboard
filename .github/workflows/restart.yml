@@ -2,8 +2,8 @@
 name: restart application
 
 on:
-  #schedule:
-  #  - cron: '14/15 * * * *'
+  schedule:
+    - cron: '14/15 * * * *'
   workflow_dispatch:
 
 jobs:
