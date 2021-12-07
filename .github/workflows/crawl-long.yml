@@ -1,0 +1,39 @@
+---
+name: Dashboard crawl-long
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '30 12 1 1,4,7,10 *'
+
+jobs:
+  dashboard-crawl-long-staging:
+    name: dashboard crawl (staging)
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: crawl-long
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: run-task dashboard-stage --command "php public/index.php campaign status long-running full-scan"
+          org: gsa-datagov
+          space: staging
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}
+  dashboard-crawl-long-prod:
+    name: dashboard crawl (production)
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: crawl-long
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: run-task dashboard-stage --command "php public/index.php campaign status long-running full-scan"
+          org: gsa-datagov
+          space: prod
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}

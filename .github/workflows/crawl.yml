@@ -1,0 +1,55 @@
+---
+name: Dashboard crawl (daily)
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '15 4 * * *'
+
+jobs:
+  dashboard-crawl-staging:
+    name: dashboard crawl (staging)
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: crawl download
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: run-task dashboard-stage --wait --command "php public/index.php campaign status omb-monitored download"
+          org: gsa-datagov
+          space: staging
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}
+      - name: crawl full scan
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: run-task dashboard-stage --wait --command "php public/index.php campaign status omb-monitored full-scan"
+          org: gsa-datagov
+          space: staging
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}
+  dashboard-crawl-prod:
+    name: dashboard crawl (production)
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: crawl download
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: run-task dashboard-stage --wait --command "php public/index.php campaign status omb-monitored download"
+          org: gsa-datagov
+          space: prod
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}
+      - name: crawl full scan
+        uses: usds/cloud-gov-cli@master
+        with:
+          command: run-task dashboard-stage --wait --command "php public/index.php campaign status omb-monitored full-scan"
+          org: gsa-datagov
+          space: prod
+          user: ${{secrets.CF_SERVICE_USER}}
+          password: ${{secrets.CF_SERVICE_AUTH}}
