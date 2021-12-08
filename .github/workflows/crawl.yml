@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '15 4 * * *'
+  push: adborden-patch-2
 
 jobs:
   dashboard-crawl-staging:
@@ -15,21 +16,14 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: crawl download
-        uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
+        uses: adborden/cloud-gov-cli@adborden-patch-1
         with:
-          command: run-task dashboard-stage --wait --command 'php public/index.php campaign status omb-monitored download'
+          command: run-task dashboard-stage --wait --command 'echo ok everybody'
           org: gsa-datagov
           space: staging
           user: ${{secrets.CF_SERVICE_USER}}
           password: ${{secrets.CF_SERVICE_AUTH}}
-      - name: crawl full scan
-        uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
-        with:
-          command: run-task dashboard-stage --wait --command 'php public/index.php campaign status omb-monitored full-scan'
-          org: gsa-datagov
-          space: staging
-          user: ${{secrets.CF_SERVICE_USER}}
-          password: ${{secrets.CF_SERVICE_AUTH}}
+          
   dashboard-crawl-prod:
     name: dashboard crawl (production)
     environment: production
