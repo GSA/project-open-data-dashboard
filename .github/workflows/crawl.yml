@@ -18,7 +18,7 @@ jobs:
       - name: crawl download
         uses: adborden/cloud-gov-cli@adborden-patch-1
         with:
-          command: run-task dashboard-stage --wait --command 'echo ok everybody'
+          command: run-task dashboard-stage --command 'echo ok everybody'
           org: gsa-datagov
           space: staging
           user: ${{secrets.CF_SERVICE_USER}}
