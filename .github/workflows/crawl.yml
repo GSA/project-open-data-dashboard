@@ -11,45 +11,41 @@ jobs:
     name: dashboard crawl (staging)
     environment: staging
     runs-on: ubuntu-latest
+    container:
+      # pinned to 7 until wait is available for run-task on 8...
+      image: cloudfoundry/cli:7
+      env:
+        org: gsa-datagov
+        space: staging
+        user: ${{secrets.CF_SERVICE_USER}}
+        password: ${{secrets.CF_SERVICE_AUTH}}
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - name: auth
+        run: ./cfauth.sh
       - name: crawl download
-        uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
-        with:
-          command: run-task dashboard-stage --wait --command 'php public/index.php campaign status omb-monitored download'
-          org: gsa-datagov
-          space: staging
-          user: ${{secrets.CF_SERVICE_USER}}
-          password: ${{secrets.CF_SERVICE_AUTH}}
+        run: cf run-task dashboard-stage --command "php public/index.php campaign status omb-monitored download" --wait --name dashboard-omb-monitored-download
       - name: crawl full scan
-        uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
-        with:
-          command: run-task dashboard-stage --wait --command 'php public/index.php campaign status omb-monitored full-scan'
-          org: gsa-datagov
-          space: staging
-          user: ${{secrets.CF_SERVICE_USER}}
-          password: ${{secrets.CF_SERVICE_AUTH}}
+        run: cf run-task dashboard-stage --command "php public/index.php campaign status omb-monitored full-scan" --wait --name dashboard-omb-monitored-full-scan
   dashboard-crawl-prod:
     name: dashboard crawl (production)
     environment: production
     runs-on: ubuntu-latest
+    container:
+      # pinned to 7 until wait is available for run-task on 8...
+      image: cloudfoundry/cli:7
+      env:
+        org: gsa-datagov
+        space: prod
+        user: ${{secrets.CF_SERVICE_USER}}
+        password: ${{secrets.CF_SERVICE_AUTH}}
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - name: auth
+        run: ./cfauth.sh
       - name: crawl download
-        uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
-        with:
-          command: run-task dashboard-stage --wait --command 'php public/index.php campaign status omb-monitored download'
-          org: gsa-datagov
-          space: prod
-          user: ${{secrets.CF_SERVICE_USER}}
-          password: ${{secrets.CF_SERVICE_AUTH}}
+        run: cf run-task dashboard --command "php public/index.php campaign status omb-monitored download" --wait --name dashboard-omb-monitored-download
       - name: crawl full scan
-        uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
-        with:
-          command: run-task dashboard-stage --wait --command 'php public/index.php campaign status omb-monitored full-scan'
-          org: gsa-datagov
-          space: prod
-          user: ${{secrets.CF_SERVICE_USER}}
-          password: ${{secrets.CF_SERVICE_AUTH}}
+        run: cf run-task dashboard --command "php public/index.php campaign status omb-monitored full-scan" --wait --name dashboard-omb-monitored-full-scan

@@ -49,7 +49,7 @@ jobs:
       - name: deploy
         uses: usds/cloud-gov-cli@master
         with:
-          command: push dashboard --vars-file vars.staging.yml --strategy rolling
+          command: push dashboard-stage --vars-file vars.staging.yml --strategy rolling
           org: gsa-datagov
           space: staging
           user: ${{secrets.CF_SERVICE_USER}}
