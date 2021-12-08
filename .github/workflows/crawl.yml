@@ -26,9 +26,9 @@ jobs:
       - name: auth
         run: ./cfauth.sh
       - name: crawl download
-        run: cf run-task dashboard-stage --command "php public/index.php campaign status omb-monitored download" --wait
+        run: cf run-task dashboard-stage --command "php public/index.php campaign status omb-monitored download" --wait --name dashboard-omb-monitored-download
       - name: crawl full scan
-        run: cf run-task dashboard-stage --wait --command "php public/index.php campaign status omb-monitored full-scan" --wait
+        run: cf run-task dashboard-stage --command "php public/index.php campaign status omb-monitored full-scan" --wait --name dashboard-omb-monitored-full-scan
   dashboard-crawl-prod:
     name: dashboard crawl (production)
     environment: production
@@ -47,6 +47,6 @@ jobs:
       - name: auth
         run: ./cfauth.sh
       - name: crawl download
-        run: cf run-task dashboard --command "php public/index.php campaign status omb-monitored download" --wait
+        run: cf run-task dashboard --command "php public/index.php campaign status omb-monitored download" --wait --name dashboard-omb-monitored-download
       - name: crawl full scan
-        run: cf run-task dashboard --wait --command "php public/index.php campaign status omb-monitored full-scan" --wait
+        run: cf run-task dashboard --command "php public/index.php campaign status omb-monitored full-scan" --wait --name dashboard-omb-monitored-full-scan
