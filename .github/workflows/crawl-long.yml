@@ -17,7 +17,7 @@ jobs:
       - name: crawl-long
         uses: usds/cloud-gov-cli@master
         with:
-          command: run-task dashboard-stage --command "php public/index.php campaign status long-running full-scan"
+          command: run-task dashboard-stage --command 'php public/index.php campaign status long-running full-scan'
           org: gsa-datagov
           space: staging
           user: ${{secrets.CF_SERVICE_USER}}
@@ -32,7 +32,7 @@ jobs:
       - name: crawl-long
         uses: usds/cloud-gov-cli@master
         with:
-          command: run-task dashboard-stage --command "php public/index.php campaign status long-running full-scan"
+          command: run-task dashboard-stage --command 'php public/index.php campaign status long-running full-scan'
           org: gsa-datagov
           space: prod
           user: ${{secrets.CF_SERVICE_USER}}

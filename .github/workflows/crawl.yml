@@ -17,7 +17,7 @@ jobs:
       - name: crawl download
         uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
         with:
-          command: run-task dashboard-stage --wait --command "php public/index.php campaign status omb-monitored download"
+          command: run-task dashboard-stage --wait --command 'php public/index.php campaign status omb-monitored download'
           org: gsa-datagov
           space: staging
           user: ${{secrets.CF_SERVICE_USER}}
@@ -25,7 +25,7 @@ jobs:
       - name: crawl full scan
         uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
         with:
-          command: run-task dashboard-stage --wait --command "php public/index.php campaign status omb-monitored full-scan"
+          command: run-task dashboard-stage --wait --command 'php public/index.php campaign status omb-monitored full-scan'
           org: gsa-datagov
           space: staging
           user: ${{secrets.CF_SERVICE_USER}}
@@ -40,7 +40,7 @@ jobs:
       - name: crawl download
         uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
         with:
-          command: run-task dashboard-stage --wait --command "php public/index.php campaign status omb-monitored download"
+          command: run-task dashboard-stage --wait --command 'php public/index.php campaign status omb-monitored download'
           org: gsa-datagov
           space: prod
           user: ${{secrets.CF_SERVICE_USER}}
@@ -48,7 +48,7 @@ jobs:
       - name: crawl full scan
         uses: usds/cloud-gov-cli@1011791439a6b518c6d9564bb175e27ecdba8350
         with:
-          command: run-task dashboard-stage --wait --command "php public/index.php campaign status omb-monitored full-scan"
+          command: run-task dashboard-stage --wait --command 'php public/index.php campaign status omb-monitored full-scan'
           org: gsa-datagov
           space: prod
           user: ${{secrets.CF_SERVICE_USER}}
