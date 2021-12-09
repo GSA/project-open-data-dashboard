@@ -146,7 +146,7 @@ Assuming you're logged in for the Cloud Foundry CLI, Run the following commands 
 ```sh
 $ cf create-service aws-rds small-mysql-redundant ${app_name}-db
 
-$ cf create-service s3 basic ${app_name}-s3
+$ cf create-service s3 basic-public ${app_name}-s3
 
 $ cf create-user-provided-service ${app_name}-secrets -p '{
   "ENCRYPTION_KEY": "long-random-string"

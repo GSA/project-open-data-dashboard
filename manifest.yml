@@ -5,7 +5,7 @@ default_config: &defaults
   timeout: 180
   services:
     - ((app_name))-db       # cf create-service aws-rds small-mysql-redundant dashboard-db
-    - ((app_name))-s3       # cf create-service s3 basic dashboard-s3
+    - ((app_name))-s3       # cf create-service s3 basic-public dashboard-s3
     - ((app_name))-secrets  # cf create-user-provided-service dashboard-secrets -p '{
                # "ENCRYPTION_KEY": "long-random-string"
                # }'
