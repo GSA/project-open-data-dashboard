@@ -11,35 +11,32 @@ jobs:
     name: dashboard long crawl (staging)
     environment: staging
     runs-on: ubuntu-latest
-    container:
-      image: cloudfoundry/cli:8
-      env:
-        org: gsa-datagov
-        space: staging
-        user: ${{secrets.CF_SERVICE_USER}}
-        password: ${{secrets.CF_SERVICE_AUTH}}
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: auth
-        run: ./cfauth.sh
       - name: crawl download
-        run: cf run-task dashboard-stage --command "php public/index.php campaign status long-running full-scan"
+        # pinned to cf7 until --wait is available for run-task on cf8...
+        uses: cloud-gov/cg-cli-tools@main
+        with:
+          command: cf run-task dashboard-stage --command "php public/index.php campaign status long-running full-scan"
+          cf_org: gsa-datagov
+          cf_space: staging
+          cf_username: ${{secrets.CF_SERVICE_USER}}
+          cf_password: ${{secrets.CF_SERVICE_AUTH}}
+
   dashboard-crawl-long-prod:
     name: dashboard long crawl (production)
     environment: production
     runs-on: ubuntu-latest
-    container:
-      image: cloudfoundry/cli:8
-      env:
-        org: gsa-datagov
-        space: prod
-        user: ${{secrets.CF_SERVICE_USER}}
-        password: ${{secrets.CF_SERVICE_AUTH}}
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: auth
-        run: ./cfauth.sh
       - name: crawl download
-        run: cf run-task dashboard --command "php public/index.php campaign status long-running full-scan"
+        # pinned to cf7 until --wait is available for run-task on cf8...
+        uses: cloud-gov/cg-cli-tools@main
+        with:
+          command: cf run-task dashboard --command "php public/index.php campaign status long-running full-scan"
+          cf_org: gsa-datagov
+          cf_space: prod
+          cf_username: ${{secrets.CF_SERVICE_USER}}
+          cf_password: ${{secrets.CF_SERVICE_AUTH}}

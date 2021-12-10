@@ -26,13 +26,13 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: deploy
-        uses: usds/cloud-gov-cli@master
+        uses: cloud-gov/cg-cli-tools@cli-v8
         with:
-          command: push dashboard --vars-file vars.development.yml --strategy rolling
-          org: gsa-datagov
-          space: development
-          user: ${{secrets.CF_SERVICE_USER}}
-          password: ${{secrets.CF_SERVICE_AUTH}}
+          command: cf push dashboard --vars-file vars.development.yml --strategy rolling
+          cf_org: gsa-datagov
+          cf_space: development
+          cf_username: ${{secrets.CF_SERVICE_USER}}
+          cf_password: ${{secrets.CF_SERVICE_AUTH}}
       - name: smoke test
         run: curl --fail --silent https://dashboard-dev-datagov.app.cloud.gov/healthcheck?$(date +%s)
 
@@ -47,13 +47,13 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: deploy
-        uses: usds/cloud-gov-cli@master
+        uses: cloud-gov/cg-cli-tools@cli-v8
         with:
-          command: push dashboard-stage --vars-file vars.staging.yml --strategy rolling
-          org: gsa-datagov
-          space: staging
-          user: ${{secrets.CF_SERVICE_USER}}
-          password: ${{secrets.CF_SERVICE_AUTH}}
+          command: cf push dashboard-stage --vars-file vars.staging.yml --strategy rolling
+          cf_org: gsa-datagov
+          cf_space: staging
+          cf_username: ${{secrets.CF_SERVICE_USER}}
+          cf_password: ${{secrets.CF_SERVICE_AUTH}}
       - name: smoke test
         run: curl --fail --silent https://dashboard-stage-datagov.app.cloud.gov/healthcheck?$(date +%s)
 
@@ -68,12 +68,12 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: deploy
-        uses: usds/cloud-gov-cli@master
+        uses: cloud-gov/cg-cli-tools@cli-v8
         with:
-          command: push dashboard --vars-file vars.production.yml --strategy rolling
-          org: gsa-datagov
-          space: prod
-          user: ${{secrets.CF_SERVICE_USER}}
-          password: ${{secrets.CF_SERVICE_AUTH}}
+          command: cf push dashboard --vars-file vars.production.yml --strategy rolling
+          cf_org: gsa-datagov
+          cf_space: prod
+          cf_username: ${{secrets.CF_SERVICE_USER}}
+          cf_password: ${{secrets.CF_SERVICE_AUTH}}
       - name: smoke test
         run: curl --fail --silent https://dashboard-prod-datagov.app.cloud.gov/healthcheck?$(date +%s)
