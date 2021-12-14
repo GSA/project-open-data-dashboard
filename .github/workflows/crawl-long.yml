@@ -17,7 +17,7 @@ jobs:
       - name: crawl download
         uses: cloud-gov/cg-cli-tools@main
         with:
-          command: make cf-crawl-long-staging
+          command: ./bin/cf-crawl-long.sh dashboard-stage
           cf_org: gsa-datagov
           cf_space: staging
           cf_username: ${{secrets.CF_SERVICE_USER}}
@@ -33,7 +33,7 @@ jobs:
       - name: crawl download
         uses: cloud-gov/cg-cli-tools@main
         with:
-          command: make cf-crawl-long
+          command: ./bin/cf-crawl-long.sh dashboard
           cf_org: gsa-datagov
           cf_space: prod
           cf_username: ${{secrets.CF_SERVICE_USER}}
