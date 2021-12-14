@@ -19,7 +19,7 @@ jobs:
         # pinned to cf7 until --wait is available for run-task on cf8...
         uses: cloud-gov/cg-cli-tools@main
         with:
-          command: cf run-task dashboard-stage --command "php public/index.php campaign status omb-monitored download" --wait --name dashboard-omb-monitored-download
+          command: make cf-crawl-save-staging
           cf_org: gsa-datagov
           cf_space: staging
           cf_username: ${{secrets.CF_SERVICE_USER}}
@@ -28,7 +28,7 @@ jobs:
         # pinned to cf7 until --wait is available for run-task on cf8...
         uses: cloud-gov/cg-cli-tools@main
         with:
-          command: cf run-task dashboard-stage --command "php public/index.php campaign status omb-monitored full-scan" --wait --name dashboard-omb-monitored-full-scan
+          command: make cf-crawl-daily-staging
           cf_org: gsa-datagov
           cf_space: staging
           cf_username: ${{secrets.CF_SERVICE_USER}}
@@ -44,7 +44,7 @@ jobs:
         # pinned to cf7 until --wait is available for run-task on cf8...
         uses: cloud-gov/cg-cli-tools@main
         with:
-          command: cf run-task dashboard --command "php public/index.php campaign status omb-monitored download" --wait --name dashboard-omb-monitored-download
+          command: make cf-crawl-save
           cf_org: gsa-datagov
           cf_space: prod
           cf_username: ${{secrets.CF_SERVICE_USER}}
@@ -53,7 +53,7 @@ jobs:
         # pinned to cf7 until --wait is available for run-task on cf8...
         uses: cloud-gov/cg-cli-tools@main
         with:
-          command: cf run-task dashboard --command "php public/index.php campaign status omb-monitored full-scan" --wait --name dashboard-omb-monitored-full-scan
+          command: make cf-crawl-daily
           cf_org: gsa-datagov
           cf_space: prod
           cf_username: ${{secrets.CF_SERVICE_USER}}
