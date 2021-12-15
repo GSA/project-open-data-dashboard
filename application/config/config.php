@@ -13,6 +13,7 @@ $config['archive_dir'] = $project_shared_path . '/archive';
 
 $config['s3_bucket'] = getenv('S3_BUCKET') ?: '';
 $config['s3_prefix'] = getenv('S3_PREFIX') ?: '';
+$config['s3_region'] = getenv('S3_REGION') ?: '';
 
 // Set the S3 access credentials in environment variables
 // https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_environment.html
