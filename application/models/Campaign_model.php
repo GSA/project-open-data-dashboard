@@ -1467,10 +1467,11 @@ class Campaign_model extends CI_Model
         }
         $s3_bucket = $this->config->item('s3_bucket');
         $s3_prefix = $this->config->item('s3_prefix');
+        $s3_region = $this->config->item('s3_region');
 
         $s3 = $this->init_s3();
 
-        $s3destination =  'https://s3.amazonaws.com/' . $s3_bucket . '/' . $s3_prefix . $s3_filepath;
+        $s3destination =  'https://s3-' . $s3_region . '.amazonaws.com/' . $s3_bucket . '/' . $s3_prefix . $s3_filepath;
         log_message('debug', 'Adding to S3: '. $s3destination . PHP_EOL);
 
         // Upload a publicly accessible file. The file size and type are determined by the SDK.

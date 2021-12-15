@@ -30,6 +30,7 @@ done
 
 S3_PREFIX=${S3_PREFIX:-}
 S3_BUCKET=$(echo $VCAP_SERVICES | jq -r '.["s3"]?[]? | .credentials.bucket')
+S3_REGION=$(echo $VCAP_SERVICES | jq -r '.["s3"]?[]? | .credentials.region')
 S3_ACCESS_KEY_ID=$(echo $VCAP_SERVICES | jq -r '.["s3"]?[]? | .credentials.access_key_id')
 S3_SECRET_ACCESS_KEY=$(echo $VCAP_SERVICES | jq -r '.["s3"]?[]? | .credentials.secret_access_key')
 

@@ -22,7 +22,7 @@ case "${TARGET:-dc}" in
     ;;
 esac
 
-URLENCODED_ARCHIVE='https%3A%2F%2Fs3.amazonaws.com%2Fbsp-ocsit-prod-east-appdata%2Fdatagov%2Fdashboard%2Farchive%2Fdatajson%2F2017-11-30%2F49015.json'
+URLENCODED_ARCHIVE='https%3A%2F%2Fs3-us-gov-west-1.amazonaws.com%2Fcg-f285af4f-ab33-43e5-a98e-7364b72a6cf9%2Fdatagov%2Fdashboard%2Farchive%2Fdatajson%2F2017-11-30%2F49015.json'
 
 @test "Emits valid URLS to existing archive" {
     skip
