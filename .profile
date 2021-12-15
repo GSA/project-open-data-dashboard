@@ -34,7 +34,7 @@ S3_REGION=$(echo $VCAP_SERVICES | jq -r '.["s3"]?[]? | .credentials.region')
 S3_ACCESS_KEY_ID=$(echo $VCAP_SERVICES | jq -r '.["s3"]?[]? | .credentials.access_key_id')
 S3_SECRET_ACCESS_KEY=$(echo $VCAP_SERVICES | jq -r '.["s3"]?[]? | .credentials.secret_access_key')
 
-for e in S3_BUCKET S3_PREFIX S3_ACCESS_KEY_ID S3_SECRET_ACCESS_KEY; do
+for e in S3_BUCKET S3_PREFIX S3_REGION S3_ACCESS_KEY_ID S3_SECRET_ACCESS_KEY; do
   echo "$e=${!e}" >> $APP_DIR/.env
 done
 
