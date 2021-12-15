@@ -1683,7 +1683,7 @@
             if(time() > strtotime($origin_date)):
                 $s3_bucket = $config['s3_bucket'];
                 $s3_prefix = $config['s3_prefix'];
-                $s3_region = $config['s3_region'];
+                $s3_region = (!empty($config['s3_region']) ? $config['s3_region'] : 'us-gov-west-1';
 
 //                $archive_path_url = site_url('archive' . $archive_path);
 //                $archive_path_url = 'https://s3.amazonaws.com/bsp-ocsit-dev-east-appdata/datagov/dashboard/'
