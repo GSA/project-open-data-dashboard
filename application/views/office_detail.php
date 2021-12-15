@@ -1683,10 +1683,11 @@
             if(time() > strtotime($origin_date)):
                 $s3_bucket = $config['s3_bucket'];
                 $s3_prefix = $config['s3_prefix'];
+                $s3_region = $config['s3_region'];
 
 //                $archive_path_url = site_url('archive' . $archive_path);
 //                $archive_path_url = 'https://s3.amazonaws.com/bsp-ocsit-dev-east-appdata/datagov/dashboard/'
-                $archive_path_url = 'https://s3.amazonaws.com/' . $s3_bucket . '/' . $s3_prefix . 'archive' . $archive_path;
+                $archive_path_url = 'https://s3-' . $s3_region . '.amazonaws.com/' . $s3_bucket . '/' . $s3_prefix . 'archive' . $archive_path;
 //                https://s3.amazonaws.com/bsp-ocsit-dev-east-appdata/datagov/dashboard/
                 $archive_validation = site_url('validate?schema=' . $schema_version . '&output=browser&qa=true&datajson_url=') . urlencode($archive_path_url );
         ?>
