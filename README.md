@@ -152,6 +152,8 @@ $ cf create-user-provided-service ${app_name}-secrets -p '{
   "ENCRYPTION_KEY": "long-random-string"
 }'
 
+$ cf set-env ${app_name} NEWRELIC_LICENSE license-key-obtained-from-newrelic-account
+
 $ cf push --vars-file vars.yml
 Waiting for app to start...
 
