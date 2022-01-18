@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
       - name: crawl daily (stage)
         # pinned to cf7 until --wait is available for run-task on cf8...
-        uses: cloud-gov/cg-cli-tools@main
+        uses: cloud-gov/cg-cli-tools@cli-v7
         with:
           command: ./bin/cf-crawl-daily.sh dashboard-stage
           cf_org: gsa-datagov
@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v2
       - name: crawl daily (prod)
         # pinned to cf7 until --wait is available for run-task on cf8...
-        uses: cloud-gov/cg-cli-tools@main
+        uses: cloud-gov/cg-cli-tools@cli-v7
         with:
           command: ./bin/cf-crawl-daily.sh dashboard
           cf_org: gsa-datagov
