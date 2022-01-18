@@ -5,18 +5,6 @@ all: clean build install-dev-dependencies up test
 build:
 	docker-compose build
 
-cf-crawl-save-staging: cf run-task dashboard-stage --command "php public/index.php campaign status omb-monitored download" --wait --name dashboard-omb-monitored-download
-
-cf-crawl-daily-staging: cf run-task dashboard-stage --command "php public/index.php campaign status omb-monitored full-scan" --wait --name dashboard-omb-monitored-full-scan
-
-cf-crawl-long-staging: cf run-task dashboard-stage --command "php public/index.php campaign status long-running full-scan" --name dashboard-long-running-full-scan
-
-cf-crawl-save: cf run-task dashboard --command "php public/index.php campaign status omb-monitored download" --wait --name dashboard-omb-monitored-download
-
-cf-crawl-daily: cf run-task dashboard --command "php public/index.php campaign status omb-monitored full-scan" --wait --name dashboard-omb-monitored-full-scan
-
-cf-crawl-long: cf run-task dashboard --command "php public/index.php campaign status long-running full-scan" --name dashboard-long-running-full-scan
-
 cloud-test: build install-dev-dependencies up test
 
 clean:
