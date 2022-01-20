@@ -28,4 +28,5 @@ applications:
   processes:
   - type: web
     disk_quota: 512M
+    memory: ((memory_quota))
     timeout: 10
