@@ -29,4 +29,5 @@ applications:
   - type: web
     disk_quota: 512M
     memory: ((memory_quota))
+    instances: ((instances))
     timeout: 10
