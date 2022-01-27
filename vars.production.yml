@@ -5,7 +5,7 @@ app_full_name: dashboard
 
 # Number of application instances to run in cloud.gov
 instances: 2
-memory_quota: 128M
+memory_quota: 512M
 
 # Routes to assign to this application. This must be globally unique within cloud.gov.
 routes:
