@@ -15,7 +15,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: restart
-        uses: cloud-gov/cg-cli-tools@cli-v8
+        uses: cloud-gov/cg-cli-tools@main
         with:
           command: cf restart dashboard-stage --strategy rolling
           cf_org: gsa-datagov
@@ -33,7 +33,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: restart
-        uses: cloud-gov/cg-cli-tools@cli-v8
+        uses: cloud-gov/cg-cli-tools@main
         with:
           command: cf restart dashboard --strategy rolling
           cf_org: gsa-datagov
