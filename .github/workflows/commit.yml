@@ -26,7 +26,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: deploy
-        uses: cloud-gov/cg-cli-tools@cli-v8
+        uses: cloud-gov/cg-cli-tools@main
         with:
           command: cf push dashboard --vars-file vars.development.yml --strategy rolling
           cf_org: gsa-datagov
@@ -47,7 +47,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: deploy
-        uses: cloud-gov/cg-cli-tools@cli-v8
+        uses: cloud-gov/cg-cli-tools@main
         with:
           command: cf push dashboard-stage --vars-file vars.staging.yml --strategy rolling
           cf_org: gsa-datagov
@@ -68,7 +68,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: deploy
-        uses: cloud-gov/cg-cli-tools@cli-v8
+        uses: cloud-gov/cg-cli-tools@main
         with:
           command: cf push dashboard --vars-file vars.production.yml --strategy rolling
           cf_org: gsa-datagov
