@@ -1,11 +1,11 @@
 # Leading Indicators Strategy Rubric
 _Updated for clarity ahead of Milestone 9: November 30, 2015_
 
-The Leading Indicators Strategy Rubric is intended to provide clarity and transparency on how OMB Staff review Leading Indicators in six categories: Enterprise Data Inventory, Public Data Listing, Public Engagement, Privacy & Security, Human Capital, and Use & Impact. 
+The Leading Indicators Strategy Rubric is intended to provide clarity and transparency on how OMB Staff review Leading Indicators in six categories: Enterprise Data Inventory, Public Data Listing, Public Engagement, Privacy & Security, Human Capital, and Use & Impact.
 
-This Rubric may be updated as new Leading Indicators are informed by [Project Open Data](https://project-open-data.cio.gov/), the [Open Data Cross-Agency Priority (CAP) Goal](http://www.performance.gov/node/3396/view?view=public#overview), and the [Integrated Data Collection Open Data Progress, Use, and Impact](https://www.whitehouse.gov/sites/default/files/omb/memoranda/2013/m-13-09.pdf) questions. 
+This Rubric may be updated as new Leading Indicators are informed by [Project Open Data](https://project-open-data.cio.gov/), the [Open Data Cross-Agency Priority (CAP) Goal](https://trumpadministration.archives.performance.gov/CAP/leveragingdata/), and the [Integrated Data Collection Open Data Progress, Use, and Impact](https://www.whitehouse.gov/sites/default/files/omb/memoranda/2013/m-13-09.pdf) questions. 
 
-## Enterprise Data Inventory 
+## Enterprise Data Inventory
 
 #### Green
 Agency provided a public EDI for this quarter that was of a high quality and indicated substantial progress towards completeness meeting **all** the requirements listed below: <ul><li>Provides an updated public EDI JSON file for this quarter as a dataset in agency's data.json file</li><li>Shows an increase in progress to document non-public, restricted public, and public APIs</li><li>Shows an increase in progress to document all Public Domain/Licensing information</li><li>Shows an increase in the progress to expand and organize data assets through the use of Collections</li><li>Documents all non-public and restricted datasets, redactions, restrictive licenses and provides an explanation for non-disclosure in the `rights` field</li></ul>
@@ -24,7 +24,7 @@ Agency provided a PDL for this quarter that was of a high quality and indicated 
 Agency provided a PDL for this quarter but PDL had **one or more** minor deficiencies listed below: <ul><li>Fails to have 100% valid data.json</li><li>Provides some datasets in human-readable form on /data, but not all</li><li>Insufficient link quality (20% or more broken and error links this quarter)</li></ul>
 #### Red
 Agency didn’t provide a PDL for this quarter or provided a PDL that was not updated or **any** serious deficiencies: <ul><li>PDL does not validate against current schema/ Does not have a valid data.json file successfully harvesting to Data.gov </li><li>Fails to create a human-readable list of all datasets</li><li>Insufficient link quality (20% or more broken or error links for more than 1 quarter)</li></ul>
-#### Best Practice 
+#### Best Practice
 Shows substantial growth (>10%) in cataloging public datasets.
 
 ## Public Engagement
@@ -49,9 +49,9 @@ Fails to provide an up-to-date Data Publication Process on the /digitalstrategy 
 #### Best Practice  
 Agency demonstrates a robust privacy and security plan to support M-13-13 implementation.
 
-## Human Capital 
+## Human Capital
 
-#### Green 
+#### Green
 Agency provided a person and current contact information for all six required data points of contact.
 #### Yellow
 Agency provided a person and contact information for some but not all of the required data points of contact.
@@ -60,7 +60,7 @@ Agency did not provided a person and contact information for any of the required
 #### Best Practice  
 Agency demonstrates strong human capital in the area of data management (e.g. has a Chief Data Officer, data working group).
 
-## Use & Impact 
+## Use & Impact
 
 #### Green
 Agency provided answers for all IDC questions reflecting progress this quarter including a list of 5 dataset improvements.
@@ -73,4 +73,4 @@ Agency has demonstrated that one or more dataset improvements has had a signific
 
 
 
-_You can help [edit this page on GitHub](https://github.com/project-open-data/project-open-data-dashboard/edit/master/documentation/rubric.md)._ 
+_You can help [edit this page on GitHub](https://github.com/project-open-data/project-open-data-dashboard/edit/master/documentation/rubric.md)._
