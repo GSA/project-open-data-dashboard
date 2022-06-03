@@ -1,5 +1,5 @@
 # FROM php:7.3-alpine
-FROM alpine:3
+FROM alpine:3.15
 
 ENV ENVIRONMENT=development
 ENV DEFAULT_HOST=localhost:8000
