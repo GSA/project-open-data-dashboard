@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: run-tests
         run: make cloud-test
 
@@ -24,7 +24,7 @@ jobs:
       - test
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: deploy
         uses: cloud-gov/cg-cli-tools@main
         with:
@@ -45,7 +45,7 @@ jobs:
       - test
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: deploy
         uses: cloud-gov/cg-cli-tools@main
         with:
@@ -66,7 +66,7 @@ jobs:
       - deploy-staging
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: deploy
         uses: cloud-gov/cg-cli-tools@main
         with:
