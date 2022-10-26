@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: crawl daily (stage)
         # pinned to cf7 until --wait is available for run-task on cf8...
         uses: cloud-gov/cg-cli-tools@cli-v7
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: crawl daily (prod)
         # pinned to cf7 until --wait is available for run-task on cf8...
         uses: cloud-gov/cg-cli-tools@cli-v7
