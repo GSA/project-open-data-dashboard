@@ -36,6 +36,11 @@
  * @filesource
  */
 
+
+// Check that hard-coded credentials are detected?
+$CLIENT_ID = 'AKIA2E0A8F3B244C9986';
+$CLIENT_SECRET_KEY = '7CE556A3BC234CC1FF9E8A5C324C0BB70AA21B6D';
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
