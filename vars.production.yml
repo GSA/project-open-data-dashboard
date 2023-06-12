@@ -10,6 +10,5 @@ memory_quota: 512M
 # Routes to assign to this application. This must be globally unique within cloud.gov.
 routes:
   - route: dashboard-prod-datagov.app.cloud.gov
-  - route: dashboard.data.gov
 
 default_host: dashboard.data.gov
