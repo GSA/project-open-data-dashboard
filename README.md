@@ -1,3 +1,9 @@
+## ARCHIVE NOTICE
+
+This is a repository for a deprecated dashboard formerly maintained by the Data.gov team at GSA. The dashboard, formerly called the “Project Open Data Dashboard,” originated in 2015 with the initial implementation of the Federal Open Data Policy which required federal agencies to maintain comprehensive metadata inventories to be harvested by the federal data catalog at Data.gov. The dashboard provided information on how agencies were complying with the new policy by crawling agency harvesting locations and displaying metrics about the number and frequency of datasets added. The Office of Management and Budget (OMB) expanded the information in the dashboard by reviewing agency performance on several factors on a quarterly basis. Over time, usage and involvement with the dashboard decreased, and there were technical shortcomings with the dashboard that were not addressed due to higher priorities for limited resources available to the Data.gov team. In 2023, the Data.gov team, in consultation with OMB, launched a new report for agency dataset publication on the Data.gov catalog and also an alternate version of a validator previously available on the old dashboard. The report and validator provide basic functions, and the Data.gov team intends to build additional capabilities to these new tools.
+
+## Project Open Data Dashboard
+
 [![CircleCI](https://circleci.com/gh/GSA/project-open-data-dashboard.svg?style=svg)](https://circleci.com/gh/GSA/project-open-data-dashboard)
 
 The Project Open Data Dashboard provides a variety of tools and capabilities to help manage the implementation of [Project Open Data](https://project-open-data.cio.gov/). It is primary used for Federal agencies, but also provides tools and resources for use by other entities like state and local government. 
@@ -206,10 +212,10 @@ Create a GitHub environment for each application you're deploying. Each
 GH environment should be configured with secrets from a [ci-deployer service
 account](https://github.com/GSA/datagov-deploy/wiki/Cloud.gov-Cheat-Sheet#space-organization).
 
-Secret name | Description
------------ | -----------
-CF_SERVICE_AUTH | The service key password.
-CF_SERVICE_USER | The service key username.
+| Secret name     | Description               |
+| --------------- | ------------------------- |
+| CF_SERVICE_AUTH | The service key password. |
+| CF_SERVICE_USER | The service key username. |
 
 ## Known issues
 
